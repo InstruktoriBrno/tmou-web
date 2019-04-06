@@ -1,0 +1,70 @@
+<?xml version="1.0"?>
+<ruleset name="TMOU">
+    <description>TMOU code standard customized PSR-1 and PSR-2 standard</description>
+
+    <!-- Make additional rulesets available (relative path from PHPCS source location) -->
+    <config name="installed_paths" value="../../slevomat/coding-standard/"/>
+
+
+    <!-- Inherit rules from PSR-2 but ignore some of them according to current team agreement. -->
+    <rule ref="PSR2"/>
+
+    <!-- Force declare(strict_types=1); right after <?php -->
+    <rule ref="SlevomatCodingStandard.TypeHints.DeclareStrictTypes">
+        <properties>
+            <property name="newlinesCountBetweenOpenTagAndDeclare" value="0"/>
+            <property name="newlinesCountAfterDeclare" value="1"/>
+            <property name="spacesCountAroundEqualsSign" value="0"/>
+        </properties>
+    </rule>
+
+
+    <!-- Force short array syntax -->
+    <rule ref="Generic.Arrays.DisallowLongArraySyntax"/>
+
+    <!-- Force trailing comma in arrays -->
+    <rule ref="SlevomatCodingStandard.Arrays.TrailingArrayComma"/>
+
+    <!-- Ban some deprecated or dangerous functions -->
+    <rule ref="Generic.PHP.ForbiddenFunctions">
+        <properties>
+            <property name="forbiddenFunctions" type="array" value="sizeof=>count,delete=>unset,print=>echo,is_null=>null,create_function=>null,empty=>null" />
+        </properties>
+    </rule>
+
+    <!-- Force all constants to have properly configured visibility. -->
+    <rule ref="SlevomatCodingStandard.Classes.ClassConstantVisibility"/>
+
+    <!-- Force all exception to be stated in fully qualified names. -->
+    <rule ref="SlevomatCodingStandard.Namespaces.FullyQualifiedExceptions"/>
+
+    <!-- Prohibit multiple uses per one line. -->
+    <rule ref="SlevomatCodingStandard.Namespaces.MultipleUsesPerLine"/>
+
+    <!-- Prevent some annotations as ve have the version control -->
+    <rule ref="SlevomatCodingStandard.Commenting.ForbiddenAnnotations">
+        <properties>
+            <property type="array" name="forbiddenAnnotations" value="
+                @author,
+                @created,
+                @copyright,
+                @license,
+                @package,
+                @version" />
+        </properties>
+    </rule>
+
+    <!-- Prevent assignment in conditions -->
+    <rule ref="SlevomatCodingStandard.ControlStructures.AssignmentInCondition"/>
+
+    <!-- Prevent Yoda conditions -->
+    <rule ref="SlevomatCodingStandard.ControlStructures.DisallowYodaComparison"/>
+
+    <!-- Prevent unused uses -->
+    <rule ref="SlevomatCodingStandard.Namespaces.UnusedUses">
+        <properties>
+            <property name="searchAnnotations" type="boolean" value="true" />
+        </properties>
+    </rule>
+
+</ruleset>

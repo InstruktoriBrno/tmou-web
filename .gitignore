@@ -1,0 +1,9 @@
+# IDE related stuff
+.idea
+
+# Configuration with sensitive credentials
+app/config/local.neon
+
+# Dependencies
+vendor
+!vendor/.htaccess

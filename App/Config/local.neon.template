@@ -1,0 +1,25 @@
+parameters:
+
+tracy:
+    bar:
+        - Nextras\MailPanel\MailPanel(%tempDir%/mail-panel-latte)
+
+services:
+    nette.mailer:
+        class: Nette\Mail\IMailer
+        factory: Nextras\MailPanel\FileMailer(%tempDir%/mail-panel-mails)
+
+dbal:
+    connection:
+        host: 127.0.0.1
+        user: root
+        password: root
+        dbname: tmou
+
+parameters:
+    canonical:
+         url: http://localhost:8999 # Address where the instance will be accessed
+
+recaptcha: # ReCaptcha credentials matching the instance location
+    siteKey: foo
+    secretKey: bar

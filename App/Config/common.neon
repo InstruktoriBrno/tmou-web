@@ -1,0 +1,64 @@
+parameters:
+    canonical:
+         url: http://localhost:8999
+
+recaptcha:
+    siteKey: 6LdVSJwUAAAAAOBUowvrUg3I6JzKbbX22WDGwVso
+    secretKey: 6LdVSJwUAAAAAFwQMlcmoLF8fwaUQFEgwl0aCshl
+
+application:
+    errorPresenter: Error
+    mapping:
+        *: InstruktoriBrno\TMOU\*Module\Presenters\*Presenter
+
+
+session:
+    expiration: 14 days
+
+
+services:
+    router: InstruktoriBrno\TMOU\Router\RouterFactory::createRouter
+    - InstruktoriBrno\TMOU\Forms\FormFactory
+
+extensions:
+    nextras.form: Nextras\Forms\Bridges\NetteDI\FormsExtension
+    console: Contributte\Console\DI\ConsoleExtension(%consoleMode%)
+    dbal: Nettrine\DBAL\DI\DbalExtension
+    orm: Nettrine\ORM\DI\OrmExtension
+    orm.annotations: Nettrine\ORM\DI\OrmAnnotationsExtension
+    orm.console: Nettrine\ORM\DI\OrmConsoleExtension
+    orm.cache: Nettrine\ORM\DI\OrmCacheExtension
+    migrations: Nettrine\Migrations\DI\MigrationsExtension
+    recaptcha: Contributte\ReCaptcha\DI\ReCaptchaExtension
+
+migrations:
+    table: doctrine_migrations
+    column: version
+    directory: %appDir%/../App/Migrations
+    namespace: InstruktoriBrno\Tmou\Migrations
+    versionsOrganization: null # null, year, year_and_month
+    customTemplate: null # path to custom template
+
+dbal:
+    connection:
+        host: 127.0.0.1
+        user: root
+        password: root
+        dbname: tmou
+
+orm.cache:
+    defaultDriver: filesystem
+
+orm.annotations:
+    paths:
+        - %appDir%/Model
+    excludePaths: []
+    ignore: []
+    defaultCache: filesystem
+
+console:
+    name: TMOU web
+    catchExceptions: true
+    autoExit: true
+    lazy: true
+    url: %canonical.url%
