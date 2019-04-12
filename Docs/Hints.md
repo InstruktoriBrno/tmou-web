@@ -40,9 +40,13 @@ Při mergování musí být všechny problémy code style odstraněny. Postupný
 ## Správa závislostí
 
 Závislosti (knihovny...) používané touto aplikací spravuje [Composer](https://getcomposer.org), jejich konkrétní výčet
-je uložen v souboru `composer.json`.
+je uložen v souboru `composer.json`. Konkrétní verze, které se mají nainstalovat jsou uloženy v souboru `composer.lock`,
+tento soubor musí být verzovaný, protože jinak dojde k tomu, že na jednotlivých nasazeních budou používány jiné knihovny.
 
 Použivejte composer, extra přidané knihovny věstí bezpečnostní problémy.
+
+Vyvarujte se nevědomému či automatickému použití `composer update`, tento příkaz povyšuje nainstalované verze podle omezení
+v `composer.json` a vždy tak aktualizuje `composer.lock`. Jediné použití je pokud právě aktualizujete verze knihoven které chcete používat!
 
 ## Autoloading tříd
 

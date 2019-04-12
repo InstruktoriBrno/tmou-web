@@ -14,8 +14,8 @@ class Booting
         $configurator->setTimeZone('Europe/Prague');
         $configurator->setTempDirectory(__DIR__ . '/../temp');
 
-        $configurator->addConfig(__DIR__ . '/config/common.neon');
-        $configurator->addConfig(__DIR__ . '/config/local.neon');
+        $configurator->addConfig(__DIR__ . '/Config/common.neon');
+        $configurator->addConfig(__DIR__ . '/Config/local.neon');
 
         return $configurator;
     }

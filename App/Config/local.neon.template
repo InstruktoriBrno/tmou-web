@@ -1,4 +1,6 @@
 parameters:
+    canonical:
+         url: http://localhost:8999 # Address where the instance will be accessed
 
 tracy:
     bar:
@@ -15,10 +17,6 @@ dbal:
         user: root
         password: root
         dbname: tmou
-
-parameters:
-    canonical:
-         url: http://localhost:8999 # Address where the instance will be accessed
 
 recaptcha: # ReCaptcha credentials matching the instance location
     siteKey: foo
