@@ -1,0 +1,55 @@
+{
+	"name": "instruktori-brno/tmou-web",
+	"description": "TMOU web",
+	"keywords": [],
+	"type": "project",
+	"license": "proprietary",
+	"require": {
+		"roave/security-advisories": "dev-master",
+		"php": ">= 7.1",
+		"nette/application": "^2.4",
+		"nette/bootstrap": "^2.4.2",
+		"nette/caching": "^2.5",
+		"nette/database": "^2.4",
+		"nette/di": "^2.4",
+		"nette/finder": "^2.4",
+		"nette/forms": "^2.4",
+		"nette/http": "^2.4",
+		"nette/mail": "^2.4",
+		"nette/robot-loader": "^2.4 || ^3.0",
+		"nette/security": "^2.4",
+		"nette/utils": "^2.4",
+		"latte/latte": "^2.4",
+		"tracy/tracy": "^2.6",
+		"nextras/forms": "dev-master",
+		"nettrine/dbal": "^0.3.0",
+		"nettrine/orm": "^0.3.0",
+		"contributte/console": "^0.5.0",
+		"dg/adminer-custom": "^1.17",
+		"nettrine/migrations": "^0.5.0",
+		"contributte/recaptcha": "^3.1",
+		"league/csv": "^9.2",
+		"ublaboo/datagrid": "^5.7"
+	},
+	"require-dev": {
+		"squizlabs/php_codesniffer": "3.*",
+		"slevomat/coding-standard": "^4.8",
+		"phpstan/phpstan": "^0.11.5",
+		"phpstan/phpstan-strict-rules": "^0.11.0",
+		"phpstan/phpstan-nette": "^0.11.0",
+		"phpstan/phpstan-doctrine": "^0.11.2",
+		"nextras/mail-panel": "^2.4"
+	},
+	"autoload": {
+		"classmap": ["App/Booting.php"],
+		"psr-4": {
+			"InstruktoriBrno\\TMOU\\": "App/"
+		}
+	},
+	"autoload-dev": {
+		"psr-4": {
+			"InstruktoriBrno\\TMOU\\Tests\\": "Tests/"
+		}
+	},
+	"minimum-stability": "stable"
+}
