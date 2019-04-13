@@ -11,5 +11,4 @@ before_script:
     - composer install --no-interaction --no-progress --no-suggest
 
 script:
-    - ./tests/run.sh -s $NTESTER_FLAGS ./tests/cases
     - ./bin/checks.sh
