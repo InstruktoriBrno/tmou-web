@@ -12,4 +12,4 @@ before_script:
 
 script:
     - ./tests/run.sh -s $NTESTER_FLAGS ./tests/cases
-    - bin/checks.sh
+    - ./bin/checks.sh
