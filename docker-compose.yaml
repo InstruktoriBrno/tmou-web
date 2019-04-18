@@ -1,0 +1,41 @@
+version: '3.3'
+
+services:
+    db:
+        image: mariadb:10.1
+        restart: always
+        user: mysql
+        volumes:
+            - ./.mysql:/var/lib/mysql
+            - ./.mysql-config:/etc/mysql/conf.d
+        ports:
+            - ${IP}:3306:3306
+        environment:
+            MYSQL_ROOT_PASSWORD: root
+            MYSQL_DATABASE: tmou
+            MYSQL_USER: tmou
+            MYSQL_PASSWORD: password
+    adminer:
+        image: adminer
+        restart: always
+        ports:
+            - ${IP}:8080:8080
+    webserver:
+        build: .
+        ports:
+            - ${IP}:80:80
+            - ${IP}:443:443
+        volumes:
+            - .:/var/www/html/
+        environment:
+            APACHE_DOCUMENT_ROOT: /var/www/html/www
+    keycloak:
+        image: jboss/keycloak
+        ports:
+            - ${IP}:9990:8080
+        volumes:
+            - ./.keycloak/realm-export.json:/tmp/realm-export.json
+        environment:
+            KEYCLOAK_IMPORT: /tmp/realm-export.json
+            KEYCLOAK_USER: admin
+            KEYCLOAK_PASSWORD: admin
