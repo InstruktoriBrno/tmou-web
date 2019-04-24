@@ -10,22 +10,24 @@ Nezbytné předpoklady jsou:
 - Funkční Docker a Docker Compose (příkazy `docker` a `docker-compose` na PATH).
 - Doména `tmou.test` nasměrovaná na IP adresu na které budou tunelovány Docker kontejnery (via `/etc/hosts`).
   Na Linuxu to bude typicky `127.0.0.1` nebo `127.0.x.x` pokud používáte více Docker kompozic.
-  Na OS X to bude buď stejné jako na Linuxu (může být pomalé), nebo třeba `192.168.99.x` pokud používáte Docker Machine s VirtualBoxem. 
+  Na OS X to bude buď stejné jako na Linuxu (může být pomalé), nebo třeba `192.168.99.x` pokud používáte Docker Machine s VirtualBoxem.
+  Tuto IP taktéž nastavte do souboru `.env` do proměnné `IP` (bez toho se kompozice nespustí).
 
 ## Postup
 
 1. Naklonujte si repozitář:  
    `git checkout git@github.com:InstruktoriBrno/tmou-web.git`
-2. Spusťte `docker-compose up`, nebo `docker-compose up -d` (odpojí se od terminálu).
-3. Počkejte na doběhnutí startu všech Docker kontejnerů, neměla by se objevit žádná chyba.
-4. Přihlašte se z vedlejší konzole do Docker kontejneru `webserver` pomocí příkazu `docker-compose exec webserver bash`.
-5. Uvnitř Docker kontejneru `webserver` nainstalujte Composer závislosti `composer install`.
-6. Uvnitř Docker kontejneru `webserver` spusťte databázové migrace pro zajištění aktuálnosti databáze: `php bin/console migrations:migrate`
-7. Nyní můžete vše používat:
+2. Vytvořte (pokud neexistuje) adresář `.mysql` a dejte mu všechna oprávnění via `chmod 777 .mysql` (relevantní pro Linux, jinak bude mít Docker problém tam zapisovat).
+3. Spusťte `docker-compose up`, nebo `docker-compose up -d` (odpojí se od terminálu).
+4. Počkejte na doběhnutí startu všech Docker kontejnerů, neměla by se objevit žádná chyba.
+5. Přihlašte se z vedlejší konzole do Docker kontejneru `webserver` pomocí příkazu `docker-compose exec webserver bash`.
+6. Uvnitř Docker kontejneru `webserver` nainstalujte Composer závislosti `composer install`.
+7. Uvnitř Docker kontejneru `webserver` spusťte databázové migrace pro zajištění aktuálnosti databáze: `php bin/console migrations:migrate`
+8. Nyní můžete vše používat:
    - TMOU Web: http://tmou.test a https://tmou.test
    - Adminer: http://tmou.test:8080
    - Keycloak: http://tmou.test:9990
-8. Pro ukončení kompozice `docker-compose stop` nebo CTRL-C pokud je spuštěna na popředí.
+9. Pro ukončení kompozice `docker-compose stop` nebo CTRL-C pokud je spuštěna na popředí.
    Opětovné volání `docker-compose up` spustí předchozí stav.  
    Úplné smazání kontejnerů lze provést pomocí `docker-compose down`.  
    Kompletní rebuild kontejnerů lze provést pomocí `docker-compose up --build`.
