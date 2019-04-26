@@ -22,17 +22,18 @@ RUN pecl install xdebug-2.5.0 \
     && echo "xdebug.idekey=PHPSTORM" >> /usr/local/etc/php/conf.d/docker-php-ext-xdebug.ini \
     && echo "xdebug.remote_host=docker.for.mac.localhost" >> /usr/local/etc/php/conf.d/docker-php-ext-xdebug.ini
 
-# Install self-signed SSL certificate and enable SSL in Apache
+# Install self-signed SSL certificate and enable SSL in Apache, also move document root and setup proxy to Keycloack
+COPY .keycloak/keycloak.conf /etc/apache2/sites-available/
 RUN mkdir -p /etc/ssl/localcerts \
     && openssl req -new -x509 -days 365 -nodes -out /etc/ssl/localcerts/apache.pem -keyout /etc/ssl/localcerts/apache.key -subj "/C=CZ/O=Instruktoři Brno, z. s./OU=TMOU/CN=tmou.test" \
     && chmod 600 /etc/ssl/localcerts/apache* \
     && sed -i "s#/etc/ssl/certs/ssl-cert-snakeoil.pem#/etc/ssl/localcerts/apache.pem#g" /etc/apache2/sites-available/default-ssl.conf \
     && sed -i "s#/etc/ssl/private/ssl-cert-snakeoil.key#/etc/ssl/localcerts/apache.key#g" /etc/apache2/sites-available/default-ssl.conf \
-    && a2enmod ssl rewrite && a2ensite default-ssl
-
-# Move Apache document root
-RUN sed -ri -e 's!/var/www/html!/var/www/html/www!g' /etc/apache2/sites-available/*.conf \
-    && sed -ri -e 's!/var/www/!/var/www/html/www!g' /etc/apache2/apache2.conf /etc/apache2/conf-available/*.conf
+    && a2enmod ssl rewrite proxy proxy_http && a2ensite default-ssl \
+    && sed -ri -e 's!/var/www/html!/var/www/html/www!g' /etc/apache2/sites-available/*.conf \
+    && sed -ri -e 's!/var/www/!/var/www/html/www!g' /etc/apache2/apache2.conf /etc/apache2/conf-available/*.conf \
+    && echo "Listen 9990" >> /etc/apache2/ports.conf \
+    && a2ensite keycloak
 
 # Install Composer
 RUN php -r "copy('https://getcomposer.org/installer', 'composer-setup.php');" \

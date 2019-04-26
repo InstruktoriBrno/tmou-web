@@ -24,9 +24,9 @@ Nezbytné předpoklady jsou:
 6. Uvnitř Docker kontejneru `webserver` nainstalujte Composer závislosti `composer install`.
 7. Uvnitř Docker kontejneru `webserver` spusťte databázové migrace pro zajištění aktuálnosti databáze: `php bin/console migrations:migrate`
 8. Nyní můžete vše používat:
-   - TMOU Web: http://tmou.test a https://tmou.test
+   - TMOU Web: http://tmou.test a https://tmou.test (primární vývoj probíhá skrze HTTPS, kvůli přihlašování)
    - Adminer: http://tmou.test:8080
-   - Keycloak: http://tmou.test:9990
+   - Keycloak: https://tmou.test:9990
 9. Pro ukončení kompozice `docker-compose stop` nebo CTRL-C pokud je spuštěna na popředí.
    Opětovné volání `docker-compose up` spustí předchozí stav.  
    Úplné smazání kontejnerů lze provést pomocí `docker-compose down`.  
@@ -49,7 +49,7 @@ Přihlašovací údaje jsou:
 
 ## Správa uživatelů v Keycloaku
 
-Keycloak je nakonfigurován v samostatném Docker kontejneru a jeho administrační rozhraní je přístupné na adrese http://tmou.test:9990.
+Keycloak je nakonfigurován v samostatném Docker kontejneru a jeho administrační rozhraní je přístupné na adrese https://tmou.test:9990.
 
 Přihlašovací údaje jsou:
 

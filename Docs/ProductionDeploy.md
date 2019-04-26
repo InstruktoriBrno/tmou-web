@@ -43,3 +43,17 @@ Pokud nemáte composer na PATH, nebo v systému máte příliš starý, můžete
 (resp. stažením souboru PHAR a jeho spouštěním), viz [návod](https://getcomposer.org/doc/00-intro.md#installation-linux-unix-macos).
 
 Poté namísto `composer <action>` spouštíte `php composer.phar <action>`. Oba způsoby jsou ekvivalentní.
+
+## Keycloak
+
+Je třeba vytvořit `tmou-web` klienta, správně nastavit:
+
+- `Root URL`
+- `Valid Redirect URL`
+- `Base URL` (jako absolutní cestu bez hostname)
+- `Admin URL`
+- `Web origins`
+
+Taktéž je potřeba změnit `Access Type` na confidential. V `Mappers` je potřeba vytvořit Groups mapper, který bude do tokenů přidávat pod klíčem `groups` informace o skupinách uživatele.
+
+Uživatelům, kteří mají mít přístup do TMOU webu je potřeba přidat zařazení do skupiny `Organizátoři TMOU` (přesná shoda).

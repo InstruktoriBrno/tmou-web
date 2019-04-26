@@ -15,11 +15,15 @@ services:
             MYSQL_DATABASE: tmou
             MYSQL_USER: tmou
             MYSQL_PASSWORD: password
+        networks:
+            - network
     adminer:
         image: adminer
         restart: always
         ports:
             - ${IP}:8080:8080
+        networks:
+            - network
     webserver:
         build: .
         ports:
@@ -29,13 +33,22 @@ services:
             - .:/var/www/html/
         environment:
             APACHE_DOCUMENT_ROOT: /var/www/html/www
+        networks:
+            network:
+                aliases:
+                    - tmou.test
     keycloak:
         image: jboss/keycloak
         ports:
-            - ${IP}:9990:8080
+            - ${IP}:9990:8443
         volumes:
             - ./.keycloak/realm-export.json:/tmp/realm-export.json
         environment:
             KEYCLOAK_IMPORT: /tmp/realm-export.json
             KEYCLOAK_USER: admin
             KEYCLOAK_PASSWORD: admin
+        networks:
+            - network
+
+networks:
+    network:

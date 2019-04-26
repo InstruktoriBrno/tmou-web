@@ -1,6 +1,12 @@
 parameters:
     canonical:
          url: http://tmou.test
+    keycloak:
+        authServerUrl:
+        realm:
+        clientId:
+        clientSecret:
+        redirectUri:
 
 recaptcha:
     siteKey: 6LdVSJwUAAAAAOBUowvrUg3I6JzKbbX22WDGwVso
@@ -19,6 +25,13 @@ session:
 services:
     router: InstruktoriBrno\TMOU\Router\RouterFactory::createRouter
     - InstruktoriBrno\TMOU\Forms\FormFactory
+    - InstruktoriBrno\TMOU\Services\Organizators\FindOrganizatorByKeycloakKeyService
+    - InstruktoriBrno\TMOU\OAuth2\Client\Provider\Keycloak(%keycloak%, [], %debugMode%)
+    - InstruktoriBrno\TMOU\Facades\Organizators\LoginOrganizatorViaKeycloakFacade
+    - InstruktoriBrno\TMOU\Grids\DataGridFactory
+    - InstruktoriBrno\TMOU\Grids\OrganizatorsGrid\OrganizatorsGridFactory
+    - InstruktoriBrno\TMOU\Services\Organizators\FindOrganizatorForDataGrid
+    - InstruktoriBrno\TMOU\Application\Authorizator
 
 extensions:
     nextras.form: Nextras\Forms\Bridges\NetteDI\FormsExtension
@@ -35,16 +48,26 @@ migrations:
     table: doctrine_migrations
     column: version
     directory: %appDir%/../App/Migrations
-    namespace: InstruktoriBrno\Tmou\Migrations
+    namespace: InstruktoriBrno\TMOU\Migrations
     versionsOrganization: null # null, year, year_and_month
     customTemplate: null # path to custom template
 
 dbal:
+    debug: %debugMode%
     connection:
         host: db
         user: tmou
         password: password
         dbname: tmou
+        types:
+            uuid_binary:
+                class: Ramsey\Uuid\Doctrine\UuidBinaryType
+                commented: uuid_binary
+            organizator_role:
+                class: InstruktoriBrno\TMOU\Model\DoctrineTypes\OrganizatorRoleDoctrineType
+                commented: organizator_role
+        typesMapping:
+            uuid_binary: binary
 
 orm.cache:
     defaultDriver: filesystem
