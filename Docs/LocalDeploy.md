@@ -2,29 +2,95 @@
 
 Tato stránka popisuje jak si rozchodit vývojovou verzi TMOU webu.
 
+## Předpoklady
+
 Nezbytné předpoklady jsou:
-* Základní programátorské IT vzdělání, bez toho se nemá smysl do tohoto pouštět.
-* GIT
-* PHP alespoň ve verzi 7.1
-* MySQL databázi ve verzi alespoň 5.6 (např. MariaDB 10)
-* Nainstalovaný balíčkovací nástroj [Composer](https://getcomposer.org/) na PATH.
+
+- Základní programátorské IT vzdělání, bez toho se nemá smysl do tohoto pouštět.
+- Funkční Docker a Docker Compose (příkazy `docker` a `docker-compose` na PATH).
+- Doména `tmou.test` nasměrovaná na IP adresu na které budou tunelovány Docker kontejnery (via `/etc/hosts`).
+  Na Linuxu to bude typicky `127.0.0.1` nebo `127.0.x.x` pokud používáte více Docker kompozic.
+  Na OS X to bude buď stejné jako na Linuxu (může být pomalé), nebo třeba `192.168.99.x` pokud používáte Docker Machine s VirtualBoxem.
+  Tuto IP taktéž nastavte do souboru `.env` do proměnné `IP` (bez toho se kompozice nespustí).
+
+## Postup
 
 1. Naklonujte si repozitář:  
    `git checkout git@github.com:InstruktoriBrno/tmou-web.git`
-2. Nainstalujte závislosti spuštěním `composer install` v rootu webu.
-3. Získejte údaje pro připojení do databáze (adresa server, port, jméno, heslo, jméno databáze).  
-   Pokud databázi nemáte, vytvořte si ji **s kódování `utf8mb4-czech`**!
-4. Nastavte možnost zápisu do adresářů `temp` a `log`: `chmod -R 777 temp log`
-5. Vytvořte lokální konfiguraci `App/Config/local.neon`, viz `local.neon.template`,
-   zde nastavte údaje pro přístup k databázi, recaptchu, adresu na které web poběží...
-6. Smažte obsah adresáře `temp/cache`.
-7. Spusťe databázové migrace pro zajištění aktuálnosti databáze: `php bin/console migrations:migrate`
-8. V rootu projektu spusťe vývojový webový server: `php -S localhost:8999 -t www`
-9. Přistupte v prohlížeči na zvolenou adresu: `http://localhost:8999`
+2. Vytvořte (pokud neexistuje) adresář `.mysql` a dejte mu všechna oprávnění via `chmod 777 .mysql` (relevantní pro Linux, jinak bude mít Docker problém tam zapisovat).
+3. Spusťte `docker-compose up`, nebo `docker-compose up -d` (odpojí se od terminálu).
+4. Počkejte na doběhnutí startu všech Docker kontejnerů, neměla by se objevit žádná chyba.
+5. Přihlašte se z vedlejší konzole do Docker kontejneru `webserver` pomocí příkazu `docker-compose exec webserver bash`.
+6. Uvnitř Docker kontejneru `webserver` nainstalujte Composer závislosti `composer install`.
+7. Uvnitř Docker kontejneru `webserver` spusťte databázové migrace pro zajištění aktuálnosti databáze: `php bin/console migrations:migrate`
+8. Nyní můžete vše používat:
+   - TMOU Web: http://tmou.test a https://tmou.test
+   - Adminer: http://tmou.test:8080
+   - Keycloak: http://tmou.test:9990
+9. Pro ukončení kompozice `docker-compose stop` nebo CTRL-C pokud je spuštěna na popředí.
+   Opětovné volání `docker-compose up` spustí předchozí stav.  
+   Úplné smazání kontejnerů lze provést pomocí `docker-compose down`.  
+   Kompletní rebuild kontejnerů lze provést pomocí `docker-compose up --build`.
 
-## Composer
+## Přístup k databázi
 
-Pokud nemáte composer na PATH, nebo v systému máte příliš starý, můžete vyřešit problém lokální instalací
-(resp. stažením souboru PHAR a jeho spouštěním), viz [návod](https://getcomposer.org/doc/00-intro.md#installation-linux-unix-macos).
+Databáze je v samostatném Docker kontejneru. Datové soubory jsou uloženy v adresáři `.mysql`, pokud je
+potřeba restartovat obsah databáze, stačí smazat obsah tohoto adresáře.
 
-Poté namísto `composer <action>` spouštíte `php composer.phar <action>`. Oba způsoby jsou ekvivalentní.
+Dodatečná konfigurace databáze může probíhat skrze `.cnf` soubory v adresáři `.mysql-config`.
+
+Pro přístup do databáze skrze UI je v kompozici přítomen Docker kontejner s [Adminerem](https://www.adminer.org/cs/),
+jeho adresa v kompozici je http://tmou.test:8080.
+
+Přihlašovací údaje jsou:
+
+- Jméno: `tmou`
+- Heslo: `password`
+
+## Správa uživatelů v Keycloaku
+
+Keycloak je nakonfigurován v samostatném Docker kontejneru a jeho administrační rozhraní je přístupné na adrese http://tmou.test:9990.
+
+Přihlašovací údaje jsou:
+
+- Jméno: `admin`
+- E-mail: `admin@example.com`
+- Heslo: `admin`
+
+Uživatelé:
+
+- `<username>:<password> <email>`
+- `admin:admin admin@example.com`
+- `tmou1:tmou1 tmou1@example.com`
+- `tmou2:tmou2 tmou2@example.com`
+- `tmou3:tmou3 tmou3@example.com`
+- `netmou1:netmou1 netmou1@example.com`
+- `netmou2:netmou2 netmou2@example.com`
+
+URL pro autentizaci tmou:
+
+- URL: `keycloak`
+- Realm: `Instruktoři Brno`
+- Client ID: `tmou-web-local`
+- Client Secret: `e7307d96-71e4-4c7a-a626-0bc2ac4eef66`
+
+## Aktualizace (přegenerování) uloženého Keycloak realmu
+
+V případě, že je potřeba vygenerovat nový export dat z realmu nelze použít export z administračního rozhraní,
+protože neobsahuje secret tokeny, ani uživatele, viz [dokumentace](https://access.redhat.com/documentation/en-us/red_hat_single_sign-on/7.0/html/server_administration_guide/export_import).
+
+1. Nahoďte docker kompozici, viz výše.
+2. Připojte se na administrační rozhraní, viz výše.
+3. Proveďte požadované změny.
+4. Přihlašte se do příslušného Docker kontejneru `docker-compose exec keycloak bash`.
+5. a z adresáře `/opt/jboss/keycloak` spusťte následující příkaz:
+
+    ```bash
+    bin/standalone.sh -Dkeycloak.migration.action=export -Dkeycloak.migration.provider=singleFile -Dkeycloak.migration.file=realm-export.json -Djboss.http.port=8888 -Djboss.https.port=9999 -Djboss.management.http.port=7777
+    ```
+6. Po úspěšném doběhnutí (a ukončení pomocí CTRL-C) zkopírujte obsah souboru `realm-export.json` do `.keycloak/realm-export.json`.
+   ```bash
+   docker cp <CONTAINER_ID>:/opt/jboss/keycloak/realm-export.json .keycloak/realm-export.json
+   ```
+6. Z daného souboru odstraňte konfiguraci pro realm `master` a namísto pole ponechte jen objekt realmu `Instruktoři Brno`.
+7. Otestujte novou konfiguraci.

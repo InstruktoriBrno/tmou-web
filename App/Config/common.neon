@@ -1,6 +1,6 @@
 parameters:
     canonical:
-         url: http://localhost:8999
+         url: http://tmou.test
 
 recaptcha:
     siteKey: 6LdVSJwUAAAAAOBUowvrUg3I6JzKbbX22WDGwVso
@@ -41,9 +41,9 @@ migrations:
 
 dbal:
     connection:
-        host: 127.0.0.1
-        user: root
-        password: root
+        host: db
+        user: tmou
+        password: password
         dbname: tmou
 
 orm.cache:

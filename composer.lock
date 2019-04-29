@@ -4,7 +4,7 @@
         "Read more about it at https://getcomposer.org/doc/01-basic-usage.md#installing-dependencies",
         "This file is @generated automatically"
     ],
-    "content-hash": "d5278011f09805e59e3c40102c64e01d",
+    "content-hash": "3aa51af09226f40c17d931eb29923d69",
     "packages": [
         {
             "name": "contributte/console",
@@ -127,35 +127,6 @@
                 "recaptcha"
             ],
             "time": "2018-08-22T13:31:56+00:00"
-        },
-        {
-            "name": "dg/adminer-custom",
-            "version": "v1.17.0",
-            "source": {
-                "type": "git",
-                "url": "https://github.com/dg/adminer-custom.git",
-                "reference": "cdd53328cc6ec81b0b406d2f394d9bd0fbc10b48"
-            },
-            "dist": {
-                "type": "zip",
-                "url": "https://api.github.com/repos/dg/adminer-custom/zipball/cdd53328cc6ec81b0b406d2f394d9bd0fbc10b48",
-                "reference": "cdd53328cc6ec81b0b406d2f394d9bd0fbc10b48",
-                "shasum": ""
-            },
-            "type": "library",
-            "notification-url": "https://packagist.org/downloads/",
-            "description": "Customization for Adminer, the best database management tool written in PHP.",
-            "keywords": [
-                "database",
-                "elasticsearch",
-                "mongodb",
-                "mssql",
-                "mysql",
-                "oracle",
-                "postgresql",
-                "sqlite"
-            ],
-            "time": "2019-01-26T14:52:00+00:00"
         },
         {
             "name": "doctrine/annotations",

@@ -1,9 +1,45 @@
 # Production deploy
 
-Víceméně stejné jako při nasazení [pro lokální vývoj](LocalDeploy.md).
+Produkční nasazení není organizováno pomocí Docker kompozice, ale přímo "nativně" (tzn. v Apache + PHP).
 
-Odlišnosti jsou:
- - Je obzvláště vhodné zazálohovat celou databázi před začátkem migračního procesu, soubory by měly být verzované.
- - Během nasazení je vhodné aby stránka byla mimo provoz (typicky nějakým přesměrováním v `.htaccess` vyjma povolené IP).
- - Smazání keše je nezbytné, v produkčním režimu se sama přegenerovává jen pokud chybí!
- - Instalaci závislostí je vhodné spouštět s dodatečnými parametry: `composer install --no-dev --optimize-autoloader --no-progress --no-interaction --no-suggest`
+
+## Předpoklady
+
+Nezbytné předpoklady jsou:
+
+- Základní programátorské IT vzdělání, bez toho se nemá smysl do tohoto pouštět.
+- GIT
+- PHP alespoň ve verzi 7.1
+- MySQL databázi ve verzi alespoň 5.6 (např. MariaDB 10)
+- Nainstalovaný balíčkovací nástroj [Composer](https://getcomposer.org/) na PATH.
+
+## Postup instalace
+
+1. Naklonujte si repozitář:  
+   `git checkout git@github.com:InstruktoriBrno/tmou-web.git`
+2. Nainstalujte závislosti spuštěním `composer install` v rootu webu.
+3. Získejte údaje pro připojení do databáze (adresa server, port, jméno, heslo, jméno databáze).  
+   Pokud databázi nemáte, vytvořte si ji **s kódování `utf8mb4-czech`**!
+4. Nastavte možnost zápisu do adresářů `temp` a `log`: `chmod -R 777 temp log`
+5. Vytvořte lokální konfiguraci `App/Config/local.neon`, viz `local.neon.template`,
+   zde nastavte údaje pro přístup k databázi, recaptchu, adresu na které web poběží...
+6. Smažte obsah adresáře `temp/cache`.
+7. Spusťe databázové migrace pro zajištění aktuálnosti databáze: `php bin/console migrations:migrate`
+9. Nakonfigurujte Apache tak, aby používal správnou verzi PHP a `DocumentRoot` směřoval do složky `www`.
+10. Přistupte skrze prohlížeč na nakonfigurovanou doménu a otestujte základní funkčnost webu.
+
+
+## Postup aktualizace
+
+1. Odstavte web (typicky vytvořením stránky `index.html`, která se načte prioritněji než `index.php`, nebo dočasným přesměrováním v `.htaccess` vyjma povolené adresy).
+2. Zazálujte celou databázi před začátkem aktualzace.
+2. Aktualizujte repozitář na požadovanou verzi (pozor na neverzované změny!)
+3. Doinstalujte a aktualizujte závislosti dle požadavku dané verze pomocí `composer install --no-dev --optimize-autoloader --no-progress --no-interaction --no-suggest`.
+4. Smažte obsah adresáře `temp/cache`, v produkčním režimu se keš sama přegenerovává jen pokud chybí! (Bez toho by aplikace nemusela vůbec naběhnout, nebo by fungovala jako ve staré verzi.)
+
+## Composer
+
+Pokud nemáte composer na PATH, nebo v systému máte příliš starý, můžete vyřešit problém lokální instalací
+(resp. stažením souboru PHAR a jeho spouštěním), viz [návod](https://getcomposer.org/doc/00-intro.md#installation-linux-unix-macos).
+
+Poté namísto `composer <action>` spouštíte `php composer.phar <action>`. Oba způsoby jsou ekvivalentní.
