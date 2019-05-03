@@ -1,0 +1,10 @@
+{block content}
+    <div id="banner">
+        <h1 n:block=title>Smazání {$event->getName()}</h1>
+    </div>
+
+    <div id="content">
+        <p>Opravdu chcete smazat {$event->getNumber()}. ročník s názvem <b>{$event->getName()}</b> a ID {$event->getId()}.</p>
+        {control confirmForm}
+    </div>
+{/block}

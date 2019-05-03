@@ -11,6 +11,12 @@
         <link rel="stylesheet" type="text/css" href="{$basePath}/assets/css/datagrid.css">
         <link rel="stylesheet" type="text/css" href="{$basePath}/assets/css/datagrid-spinners.css">
     {/if}
+    {if isset($hasGlyphicons) && $hasGlyphicons}
+        <link rel="stylesheet" href="{$basePath}/assets/fontawesome/css/all.css">
+    {/if}
+    {if isset($hasDatetimepicker) && $hasDatetimepicker}
+        <link rel="stylesheet" href="{$basePath}/assets/css/bootstrap-datetimepicker.min.css">
+    {/if}
 </head>
 
 <body>
@@ -23,6 +29,11 @@
         <script src="{$basePath}/assets/js/bootstrap.min.js"></script>
         <script src="{$basePath}/assets/js/netteForms.min.js"></script>
         <script src="{$basePath}/assets/js/nextras.netteForms.js"></script>
+        {if isset($hasDatetimepicker) && $hasDatetimepicker}
+            <script src="{$basePath}/assets/js/bootstrap-datetimepicker.min.js"></script>
+            <script src="{$basePath}/assets/js/bootstrap-datetimepicker.cs.js"></script>
+            <script src="{$basePath}/assets/js/nextras.datetimepicker.init.js"></script>
+        {/if}
         <script src="{$basePath}/assets/js/nette.ajax.js"></script>
         <script>
             $.nette.init();

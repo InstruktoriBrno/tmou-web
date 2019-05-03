@@ -63,7 +63,6 @@ final class AdminPresenter extends BasePresenter
     /** @privilege(InstruktoriBrno\TMOU\Enums\Resource::ADMIN_ORGANIZATORS,InstruktoriBrno\TMOU\Enums\Action::VIEW) */
     public function actionOrganizators(): void
     {
-        $this->template->hasDatagrid = true;
     }
 
     public function createComponentOrganizatorsGrid(): OrganizatorsGrid

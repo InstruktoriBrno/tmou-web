@@ -32,6 +32,18 @@ services:
     - InstruktoriBrno\TMOU\Grids\OrganizatorsGrid\OrganizatorsGridFactory
     - InstruktoriBrno\TMOU\Services\Organizators\FindOrganizatorForDataGrid
     - InstruktoriBrno\TMOU\Application\Authorizator
+    - InstruktoriBrno\TMOU\Services\Events\FindEventsForDataGridService
+    - InstruktoriBrno\TMOU\Grids\EventsGrid\EventsGridFactory
+    - InstruktoriBrno\TMOU\Forms\EventFormFactory
+    - InstruktoriBrno\TMOU\Services\Events\FindEventService
+    - InstruktoriBrno\TMOU\Facades\Events\SaveEventFacade
+    - InstruktoriBrno\TMOU\Services\Events\IsEventNumberUniqueService
+    - InstruktoriBrno\TMOU\Services\Events\FindEventForFormService
+    - InstruktoriBrno\TMOU\Services\Events\FindLatestEventService
+    - InstruktoriBrno\TMOU\Services\Events\FindDefaultEventValuesForFormService
+    - InstruktoriBrno\TMOU\Forms\ConfirmFormFactory
+    - InstruktoriBrno\TMOU\Services\Events\DeleteEventService
+    - InstruktoriBrno\TMOU\Facades\Events\DeleteEventFacade
 
 extensions:
     nextras.form: Nextras\Forms\Bridges\NetteDI\FormsExtension

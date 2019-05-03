@@ -25,6 +25,7 @@ class Authorizator implements IAuthorizator
         $this->acl->addResource(Resource::TEAM_COMMON);
         $this->acl->addResource(Resource::ADMIN_COMMON);
         $this->acl->addResource(Resource::ADMIN_ORGANIZATORS);
+        $this->acl->addResource(Resource::ADMIN_EVENTS);
 
         // Guest
         $this->acl->deny(UserRole::GUEST);
@@ -40,6 +41,7 @@ class Authorizator implements IAuthorizator
         // Org
         $this->acl->allow(UserRole::ORG, Resource::ADMIN_COMMON);
         $this->acl->allow(UserRole::ORG, Resource::ADMIN_ORGANIZATORS);
+        $this->acl->allow(UserRole::ORG, Resource::ADMIN_EVENTS);
     }
 
     /**

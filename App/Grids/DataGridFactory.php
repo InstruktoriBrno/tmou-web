@@ -46,6 +46,7 @@ class DataGridFactory
         );
         $grid->setRememberState(false);
         $grid->setRefreshUrl(false);
+        DataGrid::$icon_prefix = 'fa fa-';
 
         return $grid;
     }

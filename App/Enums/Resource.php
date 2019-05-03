@@ -20,6 +20,7 @@ final class Resource extends Enum
 
     public const ADMIN_COMMON = 'admin_common';
     public const ADMIN_ORGANIZATORS = 'admin_organizators';
+    public const ADMIN_EVENTS = 'admin_events';
 
     public const TEAM_COMMON = 'team_common';
 }
