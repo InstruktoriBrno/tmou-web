@@ -33,6 +33,12 @@ services:
             - .:/var/www/html/
         environment:
             APACHE_DOCUMENT_ROOT: /var/www/html/www
+            MYSQL_SERVER: db
+            MYSQL_PORT: 3306
+            MYSQL_USER: tmou
+            MYSQL_PASSWORD: password
+        depends_on:
+          - db
         networks:
             network:
                 aliases:

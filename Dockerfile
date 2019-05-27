@@ -8,6 +8,7 @@ RUN apt-get update && apt-get install -y \
         libpng-dev \
         unzip \
         git \
+        mariadb-client-10.1 \
     && docker-php-ext-configure gd --with-freetype-dir=/usr/include/ --with-jpeg-dir=/usr/include/ \
     && docker-php-ext-install -j$(nproc) pdo pdo_mysql mysqli opcache gd zip \
     && apt-get clean \
@@ -41,3 +42,10 @@ RUN php -r "copy('https://getcomposer.org/installer', 'composer-setup.php');" \
     && php composer-setup.php --install-dir /usr/local/bin \
     && php -r "unlink('composer-setup.php');" \
     && ln -s /usr/local/bin/composer.phar /usr/local/bin/composer
+
+# Tune entrypoint in order to wait on database
+COPY .docker-files/start-after-db.sh /usr/local/bin/start-after-db.sh
+RUN chmod +x /usr/local/bin/start-after-db.sh
+
+CMD ["start-after-db.sh"]
+ENTRYPOINT ["start-after-db.sh"]

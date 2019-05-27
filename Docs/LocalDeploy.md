@@ -18,7 +18,7 @@ Nezbytné předpoklady jsou:
 1. Naklonujte si repozitář:  
    `git checkout git@github.com:InstruktoriBrno/tmou-web.git`
 2. Vytvořte (pokud neexistuje) adresář `.mysql` a dejte mu všechna oprávnění via `chmod 777 .mysql` (relevantní pro Linux, jinak bude mít Docker problém tam zapisovat).
-3. Spusťte `docker-compose up`, nebo `docker-compose up -d` (odpojí se od terminálu).
+3. Spusťte `docker-compose up`, nebo `docker-compose up -d` (odpojí se od terminálu). V případě, že se změnil hlavní `Dockerfile` sestavte nový kontejner `docker-compose up --build`.
 4. Počkejte na doběhnutí startu všech Docker kontejnerů, neměla by se objevit žádná chyba.
 5. Přihlašte se z vedlejší konzole do Docker kontejneru `webserver` pomocí příkazu `docker-compose exec webserver bash`.
 6. Uvnitř Docker kontejneru `webserver` nainstalujte Composer závislosti `composer install`.
