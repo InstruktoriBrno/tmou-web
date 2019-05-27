@@ -22,7 +22,7 @@ Nezbytné předpoklady jsou:
 4. Počkejte na doběhnutí startu všech Docker kontejnerů, neměla by se objevit žádná chyba.
 5. Přihlašte se z vedlejší konzole do Docker kontejneru `webserver` pomocí příkazu `docker-compose exec webserver bash`.
 6. Uvnitř Docker kontejneru `webserver` nainstalujte Composer závislosti `composer install`.
-7. Uvnitř Docker kontejneru `webserver` spusťte databázové migrace pro zajištění aktuálnosti databáze: `php bin/console migrations:migrate`
+7. Uvnitř Docker kontejneru `webserver` spusťte (po úplném naběhnutí databáze -- v logu kontejneru `webserver` je `mysqld is alive`) databázové migrace pro zajištění aktuálnosti databáze: `php bin/console migrations:migrate`
 8. Nyní můžete vše používat:
    - TMOU Web: http://tmou.test a https://tmou.test (primární vývoj probíhá skrze HTTPS, kvůli přihlašování)
    - Adminer: http://tmou.test:8080
