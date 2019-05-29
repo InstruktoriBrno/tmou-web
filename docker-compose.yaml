@@ -37,6 +37,7 @@ services:
             MYSQL_PORT: 3306
             MYSQL_USER: tmou
             MYSQL_PASSWORD: password
+            TRACY_DEBUG_ENABLE: 1
         depends_on:
           - db
         networks:
