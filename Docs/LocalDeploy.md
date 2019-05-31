@@ -12,21 +12,22 @@ Nezbytné předpoklady jsou:
   Na Linuxu to bude typicky `127.0.0.1` nebo `127.0.x.x` pokud používáte více Docker kompozic.
   Na OS X to bude buď stejné jako na Linuxu (může být pomalé), nebo třeba `192.168.99.x` pokud používáte Docker Machine s VirtualBoxem.
   Tuto IP taktéž nastavte do souboru `.env` do proměnné `IP` (bez toho se kompozice nespustí).
+- Pro spuštění Tracy ve vývojovém režimu potřebujete buď přidat adresu do `Booting.php`, nebo spouštět docker kompozici s ENV proměnou `TRACY_DEBUG_ENABLE` nastavenou na `1` (mělo by být nastaveno jako výchozí).
 
 ## Postup
 
 1. Naklonujte si repozitář:  
    `git checkout git@github.com:InstruktoriBrno/tmou-web.git`
 2. Vytvořte (pokud neexistuje) adresář `.mysql` a dejte mu všechna oprávnění via `chmod 777 .mysql` (relevantní pro Linux, jinak bude mít Docker problém tam zapisovat).
-3. Spusťte `docker-compose up`, nebo `docker-compose up -d` (odpojí se od terminálu).
+3. Spusťte `docker-compose up`, nebo `docker-compose up -d` (odpojí se od terminálu). V případě, že se změnil hlavní `Dockerfile` sestavte nový kontejner `docker-compose up --build`.
 4. Počkejte na doběhnutí startu všech Docker kontejnerů, neměla by se objevit žádná chyba.
 5. Přihlašte se z vedlejší konzole do Docker kontejneru `webserver` pomocí příkazu `docker-compose exec webserver bash`.
 6. Uvnitř Docker kontejneru `webserver` nainstalujte Composer závislosti `composer install`.
-7. Uvnitř Docker kontejneru `webserver` spusťte databázové migrace pro zajištění aktuálnosti databáze: `php bin/console migrations:migrate`
+7. Uvnitř Docker kontejneru `webserver` spusťte (po úplném naběhnutí databáze -- v logu kontejneru `webserver` je `mysqld is alive`) databázové migrace pro zajištění aktuálnosti databáze: `php bin/console migrations:migrate`
 8. Nyní můžete vše používat:
-   - TMOU Web: http://tmou.test a https://tmou.test
+   - TMOU Web: http://tmou.test a https://tmou.test (primární vývoj probíhá skrze HTTPS, kvůli přihlašování)
    - Adminer: http://tmou.test:8080
-   - Keycloak: http://tmou.test:9990
+   - Keycloak: https://tmou.test:9990
 9. Pro ukončení kompozice `docker-compose stop` nebo CTRL-C pokud je spuštěna na popředí.
    Opětovné volání `docker-compose up` spustí předchozí stav.  
    Úplné smazání kontejnerů lze provést pomocí `docker-compose down`.  
@@ -49,7 +50,7 @@ Přihlašovací údaje jsou:
 
 ## Správa uživatelů v Keycloaku
 
-Keycloak je nakonfigurován v samostatném Docker kontejneru a jeho administrační rozhraní je přístupné na adrese http://tmou.test:9990.
+Keycloak je nakonfigurován v samostatném Docker kontejneru a jeho administrační rozhraní je přístupné na adrese https://tmou.test:9990.
 
 Přihlašovací údaje jsou:
 

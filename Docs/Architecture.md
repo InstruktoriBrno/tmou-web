@@ -69,3 +69,26 @@ Jednou z výhod je možnost skládání šablon pomocí `@layout.latte` a pomoc�
 
 Během vývoje (nikoliv však na produkci) je dostupná Tracy, která každou chybu přetaví do laděnky (aka BlueScreen),
 jednotlivé chybové hlášky (a to platí i pro produkci) jsou uloženy ve složce `logs`.
+
+## Kontrola oprávnění
+
+Nette poskytuje základní kontrolu oprávnění postavenou nad Role-Based-Access-Control návrhovým vzorem.
+Ve zkratce to znamená, že v aplikací existují *resourcy*, se kterými můžou uživatelé různých *rolí* provádět různé *akce*.
+
+- Resourcy: `InstruktoriBrno\TMOU\Enums\Resources`, například správa uživatelů, správa ročníků, ...
+- Akce: `InstruktoriBrno\TMOU\Enums\Actions`, například `VIEW`, `LOGIN`, ...
+- Role: `InstruktoriBrno\TMOU\Enums\UserRole`, tyto role neodpovídají rolím Organizátora, ale víceméně odlišují různý typy uživatelů (nepřihlášený a z něho dědící tým, respektive organizátor).
+
+Celé nastavení oprávnění je ve třídě `InstruktoriBrno\TMOU\Application\Authorizator`.
+
+Pro kontrolu oprávnění v aplikaci se používají anotace (oživené v `InstruktoriBrno\TMOU\Presenters\BasePresenter`, který je potřeba používat jako univerzálního předka všech presenterů), viz například:
+
+```php
+    /** @privilege(InstruktoriBrno\TMOU\Enums\Resource::ADMIN_ORGANIZATORS,InstruktoriBrno\TMOU\Enums\Action::VIEW) */
+    public function actionOrganizators() {}
+```
+
+```php
+    /** @privilege(InstruktoriBrno\TMOU\Enums\Resource::ADMIN_ORGANIZATORS,InstruktoriBrno\TMOU\Enums\Action::VIEW, Jetasys\Papilio\Enums\PrivilegeEnforceMethod::NOT_AVAILABLE) */
+    public function actionOrganizators() {}
+```

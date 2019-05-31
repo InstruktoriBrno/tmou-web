@@ -1,9 +1,11 @@
 <?php declare(strict_types=1);
 namespace InstruktoriBrno\TMOU\Presenters;
 
-use Nette\Application\UI\Presenter;
-
-final class HomepagePresenter extends Presenter
+final class HomepagePresenter extends BasePresenter
 {
 
+    /** @privilege(InstruktoriBrno\TMOU\Enums\Resource::PUBLIC,InstruktoriBrno\TMOU\Enums\Action::VIEW) */
+    public function actionDefault(): void
+    {
+    }
 }
