@@ -92,6 +92,13 @@ class EventsGrid extends Control
                 return Html::el('span class="label label-xs label-default"')->setText('Neurčeno');
             });
 
+        if ($this->user->isAllowed(Resource::ADMIN_EVENTS, Action::CREATE)) {
+            $grid->addToolbarButton('Events:add', '')
+                ->setIcon('plus')
+                ->addAttributes(['title' => 'Přidat ročník'])
+                ->setClass('btn btn-xs btn-default');
+        }
+
         if ($this->user->isAllowed(Resource::ADMIN_EVENTS, Action::EDIT)) {
             $grid->addAction('edit', '', 'Events:edit', ['eventId' => 'id'])
                 ->setIcon('edit')
