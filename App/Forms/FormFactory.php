@@ -1,14 +1,14 @@
 <?php declare(strict_types=1);
 namespace InstruktoriBrno\TMOU\Forms;
 
-use Nette\Application\UI\Form;
+use InstruktoriBrno\TMOU\Application\UI\BaseForm;
 use Nextras\Forms\Rendering\Bs4FormRenderer;
 
 class FormFactory
 {
-    public function create(): Form
+    public function create(): BaseForm
     {
-        $form = new Form();
+        $form = new BaseForm();
         $form->setRenderer(new Bs4FormRenderer());
         return $form;
     }

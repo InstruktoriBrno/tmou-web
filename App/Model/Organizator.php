@@ -87,6 +87,9 @@ class Organizator
 
     public function getId(): int
     {
+        if ($this->id === null) {
+            throw new \InstruktoriBrno\TMOU\Model\Exceptions\IDNotYetAssignedException;
+        }
         return $this->id;
     }
 

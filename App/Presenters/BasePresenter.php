@@ -2,8 +2,10 @@
 namespace InstruktoriBrno\TMOU\Presenters;
 
 use function count;
+use InstruktoriBrno\TMOU\Enums\Action;
 use InstruktoriBrno\TMOU\Enums\Flash;
 use InstruktoriBrno\TMOU\Enums\PrivilegeEnforceMethod;
+use InstruktoriBrno\TMOU\Enums\Resource;
 use InstruktoriBrno\TMOU\Utils\Helpers;
 use Nette\Application\UI\ComponentReflection;
 use Nette\Application\UI\MethodReflection;
@@ -11,6 +13,16 @@ use Nette\Application\UI\Presenter;
 
 abstract class BasePresenter extends Presenter
 {
+
+    protected function beforeRender()
+    {
+        parent::beforeRender();
+        if ($this->user->isAllowed(Resource::ADMIN_COMMON, Action::VIEW)) {
+            $this->template->hasDatagrid = true;
+            $this->template->hasGlyphicons = true;
+            $this->template->hasDatetimepicker = true;
+        }
+    }
 
     /** @param mixed $element */
     public function checkRequirements($element): void
