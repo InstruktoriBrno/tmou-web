@@ -99,6 +99,20 @@ class EventsGrid extends Control
                 ->setClass('btn btn-xs btn-default');
         }
 
+        if ($this->user->isAllowed(Resource::ADMIN_PAGES, Action::EDIT)) {
+            $grid->addToolbarButton('Pages:', '')
+                ->setIcon('file')
+                ->addAttributes(['title' => 'Stránky bez ročníku'])
+                ->setClass('btn btn-xs btn-default');
+        }
+
+        if ($this->user->isAllowed(Resource::ADMIN_PAGES, Action::EDIT)) {
+            $grid->addAction('event_pages', '', 'Pages:', ['eventNumber' => 'number'])
+                ->setIcon('file')
+                ->addAttributes(['title' => 'Stránky ročníku'])
+                ->setClass('btn btn-xs btn-default');
+        }
+
         if ($this->user->isAllowed(Resource::ADMIN_EVENTS, Action::EDIT)) {
             $grid->addAction('edit', '', 'Events:edit', ['eventId' => 'id'])
                 ->setIcon('edit')

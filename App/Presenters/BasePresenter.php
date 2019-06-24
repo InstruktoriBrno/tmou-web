@@ -6,13 +6,24 @@ use InstruktoriBrno\TMOU\Enums\Action;
 use InstruktoriBrno\TMOU\Enums\Flash;
 use InstruktoriBrno\TMOU\Enums\PrivilegeEnforceMethod;
 use InstruktoriBrno\TMOU\Enums\Resource;
+use InstruktoriBrno\TMOU\Forms\GameClockFormFactory;
+use InstruktoriBrno\TMOU\Services\System\GameClockService;
 use InstruktoriBrno\TMOU\Utils\Helpers;
 use Nette\Application\UI\ComponentReflection;
+use Nette\Application\UI\Form;
 use Nette\Application\UI\MethodReflection;
 use Nette\Application\UI\Presenter;
+use Nette\Forms\Controls\SubmitButton;
+use Nette\Utils\ArrayHash;
 
 abstract class BasePresenter extends Presenter
 {
+
+    /** @var GameClockFormFactory @inject */
+    public $gameClockFormFactory;
+
+    /** @var GameClockService @inject */
+    public $gameClockService;
 
     protected function beforeRender()
     {
@@ -21,6 +32,11 @@ abstract class BasePresenter extends Presenter
             $this->template->hasDatagrid = true;
             $this->template->hasGlyphicons = true;
             $this->template->hasDatetimepicker = true;
+        }
+
+        $this->template->currentTime = $this->gameClockService->get();
+        if ($this->user->isAllowed(Resource::ADMIN_COMMON, Action::CHANGE_GAME_CLOCK)) {
+            $this->template->gameClockChange = true;
         }
     }
 
@@ -67,5 +83,19 @@ abstract class BasePresenter extends Presenter
                 }
             }
         }
+    }
+
+    public function createComponentGameClock(): Form
+    {
+        return $this->gameClockFormFactory->create(function (Form $form, ArrayHash $values) {
+            /** @var SubmitButton $resetButton */
+            $resetButton = $form['reset'];
+            if ($resetButton->isSubmittedBy()) {
+                $this->gameClockService->reset();
+            } else {
+                $this->gameClockService->set($values['newNow']);
+            }
+            $this->redirect('this');
+        });
     }
 }

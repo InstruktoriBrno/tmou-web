@@ -1,0 +1,12 @@
+{define title}{$page->getTitle()}{if $page->getEvent() !== null} | {$page->getEvent()->getNumber()}. ročník{/if}{/define}
+{block content}
+    <div id="banner">
+        <h1>{$page->getHeading()}</h1>
+    </div>
+
+    <div id="content">
+        {$page->getContent()|texy}
+
+        <p><small>Poslední úprava: {$page->getLastUpdatedAt()|date:'j. n. Y H:i'}</small></p>
+    </div>
+{/block}
