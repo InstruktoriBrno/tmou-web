@@ -36,6 +36,7 @@ services:
     - InstruktoriBrno\TMOU\Grids\EventsGrid\EventsGridFactory
     - InstruktoriBrno\TMOU\Forms\EventFormFactory
     - InstruktoriBrno\TMOU\Services\Events\FindEventService
+    - InstruktoriBrno\TMOU\Services\Events\FindEventByNumberService
     - InstruktoriBrno\TMOU\Facades\Events\SaveEventFacade
     - InstruktoriBrno\TMOU\Services\Events\IsEventNumberUniqueService
     - InstruktoriBrno\TMOU\Services\Events\FindEventForFormService
@@ -44,6 +45,31 @@ services:
     - InstruktoriBrno\TMOU\Forms\ConfirmFormFactory
     - InstruktoriBrno\TMOU\Services\Events\DeleteEventService
     - InstruktoriBrno\TMOU\Facades\Events\DeleteEventFacade
+    - InstruktoriBrno\TMOU\Grids\PagesGrid\PagesGridFactory
+    - InstruktoriBrno\TMOU\Services\Pages\FindPagesForDataGridService
+    - InstruktoriBrno\TMOU\Services\Pages\FindPageService
+    - InstruktoriBrno\TMOU\Forms\PageFormFactory
+    - InstruktoriBrno\TMOU\Services\Pages\IsPageSLUGInEventUniqueService
+    - InstruktoriBrno\TMOU\Facades\Pages\SavePageFacade
+    - InstruktoriBrno\TMOU\Services\Pages\IsPageSLUGReservedService
+    - InstruktoriBrno\TMOU\Services\Pages\FindPageForFormService
+    - InstruktoriBrno\TMOU\Services\Pages\FindDefaultPageValuesForFormService
+    - InstruktoriBrno\TMOU\Services\Pages\DeletePageService
+    - InstruktoriBrno\TMOU\Facades\Pages\DeletePageFacade
+    - InstruktoriBrno\TMOU\Services\Events\FindEventsPairsService
+    - InstruktoriBrno\TMOU\Services\Pages\IsDefaultPageInEventUniqueService
+    - InstruktoriBrno\TMOU\Services\Pages\FindPageInEventService
+    latte.templateFactory:
+        class: InstruktoriBrno\TMOU\Bridges\Latte\TemplateFactory
+        setup:
+            - injectGameClock
+            - injectTeamMacroDataProvider
+            - injectEventMacroDataProvider
+    - InstruktoriBrno\TMOU\Services\System\GameClockService
+    - InstruktoriBrno\TMOU\Services\System\RealClockService
+    - InstruktoriBrno\TMOU\Services\Teams\TeamMacroDataProvider
+    - InstruktoriBrno\TMOU\Services\Events\EventMacroDataProvider
+    - InstruktoriBrno\TMOU\Forms\GameClockFormFactory
 
 extensions:
     nextras.form: Nextras\Forms\Bridges\NetteDI\FormsExtension

@@ -1,0 +1,10 @@
+{block content}
+    <div id="banner">
+        <h1 n:block=title>Smazání stránky {$page->getTitle()} {if $page->getEvent() !== null}v {$page->getEvent()->getNumber()}. ročníku{/if}</h1>
+    </div>
+
+    <div id="content">
+        <p>Opravdu chcete smazat stránku {$page->getTitle()} {if $page->getEvent() !== null}v {$page->getEvent()->getNumber()}. ročník s názvem <b>{$page->getEvent()->getName()}</b> a {/if} ID {$page->getId()}.</p>
+        {control confirmForm}
+    </div>
+{/block}

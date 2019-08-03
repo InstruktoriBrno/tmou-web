@@ -32,7 +32,8 @@
 		"league/oauth2-client": "^2.4",
 		"stevenmaguire/oauth2-keycloak": "dev-master",
 		"ramsey/uuid-doctrine": "^1.5",
-		"grifart/enum": "^0.2.0"
+		"grifart/enum": "^0.2.0",
+		"texy/texy": "^3.0"
 	},
 	"require-dev": {
 		"squizlabs/php_codesniffer": "3.*",

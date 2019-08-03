@@ -22,6 +22,15 @@
 <body>
     <div n:foreach="$flashes as $flash" n:class="flash, $flash->type">{$flash->message}</div>
 
+    <div class="game-clock" n:ifset="$currentTime">
+        <span id="time" data-time="{$currentTime|date: 'U.u'}">{$currentTime|date: 'j. n. Y G:i:s'}</span>
+        {if isset($gameClockChange) && $gameClockChange}
+            {control gameClock}
+        {/if}
+    </div>
+    <script>
+    </script>
+
     {include content}
 
     {block scripts}
@@ -35,8 +44,10 @@
             <script src="{$basePath}/assets/js/nextras.datetimepicker.init.js"></script>
         {/if}
         <script src="{$basePath}/assets/js/nette.ajax.js"></script>
+        <script src="{$basePath}/assets/js/clock.js"></script>
         <script>
             $.nette.init();
+            init_clock('time');
         </script>
         {if isset($hasRecaptcha) && $hasRecaptcha}
             <script src="https://www.google.com/recaptcha/api.js?render=explicit"></script>

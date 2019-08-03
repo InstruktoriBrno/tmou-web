@@ -14,8 +14,13 @@ final class Action extends Enum
     public const CREATE = 'create';
     public const DELETE = 'delete';
 
-    // Specific acttions
+    // Specific actions
     public const LOGIN = 'login';
     public const REGISTER = 'register';
     public const LOGOUT = 'logout';
+    public const CHANGE_DETAILS = 'change_details';
+    public const QUALIFICATION = 'qualification';
+
+    // Specific actions for simulating game clock
+    public const CHANGE_GAME_CLOCK = 'change_game_clock';
 }

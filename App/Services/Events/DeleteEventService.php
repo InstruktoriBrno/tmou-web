@@ -17,6 +17,7 @@ class DeleteEventService
 
     /**
      * Removes event (and all depending database stuff) with given ID
+     *
      * @param int $eventId
      *
      * @throws \InstruktoriBrno\TMOU\Services\Events\Exceptions\EventDeleteFailedException
