@@ -13,3 +13,5 @@ Dokumentace:
 - [architektura](Docs/Architecture.md),
 - [best pratices, hinty atp.](Docs/Hints.md).
 
+Omezení:
+- [omezení](Docs/Limitations.md)

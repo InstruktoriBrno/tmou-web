@@ -1,0 +1,16 @@
+{var $members = 0}
+{var $values}
+{foreach $teams as $team}
+    {var $members += $team->getMembersCount()}
+    {foreach $team->getMembers() as $member }
+        {continueIf $member->getAge() === null}
+        {var $values[] = $member->getAge()}
+    {/foreach}
+{/foreach}
+{var $average = count($values) === 0 ? null : array_sum($values) / count($values)}
+<p class="team-stats">
+
+    Celkem <b>{count($teams)} </b>týmů<br>
+    Celkem <b>{$members}</b> osob<br>
+    Průměrný věk <b>{if $average === null}NA{else}{$average|number: 1, ',', ''}{/if}</b> let
+</p>

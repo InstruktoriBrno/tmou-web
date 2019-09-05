@@ -91,6 +91,10 @@ Objeví se pouze zaregistrovaným týmům.
 Objeví se pouze kvalifikovaným týmům.
 \---
 
+/---reveal to not_qualified teams
+Objeví se pouze nekvalifikovaným týmům.
+\---
+
 /---reveal to playing teams
 Objeví se pouze hrajícím týmům.
 \---
@@ -101,8 +105,12 @@ Specifická makra pro TMOU
 Nahradí se příslušnou hodnotou nebo jsou odstraněny, pokud hodnota není (uživatel není přihlášen jako tým či není na stránce spojené s ročníkem).
 
 TMOU:team_id:
+TMOU:team_number:
 TMOU:team_name:
+TMOU:team_phrase:
 TMOU:team_vs:
+TMOU:team_payment:
+TMOU:team_status:
 
 TMOU:event_id:
 TMOU:event_name:
@@ -110,12 +118,15 @@ TMOU:event_motto:
 TMOU:event_number:
 TMOU:event_max_teams:
 TMOU:event_qualified_teams:
-TMOU:event_registration_period:
+TMOU:event_qualification_period:
 TMOU:event_game_period:
 TMOU:event_game_start:
 TMOU:event_game_end:
 TMOU:event_game_start_time:
 TMOU:event_game_end_time:
+TMOU:event_registration_deadline:
+TMOU:event_team_changes_deadline:
+
 '
             )
         );
@@ -144,6 +155,18 @@ TMOU:event_game_end_time:
                     if ($type === 'name') {
                         return $this->teamMacroDataProvider->getTeamName();
                     }
+                    if ($type === 'phrase') {
+                        return $this->teamMacroDataProvider->getTeamPhrase();
+                    }
+                    if ($type === 'number') {
+                        return $this->teamMacroDataProvider->getTeamNumber();
+                    }
+                    if ($type === 'status') {
+                        return $this->teamMacroDataProvider->getTeamState();
+                    }
+                    if ($type === 'payment') {
+                        return $this->teamMacroDataProvider->getPaymentState();
+                    }
                 }
                 if ($section === 'event') {
                     if ($type === 'id') {
@@ -164,7 +187,7 @@ TMOU:event_game_end_time:
                     if ($type === 'qualified_teams') {
                         return $this->eventMacroDataProvider->getEventQualifiedTeamCount() ?? '';
                     }
-                    if ($type === 'registration_period') {
+                    if ($type === 'qualification_period') {
                         $gameStart = $this->eventMacroDataProvider->getEventQualificationStart();
                         $gameEnd = $this->eventMacroDataProvider->getEventQualificationEnd();
                         if ($gameStart !== null && $gameEnd !== null) {
@@ -182,6 +205,15 @@ TMOU:event_game_end_time:
                     }
                     if ($type === 'game_start') {
                         return $this->eventMacroDataProvider->getEventGameStart() !== null ? $this->eventMacroDataProvider->getEventGameStart()->format('j. n. Y G:i') : '';
+                    }
+                    if ($type === 'game_end') {
+                        return $this->eventMacroDataProvider->getEventGameEnd() !== null ? $this->eventMacroDataProvider->getEventGameEnd()->format('j. n. Y G:i') : '';
+                    }
+                    if ($type === 'registration_deadline') {
+                        return $this->eventMacroDataProvider->getRegistrationDeadline() !== null ? $this->eventMacroDataProvider->getRegistrationDeadline()->format('j. n. Y G:i') : 'není otevřena';
+                    }
+                    if ($type === 'team_changes_deadline') {
+                        return $this->eventMacroDataProvider->getChangeDeadline() !== null ? $this->eventMacroDataProvider->getChangeDeadline()->format('j. n. Y G:i') : 'zatím bez omezení';
                     }
                     if ($type === 'game_end') {
                         return $this->eventMacroDataProvider->getEventGameEnd() !== null ? $this->eventMacroDataProvider->getEventGameEnd()->format('j. n. Y G:i') : '';
@@ -246,7 +278,21 @@ TMOU:event_game_end_time:
                             throw new \InstruktoriBrno\TMOU\Exceptions\InvalidDateTimeFormatException;
                         }
                     }
-                    if ($from !== '-' && $from !== '' && !in_array($to, ['GAME_START', 'GAME_END', 'QUALIFICATION_START', 'QUALIFICATION_END'], true)) {
+                    if ($from === 'REGISTRATION_END') {
+                        if ($this->eventMacroDataProvider->getRegistrationDeadline() !== null) {
+                            $fromDate = $this->eventMacroDataProvider->getRegistrationDeadline();
+                        } else {
+                            throw new \InstruktoriBrno\TMOU\Exceptions\InvalidDateTimeFormatException;
+                        }
+                    }
+                    if ($from === 'TEAM_CHANGES_END') {
+                        if ($this->eventMacroDataProvider->getChangeDeadline() !== null) {
+                            $fromDate = $this->eventMacroDataProvider->getChangeDeadline();
+                        } else {
+                            throw new \InstruktoriBrno\TMOU\Exceptions\InvalidDateTimeFormatException;
+                        }
+                    }
+                    if ($from !== '-' && $from !== '' && !in_array($to, ['GAME_START', 'GAME_END', 'QUALIFICATION_START', 'QUALIFICATION_END', 'REGISTRATION_END', 'TEAM_CHANGES_END'], true)) {
                         $fromDate = Helpers::createDateTimeImmutableFromFormat('Y-m-d H:i:s', $from);
                     }
 
@@ -279,7 +325,21 @@ TMOU:event_game_end_time:
                             throw new \InstruktoriBrno\TMOU\Exceptions\InvalidDateTimeFormatException;
                         }
                     }
-                    if ($to !== '-' && $to !== '' && !in_array($to, ['GAME_START', 'GAME_END', 'QUALIFICATION_START', 'QUALIFICATION_END'], true)) {
+                    if ($to === 'REGISTRATION_END') {
+                        if ($this->eventMacroDataProvider->getRegistrationDeadline() !== null) {
+                            $toDate = $this->eventMacroDataProvider->getRegistrationDeadline();
+                        } else {
+                            throw new \InstruktoriBrno\TMOU\Exceptions\InvalidDateTimeFormatException;
+                        }
+                    }
+                    if ($to === 'TEAM_CHANGES_END') {
+                        if ($this->eventMacroDataProvider->getChangeDeadline() !== null) {
+                            $toDate = $this->eventMacroDataProvider->getChangeDeadline();
+                        } else {
+                            throw new \InstruktoriBrno\TMOU\Exceptions\InvalidDateTimeFormatException;
+                        }
+                    }
+                    if ($to !== '-' && $to !== '' && !in_array($to, ['GAME_START', 'GAME_END', 'QUALIFICATION_START', 'QUALIFICATION_END', 'REGISTRATION_END', 'TEAM_CHANGES_END'], true)) {
                         $toDate = Helpers::createDateTimeImmutableFromFormat('Y-m-d H:i:s', $to);
                     }
                 } catch (\InstruktoriBrno\TMOU\Exceptions\InvalidDateTimeFormatException $exception) {
@@ -310,12 +370,12 @@ TMOU:event_game_end_time:
      */
     private function preprocessRevealTeamsBlocks(string $value): string
     {
-        $regex = '#/(--++) *+reveal *+to *+(registered|qualified|playing) *+teams\\n(.*)$\n\\\\\\1#miuUs';
+        $regex = '#/(--++) *+reveal *+to *+(registered|qualified|not_qualified|playing) *+teams\\n(.*)$\n\\\\\\1#miuUs';
         $output = preg_replace_callback(
             $regex,
             function ($matches) {
                 $group = $matches[2];
-                if (Strings::lower($group) === $this->teamMacroDataProvider->getTeamState()) {
+                if (Strings::lower($group) === Strings::lower($this->teamMacroDataProvider->getTeamStateRaw())) {
                     return $matches[3];
                 }
                 return '';

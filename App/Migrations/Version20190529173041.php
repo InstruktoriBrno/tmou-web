@@ -18,7 +18,7 @@ CREATE TABLE page (
     id INT AUTO_INCREMENT NOT NULL, 
     event_id INT DEFAULT NULL, 
     title LONGTEXT NOT NULL, 
-    slug VARCHAR(255) NOT NULL, 
+    slug VARCHAR(191) NOT NULL, 
     heading LONGTEXT NOT NULL, 
     content LONGTEXT NOT NULL, 
     hidden TINYINT(1) NOT NULL, 
@@ -26,8 +26,9 @@ CREATE TABLE page (
     last_updated_at DATETIME DEFAULT NULL COMMENT '(DC2Type:datetime_immutable)', 
     is_default TINYINT(1) NOT NULL, 
     INDEX idx_event_id (event_id), 
+    UNIQUE INDEX unique_slug_in_event (event_id, slug),
     PRIMARY KEY(id)
-) DEFAULT CHARACTER SET UTF8 COLLATE UTF8_unicode_ci ENGINE = InnoDB;
+) DEFAULT CHARACTER SET utf8mb4 COLLATE utf8mb4_unicode_ci ENGINE = InnoDB;
 ALTER TABLE page ADD CONSTRAINT fk_event_id FOREIGN KEY (event_id) REFERENCES event (id);
 EOD
         );

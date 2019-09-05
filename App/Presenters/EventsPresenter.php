@@ -137,6 +137,41 @@ final class EventsPresenter extends BasePresenter
                 $input = $form['totalTeamCount'];
                 $input->addError('Celkový počet týmů musí být větší než počet kvalifikujících se týmů.');
                 return;
+            } catch (\InstruktoriBrno\TMOU\Model\Exceptions\InvalidRegistrationDeadlineException $e) {
+                /** @var TextInput $input */
+                $input = $form['registrationDeadline'];
+                $input->addError('Deadline registrace musí být před začátkem hry.');
+                return;
+            } catch (\InstruktoriBrno\TMOU\Model\Exceptions\InvalidChangeDeadlineException $e) {
+                /** @var TextInput $input */
+                $input = $form['changeDeadline'];
+                $input->addError('Deadline změn týmů musí být před začátkem hry.');
+                return;
+            } catch (\InstruktoriBrno\TMOU\Model\Exceptions\ChangeDeadlineBeforeRegistrationDeadlineException $e) {
+                /** @var TextInput $input */
+                $input = $form['changeDeadline'];
+                $input->addError('Deadline změn týmů musí být alespoň stejný jako deadline pro registraci nebo pozdější.');
+                return;
+            } catch (\InstruktoriBrno\TMOU\Model\Exceptions\InvalidPaymentPairingCodeSuffixLengthException $e) {
+                /** @var TextInput $input */
+                $input = $form['paymentPairingCodeSuffixLength'];
+                $input->addError('Číslo určující délku sufixu VS musí být kladné.');
+                return;
+            } catch (\InstruktoriBrno\TMOU\Model\Exceptions\MissingPaymentPairingCodePrefixException $e) {
+                /** @var TextInput $input */
+                $input = $form['paymentPairingCodePrefix'];
+                $input->addError('Prefix VS musí být vyplněn pokud je vyplněna délka sufixu VS.');
+                return;
+            } catch (\InstruktoriBrno\TMOU\Model\Exceptions\MissingPaymentPairingCodeSuffixLengthException $e) {
+                /** @var TextInput $input */
+                $input = $form['paymentPairingCodeSuffixLength'];
+                $input->addError('Číslo určující délku sufixu VS musí být vyplněno pokud je vyplněn prefix VS.');
+                return;
+            } catch (\InstruktoriBrno\TMOU\Model\Exceptions\InvalidPaymentPairingCodePrefixException $e) {
+                /** @var TextInput $input */
+                $input = $form['paymentPairingCodePrefix'];
+                $input->addError('Prefix VS musí být nezáporné číslo.');
+                return;
             } catch (\InstruktoriBrno\TMOU\Facades\Events\Exceptions\NonUniqueEventNumberException $e) {
                 /** @var TextInput $input */
                 $input = $form['number'];

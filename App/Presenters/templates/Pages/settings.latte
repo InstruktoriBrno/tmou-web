@@ -1,0 +1,16 @@
+{block content}
+    <div id="banner">
+        <h1 n:block=title>Nastavení týmu</h1>
+    </div>
+
+    <div id="content">
+        {if !$isOpen}
+            {if $now >= $deadline}
+                <div class="alert alert-warning">Informace již nelze změnit, protože změny v týmech jsou od {$deadline|date: 'j. n. Y H:i'} uzavřeny. Půjde změnit pouze heslo a údaje o členech týmu.</div>
+            {/if}
+        {else}
+            <div class="alert alert-info">Informace lze změnit pouze do {$deadline|date: 'j. n. Y H:i'}.</div>
+        {/if}
+        {control settingsForm}
+    </div>
+{/block}

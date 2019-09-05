@@ -24,6 +24,7 @@ class FindEventForFormService
      */
     public function __invoke(int $id): array
     {
+        /** @var Event|null $object */
         $object = $this->entityManager->getRepository(Event::class)->find($id);
         assert($object !== null);
         return [
@@ -34,9 +35,13 @@ class FindEventForFormService
             'qualificationStart' => $object->getQualificationStart(),
             'qualificationEnd' => $object->getQualificationEnd(),
             'qualifiedTeamCount' => $object->getQualifiedTeamCount(),
+            'registrationDeadline' => $object->getRegistrationDeadline(),
+            'changeDeadline' => $object->getChangeDeadline(),
             'eventStart' => $object->getEventStart(),
             'eventEnd' => $object->getEventEnd(),
             'totalTeamCount' => $object->getTotalTeamCount(),
+            'paymentPairingCodePrefix' => $object->getPaymentPairingCodePrefix(),
+            'paymentPairingCodeSuffixLength' => $object->getPaymentPairingCodeSuffixLength(),
         ];
     }
 }

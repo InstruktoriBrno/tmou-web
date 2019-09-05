@@ -36,7 +36,15 @@ class SaveEventFacade
      * @throws \InstruktoriBrno\TMOU\Model\Exceptions\InvalidEventIntervalException
      * @throws \InstruktoriBrno\TMOU\Model\Exceptions\MissingQualifiedTeamCountException
      * @throws \InstruktoriBrno\TMOU\Model\Exceptions\InvalidTeamCountException
+     * @throws \InstruktoriBrno\TMOU\Model\Exceptions\InvalidRegistrationDeadlineException
+     * @throws \InstruktoriBrno\TMOU\Model\Exceptions\MissingPaymentPairingCodePrefixException
+     * @throws \InstruktoriBrno\TMOU\Model\Exceptions\MissingPaymentPairingCodeSuffixLengthException
+     * @throws \InstruktoriBrno\TMOU\Model\Exceptions\InvalidPaymentPairingCodeSuffixLengthException
+     * @throws \InstruktoriBrno\TMOU\Model\Exceptions\InvalidPaymentPairingCodePrefixException
+     * @throws \InstruktoriBrno\TMOU\Model\Exceptions\ChangeDeadlineBeforeRegistrationDeadlineException
+     * @throws \InstruktoriBrno\TMOU\Model\Exceptions\InvalidChangeDeadlineException
      * @throws \InstruktoriBrno\TMOU\Facades\Events\Exceptions\NonUniqueEventNumberException
+     *
      */
     public function __invoke(ArrayHash $values, ?Event $event): void
     {
@@ -49,9 +57,13 @@ class SaveEventFacade
                 $values->qualificationStart,
                 $values->qualificationEnd,
                 $values->qualifiedTeamCount === '' ? null : (int) $values->qualifiedTeamCount,
+                $values->registrationDeadline,
+                $values->changeDeadline,
                 $values->eventStart,
                 $values->eventEnd,
-                $values->totalTeamCount === '' ? null : (int) $values->totalTeamCount
+                $values->totalTeamCount === '' ? null : (int) $values->totalTeamCount,
+                $values->paymentPairingCodePrefix === '' ? null : $values->paymentPairingCodePrefix,
+                $values->paymentPairingCodeSuffixLength === '' ? null : (int) $values->paymentPairingCodeSuffixLength
             );
         } else {
             $event = new Event(
@@ -62,9 +74,13 @@ class SaveEventFacade
                 $values->qualificationStart,
                 $values->qualificationEnd,
                 $values->qualifiedTeamCount === '' ? null : (int) $values->qualifiedTeamCount,
+                $values->registrationDeadline,
+                $values->changeDeadline,
                 $values->eventStart,
                 $values->eventEnd,
-                $values->totalTeamCount === '' ? null : (int) $values->totalTeamCount
+                $values->totalTeamCount === '' ? null : (int) $values->totalTeamCount,
+                $values->paymentPairingCodePrefix === '' ? null : $values->paymentPairingCodePrefix,
+                $values->paymentPairingCodeSuffixLength === '' ? null : (int) $values->paymentPairingCodeSuffixLength
             );
         }
         if (!($this->isEventNumberUniqueService)($event)) {

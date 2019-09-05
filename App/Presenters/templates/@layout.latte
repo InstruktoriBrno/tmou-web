@@ -31,6 +31,20 @@
     <script>
     </script>
 
+    {if $user->isLoggedIn()}
+        {if isset($user->getIdentity()->impersonated) && $user->getIdentity()->impersonated}
+            <a href="{plink Teams:deimpersonate}">Ukončit impersonifikaci</a>
+        {/if}
+        {if $user->isInRole(\InstruktoriBrno\TMOU\Enums\UserRole::ORG()->toScalar())}
+            <a href="{plink Admin:logout}">Odhlásit</a>
+        {else}
+            <a href="{plink Pages:logout, $user->getIdentity()->eventNumber}">Odhlásit</a>
+        {/if}
+    {/if}
+    <a href="{plink Pages:show, null, 1}">První</a>
+    <a href="{plink Pages:show, 'prvni', 1}">První</a>
+    <a href="{plink Pages:login, 1}">Login</a>
+
     {include content}
 
     {block scripts}

@@ -1,0 +1,9 @@
+{block content}
+    <div id="banner">
+        <h1 n:block=title>{if $event !== null}Stránky {$event->getNumber()}. ročníku{else}Stránky mimo ročníky{/if}</h1>
+    </div>
+
+    <div id="content">
+        {control pagesGrid}
+    </div>
+{/block}

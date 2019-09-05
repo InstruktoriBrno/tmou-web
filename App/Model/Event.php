@@ -4,6 +4,7 @@ namespace InstruktoriBrno\TMOU\Model;
 use DateTimeImmutable;
 use Doctrine\ORM\Mapping as ORM;
 use Nette\Utils\Strings;
+use Nette\Utils\Validators;
 
 /**
  * @ORM\Entity
@@ -65,6 +66,18 @@ class Event
      * @ORM\Column(type="datetime_immutable", nullable=true)
      * @var DateTimeImmutable|null
      */
+    protected $registrationDeadline;
+
+    /**
+     * @ORM\Column(type="datetime_immutable", nullable=true)
+     * @var DateTimeImmutable|null
+     */
+    protected $changeDeadline;
+
+    /**
+     * @ORM\Column(type="datetime_immutable", nullable=true)
+     * @var DateTimeImmutable|null
+     */
     protected $eventStart;
 
     /**
@@ -79,6 +92,18 @@ class Event
      */
     protected $totalTeamCount;
 
+    /**
+     * @ORM\Column(type="string", nullable=true)
+     * @var string|null
+     */
+    protected $paymentPairingCodePrefix;
+
+    /**
+     * @ORM\Column(type="integer", nullable=true)
+     * @var int|null
+     */
+    protected $paymentPairingCodeSuffixLength;
+
     public function __construct(
         string $name,
         int $number,
@@ -87,11 +112,30 @@ class Event
         ?DateTimeImmutable $qualificationStart,
         ?DateTimeImmutable $qualificationEnd,
         ?int $qualifiedTeamCount,
+        ?DateTimeImmutable $registrationDeadline,
+        ?DateTimeImmutable $changeDeadline,
         ?DateTimeImmutable $eventStart,
         ?DateTimeImmutable $eventEnd,
-        ?int $totalTeamCount
+        ?int $totalTeamCount,
+        ?string $paymentPairingCodePrefix,
+        ?int $paymentPairingCodeSuffixLength
     ) {
-        static::validateDetails($name, $number, $motto, $hasQualification, $qualificationStart, $qualificationEnd, $qualifiedTeamCount, $eventStart, $eventEnd, $totalTeamCount);
+        static::validateDetails(
+            $name,
+            $number,
+            $motto,
+            $hasQualification,
+            $qualificationStart,
+            $qualificationEnd,
+            $qualifiedTeamCount,
+            $registrationDeadline,
+            $changeDeadline,
+            $eventStart,
+            $eventEnd,
+            $totalTeamCount,
+            $paymentPairingCodePrefix,
+            $paymentPairingCodeSuffixLength
+        );
 
         $this->name = $name;
         $this->number = $number;
@@ -100,9 +144,13 @@ class Event
         $this->qualificationStart = $qualificationStart;
         $this->qualificationEnd = $qualificationEnd;
         $this->qualifiedTeamCount = $qualifiedTeamCount;
+        $this->registrationDeadline = $registrationDeadline;
+        $this->changeDeadline = $changeDeadline;
         $this->eventStart = $eventStart;
         $this->eventEnd = $eventEnd;
         $this->totalTeamCount = $totalTeamCount;
+        $this->paymentPairingCodePrefix = $paymentPairingCodePrefix;
+        $this->paymentPairingCodeSuffixLength = $paymentPairingCodeSuffixLength;
     }
 
     public function updateDetails(
@@ -113,11 +161,30 @@ class Event
         ?DateTimeImmutable $qualificationStart,
         ?DateTimeImmutable $qualificationEnd,
         ?int $qualifiedTeamCount,
+        ?DateTimeImmutable $registrationDeadline,
+        ?DateTimeImmutable $changeDeadline,
         ?DateTimeImmutable $eventStart,
         ?DateTimeImmutable $eventEnd,
-        ?int $totalTeamCount
+        ?int $totalTeamCount,
+        ?string $paymentPairingCodePrefix,
+        ?int $paymentPairingCodeSuffixLength
     ): void {
-        static::validateDetails($name, $number, $motto, $hasQualification, $qualificationStart, $qualificationEnd, $qualifiedTeamCount, $eventStart, $eventEnd, $totalTeamCount);
+        static::validateDetails(
+            $name,
+            $number,
+            $motto,
+            $hasQualification,
+            $qualificationStart,
+            $qualificationEnd,
+            $qualifiedTeamCount,
+            $registrationDeadline,
+            $changeDeadline,
+            $eventStart,
+            $eventEnd,
+            $totalTeamCount,
+            $paymentPairingCodePrefix,
+            $paymentPairingCodeSuffixLength
+        );
 
         $this->name = $name;
         $this->number = $number;
@@ -126,9 +193,13 @@ class Event
         $this->qualificationStart = $qualificationStart;
         $this->qualificationEnd = $qualificationEnd;
         $this->qualifiedTeamCount = $qualifiedTeamCount;
+        $this->registrationDeadline = $registrationDeadline;
+        $this->changeDeadline = $changeDeadline;
         $this->eventStart = $eventStart;
         $this->eventEnd = $eventEnd;
         $this->totalTeamCount = $totalTeamCount;
+        $this->paymentPairingCodePrefix = $paymentPairingCodePrefix;
+        $this->paymentPairingCodeSuffixLength = $paymentPairingCodeSuffixLength;
     }
 
     public function getId(): int
@@ -204,6 +275,34 @@ class Event
         return $this->totalTeamCount === null;
     }
 
+    public function getPaymentPairingCodePrefix(): ?string
+    {
+        return $this->paymentPairingCodePrefix;
+    }
+
+    public function getPaymentPairingCodeSuffixLength(): ?int
+    {
+        return $this->paymentPairingCodeSuffixLength;
+    }
+
+    public function getRegistrationDeadline(): ?DateTimeImmutable
+    {
+        return $this->registrationDeadline;
+    }
+
+    public function getChangeDeadline(): ?DateTimeImmutable
+    {
+        return $this->changeDeadline;
+    }
+
+    public function getChangeDeadlineComputed(): ?DateTimeImmutable
+    {
+        if ($this->changeDeadline === null) {
+            return $this->eventStart;
+        }
+        return $this->changeDeadline;
+    }
+
     public static function validateDetails(
         string $name,
         int $number,
@@ -212,9 +311,13 @@ class Event
         ?DateTimeImmutable $qualificationStart,
         ?DateTimeImmutable $qualificationEnd,
         ?int $qualifiedTeamCount,
+        ?DateTimeImmutable $registrationDeadline,
+        ?DateTimeImmutable $changeDeadline,
         ?DateTimeImmutable $eventStart,
         ?DateTimeImmutable $eventEnd,
-        ?int $totalTeamCount
+        ?int $totalTeamCount,
+        ?string $paymentPairingCodePrefix,
+        ?int $paymentPairingCodeSuffixLength
     ): void {
         if (Strings::length($name) > 255) {
             throw new \InstruktoriBrno\TMOU\Model\Exceptions\NameTooLongException();
@@ -242,6 +345,27 @@ class Event
         }
         if ($qualifiedTeamCount !== null && $totalTeamCount !== null && $qualifiedTeamCount > $totalTeamCount) {
             throw new \InstruktoriBrno\TMOU\Model\Exceptions\InvalidTeamCountException();
+        }
+        if ($registrationDeadline !== null && $eventStart !== null && $registrationDeadline > $eventStart) {
+            throw new \InstruktoriBrno\TMOU\Model\Exceptions\InvalidRegistrationDeadlineException();
+        }
+        if ($changeDeadline !== null && $eventStart !== null && $changeDeadline > $eventStart) {
+            throw new \InstruktoriBrno\TMOU\Model\Exceptions\InvalidChangeDeadlineException();
+        }
+        if ($changeDeadline !== null && $registrationDeadline !== null && $changeDeadline < $registrationDeadline) {
+            throw new \InstruktoriBrno\TMOU\Model\Exceptions\ChangeDeadlineBeforeRegistrationDeadlineException;
+        }
+        if ($paymentPairingCodePrefix !== null && $paymentPairingCodeSuffixLength === null) {
+            throw new \InstruktoriBrno\TMOU\Model\Exceptions\MissingPaymentPairingCodeSuffixLengthException();
+        }
+        if ($paymentPairingCodePrefix === null && $paymentPairingCodeSuffixLength !== null) {
+            throw new \InstruktoriBrno\TMOU\Model\Exceptions\MissingPaymentPairingCodePrefixException();
+        }
+        if ($paymentPairingCodePrefix !== null && (!Validators::isNumericInt($paymentPairingCodePrefix) || (int) $paymentPairingCodePrefix < -1)) {
+            throw new \InstruktoriBrno\TMOU\Model\Exceptions\InvalidPaymentPairingCodePrefixException();
+        }
+        if ($paymentPairingCodeSuffixLength !== null && $paymentPairingCodeSuffixLength < 1) {
+            throw new \InstruktoriBrno\TMOU\Model\Exceptions\InvalidPaymentPairingCodeSuffixLengthException();
         }
     }
 }

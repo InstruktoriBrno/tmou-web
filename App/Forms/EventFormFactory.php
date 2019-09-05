@@ -43,6 +43,10 @@ class EventFormFactory
             ->setHtmlAttribute('min', 0);
 
         $form->addGroup('Hra');
+        $form->addDateTimePicker('registrationDeadline', 'Deadline registrace')
+            ->setOption('description', 'Lze ponechat prázdné, v takovém případě nebude registrace otevřena.');
+        $form->addDateTimePicker('changeDeadline', 'Deadline změn týmů')
+            ->setOption('description', 'Lze ponechat prázdné, v takovém případě budou změny týmů povoleny až do začátku hry.');
         $form->addDateTimePicker('eventStart', 'Začátek')
             ->setRequired('Vyplňte, prosím, začátek hry');
         $form->addDateTimePicker('eventEnd', 'Konec')
@@ -52,6 +56,10 @@ class EventFormFactory
             ->setHtmlAttribute('step', 1)
             ->setHtmlAttribute('min', 1);
 
+        $form->addGroup('Placení');
+        $form->addText('paymentPairingCodePrefix', 'Prefix VS');
+        $form->addText('paymentPairingCodeSuffixLength', 'Délka sufixu VS')
+            ->setOption('description', 'Na kolik míst bude formátováno číslo týmu.');
 
         $form->addPrimarySubmit('send', 'Uložit');
         $form->onSuccess[] = function (Form $form, $values) use ($onSuccess) {

@@ -18,11 +18,15 @@ class PagesGrid extends Control
     /** @var DataGridFactory */
     private $dataGridFactory;
 
-    public function __construct(IDataSource $dataSource, DataGridFactory $dataGridFactory)
+    /** @var int|null */
+    private $eventNumber;
+
+    public function __construct(IDataSource $dataSource, ?int $eventNumber, DataGridFactory $dataGridFactory)
     {
         parent::__construct();
         $this->dataSource = $dataSource;
         $this->dataGridFactory = $dataGridFactory;
+        $this->eventNumber = $eventNumber;
     }
 
     public function createComponentGrid(string $name): DataGrid
@@ -68,21 +72,21 @@ class PagesGrid extends Control
         $grid->addColumnDateTime('lastUpdatedAt', 'Naposledy upraveno');
 
         if ($this->user->isAllowed(Resource::ADMIN_PAGES, Action::CREATE)) {
-            $grid->addToolbarButton('Pages:add', '')
+            $grid->addToolbarButton('AdminPages:add', '', ['eventNumber' => $this->eventNumber])
                 ->setIcon('plus')
                 ->addAttributes(['title' => 'Přidat stránku'])
                 ->setClass('btn btn-xs btn-default');
         }
 
         if ($this->user->isAllowed(Resource::ADMIN_PAGES, Action::EDIT)) {
-            $grid->addAction('edit', '', 'Pages:edit', ['pageId' => 'id'])
+            $grid->addAction('edit', '', 'AdminPages:edit', ['pageId' => 'id'])
                 ->setIcon('edit')
                 ->addAttributes(['title' => 'Upravit stránku'])
                 ->setClass('btn btn-xs btn-default');
         }
 
         if ($this->user->isAllowed(Resource::ADMIN_PAGES, Action::DELETE)) {
-            $grid->addAction('delete', '', 'Pages:delete', ['pageId' => 'id'])
+            $grid->addAction('delete', '', 'AdminPages:delete', ['pageId' => 'id'])
                 ->setIcon('trash')
                 ->addAttributes(['title' => 'Smazat stránku'])
                 ->setClass('btn btn-xs btn-default');

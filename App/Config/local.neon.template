@@ -7,6 +7,9 @@ parameters:
         clientId: tmou-web-local
         clientSecret: e7307d96-71e4-4c7a-a626-0bc2ac4eef66
         redirectUri: https://tmou.test/admin/login/
+    mail:
+        noReply: no-reply@example.com
+        replyTo: reply-to@example.com
 
 tracy:
     bar:

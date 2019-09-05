@@ -32,7 +32,7 @@ class PageFormFactory
             ->setPrompt('Žádný');
         $form->addText('slug', 'SLUG')
             ->setRequired(false)
-            ->addRule(Form::MAX_LENGTH, 'SLUG stránky může být maximálně 255 znaků dlouhý.', 255)
+            ->addRule(Form::MAX_LENGTH, 'SLUG stránky může být maximálně 191 znaků dlouhý.', 191)
             ->setOption('description', 'Slouží jako unikátní identifikace stránky v URL adrese v rámci ročníku.');
         $form->addCheckbox('default', 'Výchozí')
             ->setOption('description', 'Určuje zda jde výchozí (úvodní) stránku ročníku, může být vždy maximálně jedna.');

@@ -14,8 +14,8 @@ class PagesGridFactory
         $this->dataGridFactory = $dataGridFactory;
     }
 
-    public function create(IDataSource $dataSource): PagesGrid
+    public function create(IDataSource $dataSource, ?int $eventNumber): PagesGrid
     {
-        return new PagesGrid($dataSource, $this->dataGridFactory);
+        return new PagesGrid($dataSource, $eventNumber, $this->dataGridFactory);
     }
 }

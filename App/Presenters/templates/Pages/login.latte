@@ -1,0 +1,17 @@
+{block content}
+    <div id="banner">
+        <h1 n:block=title>Přihlášení</h1>
+    </div>
+
+    <div id="content">
+        {if $user->isLoggedIn() && (int) $user->getIdentity()->eventNumber === $event->getNumber()}
+            <div class="alert alert-warning">V tomto ročníku jste právě přihlášeni.</div>
+        {else}
+            {if $user->isLoggedIn() && (int) $user->getIdentity()->eventNumber !== $event->getNumber()}
+                <div class="alert alert-warning">Aktuálně jste přihlášeni v {$user->getIdentity()->eventNumber}. ročníku. Přihlášením zde budete odhlášeni a přihlášeni do {$event->getNumber()}. ročníku.</div>
+            {/if}
+            {control loginForm}
+        {/if}
+
+    </div>
+{/block}

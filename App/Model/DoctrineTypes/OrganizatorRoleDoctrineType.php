@@ -10,7 +10,7 @@ use function sprintf;
 
 class OrganizatorRoleDoctrineType extends Type
 {
-    public const NAME = 'organizatorType';
+    public const NAME = 'organizatorRole';
     private const LENGTH = 128;
 
     /**

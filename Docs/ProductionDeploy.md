@@ -22,7 +22,7 @@ Nezbytné předpoklady jsou:
    Pokud databázi nemáte, vytvořte si ji **s kódování `utf8mb4-czech`**!
 4. Nastavte možnost zápisu do adresářů `temp` a `log`: `chmod -R 777 temp log`
 5. Vytvořte lokální konfiguraci `App/Config/local.neon`, viz `local.neon.template`,
-   zde nastavte údaje pro přístup k databázi, recaptchu, adresu na které web poběží...
+   zde nastavte údaje pro přístup k databázi, recaptchu, adresu na které web poběží, maily...
 6. Smažte obsah adresáře `temp/cache`.
 7. Spusťe databázové migrace pro zajištění aktuálnosti databáze: `php bin/console migrations:migrate`
 9. Nakonfigurujte Apache tak, aby používal správnou verzi PHP a `DocumentRoot` směřoval do složky `www`.

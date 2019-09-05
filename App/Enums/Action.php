@@ -18,8 +18,14 @@ final class Action extends Enum
     public const LOGIN = 'login';
     public const REGISTER = 'register';
     public const LOGOUT = 'logout';
+    public const FORGOTTEN_PASSWORD = 'forgotten_password';
+    public const RESET_PASSWORD = 'reset_password';
     public const CHANGE_DETAILS = 'change_details';
+
     public const QUALIFICATION = 'qualification';
+
+    public const IMPERSONATE = 'impersonate';
+    public const DEIMPERSONATE = 'deimpersonate';
 
     // Specific actions for simulating game clock
     public const CHANGE_GAME_CLOCK = 'change_game_clock';

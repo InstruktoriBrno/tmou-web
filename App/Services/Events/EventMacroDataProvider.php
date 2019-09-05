@@ -61,4 +61,14 @@ class EventMacroDataProvider
     {
         return $this->event !== null ? $this->event->getQualificationEnd() : null;
     }
+
+    public function getRegistrationDeadline(): ?DateTimeImmutable
+    {
+        return $this->event !== null ? $this->event->getRegistrationDeadline() : null;
+    }
+
+    public function getChangeDeadline(): ?DateTimeImmutable
+    {
+        return $this->event !== null ? $this->event->getChangeDeadlineComputed() : null;
+    }
 }

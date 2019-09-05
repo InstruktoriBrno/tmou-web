@@ -7,6 +7,9 @@ parameters:
         clientId:
         clientSecret:
         redirectUri:
+    mail:
+        noReply:
+        replyTo:
 
 recaptcha:
     siteKey: 6LdVSJwUAAAAAOBUowvrUg3I6JzKbbX22WDGwVso
@@ -70,6 +73,33 @@ services:
     - InstruktoriBrno\TMOU\Services\Teams\TeamMacroDataProvider
     - InstruktoriBrno\TMOU\Services\Events\EventMacroDataProvider
     - InstruktoriBrno\TMOU\Forms\GameClockFormFactory
+    - InstruktoriBrno\TMOU\Forms\TeamRegistrationFormFactory
+    - InstruktoriBrno\TMOU\Services\Teams\GetTeamEventNumberService
+    - InstruktoriBrno\TMOU\Services\Teams\IsTeamEmailInEventUniqueService
+    - InstruktoriBrno\TMOU\Services\Teams\IsTeamNameInEventUniqueService
+    - InstruktoriBrno\TMOU\Facades\Teams\RegisterTeamFacade
+    - InstruktoriBrno\TMOU\Services\Teams\SendRegistrationEmailService(%mail.noReply%, %mail.replyTo%)
+    - InstruktoriBrno\TMOU\Services\Teams\FindTeamsInEventService
+    - InstruktoriBrno\TMOU\Grids\TeamsGrid\TeamsGridFactory
+    - InstruktoriBrno\TMOU\Services\Teams\FindTeamsOfEventForDataGridService
+    - InstruktoriBrno\TMOU\Services\Teams\FindTeamService
+    - InstruktoriBrno\TMOU\Services\Teams\DeleteTeamService
+    - InstruktoriBrno\TMOU\Facades\Teams\DeleteTeamFacade
+    - InstruktoriBrno\TMOU\Forms\TeamLoginFormFactory
+    - InstruktoriBrno\TMOU\Services\Teams\FindTeamByNameService
+    - InstruktoriBrno\TMOU\Facades\Teams\TeamLoginFacade
+    - InstruktoriBrno\TMOU\Services\Teams\TransformToImpersonatedIdentity
+    - InstruktoriBrno\TMOU\Services\Teams\TransformBackFromImpersonatedIdentity
+    - InstruktoriBrno\TMOU\Services\Organizators\FindOrganizatorByIdService
+    - InstruktoriBrno\TMOU\Forms\TeamForgottenPasswordFormFactory
+    - InstruktoriBrno\TMOU\Services\Teams\FindTeamByEmailService
+    - InstruktoriBrno\TMOU\Services\Teams\SendResetPasswordEmailService(%mail.noReply%, %mail.replyTo%)
+    - InstruktoriBrno\TMOU\Facades\Teams\RequestPasswordResetFacade
+    - InstruktoriBrno\TMOU\Forms\TeamResetPasswordFormFactory
+    - InstruktoriBrno\TMOU\Facades\Teams\ConsumePasswordResetFacade
+    - InstruktoriBrno\TMOU\Services\Teams\FindTeamForFormService
+    - InstruktoriBrno\TMOU\Facades\Teams\ChangeTeamFacade
+    - InstruktoriBrno\TMOU\Services\System\IsSLUGReservedService
 
 extensions:
     nextras.form: Nextras\Forms\Bridges\NetteDI\FormsExtension
@@ -104,6 +134,12 @@ dbal:
             organizator_role:
                 class: InstruktoriBrno\TMOU\Model\DoctrineTypes\OrganizatorRoleDoctrineType
                 commented: organizator_role
+            game_status:
+                class: InstruktoriBrno\TMOU\Model\DoctrineTypes\GameStatusType
+                commented: game_status
+            payment_status:
+                class: InstruktoriBrno\TMOU\Model\DoctrineTypes\PaymentStatusType
+                commented: payment_status
         typesMapping:
             uuid_binary: binary
 

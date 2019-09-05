@@ -1,6 +1,8 @@
 <?php declare(strict_types=1);
 namespace InstruktoriBrno\TMOU\Presenters;
 
+use InstruktoriBrno\TMOU\Enums\UserRole;
+use Nette\Security\Identity;
 use function count;
 use InstruktoriBrno\TMOU\Enums\Action;
 use InstruktoriBrno\TMOU\Enums\Flash;
@@ -35,9 +37,18 @@ abstract class BasePresenter extends Presenter
         }
 
         $this->template->currentTime = $this->gameClockService->get();
-        if ($this->user->isAllowed(Resource::ADMIN_COMMON, Action::CHANGE_GAME_CLOCK)) {
+        if ($this->user->isAllowed(Resource::ADMIN_COMMON, Action::CHANGE_GAME_CLOCK) || $this->isImpersonated()) {
             $this->template->gameClockChange = true;
         }
+    }
+
+    protected function isImpersonated(): bool
+    {
+        $identity = $this->user->getIdentity();
+        return $identity instanceof Identity
+            && $this->user->isInRole(UserRole::TEAM)
+            && isset($identity->getData()['impersonated'])
+            && $identity->getData()['impersonated'] === true;
     }
 
     /** @param mixed $element */
@@ -88,7 +99,7 @@ abstract class BasePresenter extends Presenter
     public function createComponentGameClock(): Form
     {
         return $this->gameClockFormFactory->create(function (Form $form, ArrayHash $values) {
-            if (!$this->user->isAllowed(Resource::ADMIN_COMMON, Action::CHANGE_GAME_CLOCK)) {
+            if (!$this->user->isAllowed(Resource::ADMIN_COMMON, Action::CHANGE_GAME_CLOCK) && !$this->isImpersonated()) {
                 $form->addError('Nejste oprávněni provádět tuto operaci. Pokud věříte, že jde o chybu, kontaktujte správce.');
                 return;
             }

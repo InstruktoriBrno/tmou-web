@@ -1,0 +1,11 @@
+<div class="team-list">
+    {foreach $teams as $team}
+        <p class="team-item">
+            {var $teamAverageAge = $team->getMembersAverageAge()}
+            <span class="team-name">{$team->getName()}</span> (číslo <b>{$team->getNumber()}</b>, členů {$team->getMembersCount()}{if $teamAverageAge}, průměrný věk {$teamAverageAge|number: 1, ',', ''} let{/if})<br>
+            {foreach $team->getMembers() as $member}
+                {$member->getFullName()}{sep}, {/sep}
+            {/foreach}
+        </p>
+    {/foreach}
+</div>

@@ -1,0 +1,22 @@
+{block content}
+    <div id="banner">
+        <h1 n:block=title>Registrace</h1>
+    </div>
+
+    <div id="content">
+        {if !$isOpen}
+            {if $deadline === null}
+                <div class="alert alert-warning">Registrace ještě nebyla otevřena.</div>
+            {elseif $now >= $deadline}
+                <div class="alert alert-warning">Registrace je již uzavřena.</div>
+            {/if}
+        {else}
+            <div class="alert alert-info">Registrace je otevřena do {$deadline|date: 'j. n. Y H:i'}.</div>
+            {if $user->isLoggedIn() && (int) $user->getIdentity()->eventNumber === $event->getNumber()}
+                <div class="alert alert-warning">V tomto ročníku jste právě přihlášení, pokud chcete registrovat jiný tým nejprve se odhlašte.</div>
+            {else}
+                {control registrationForm}
+            {/if}
+        {/if}
+    </div>
+{/block}

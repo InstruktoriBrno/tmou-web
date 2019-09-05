@@ -29,6 +29,8 @@ pro  usnadnění generování migrací `php bin/console orm:<command>`.
 
 Pro lepší dokumentaci je vhodné projít si základní tutorial v [dokumentaci](https://www.doctrine-project.org/projects/doctrine-orm/en/2.6/tutorials/getting-started.html).
 
+Pro plnou kompatibilitu s Unicode je potřeba všechny sloupce explicitně vytvářet v `utf8mb4` kódování. (Výjimkou může být akorát sloupce do kterého půjdou pouze ASCII hodnoty a je potřeba využití maximální délku kvůli MySQL UNIQUE omezení.)
+
 ## Struktura aplikace
 
 Architektury daného frameworku ponechává stále podstatnou volnost jak implementovat zpracování požadavku, nicméně
