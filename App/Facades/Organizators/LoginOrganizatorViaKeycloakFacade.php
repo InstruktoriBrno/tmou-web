@@ -76,7 +76,7 @@ class LoginOrganizatorViaKeycloakFacade
             $authUrl = $this->keycloak->getAuthorizationUrl();
             $this->sessionSection->offsetSet('state', $this->keycloak->getState()); // Store value for CSRF validation
             $this->response->redirect($authUrl);
-            return;
+            exit();
         }
         // We have a code so we can proceed to validation
         $state = $this->request->getQuery('state');
@@ -106,7 +106,6 @@ class LoginOrganizatorViaKeycloakFacade
             $userEntity = ($this->findOrganizatorByKeycloakKeyService)($uuid);
             $existedBefore = false;
             if ($userEntity === null) {
-                $existedBefore = true;
                 $userEntity = new Organizator(
                     $rawData['given_name'],
                     $rawData['family_name'],
@@ -117,6 +116,7 @@ class LoginOrganizatorViaKeycloakFacade
                 );
                 $this->entityManager->persist($userEntity);
             } else {
+                $existedBefore = true;
                 $userEntity->updateDetails(
                     $rawData['given_name'],
                     $rawData['family_name'],
@@ -124,14 +124,17 @@ class LoginOrganizatorViaKeycloakFacade
                     $rawData['email'],
                     $this->determineRoleFromGroups($rawData['groups'] ?? null)
                 );
+                $this->entityManager->persist($userEntity);
             }
             $userEntity->touchLastLogin();
 
-            if ($userEntity->getRole() !== null) {
-                if ($existedBefore) {
-                    $this->entityManager->flush();
+            if ($userEntity->getRole() !== null || $existedBefore) {
+                $this->entityManager->flush();
+                if ($userEntity->getRole() !== null) {
+                    $this->user->login($userEntity->toIdentity());
+                } else {
+                    throw new \InstruktoriBrno\TMOU\Facades\Organizators\Exceptions\NotAllowedToLoginException();
                 }
-                $this->user->login($userEntity->toIdentity());
             } else {
                 throw new \InstruktoriBrno\TMOU\Facades\Organizators\Exceptions\NotAllowedToLoginException();
             }
@@ -141,10 +144,12 @@ class LoginOrganizatorViaKeycloakFacade
             $this->response->redirect($this->keycloak->getLogoutUrl([
                 'redirect_uri' => $this->linkGenerator->link('Admin:postLogin'),
             ]));
+            exit();
         } catch (\InstruktoriBrno\TMOU\Facades\Organizators\Exceptions\NotAllowedToLoginException $e) {
             $this->response->redirect($this->keycloak->getLogoutUrl([
                 'redirect_uri' => $this->linkGenerator->link('Admin:postLogin', ['not_allowed' => 1]),
             ]));
+            exit();
         } catch (\Exception $e) {
             if ($e instanceof \Nette\Application\AbortException) {
                 throw $e;
@@ -152,6 +157,7 @@ class LoginOrganizatorViaKeycloakFacade
             $this->response->redirect($this->keycloak->getLogoutUrl([
                 'redirect_uri' => $this->linkGenerator->link('Admin:postLogin', ['failed' => 1]),
             ]));
+            exit();
         }
     }
 
@@ -164,8 +170,9 @@ class LoginOrganizatorViaKeycloakFacade
         foreach ($groups as $group) {
             $roles[] = OrganizatorRole::mapFromGroup($group);
         }
+        $roles = array_filter($roles);
         if (count($roles) > 0) {
-            return $roles[0];
+            return reset($roles);
         }
         return null;
     }
