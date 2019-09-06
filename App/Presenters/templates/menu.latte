@@ -19,10 +19,10 @@
         <ul class="list-reset bg-yellow-tmou lg:rounded-sm p-2 my-4">
             <li class="py-1 md:my-0 hover:bg-purple-100 lg:hover:bg-transparent rounded-sm">Kvalifikace</li>
             {include menuItem.latte, link => $control->link('Pages:show', 'qualification-rules', $event->getNumber()), label => 'Pravidla', selected => $control::isPageCurrentlySelected($page ?? null, 'qualification-rules', $event->getNumber())}
-            {include menuItem.latte, link => $control->link('Pages:qualification', $event->getNumber()), label => 'Kvalifikace', selected => $control->isLinkCurrent()}
-            {include menuItem.latte, link => $control->link('Pages:qualificationStatistics', $event->getNumber()), label => 'Statistiky', selected => $control->isLinkCurrent()}
-            {include menuItem.latte, link => $control->link('Pages:qualificationAnswers', $event->getNumber()), label => 'Statistika odpovědí', selected => $control->isLinkCurrent()}
-            {include menuItem.latte, link => $control->link('Pages:show', 'qualification-jokers', $event->getNumber()), label => 'Divoké karty', selected => $control::isPageCurrentlySelected($page ?? null, 'qualification-jokers', $event->getNumber())}
+{*            {include menuItem.latte, link => $control->link('Pages:qualification', $event->getNumber()), label => 'Kvalifikace', selected => $control->isLinkCurrent()}*}
+{*            {include menuItem.latte, link => $control->link('Pages:qualificationStatistics', $event->getNumber()), label => 'Statistiky', selected => $control->isLinkCurrent()}*}
+{*            {include menuItem.latte, link => $control->link('Pages:qualificationAnswers', $event->getNumber()), label => 'Statistika odpovědí', selected => $control->isLinkCurrent()}*}
+{*            {include menuItem.latte, link => $control->link('Pages:show', 'qualification-jokers', $event->getNumber()), label => 'Divoké karty', selected => $control::isPageCurrentlySelected($page ?? null, 'qualification-jokers', $event->getNumber())}*}
             {include menuItem.latte, link => $control->link('Pages:teamsQualified', $event->getNumber()), label => 'Kvalifikované týmy', selected => $control->isLinkCurrent()}
         </ul>
 
@@ -30,10 +30,10 @@
             <li class="py-1 md:my-0 hover:bg-purple-100 lg:hover:bg-transparent rounded-sm">Hra</li>
             {include menuItem.latte, link => $control->link('Pages:show', 'rules', $event->getNumber()), label => 'Pravidla', selected => $control::isPageCurrentlySelected($page ?? null, 'rules', $event->getNumber())}
             {include menuItem.latte, link => $control->link('Pages:teamsPlaying', $event->getNumber()), label => 'Hrající týmy', selected => $control->isLinkCurrent()}
-            {include menuItem.latte, link => $control->link('Pages:show', 'tasks', $event->getNumber()), label => 'Zadání a řešení', selected => $control::isPageCurrentlySelected($page ?? null, 'tasks', $event->getNumber())}
-            {include menuItem.latte, link => $control->link('Pages:gameReports', $event->getNumber()), label => 'Reportáže a dojmy', selected => $control->isLinkCurrent()}
-            {include menuItem.latte, link => $control->link('Pages:gameStatistics', $event->getNumber()), label => 'Statistiky', selected => $control->isLinkCurrent()}
-            {include menuItem.latte, link => $control->link('Pages:gameFlow', $event->getNumber()), label => 'Průchody hrou', selected => $control->isLinkCurrent()}
+{*            {include menuItem.latte, link => $control->link('Pages:show', 'tasks', $event->getNumber()), label => 'Zadání a řešení', selected => $control::isPageCurrentlySelected($page ?? null, 'tasks', $event->getNumber())}*}
+{*            {include menuItem.latte, link => $control->link('Pages:gameReports', $event->getNumber()), label => 'Reportáže a dojmy', selected => $control->isLinkCurrent()}*}
+{*            {include menuItem.latte, link => $control->link('Pages:gameStatistics', $event->getNumber()), label => 'Statistiky', selected => $control->isLinkCurrent()}*}
+{*            {include menuItem.latte, link => $control->link('Pages:gameFlow', $event->getNumber()), label => 'Průchody hrou', selected => $control->isLinkCurrent()}*}
         </ul>
 
         <ul class="list-reset bg-yellow-tmou lg:rounded-sm p-2 my-4">
