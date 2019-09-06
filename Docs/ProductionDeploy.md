@@ -17,16 +17,17 @@ Nezbytné předpoklady jsou:
 
 1. Naklonujte si repozitář:  
    `git checkout git@github.com:InstruktoriBrno/tmou-web.git`
-2. Nainstalujte závislosti spuštěním `composer install` v rootu webu.
+2. Nainstalujte závislosti spuštěním `composer install --no-dev --optimize-autoloader --no-progress --no-interaction --no-suggest` v rootu webu.
 3. Získejte údaje pro připojení do databáze (adresa server, port, jméno, heslo, jméno databáze).  
    Pokud databázi nemáte, vytvořte si ji **s kódování `utf8mb4-czech`**!
-4. Nastavte možnost zápisu do adresářů `temp` a `log`: `chmod -R 777 temp log`
+4. Nastavte možnost zápisu do adresářů `temp` a `log`: `chmod -R 777 temp log` (ujistěte se, že oprávnění má i proces webového serveru).
 5. Vytvořte lokální konfiguraci `App/Config/local.neon`, viz `local.neon.template`,
    zde nastavte údaje pro přístup k databázi, recaptchu, adresu na které web poběží, maily...
 6. Smažte obsah adresáře `temp/cache`.
 7. Spusťe databázové migrace pro zajištění aktuálnosti databáze: `php bin/console migrations:migrate`
 9. Nakonfigurujte Apache tak, aby používal správnou verzi PHP a `DocumentRoot` směřoval do složky `www`.
 10. Přistupte skrze prohlížeč na nakonfigurovanou doménu a otestujte základní funkčnost webu.
+11. Ověřte, že citlivé soubory nejsou dostupné zvenčí, obzvláště soubor `App/Config/local.neon`.
 
 
 ## Postup aktualizace
@@ -56,4 +57,4 @@ Je třeba vytvořit `tmou-web` klienta, správně nastavit:
 
 Taktéž je potřeba změnit `Access Type` na confidential. V `Mappers` je potřeba vytvořit Groups mapper, který bude do tokenů přidávat pod klíčem `groups` informace o skupinách uživatele.
 
-Uživatelům, kteří mají mít přístup do TMOU webu je potřeba přidat zařazení do skupiny `Organizátoři TMOU` (přesná shoda).
+Uživatelům, kteří mají mít přístup do TMOU webu je potřeba přidat zařazení do skupiny `Organizátoři TMOU` nebo `tmou_org` (přesná shoda).
