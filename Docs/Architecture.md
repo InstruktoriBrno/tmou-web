@@ -94,3 +94,7 @@ Pro kontrolu oprávnění v aplikaci se používají anotace (oživené v `Instr
     /** @privilege(InstruktoriBrno\TMOU\Enums\Resource::ADMIN_ORGANIZATORS,InstruktoriBrno\TMOU\Enums\Action::VIEW, Jetasys\Papilio\Enums\PrivilegeEnforceMethod::NOT_AVAILABLE) */
     public function actionOrganizators() {}
 ```
+
+## Práce se styly
+
+TBD

@@ -17,6 +17,8 @@ use Grifart\Enum\Enum;
  * @method static ReservedSLUG RESET_PASSWORD()
  * @method static ReservedSLUG SETTINGS()
  *
+ * @method static ReservedSLUG UPDATES()
+ *
  * @method static ReservedSLUG TEAMS_REGISTERED()
  * @method static ReservedSLUG TEAMS_QUALIFIED()
  * @method static ReservedSLUG TEAMS_PLAYING()
@@ -31,8 +33,8 @@ final class ReservedSLUG extends Enum
     use AutoInstances;
 
     public const QUALIFICATION = 'qualification';
-    public const QUALIFICATION_STATISTICS = 'qualification_statistics';
-    public const QUALIFICATION_ANSWERS = 'qualification_answers';
+    public const QUALIFICATION_STATISTICS = 'qualification-statistics';
+    public const QUALIFICATION_ANSWERS = 'qualification-answers';
 
     public const REGISTRATION = 'registration';
     public const LOGIN = 'login';
@@ -41,11 +43,18 @@ final class ReservedSLUG extends Enum
     public const RESET_PASSWORD = 'reset-password';
     public const SETTINGS = 'settings';
 
-    public const TEAMS_REGISTERED = 'teams_registered';
-    public const TEAMS_QUALIFIED = 'teams_qualified';
-    public const TEAMS_PLAYING = 'teams_playing';
+    public const UPDATES = 'updates'; // this can be added manually as this page is optional
 
-    public const GAME_REPORTS = 'game_reports';
-    public const GAME_STATISTICS = 'game_statistics';
-    public const GAME_FLOW = 'game_flow';
+    public const TEAMS_REGISTERED = 'teams-registered';
+    public const TEAMS_QUALIFIED = 'teams-qualified';
+    public const TEAMS_PLAYING = 'teams-playing';
+
+    public const GAME_REPORTS = 'game-reports';
+    public const GAME_STATISTICS = 'game-statistics';
+    public const GAME_FLOW = 'game-flow';
+
+    public function isCreationAllowed(): bool
+    {
+        return $this->equals(self::UPDATES());
+    }
 }

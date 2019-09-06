@@ -1,77 +1,202 @@
 <!DOCTYPE html>
-<html>
-<head>
-    <meta charset="utf-8">
-    <meta name="viewport" content="width=device-width">
+<html lang="cs">
 
-    <title>{ifset title}{include title|stripHtml} | {/ifset}TMOU</title>
+    <head>
+        <meta charset="UTF-8">
+        <meta name="viewport" content="width=device-width, initial-scale=1.0">
+        <meta http-equiv="X-UA-Compatible" content="ie=edge">
+        <title>{ifset title}{include title|stripHtml} | {/ifset}TMOU!</title>
+        <meta name="description" content="Tmou je nocni tymova hra spojena s orientaci ve meste a v terenu a s lustenim narocnych sifer.">
+        <meta name="keywords" content="Tmou, TMOU!, nocni hra, orientace, sifrovani, sifra, hadanka, soutez, zavod, vyzva, inteligence, mestska hra, narocne sifry, noc venku">
+        <meta name="theme-color" content="#ffec01" />
 
-    <link rel="stylesheet" href="{$basePath}/assets/css/bootstrap.min.css">
-    {if isset($hasDatagrid) && $hasDatagrid}
-        <link rel="stylesheet" type="text/css" href="{$basePath}/assets/css/datagrid.css">
-        <link rel="stylesheet" type="text/css" href="{$basePath}/assets/css/datagrid-spinners.css">
-    {/if}
-    {if isset($hasGlyphicons) && $hasGlyphicons}
-        <link rel="stylesheet" href="{$basePath}/assets/fontawesome/css/all.css">
-    {/if}
-    {if isset($hasDatetimepicker) && $hasDatetimepicker}
-        <link rel="stylesheet" href="{$basePath}/assets/css/bootstrap-datetimepicker.min.css">
-    {/if}
-</head>
-
-<body>
-    <div n:foreach="$flashes as $flash" n:class="flash, $flash->type">{$flash->message}</div>
-
-    <div class="game-clock" n:ifset="$currentTime">
-        <span id="time" data-time="{$currentTime|date: 'U.u'}">{$currentTime|date: 'j. n. Y G:i:s'}</span>
-        {if isset($gameClockChange) && $gameClockChange}
-            {control gameClock}
-        {/if}
-    </div>
-    <script>
-    </script>
-
-    {if $user->isLoggedIn()}
-        {if isset($user->getIdentity()->impersonated) && $user->getIdentity()->impersonated}
-            <a href="{plink Teams:deimpersonate}">Ukončit impersonifikaci</a>
-        {/if}
-        {if $user->isInRole(\InstruktoriBrno\TMOU\Enums\UserRole::ORG()->toScalar())}
-            <a href="{plink Admin:logout}">Odhlásit</a>
-        {else}
-            <a href="{plink Pages:logout, $user->getIdentity()->eventNumber}">Odhlásit</a>
-        {/if}
-    {/if}
-    <a href="{plink Pages:show, null, 1}">První</a>
-    <a href="{plink Pages:show, 'prvni', 1}">První</a>
-    <a href="{plink Pages:login, 1}">Login</a>
-
-    {include content}
-
-    {block scripts}
-        <script src="{$basePath}/assets/js/jquery-3.4.0.min.js"></script>
-        <script src="{$basePath}/assets/js/bootstrap.min.js"></script>
-        <script src="{$basePath}/assets/js/netteForms.min.js"></script>
-        <script src="{$basePath}/assets/js/nextras.netteForms.js"></script>
-        {if isset($hasDatetimepicker) && $hasDatetimepicker}
-            <script src="{$basePath}/assets/js/bootstrap-datetimepicker.min.js"></script>
-            <script src="{$basePath}/assets/js/bootstrap-datetimepicker.cs.js"></script>
-            <script src="{$basePath}/assets/js/nextras.datetimepicker.init.js"></script>
-        {/if}
-        <script src="{$basePath}/assets/js/nette.ajax.js"></script>
-        <script src="{$basePath}/assets/js/clock.js"></script>
-        <script>
-            $.nette.init();
-            init_clock('time');
-        </script>
-        {if isset($hasRecaptcha) && $hasRecaptcha}
-            <script src="https://www.google.com/recaptcha/api.js?render=explicit"></script>
-            <script src="{$basePath}/assets/js/invisibleRecaptcha.js"></script>
-        {/if}
+        <link rel="stylesheet" href="{$basePath}/assets/css/app.css">
         {if isset($hasDatagrid) && $hasDatagrid}
-            <script src="{$basePath}/assets/js/assets/datagrid.js"></script>
-            <script src="{$basePath}/assets/js/assets/datagrid-instant-url-refresh.js"></script>
-            <script src="{$basePath}/assets/js/assets/datagrid-spinners.js"></script>
+            <link rel="stylesheet" type="text/css" href="{$basePath}/assets/css/datagrid.css">
+            <link rel="stylesheet" type="text/css" href="{$basePath}/assets/css/datagrid-spinners.css">
         {/if}
-    {/block}
-</body>
+        <link rel="stylesheet" href="{$basePath}/assets/fontawesome/css/all.css">
+        {if isset($hasDatetimepicker) && $hasDatetimepicker}
+            <link rel="stylesheet" href="{$basePath}/assets/css/bootstrap-datetimepicker.min.css">
+        {/if}
+    </head>
+
+    <body class="bg-fixed bg-cover bg-black tracking-wider tracking-normal">
+        <!-- Container -->
+        <div class="container flex flex-wrap mx-auto px-2 pb-1 lg:pt-5">
+            <!-- Navigation -->
+            <nav class="w-full no:bg-yellow-tmou lg:bg-transparent lg:w-1/5 lg:pr-4 text-xl text-gray-800 leading-normal lg:rounded-sm sticky inset-0 border-b-4 no:border-black lg:border-none">
+                <div class="sticky inset-0 lg:mt-0 lg:block lg:pt-5">
+                    <!-- TMOU header -->
+                    <div class="w-full flex flex-no-wrap content-center lg:block lg:mb-8">
+                        <div class="flex-grow flex-auto font-bold text-center text-4xl p-1 pt-2 lg:mb-0 text-gray-700 bg-yellow-tmou rounded-sm rounded-br-none mb-0">
+                            <a href="{if isset($event) && $event}{plink Pages:show, null, $event->getNumber()}{else}{plink Homepage:}{/if}">
+                                <img src="{$basePath}/storage/{if isset($event) && $event}{$event->getNumber()}/{/if}logo.png" class="h-12 lg:h-auto lg:w-full rounded-lg lg:rounded-sm mx-auto" alt="Logo TMOU">
+                            </a>
+                        </div>
+                        <div class="hidden lg:block dropdown lg:w-full flex-none lg:mb-0 lg:pb-0 text-right text-sm mt-0">
+                            <button class="dropbtn bg-yellow-tmou rounded-sm rounded-t-none mt-0 p-1 px-4 pr-8 font-semibold">
+                                {if isset($event) && $event}
+                                    TMOU {$event->getNumber()}
+                                {else}
+                                    Obecné
+                                {/if}
+                            </button>
+                            <div class="pointer-events-none absolute inset-y-0 right-0 flex items-center px-2"><svg class="fill-current h-4 w-4" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 20 20"><path d="M9.293 12.95l.707.707L15.657 8l-1.414-1.414L10 10.828 5.757 6.586 4.343 8z"></path></svg></div>
+                            <ul class="dropdown-content w-full bg-yellow-tmou rounded-lg p-3 shadow-xl text-left">
+                                {foreach $events as $_event}
+                                    <li><a class="border-l-4 p-1 my-1 border-yellow-tmou hover:border-black pl-4 block" href="{plink Pages:show, null, $_event->getNumber()}" title="{$_event->getName()}">TMOU {$_event->getNumber()}</a></li>
+                                {/foreach}
+                                <li><a class="border-l-4 p-1 my-1 border-yellow-tmou hover:border-black pl-4 block" href="{plink Pages:show}">Obecné</a></li>
+                                <li><a class="border-l-4 p-1 my-1 border-yellow-tmou hover:border-black pl-4 block" href="https://archiv.tmou.cz/archiv/index.html">Archiv</a></li>
+                            </ul>
+                        </div>
+                        <!-- Hamburger -->
+                        <div class="flex-none lg:hidden m-auto p-2 pr-4 align-bottom">
+                            <button id="nav-toggle"
+                                    class="align-bottom items-center px-3 py-2 border rounded text-black border-black hover:text-gray-900 hover:border-gray-500 appearance-none focus:outline-none">
+                                <svg class="fill-current h-3 w-3" viewBox="0 0 20 20" xmlns="http://www.w3.org/2000/svg">
+                                    <title>Menu</title>
+                                    <path d="M0 3h20v2H0V3zm0 6h20v2H0V9zm0 6h20v2H0v-2z" />
+                                </svg>
+                            </button>
+                        </div>
+                        <!-- /Hamburger -->
+                    </div>
+                    <!-- /TMOU header -->
+                    <!-- Menu -->
+                    <div class="w-full mt-1">
+                        {include menu.latte}
+                    </div>
+                    <!-- /Menu -->
+                </div>
+            </nav>
+            <!-- /Navigation -->
+
+            <!-- Main content -->
+            <div class="w-full p-0 m-0 lg:w-4/5 lg:pl-4" id="content">
+                <!-- Login bar -->
+                <div class="w-full text-center lg:text-right mb-4 py-2" n:if="$user->isLoggedIn()">
+                    <span class="text-white bg-blue-tmou p-2 rounded-sm text-sm ml-1">
+                        {if $user->isLoggedIn()}
+                            {if $user->isInRole(\InstruktoriBrno\TMOU\Enums\UserRole::ORG()->toScalar())}
+                                Org <b>{$user->getIdentity()->givenName} {$user->getIdentity()->familyName}</b>
+                                <a href="{plink Admin:logout}" class="ml-8">odhlásit <i class="fa fa-sign-out-alt" aria-hidden="true"></i></a>
+                            {/if}
+                            {if $user->isInRole(\InstruktoriBrno\TMOU\Enums\UserRole::TEAM()->toScalar())}
+                                Tým <b><a href="{plink Pages:settings, $user->getIdentity()->eventNumber}">{$user->getIdentity()->name}</a></b> ({$user->getIdentity()->eventNumber}. ročník)
+                                {if method_exists($control, 'isImpersonated') && $control->isImpersonated()}
+                                    <a href="{plink Teams:deimpersonate}" class="ml-8">deimpersonifikovat <i class="fa fa-user-slash" aria-hidden="true"></i></a>
+                            {/if}
+                                <a href="{plink Pages:logout, $user->getIdentity()->eventNumber}" class="ml-8">odhlásit <i class="fa fa-sign-out-alt" aria-hidden="true"></i></a>
+                            {/if}
+                        {/if}
+                    </span>
+                </div>
+                <!-- /Login bar -->
+                <!-- Jumbo tron -->
+                {if isset($homepage) && $homepage && $event}
+                    <div class="jumbotron m-0 p-8 text-white text-center z-0">
+                        <div class=" p-2 m-4">
+                            <h1 class="text-4xl lg:text-6xl "><span class="font-bold text-yellow-tmou">Tmou {$event->getNumber()}</span>: {$event->getName()}</h1>
+                            <h2 class="text-3xl">
+                                Hra:
+                                {if $event->getEventStart() === null}
+                                    bude upřesněno
+                                {else}
+                                    {$event->getEventStart()|date: 'j. n.'}&ndash;{$event->getEventEnd()|date: 'j. n. Y'}
+                                {/if}
+                            </h2>
+                            <h2 class="text-3xl">
+                                Kvalifikace:
+                                {if !$event->hasQualification()}
+                                    není
+                                {else}
+                                    {if $event->getQualificationStart() === null}
+                                        bude upřesněno
+                                    {else}
+                                        {$event->getQualificationStart()|date: 'j. n.'}
+                                    {/if}
+                                {/if}
+                            </h2>
+                        </div>
+                        <div>
+                            {if !$user->isLoggedIn() || (int) $user->getIdentity()->eventNumber !== $event->getNumber()}
+                                <a href="{plink Pages:show, \InstruktoriBrno\TMOU\Enums\ReservedSLUG::REGISTRATION, $event->getNumber()}" class="rounded-sm p-4 m-4 mx-10 border-4 border-yellow-tmou text-xl font-bold hover:bg-yellow-tmou hover:text-black block sm:inline-block sm:w-56">Zaregistrovat se</a>
+                            {/if}
+                            <a href="{plink Pages:show, 'rules', $event->getNumber()}" class="rounded-sm p-4 m-4 mx-10 border-4 border-yellow-tmou text-xl font-bold hover:bg-yellow-tmou hover:text-black block sm:inline-block sm:w-56">Pravidla</a>
+                        </div>
+                    </div>
+                {/if}
+                <!-- /Jumbo tron -->
+                <div class="w-full m-0 p-12 text-gray-900 leading-normal bg-white rounded-sm my-10">
+                    <div n:foreach="$flashes as $flash" n:class="alert, $flash->type">{$flash->message}</div>
+                    {include content}
+                </div>
+
+                {if isset($homepage) && $homepage && isset($updates) && $updates}
+                    <div class="w-full m-0 p-8 text-gray-900 leading-normal bg-white rounded-sm my-10">
+                        <h1>{$updates->getHeading()}</h1>
+
+                        {$updates->getContent()|texy}
+                    </div>
+                {/if}
+                <!-- /Main content -->
+            </div>
+
+        </div>
+        <!--/container-->
+        <footer class="bg-black border-t-4 border-yellow-tmou shadow text-white">
+            <div class="container mx-auto py-8">
+                <div class="w-full mx-auto">
+                    <div class="my-4 text-center">
+                        <a href="https://instruktori.cz" class="m-4 mt-0 lg:float-left"><img class="lg:h-32 fixed-size h-24 inline" src="{$basePath}/assets/images/footer-sova.png" alt="Logo Instruktorů Brno"></a>
+                        <p class="lg:float-left text-sm xl:ml-10 sm:ml-5 mr-5 mt-2 lg:-mt-2 text-center">
+                            TMOU! je akce pořádaná pod hlavičkou Instruktorů&nbsp;Brno.<br>
+                            © 2019, <a class="hover:underline" href="https://www.instruktori.cz">Instruktoři Brno, z.s.</a>, Některá práva vyhrazena.<br><br>
+                            <span id="time" class="text-sm" data-time="{$currentTime|date: 'U.u'}">{$currentTime|date: 'j. n. Y G:i:s'}</span>
+                        </p>
+                    </div>
+                    <div class="px-4 w-full xl:w-1/2 md:w-1/4 sm:min-w-full lg:justify-end lg:text-right text-center">
+                        <h3 class="font-bold mb-0">Kontakt</h3>
+                        <ul class="list-reset items-center text-sm pt-1">
+                            <li>
+                                <span class="lg:hidden"><i class="far fa-envelope text-white mr-2 w-3 align-content-center"></i>&nbsp;</span><a class="inline-block no-underline hover:underline py-1" href="mailto:tmou@instruktori.cz">tmou@instruktori.cz</a><span class="hidden lg:inline">&nbsp;<i class="far fa-envelope text-white ml-2 w-3 align-content-center"></i></span>
+                            </li>
+                            <li>
+                                <span class="lg:hidden"><i class="fab fa-facebook-f text-white mr-2 w-3 align-content-center"></i>&nbsp;</span><a class="inline-block no-underline hover:underline py-1" href="https://www.facebook.com/instruktori.brno/">Facebook</a><span class="hidden lg:inline">&nbsp;<i class="fab fa-facebook-f text-white ml-2 w-3 align-content-center lg:hidden"></i></span>
+                            </li>
+                        </ul>
+                    </div>
+                    <div class="clearfix"></div>
+                </div>
+            </div>
+        </footer>
+        {block scripts}
+            <script src="{$basePath}/assets/js/jquery-3.4.0.min.js"></script>
+            <script src="{$basePath}/assets/js/netteForms.min.js"></script>
+            <script src="{$basePath}/assets/js/nextras.netteForms.js"></script>
+            {if isset($hasDatetimepicker) && $hasDatetimepicker}
+                <script src="{$basePath}/assets/js/bootstrap-datetimepicker.min.js"></script>
+                <script src="{$basePath}/assets/js/bootstrap-datetimepicker.cs.js"></script>
+                <script src="{$basePath}/assets/js/nextras.datetimepicker.init.js"></script>
+            {/if}
+            <script src="{$basePath}/assets/js/nette.ajax.js"></script>
+            <script src="{$basePath}/assets/js/clock.js"></script>
+            <script src="{$basePath}/assets/js/dropdown.js"></script>
+            <script>
+                $.nette.init();
+                init_clock('time');
+            </script>
+            {if isset($hasRecaptcha) && $hasRecaptcha}
+                <script src="https://www.google.com/recaptcha/api.js?render=explicit"></script>
+                <script src="{$basePath}/assets/js/invisibleRecaptcha.js"></script>
+            {/if}
+            {if isset($hasDatagrid) && $hasDatagrid}
+                <script src="{$basePath}/assets/js/datagrid.js"></script>
+                <script src="{$basePath}/assets/js/datagrid-instant-url-refresh.js"></script>
+                <script src="{$basePath}/assets/js/datagrid-spinners.js"></script>
+            {/if}
+        {/block}
+    </body>
 </html>

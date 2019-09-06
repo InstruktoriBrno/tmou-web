@@ -1,10 +1,11 @@
 {block content}
     <div id="banner">
-        <h1 n:block=title>Smazání {$event->getName()}</h1>
+        <h1 n:block=title>Smazání {$event->getNumber()}. ročníku ({$event->getName()})</h1>
     </div>
 
     <div id="content">
         <p>Opravdu chcete smazat {$event->getNumber()}. ročník s názvem <b>{$event->getName()}</b> a ID {$event->getId()}.</p>
         {control confirmForm}
+        <a href="{plink Events:}"><i class="fas fa-arrow-left"></i> Seznam ročníků</a>
     </div>
 {/block}

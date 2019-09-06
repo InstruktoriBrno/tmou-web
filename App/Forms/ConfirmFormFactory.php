@@ -18,9 +18,10 @@ class ConfirmFormFactory
     public function create(callable $onSuccess): Form
     {
         $form = $this->factory->create();
-        $form->addCancel('no', 'Ne');
         $form->addPrimarySubmit('yes', 'Ano')
             ->getControlPrototype()->appendAttribute('class', 'btn-danger');
+        $form->addCancel('no', 'Ne')
+            ->getControlPrototype()->appendAttribute('class', 'btn-secondary');
         $form->onSuccess[] = function (Form $form, $values) use ($onSuccess) {
             $onSuccess($form, $values);
         };

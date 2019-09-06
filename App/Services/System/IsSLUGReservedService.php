@@ -15,7 +15,10 @@ class IsSLUGReservedService
     public function __invoke(string $slug): bool
     {
         try {
-            ReservedSLUG::fromScalar($slug);
+            $enum = ReservedSLUG::fromScalar($slug);
+            if ($enum->isCreationAllowed()) {
+                return false;
+            }
             return true;
         } catch (\Grifart\Enum\MissingValueDeclarationException $e) {
             return false;

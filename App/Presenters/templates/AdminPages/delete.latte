@@ -6,5 +6,9 @@
     <div id="content">
         <p>Opravdu chcete smazat stránku {$page->getTitle()} {if $page->getEvent() !== null}v {$page->getEvent()->getNumber()}. ročník s názvem <b>{$page->getEvent()->getName()}</b> a {/if} ID {$page->getId()}.</p>
         {control confirmForm}
+        {if isset($event) && $event}
+            <a href="{plink AdminPages:, $event->getNumber()}"><i class="fas fa-arrow-left"></i> Seznam stránek {$event->getNumber()}. ročníku</a><br>
+        {/if}
+        <a href="{plink AdminPages:}"><i class="fas fa-arrow-left"></i> Seznam stránek (bez ročníku)</a>
     </div>
 {/block}

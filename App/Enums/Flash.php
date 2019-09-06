@@ -3,8 +3,8 @@ namespace InstruktoriBrno\TMOU\Enums;
 
 class Flash
 {
-    public const SUCCESS = 'success';
-    public const DANGER = 'danger';
-    public const WARNING = 'warning';
-    public const INFO = 'info';
+    public const SUCCESS = 'alert-success';
+    public const DANGER = 'alert-danger';
+    public const WARNING = 'alert-warning';
+    public const INFO = 'alert-info';
 }

@@ -5,5 +5,12 @@
 
     <div id="content">
         {control pageForm}
+        {if isset($event) && $event}
+            <a href="{plink AdminPages:, $event->getNumber()}"><i class="fas fa-arrow-left"></i> Seznam stránek {$event->getNumber()}. ročníku</a><br>
+        {/if}
+        <a href="{plink AdminPages:}"><i class="fas fa-arrow-left"></i> Seznam stránek (bez ročníku)</a>
+
+        <h2>Nápověda</h2>
+        {$help}
     </div>
 {/block}

@@ -3,6 +3,7 @@ namespace InstruktoriBrno\TMOU\Presenters;
 
 use InstruktoriBrno\TMOU\Enums\Action;
 use InstruktoriBrno\TMOU\Enums\Flash;
+use InstruktoriBrno\TMOU\Enums\ReservedSLUG;
 use InstruktoriBrno\TMOU\Enums\Resource;
 use InstruktoriBrno\TMOU\Enums\UserRole;
 use InstruktoriBrno\TMOU\Facades\Teams\ChangeTeamFacade;
@@ -23,6 +24,7 @@ use InstruktoriBrno\TMOU\Services\Teams\FindTeamForFormService;
 use InstruktoriBrno\TMOU\Services\Teams\FindTeamService;
 use InstruktoriBrno\TMOU\Services\Teams\FindTeamsInEventService;
 use InstruktoriBrno\TMOU\Services\Teams\TeamMacroDataProvider;
+use Nette\Application\Routers\Route;
 use Nette\Application\UI\Form;
 use Nette\Forms\Controls\TextInput;
 use Nette\Security\Identity;
@@ -118,7 +120,7 @@ final class PagesPresenter extends BasePresenter
             $request = $this->getRequest();
             assert($request !== null);
             $params = $request->getParameters();
-            $params['action'] = $slug;
+            $params['action'] = Route::path2action($slug);
             unset($params['slug']);
             $request->setParameters($params);
             $this->forward($request);
@@ -128,7 +130,7 @@ final class PagesPresenter extends BasePresenter
         if ($page === null) {
             throw new \Nette\Application\BadRequestException("No such page with SLUG [${slug}] within event with number [${eventNumber}].");
         }
-        if (!$page->isRevealed() && !$this->user->isAllowed(Resource::ADMIN_PAGES, Action::VIEW)) {
+        if (!$page->isRevealed($this->gameClockService->get()) && !$this->user->isAllowed(Resource::ADMIN_PAGES, Action::VIEW)) {
             throw new \Nette\Application\ForbiddenRequestException("Page with SLUG [${slug}] within event with number [${eventNumber}] was not yet revealed.");
         }
         if ($page->getEvent() !== null) {
@@ -141,6 +143,12 @@ final class PagesPresenter extends BasePresenter
             }
         }
         $this->template->page = $page;
+        $this->template->event = $page->getEvent();
+        $this->template->homepage = $homepage = $page->isDefault();
+        if ($homepage) {
+            assert(is_string(ReservedSLUG::UPDATES()->toScalar()));
+            $this->template->updates = ($this->findPageInEventService)(ReservedSLUG::UPDATES()->toScalar(), $eventNumber);
+        }
     }
 
     /** @privilege(InstruktoriBrno\TMOU\Enums\Resource::TEAM_COMMON,InstruktoriBrno\TMOU\Enums\Action::QUALIFICATION) */

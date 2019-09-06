@@ -1,5 +1,9 @@
 function init_clock(idSelector) {
-    var server_timestamp = document.getElementById(idSelector).getAttribute('data-time');
+    var el = document.getElementById(idSelector);
+    if (!el) {
+        return;
+    }
+    var server_timestamp = el.getAttribute('data-time');
     var server_timestamp2 = 1000 * server_timestamp;
     var time_offset = server_timestamp2 - (new Date()).getTime();
 

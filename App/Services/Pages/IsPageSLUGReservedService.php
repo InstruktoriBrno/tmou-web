@@ -20,7 +20,10 @@ class IsPageSLUGReservedService
         }
 
         try {
-            ReservedSLUG::fromScalar($page->getSlug());
+            $enum = ReservedSLUG::fromScalar($page->getSlug());
+            if ($enum->isCreationAllowed()) {
+                return false;
+            }
             return true;
         } catch (\Grifart\Enum\MissingValueDeclarationException $e) {
             return false;

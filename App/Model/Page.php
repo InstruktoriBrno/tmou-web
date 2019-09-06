@@ -160,9 +160,9 @@ class Page
         return $this->revealAt;
     }
 
-    public function isRevealed(): bool
+    public function isRevealed(DateTimeImmutable $now): bool
     {
-        return $this->hidden === false || ($this->revealAt !== null && new DateTimeImmutable() > $this->revealAt);
+        return $this->hidden === false || ($this->revealAt !== null && $now > $this->revealAt);
     }
 
     public function getLastUpdatedAt(): ?DateTimeImmutable

@@ -1,6 +1,7 @@
 <?php declare(strict_types=1);
 namespace InstruktoriBrno\TMOU\Grids\PagesGrid;
 
+use DateTimeImmutable;
 use InstruktoriBrno\TMOU\Application\UI\Control;
 use InstruktoriBrno\TMOU\Enums\Action;
 use InstruktoriBrno\TMOU\Enums\Resource;
@@ -63,7 +64,7 @@ class PagesGrid extends Control
 
         $grid->addColumnText('visible', 'Zobrazený')
             ->setRenderer(function (Page $item) {
-                if ($item->isRevealed()) {
+                if ($item->isRevealed(new DateTimeImmutable())) {
                     return Html::el('span class="badge badge-xs badge-success"')->setText('Ano');
                 }
                 return Html::el('span class="badge badge-xs badge-warning"')->setText('Ne');
