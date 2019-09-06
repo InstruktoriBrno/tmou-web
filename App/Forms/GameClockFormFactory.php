@@ -19,10 +19,11 @@ class GameClockFormFactory
     {
         $form = $this->factory->create();
 
-        $form->addDateTimePicker('newNow', 'Nový čas');
+        $form->addDateTimePicker('newNow', 'Nový čas')
+            ->setHtmlAttribute('autocomplete', 'off');
 
         $form->addPrimarySubmit('send', 'Nastavit');
-        $form->addSubmit('reset', 'Resetovat');
+        $form->addSubmit('reset', 'Obnovit');
         $form->onSuccess[] = function (Form $form, $values) use ($onSuccess) {
             $onSuccess($form, $values);
         };

@@ -35,8 +35,10 @@ class EventFormFactory
 
         $form->addGroup('Kvalifikace');
         $form->addCheckbox('hasQualification', 'Má kvalifikaci');
-        $form->addDateTimePicker('qualificationStart', 'Začátek');
-        $form->addDateTimePicker('qualificationEnd', 'Konec');
+        $form->addDateTimePicker('qualificationStart', 'Začátek')
+            ->setHtmlAttribute('autocomplete', 'off');
+        $form->addDateTimePicker('qualificationEnd', 'Konec')
+            ->setHtmlAttribute('autocomplete', 'off');
         $form->addText('qualifiedTeamCount', 'Kvalifikujících se týmů')
             ->setType('number')
             ->setHtmlAttribute('step', 1)
@@ -44,17 +46,21 @@ class EventFormFactory
 
         $form->addGroup('Hra');
         $form->addDateTimePicker('registrationDeadline', 'Deadline registrace')
-            ->setOption('description', 'Lze ponechat prázdné, v takovém případě nebude registrace otevřena.');
+            ->setOption('description', 'Lze ponechat prázdné, v takovém případě nebude registrace otevřena.')
+            ->setHtmlAttribute('autocomplete', 'off');
         $form->addDateTimePicker('changeDeadline', 'Deadline změn týmů')
-            ->setOption('description', 'Lze ponechat prázdné, v takovém případě budou změny týmů povoleny až do začátku hry.');
+            ->setOption('description', 'Lze ponechat prázdné, v takovém případě budou změny týmů povoleny až do začátku hry.')
+            ->setHtmlAttribute('autocomplete', 'off');
         $form->addDateTimePicker('eventStart', 'Začátek')
-            ->setRequired('Vyplňte, prosím, začátek hry');
+            ->setRequired('Vyplňte, prosím, začátek hry')
+            ->setHtmlAttribute('autocomplete', 'off');
         $form->addDateTimePicker('eventEnd', 'Konec')
             ->setRequired('Vyplňte, prosím, konec hry.');
         $form->addText('totalTeamCount', 'Celkový počet týmů')
             ->setType('number')
             ->setHtmlAttribute('step', 1)
-            ->setHtmlAttribute('min', 1);
+            ->setHtmlAttribute('min', 1)
+            ->setHtmlAttribute('autocomplete', 'off');
 
         $form->addGroup('Placení');
         $form->addText('paymentPairingCodePrefix', 'Prefix VS');

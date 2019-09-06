@@ -56,7 +56,9 @@ Následuje nečíslovaný seznam s CSS třídou a ukázkou základního formáto
 
 .[spaced]
 - **tučný** řez písmo nebo *kurzíva*
-- a takto se dělá "odkaz":https://www.tmou.cz/
+- a takto se dělá externí "odkaz":https://www.tmou.cz/
+- a takto se dělá interní absolutní "odkaz":/21/page/registration
+- a takto se dělá odkaz na stránku v rámci "aktuálního ročníku":page/registration
 - u číslovaného seznamu nahraďte - za 1)... 2)...
 \---
 
@@ -142,6 +144,9 @@ TMOU:event_team_changes_deadline:
         if ($this->texy === null) {
             $this->texy = new Texy();
             $this->texy->headingModule->top = 2; // Start from H2 heading
+            if ($this->eventMacroDataProvider->getEventNumber() !== '') {
+                $this->texy->linkModule->root = '../../' . $this->eventMacroDataProvider->getEventNumber();
+            }
             $this->texy->registerLinePattern(function (LineParser $parser, array $matches) {
                 $section = $matches[1];
                 $type = $matches[2];

@@ -46,7 +46,8 @@ class TeamRegistrationFormFactory
             ->setRequired('Vyplňte, prosím, heslo pro kontrolu shody.')
             ->addRule(Form::EQUAL, 'Hesla se musí shodovat.', $password);
 
-        $form->addGroup('Členové');
+        $form->addGroup('Členové')
+            ->setOption('description', 'Pouze jméno prvního člena je povinné. Prosíme, aby jste vyplnili údaje podle skutečnosti a v případě změn je příslušně upravili později v Nastavení týmu.');
         $members = $form->addContainer('members');
         foreach (range(1, 5) as $item) {
             $member = $members->addContainer($item);
@@ -58,7 +59,7 @@ class TeamRegistrationFormFactory
             $age = $member->addText('age', 'Věk')
                 ->setRequired(false)
                 ->setType('number')
-                ->addRule(Form::MIN, 'Minimální věk je 18 let. Jestli je vám méně na TMOU nemůžete.', 18);
+                ->addRule(Form::MIN, 'Minimální věk člena je 15 let. Jestli je vám méně na TMOU nemůžete. Pokud je vám méně než 18 musíte mít alespoň jednoho dospělého v týmu.', 15);
             $newsletter = $member->addCheckbox('addToNewsletter', 'Zahrnout do newsletteru Instruktorů Brno');
 
             // Conditional validations

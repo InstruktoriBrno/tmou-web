@@ -11,6 +11,7 @@
                 <div class="alert alert-warning">Aktuálně jste přihlášeni v {$user->getIdentity()->eventNumber}. ročníku. Přihlášením zde budete odhlášeni a přihlášeni do {$event->getNumber()}. ročníku.</div>
             {/if}
             {control loginForm}
+            Pokud jste heslo zapomněli, požádejte <a href="{plink Pages:forgottenPassword, $event->getNumber()}">o nové heslo</a>.
         {/if}
 
     </div>

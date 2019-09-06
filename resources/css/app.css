@@ -1,0 +1,336 @@
+@import url('../fonts/latofonts.css');
+
+@tailwind base;
+@tailwind components;
+@tailwind utilities;
+@tailwind screens;
+
+/*! purgecss start ignore */
+
+@screen no {
+    .container {
+        @apply min-w-full px-0;
+    }
+}
+
+@screen sm {
+    .container {
+        @apply min-w-full px-0;
+    }
+}
+
+@screen md {
+    .container {
+        @apply min-w-full px-0;
+    }
+}
+
+@screen lg {
+    .container {
+        @apply min-w-0;
+    }
+}
+
+html {
+    font-family: 'LatoWeb', sans-serif;
+}
+
+b,
+strong,
+.font-bold {
+    font-family: 'LatoWebBold', sans-serif;
+}
+
+.dropdown {
+    position: relative;
+}
+
+.dropdown-content {
+    display: none;
+    position: absolute;
+    z-index: 1;
+}
+
+.dropdown-content li {
+    display: block;
+}
+
+.dropdown-content li:hover {
+}
+
+.dropdown:hover .dropdown-content {
+    display: block;
+}
+
+.corner-frame {
+    display: inline-block;
+    position: relative;
+    z-index: -1;
+    @apply inset-0;
+}
+
+.corner-frame:after {
+    display: block;
+    content: "";
+    width: 40px;
+    height: 40px;
+    position: absolute;
+    top: 0px;
+    left: -25px;
+    border-top: 4px solid white;
+    border-left: 4px solid white;
+    @apply rounded-lg rounded-r-none rounded-b-none;
+}
+
+.corner-frame:before {
+    display: block;
+    content: "";
+    width: 40px;
+    height: 40px;
+    position: absolute;
+    bottom: 0px;
+    right: -25px;
+    border-bottom: 4px solid white;
+    border-right: 4px solid white;
+    @apply rounded-lg rounded-t-none rounded-l-none;
+}
+
+p {
+    @apply text-justify py-2;
+}
+
+h1 {
+    @apply text-3xl font-bold break-normal mb-4
+}
+
+h2 {
+    @apply text-2xl mb-1 mt-4
+}
+
+h3 {
+    @apply text-xl mb-0 mt-4
+}
+
+h4 {
+    @apply text-lg mb-0 mt-3 italic
+}
+
+pre {
+    @apply text-xs
+}
+
+a:hover {
+    /*TODO: */
+}
+
+/* Bootstrap bridge */
+.form-group {
+    @apply mb-4
+}
+.form-group .col-form-label {
+    @apply mb-1
+}
+.form-group.required label:after,
+span.required-footnote {
+    content: " *";
+    @apply text-red-400
+}
+.form-control {
+    @apply shadow appearance-none border rounded w-full py-2 px-3 text-gray-700 leading-tight bg-white
+}
+.form-control:focus {
+    @apply outline-none shadow-outline
+}
+.form-control[disabled] {
+    @apply bg-gray-200
+}
+.form-control.is-invalid {
+    @apply border-red-400
+}
+select.form-control {
+    background: transparent url('../images/caret-down.svg') no-repeat 60px center;
+    background-position-x: right;
+    background-size: 25px;
+    font-size: 100%;
+}
+
+textarea {
+    font-size: 100%;
+}
+.form-check-input {
+    @apply mr-2 leading-tight
+}
+.form-check-label {
+
+}
+.invalid-feedback {
+    @apply text-red-400 text-sm
+}
+
+.text-muted {
+    @apply text-gray-400
+}
+
+legend {
+    @apply text-xl pt-6 mb-2
+}
+
+.btn {
+    @apply px-4 py-2 font-bold rounded
+}
+
+.btn-primary {
+    @apply bg-yellow-tmou shadow cursor-pointer
+}
+.btn-primary:hover,
+.btn-primary:active,
+.btn-primary:focus {
+    box-shadow: 0 0 0 3px rgba(180, 180, 180, 0.5);
+
+    @apply bg-yellow-tmou outline-none
+}
+
+.btn-danger {
+    @apply bg-danger-tmou
+}
+
+.btn-danger:hover,
+.btn-danger:active,
+.btn-danger:focus {
+    box-shadow: 0 0 0 3px rgba(180, 180, 180, 0.5);
+
+    @apply bg-danger-tmou outline-none
+}
+
+.btn-secondary {
+    @apply text-black shadow cursor-pointer
+}
+
+.btn-secondary:hover,
+.btn-secondary:active,
+.btn-secondary:focus {
+    box-shadow: 0 0 0 3px rgba(180, 180, 180, 0.5);
+
+    @apply bg-info-tmou outline-none
+}
+
+.alert {
+    @apply p-4 rounded mb-4
+}
+.alert-danger,
+.badge-danger {
+    @apply bg-danger-tmou
+}
+.alert-info,
+.badge-default,
+.badge-info {
+    @apply bg-info-tmou
+}
+.alert-warning,
+.badge-warning {
+    @apply bg-warning-tmou
+}
+.alert-success,
+.badge-success {
+    @apply bg-success-tmou
+}
+
+.dropdown-menu {
+    @apply absolute bg-white m-2 border hidden shadow-md
+}
+
+.badge {
+    @apply rounded p-1
+}
+
+/* Datagrid */
+.datagrid {
+    @apply p-0 !important
+}
+.datagrid .table-sm {
+    @apply text-sm w-full border-collapse bg-white
+}
+.datagrid td,
+.datagrid th {
+    @apply border p-1
+}
+
+.datagrid tr:nth-of-type(odd) {
+    @apply bg-gray-100
+}
+.datagrid table thead tr.row-group-actions th {
+    @apply bg-gray-100
+}
+
+.datagrid .col-per-page select {
+    @apply w-full bg-white p-2 !important
+}
+
+/* Make links underlined in page content (white blocks) */
+.page-content a {
+    @apply underline
+}
+.page-content a:hover {
+    @apply text-gray-500
+}
+
+.page-content ul {
+    @apply list-disc my-2
+}
+
+.page-content ol {
+    @apply list-decimal my-2
+}
+
+.page-content li {
+    @apply ml-6
+}
+
+.page-content hr {
+    @apply my-4
+}
+
+/* Extra utils class */
+.bg-black-60\% {
+    background: rgba(0,0,0, 0.6);
+}
+
+/* Fix scaling images*/
+.fixed-size {
+    max-width: none;
+}
+
+
+/* Fix Tracy bar */
+#tracy-debug-bar img {
+    display: inline-block;
+}
+
+.parallax {
+    perspective: 1px;
+    height: 100vh;
+    overflow-x: hidden;
+    overflow-y: auto;
+}
+
+.parallax-layer {
+    position: absolute;
+    top: 0;
+    right: 0;
+    bottom: 0;
+    left: 0;
+}
+
+.parallax-layer-base {
+    transform: translateZ(0);
+}
+
+.parallax-layer-middle {
+    transform: translateZ(-0.5px) scale(1.5);
+}
+
+.parallax-layer-back {
+    transform: translateZ(-2px) translateY(-30vh) scale(3);
+}
+
+/*! purgecss end ignore */

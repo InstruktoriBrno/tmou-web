@@ -1,0 +1,26 @@
+{
+  "name": "tmou-web",
+  "version": "1.0.0",
+  "description": "",
+  "dependencies": { },
+  "devDependencies": {
+    "tailwindcss": "^1.1.2",
+    "@fullhuman/postcss-purgecss": "^1.2.0",
+    "cssnano": "^4.1.10",
+    "postcss-cli": "^6.1.3",
+    "purgecss": "^1.4.0"
+  },
+  "scripts": {
+    "compile-css": "postcss resources/css/app.css -o www/assets/css/app.css"
+  },
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/InstruktoriBrno/tmou-web.git"
+  },
+  "author": "Instruktoři Brno",
+  "license": "MIT",
+  "bugs": {
+    "url": "https://github.com/InstruktoriBrno/tmou-web/issues"
+  },
+  "homepage": "https://github.com/InstruktoriBrno/tmou-web#readme"
+}

@@ -31,6 +31,9 @@ final class AdminPresenter extends BasePresenter
             // Following code should be unreachable  in most cases as there is a redirect inside.
             $this->flashMessage('Během přihlašování došlo k chybě, zkuste to, prosím znovu. Pokud problém přetrvává, kontaktujte správce.', Flash::DANGER);
             $this->redirect('Homepage:');
+        } catch (\InstruktoriBrno\TMOU\Facades\Organizators\Exceptions\InvalidLoginRequestException $ex) {
+            $this->flashMessage('Tato žádost o přihlášení není platná, zkuste to, prosím znovu. Pokud problém přetrvává, kontaktujte správce.', Flash::DANGER);
+            $this->redirect('Homepage:');
         } catch (\InstruktoriBrno\TMOU\Facades\Organizators\Exceptions\AlreadyLoggedException $ex) {
             $this->flashMessage('Již jste přihlášeni, před pokračováním se musíte odhlásit.', Flash::WARNING);
             $this->redirect('Homepage:');

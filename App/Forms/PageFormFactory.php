@@ -1,6 +1,7 @@
 <?php declare(strict_types=1);
 namespace InstruktoriBrno\TMOU\Forms;
 
+use InstruktoriBrno\TMOU\Enums\ReservedSLUG;
 use InstruktoriBrno\TMOU\Services\Events\FindEventsPairsService;
 use Nette\Application\UI\Form;
 use Nette\Forms\Controls\Checkbox;
@@ -33,7 +34,8 @@ class PageFormFactory
         $form->addText('slug', 'SLUG')
             ->setRequired(false)
             ->addRule(Form::MAX_LENGTH, 'SLUG stránky může být maximálně 191 znaků dlouhý.', 191)
-            ->setOption('description', 'Slouží jako unikátní identifikace stránky v URL adrese v rámci ročníku.');
+            ->setOption('description', 'Slouží jako unikátní identifikace stránky v URL adrese v rámci ročníku. Některé hodnoty jsou rezervované. 
+            Pro vytvoření stránky aktualit na úvodní stránce použijte hodnotu "' . ReservedSLUG::UPDATES()->toScalar() . '".');
         $form->addCheckbox('default', 'Výchozí')
             ->setOption('description', 'Určuje zda jde výchozí (úvodní) stránku ročníku, může být vždy maximálně jedna.');
 
@@ -41,7 +43,8 @@ class PageFormFactory
         $form->addCheckbox('hidden', 'Skrývat')
             ->setOption('description', 'Zaškrtnete-li toto pole, bude stránka skrytá až do níže nastaveného data, pokud jej nenastavíte, pak na vždy.')
             ->setRequired(false);
-        $form->addDateTimePicker('revealAt', 'Odhalit po');
+        $form->addDateTimePicker('revealAt', 'Odhalit po')
+            ->setHtmlAttribute('autocomplete', 'off');
 
         /** @var Checkbox $hiddenCheckbox */
         $hiddenCheckbox = $form['hidden'];
@@ -61,6 +64,7 @@ class PageFormFactory
             ->setRequired('Vyplňte, prosím, obsah stránky');
 
         $form->addPrimarySubmit('send', 'Uložit');
+        $form->addSubmit('sendAndStay', 'Uložit a zůstat');
         $form->onSuccess[] = function (Form $form, $values) use ($onSuccess) {
             $onSuccess($form, $values);
         };

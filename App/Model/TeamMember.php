@@ -121,7 +121,7 @@ class TeamMember
         ?int $age,
         bool $addToNewsletter
     ): void {
-        if (!Validators::isEmail($email)) {
+        if ($email !== null && !Validators::isEmail($email)) {
             throw new \InstruktoriBrno\TMOU\Model\Exceptions\InvalidEmailException("The e-mail `${email}` is invalid.");
         }
 

@@ -66,6 +66,12 @@ final class AdminPagesPresenter extends BasePresenter
     /** @privilege(InstruktoriBrno\TMOU\Enums\Resource::ADMIN_PAGES,InstruktoriBrno\TMOU\Enums\Action::CREATE) */
     public function actionAdd(?int $eventNumber): void
     {
+        $event = null;
+        if ($eventNumber !== null) {
+            $event = ($this->findEventServiceByNumber)($eventNumber);
+        }
+        $this->template->event = $event;
+        $this->template->help = TexyFilter::getSyntaxHelp();
     }
 
     /** @privilege(InstruktoriBrno\TMOU\Enums\Resource::ADMIN_PAGES,InstruktoriBrno\TMOU\Enums\Action::EDIT) */
@@ -76,6 +82,7 @@ final class AdminPagesPresenter extends BasePresenter
             throw new \Nette\Application\BadRequestException("No such page [{$pageId}].");
         }
         $this->template->page = $page;
+        $this->template->event = $page->getEvent();
         $this->template->help = TexyFilter::getSyntaxHelp();
     }
 
@@ -87,6 +94,7 @@ final class AdminPagesPresenter extends BasePresenter
             throw new \Nette\Application\BadRequestException("No such page [{$pageId}].");
         }
         $this->template->page = $page;
+        $this->template->event = $page->getEvent();
     }
 
     public function createComponentPagesGrid(): PagesGrid
@@ -119,6 +127,11 @@ final class AdminPagesPresenter extends BasePresenter
             try {
                 $page = ($this->savePageFacade)($values, $page);
                 $this->flashMessage('Stránka byla úspěšně uložena.', Flash::SUCCESS);
+                /** @var SubmitButton $sendAndStay */
+                $sendAndStay = $form['sendAndStay'];
+                if ($sendAndStay->isSubmittedBy()) {
+                    $this->redirect('AdminPages:edit', $page->getId());
+                }
                 $this->redirect('AdminPages:', $page->getEvent() !== null ? $page->getEvent()->getNumber() : null);
             } catch (\InstruktoriBrno\TMOU\Model\Exceptions\SLUGTooLongException $e) {
                 /** @var TextInput $input */

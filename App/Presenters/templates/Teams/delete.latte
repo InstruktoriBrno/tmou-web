@@ -6,5 +6,6 @@
     <div id="content">
         <p>Opravdu chcete smazat stránku {$team->getName()} v {$team->getEvent()->getNumber()}. ročníku s názvem <b>{$team->getEvent()->getName()}</b> a ID týmu {$team->getId()}.</p>
         {control confirmForm}
+        <a href="{plink Teams:, $event->getNumber()}"><i class="fas fa-arrow-left"></i> Seznam týmů {$event->getNumber()}. ročníku</a><br>
     </div>
 {/block}

@@ -19,6 +19,7 @@ jQuery(function($) {
 		el.val(value); // MS Edge workaround
 
 		el.datetimepicker({
+            fontAwesome: true,
 			startDate: el.attr('min'),
 			endDate: el.attr('max'),
 			weekStart: 1,

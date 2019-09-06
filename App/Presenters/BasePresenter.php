@@ -2,6 +2,8 @@
 namespace InstruktoriBrno\TMOU\Presenters;
 
 use InstruktoriBrno\TMOU\Enums\UserRole;
+use InstruktoriBrno\TMOU\Model\Page;
+use InstruktoriBrno\TMOU\Services\Events\FindEventsService;
 use Nette\Security\Identity;
 use function count;
 use InstruktoriBrno\TMOU\Enums\Action;
@@ -27,33 +29,50 @@ abstract class BasePresenter extends Presenter
     /** @var GameClockService @inject */
     public $gameClockService;
 
+    /** @var FindEventsService @inject */
+    public $findEventsService;
+
     protected function beforeRender()
     {
         parent::beforeRender();
         if ($this->user->isAllowed(Resource::ADMIN_COMMON, Action::VIEW)) {
             $this->template->hasDatagrid = true;
-            $this->template->hasGlyphicons = true;
             $this->template->hasDatetimepicker = true;
         }
 
         $this->template->currentTime = $this->gameClockService->get();
         if ($this->user->isAllowed(Resource::ADMIN_COMMON, Action::CHANGE_GAME_CLOCK) || $this->isImpersonated()) {
             $this->template->gameClockChange = true;
+            $this->template->hasDatetimepicker = true;
         }
+
+        $this->template->events = ($this->findEventsService)();
     }
 
-    protected function isImpersonated(): bool
+    public function isImpersonated(): bool
     {
         $identity = $this->user->getIdentity();
         return $identity instanceof Identity
+            && $this->user->isLoggedIn()
             && $this->user->isInRole(UserRole::TEAM)
             && isset($identity->getData()['impersonated'])
             && $identity->getData()['impersonated'] === true;
     }
 
+    public static function isPageCurrentlySelected(?Page $page, ?string $slug, ?int $eventNumber): bool
+    {
+        return $page !== null
+            && ($page->getSlug() === $slug || ($page->isDefault() && $slug === null))
+            && (($eventNumber === null && $page->getEvent() === null) || ($page->getEvent() !== null && $page->getEvent()->getNumber() === $eventNumber));
+    }
+
     /** @param mixed $element */
     public function checkRequirements($element): void
     {
+        // Ugly hack for Error4xxPresenter to have current event
+        Error4xxPresenter::$eventNumber = $this->getParameter('eventNumber');
+
+
         if ($element instanceof MethodReflection) {
             $privilege = ComponentReflection::parseAnnotation($element, 'privilege');
             if ($privilege !== false && count($privilege) >= 2) {
@@ -108,7 +127,9 @@ abstract class BasePresenter extends Presenter
             if ($resetButton->isSubmittedBy()) {
                 $this->gameClockService->reset();
             } else {
-                $this->gameClockService->set($values['newNow']);
+                if ($values['newNow'] !== null) {
+                    $this->gameClockService->set($values['newNow']);
+                }
             }
             $this->redirect('this');
         });

@@ -63,6 +63,7 @@ final class TeamsPresenter extends BasePresenter
             throw new \Nette\Application\BadRequestException("No such team [{$teamId}].");
         }
         $this->template->team = $team;
+        $this->template->event = $team->getEvent();
     }
 
     /** @privilege(InstruktoriBrno\TMOU\Enums\Resource::ADMIN_TEAMS,InstruktoriBrno\TMOU\Enums\Action::IMPERSONATE) */
