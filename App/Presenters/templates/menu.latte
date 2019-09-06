@@ -6,7 +6,7 @@
     {if isset($event) && $event}
         <ul class="list-reset bg-yellow-tmou lg:rounded-sm p-2 my-4">
             {include menuItem.latte, link => $control->link('Pages:show', null, $event->getNumber()), label => 'Úvod', selected => $control::isPageCurrentlySelected($page ?? null, null, $event->getNumber())}
-            {include menuItem.latte, link => $control->link('Pages:show', 'about', null), label => 'O hře', selected => $control::isPageCurrentlySelected($page ?? null, 'about', $event->getNumber())}
+            {include menuItem.latte, link => $control->link('Pages:show', null, null), label => 'O hře', selected => $control::isPageCurrentlySelected($page ?? null, null, $event->getNumber())}
         </ul>
 
         <ul class="list-reset bg-yellow-tmou lg:rounded-sm p-2 my-4">
@@ -43,8 +43,7 @@
         </ul>
     {else}
         <ul class="list-reset bg-yellow-tmou lg:rounded-sm p-2 my-4">
-            {include menuItem.latte, link => $control->link('Pages:show', null, null), label => 'Úvod', selected => $control::isPageCurrentlySelected($page ?? null, null, null)}
-            {include menuItem.latte, link => $control->link('Pages:show', 'about', null), label => 'O hře', selected => $control::isPageCurrentlySelected($page ?? null, 'about', null)}
+            {include menuItem.latte, link => $control->link('Pages:show', null, null), label => 'O hře', selected => $control::isPageCurrentlySelected($page ?? null, null, null)}
             {include menuItem.latte, link => $control->link('Pages:show', 'media', null), label => 'TMOU v médiích', selected => $control::isPageCurrentlySelected($page ?? null, 'media', null)}
             {include menuItem.latte, link => 'https://archiv.tmou.cz/archiv/index.html', label => 'TMOU archiv'}
             {include menuItem.latte, link => 'https://archiv.tmou.cz/archiv/manual_tmou.html', label => 'Manuál TMOU'}
