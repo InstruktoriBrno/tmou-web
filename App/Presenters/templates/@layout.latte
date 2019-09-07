@@ -138,13 +138,13 @@
                                 </div>
                             {/if}
                             <!-- /Jumbo tron -->
-                            <div class="w-full m-0 p-12 text-gray-900 leading-normal bg-white rounded-sm my-10 page-content">
+                            <div class="w-full m-0 p-12 text-gray-900 leading-normal bg-white rounded-sm my-4 page-content">
                                 <div n:foreach="$flashes as $flash" n:class="alert, $flash->type">{$flash->message}</div>
                                 {include content}
                             </div>
 
                             {if isset($homepage) && $homepage && isset($updates) && $updates}
-                                <div class="w-full m-0 p-8 text-gray-900 leading-normal bg-white rounded-sm my-10 page-content">
+                                <div class="w-full m-0 p-8 text-gray-900 leading-normal bg-white rounded-sm my-4 page-content">
                                     <h1>{$updates->getHeading()}</h1>
 
                                     {$updates->getContent()|texy}
