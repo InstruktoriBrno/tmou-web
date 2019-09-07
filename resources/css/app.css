@@ -289,6 +289,11 @@ legend {
     @apply my-4
 }
 
+/* Extra utils class */
+.bg-black-60\% {
+    background: rgba(0,0,0, 0.6);
+}
+
 /* Fix scaling images*/
 .fixed-size {
     max-width: none;

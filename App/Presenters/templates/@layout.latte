@@ -122,9 +122,9 @@
                         </div>
                         <div>
                             {if !$user->isLoggedIn() || (int) $user->getIdentity()->eventNumber !== $event->getNumber()}
-                                <a href="{plink Pages:show, \InstruktoriBrno\TMOU\Enums\ReservedSLUG::REGISTRATION, $event->getNumber()}" class="rounded-sm p-4 m-4 mx-10 border-4 border-yellow-tmou text-xl font-bold hover:bg-yellow-tmou hover:text-black block sm:inline-block sm:w-56">Zaregistrovat se</a>
+                                <a href="{plink Pages:show, \InstruktoriBrno\TMOU\Enums\ReservedSLUG::REGISTRATION, $event->getNumber()}" class="rounded-sm p-4 m-4 mx-10 border-4 border-yellow-tmou text-xl font-bold hover:bg-yellow-tmou hover:text-black block sm:inline-block sm:w-56 bg-black-60%">Zaregistrovat se</a>
                             {/if}
-                            <a href="{plink Pages:show, 'rules', $event->getNumber()}" class="rounded-sm p-4 m-4 mx-10 border-4 border-yellow-tmou text-xl font-bold hover:bg-yellow-tmou hover:text-black block sm:inline-block sm:w-56">Pravidla</a>
+                            <a href="{plink Pages:show, 'rules', $event->getNumber()}" class="rounded-sm p-4 m-4 mx-10 border-4 border-yellow-tmou text-xl font-bold hover:bg-yellow-tmou hover:text-black block sm:inline-block sm:w-56 bg-black-60%">Pravidla</a>
                         </div>
                     </div>
                 {/if}
@@ -150,14 +150,14 @@
             <div class="container mx-auto py-8">
                 <div class="w-full mx-auto">
                     <div class="my-4 text-center">
-                        <a href="https://instruktori.cz" class="m-4 mt-0 lg:float-left"><img class="lg:h-32 fixed-size h-24 inline" src="{$basePath}/assets/images/footer-sova.png" alt="Logo Instruktorů Brno"></a>
-                        <p class="lg:float-left text-sm xl:ml-10 sm:ml-5 mr-5 mt-2 lg:-mt-2 text-center">
+                        <a href="https://instruktori.cz" class="m-4 ml-0 mt-0 lg:float-left"><img class="lg:h-32 fixed-size h-24 inline" src="{$basePath}/assets/images/footer-sova.png" alt="Logo Instruktorů Brno"></a>
+                        <p class="lg:float-left text-sm xl:ml-10 sm:ml-5 mr-5 mt-2 lg:-mt-2 text-center lg:text-left">
                             TMOU! je akce pořádaná pod hlavičkou Instruktorů&nbsp;Brno.<br>
                             © 2019, <a class="hover:underline" href="https://www.instruktori.cz">Instruktoři Brno, z.s.</a>, Některá práva vyhrazena.<br><br>
                             <span id="time" class="text-sm" data-time="{$currentTime|date: 'U.u'}">{$currentTime|date: 'j. n. Y G:i:s'}</span>
                         </p>
                     </div>
-                    <div class="px-4 w-full xl:w-1/2 md:w-1/4 sm:min-w-full lg:justify-end lg:text-right text-center">
+                    <div class="w-full xl:w-1/2 md:w-1/4 sm:min-w-full lg:justify-end lg:text-right text-center">
                         <h3 class="font-bold mb-0">Kontakt</h3>
                         <ul class="list-reset items-center text-sm pt-1">
                             <li>
