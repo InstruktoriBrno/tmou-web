@@ -64,6 +64,7 @@ class PageFormFactory
             ->setRequired('Vyplňte, prosím, obsah stránky');
 
         $form->addPrimarySubmit('send', 'Uložit');
+        $form->addSubmit('sendAndStay', 'Uložit a zůstat');
         $form->onSuccess[] = function (Form $form, $values) use ($onSuccess) {
             $onSuccess($form, $values);
         };

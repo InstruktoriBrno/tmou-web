@@ -68066,6 +68066,7 @@ html {
 body {
   background-image: url('../images/bg.png');
   background-color: #050922;
+  background-position-x: center;
 }
 
 .dropdown {
@@ -68149,13 +68150,21 @@ h1 {
 
 h2 {
   font-size: 1.5rem;
-  margin-bottom: 1rem;
-  margin-top: 0.5rem
+  margin-bottom: 0.25rem;
+  margin-top: 1rem
 }
 
 h3 {
   font-size: 1.25rem;
-  margin-bottom: 1rem
+  margin-bottom: 0;
+  margin-top: 1rem
+}
+
+h4 {
+  font-size: 1.125rem;
+  margin-bottom: 0;
+  margin-top: 0.75rem;
+  font-style: italic
 }
 
 pre {
@@ -68174,6 +68183,12 @@ a:hover {
 
 .form-group .col-form-label {
   margin-bottom: 0.25rem
+}
+
+.form-group.required label:after,
+span.required-footnote {
+  content: " *";
+  color: #fc8181
 }
 
 .form-control {
@@ -68354,6 +68369,16 @@ legend {
   width: 100% !important;
   background-color: #fff !important;
   padding: 0.5rem !important
+}
+
+/* Make links underlined in page content (white blocks) */
+
+.page-content a {
+  text-decoration: underline
+}
+
+.page-content a:hover {
+  color: #9e9e9e
 }
 
 /* Fix scaling images*/

@@ -6,7 +6,7 @@
     {if isset($event) && $event}
         <ul class="list-reset bg-yellow-tmou lg:rounded-sm p-2 my-4">
             {include menuItem.latte, link => $control->link('Pages:show', null, $event->getNumber()), label => 'Úvod', selected => $control::isPageCurrentlySelected($page ?? null, null, $event->getNumber())}
-            {include menuItem.latte, link => $control->link('Pages:show', null, null), label => 'O hře', selected => $control::isPageCurrentlySelected($page ?? null, null, null)}
+            {include menuItem.latte, link => $control->link('Pages:show', null, $event->getNumber()), label => 'O hře', selected => $control::isPageCurrentlySelected($page ?? null, null, $event->getNumber())}
         </ul>
 
         <ul class="list-reset bg-yellow-tmou lg:rounded-sm p-2 my-4">
@@ -43,7 +43,6 @@
         </ul>
     {else}
         <ul class="list-reset bg-yellow-tmou lg:rounded-sm p-2 my-4">
-            {include menuItem.latte, link => $control->link('Pages:show', null, null), label => 'O hře', selected => $control::isPageCurrentlySelected($page ?? null, null, null)}
             {include menuItem.latte, link => $control->link('Pages:show', 'media', null), label => 'TMOU v médiích', selected => $control::isPageCurrentlySelected($page ?? null, 'media', null)}
             {include menuItem.latte, link => 'https://archiv.tmou.cz/archiv/index.html', label => 'TMOU archiv'}
             {include menuItem.latte, link => 'https://archiv.tmou.cz/archiv/manual_tmou.html', label => 'Manuál TMOU'}
@@ -54,7 +53,19 @@
 
     {if $user->isInRole(\InstruktoriBrno\TMOU\Enums\UserRole::ORG)}
         <ul class="list-reset bg-yellow-tmou lg:rounded-sm p-2 my-4 mt-16">
+            {if isset($page) && $page}
+                <li class="py-1 hover:bg-gray-100 lg:hover:bg-transparent rounded-sm mb-4">
+                    <a href="{plink AdminPages:edit, $page->getId()}" class="block pl-4 align-middle text-gray-800 no-underline hover:text-black border-l-4 border-transparent lg:hover:border-black">
+                        <span class="pb-1 md:pb-0 text-base font-semibold">Upravit tuto stránku</span>
+                    </a>
+                </li>
+            {/if}
             {if isset($event) && $event}
+                <li class="py-1 md:my-0 hover:bg-gray-100 lg:hover:bg-transparent rounded-sm">
+                    <a href="{plink Events:edit, $event->getId()}" class="block pl-4 align-middle text-gray-800 no-underline hover:text-black border-l-4 border-transparent lg:hover:border-black">
+                        <span class="pb-1 md:pb-0 text-base font-semibold">Upravit {$event->getNumber()}. ročník</span>
+                    </a>
+                </li>
                 <li class="py-1 md:my-0 hover:bg-gray-100 lg:hover:bg-transparent rounded-sm">
                     <a href="{plink Teams:, $event->getNumber()}" class="block pl-4 align-middle text-gray-800 no-underline hover:text-black border-l-4 border-transparent lg:hover:border-black">
                         <span class="pb-1 md:pb-0 text-base font-semibold">Týmy {$event->getNumber()}. ročníku</span>

@@ -36,6 +36,7 @@ html {
 body {
     background-image: url('../images/bg.png');
     background-color: #050922;
+    background-position-x: center;
 }
 
 .dropdown {
@@ -101,11 +102,15 @@ h1 {
 }
 
 h2 {
-    @apply text-2xl mb-4 mt-2
+    @apply text-2xl mb-1 mt-4
 }
 
 h3 {
-    @apply text-xl mb-4
+    @apply text-xl mb-0 mt-4
+}
+
+h4 {
+    @apply text-lg mb-0 mt-3 italic
 }
 
 pre {
@@ -122,6 +127,11 @@ a:hover {
 }
 .form-group .col-form-label {
     @apply mb-1
+}
+.form-group.required label:after,
+span.required-footnote {
+    content: " *";
+    @apply text-red-400
 }
 .form-control {
     @apply shadow appearance-none border rounded w-full py-2 px-3 text-gray-700 leading-tight bg-white
@@ -247,6 +257,14 @@ legend {
 
 .datagrid .col-per-page select {
     @apply w-full bg-white p-2 !important
+}
+
+/* Make links underlined in page content (white blocks) */
+.page-content a {
+    @apply underline
+}
+.page-content a:hover {
+    @apply text-gray-500
 }
 
 /* Fix scaling images*/

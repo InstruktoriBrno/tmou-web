@@ -127,6 +127,11 @@ final class AdminPagesPresenter extends BasePresenter
             try {
                 $page = ($this->savePageFacade)($values, $page);
                 $this->flashMessage('Stránka byla úspěšně uložena.', Flash::SUCCESS);
+                /** @var SubmitButton $sendAndStay */
+                $sendAndStay = $form['sendAndStay'];
+                if ($sendAndStay->isSubmittedBy()) {
+                    $this->redirect('AdminPages:edit', $page->getId());
+                }
                 $this->redirect('AdminPages:', $page->getEvent() !== null ? $page->getEvent()->getNumber() : null);
             } catch (\InstruktoriBrno\TMOU\Model\Exceptions\SLUGTooLongException $e) {
                 /** @var TextInput $input */

@@ -46,7 +46,8 @@ class TeamRegistrationFormFactory
             ->setRequired('Vyplňte, prosím, heslo pro kontrolu shody.')
             ->addRule(Form::EQUAL, 'Hesla se musí shodovat.', $password);
 
-        $form->addGroup('Členové');
+        $form->addGroup('Členové')
+            ->setOption('description', 'Pouze jméno prvního člena je povinné. Prosíme, aby jste vyplnili údaje podle skutečnosti a v případě změn je příslušně upravili později v Nastavení týmu.');
         $members = $form->addContainer('members');
         foreach (range(1, 5) as $item) {
             $member = $members->addContainer($item);
