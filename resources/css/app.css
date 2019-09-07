@@ -151,6 +151,11 @@ select.form-control {
     background: transparent url('../images/caret-down.svg') no-repeat 60px center;
     background-position-x: right;
     background-size: 25px;
+    font-size: 100%;
+}
+
+textarea {
+    font-size: 100%;
 }
 .form-check-input {
     @apply mr-2 leading-tight
@@ -243,7 +248,7 @@ legend {
     @apply p-0 !important
 }
 .datagrid .table-sm {
-    @apply text-sm w-full
+    @apply text-sm w-full border-collapse bg-white
 }
 .datagrid td,
 .datagrid th {
