@@ -326,7 +326,7 @@ legend {
 }
 
 .parallax-layer-middle {
-    transform: translateZ(-0.5px) scale(1.5);
+    transform: translateZ(-1px) scale(2);
 }
 
 .parallax-layer-back {
