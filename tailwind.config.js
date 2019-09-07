@@ -5,7 +5,8 @@ module.exports = {
       'sm': '640px',
       'md': '768px',
       'lg': '900px',
-      'xl': '1280px',
+      'xl': '1100px',
+      'xxl': '1280px',
     },
     extend: {
       colors: {
@@ -35,9 +36,6 @@ module.exports = {
         '5': '5px',
         '6': '6px'
       },
-      zIndex: {
-        '-1': '-1'
-      }
     }
   },
   variants: {},
