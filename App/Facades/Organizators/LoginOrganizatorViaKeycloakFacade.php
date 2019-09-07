@@ -172,7 +172,11 @@ class LoginOrganizatorViaKeycloakFacade
         }
         $roles = array_filter($roles);
         if (count($roles) > 0) {
-            return reset($roles);
+            $item = reset($roles);
+            if ($item === false) {
+                return null;
+            }
+            return $item;
         }
         return null;
     }

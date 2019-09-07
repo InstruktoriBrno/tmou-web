@@ -144,7 +144,7 @@ TMOU:event_team_changes_deadline:
         if ($this->texy === null) {
             $this->texy = new Texy();
             $this->texy->headingModule->top = 2; // Start from H2 heading
-            if ($this->eventMacroDataProvider->getEventNumber() !== null) {
+            if ($this->eventMacroDataProvider->getEventNumber() !== '') {
                 $this->texy->linkModule->root = '../../' . $this->eventMacroDataProvider->getEventNumber();
             }
             $this->texy->registerLinePattern(function (LineParser $parser, array $matches) {
