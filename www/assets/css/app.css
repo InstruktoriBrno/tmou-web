@@ -68397,6 +68397,11 @@ legend {
   margin-left: 1.5rem
 }
 
+.page-content hr {
+  margin-top: 1rem;
+  margin-bottom: 1rem
+}
+
 /* Fix scaling images*/
 
 .fixed-size {

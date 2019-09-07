@@ -279,6 +279,10 @@ legend {
     @apply ml-6
 }
 
+.page-content hr {
+    @apply my-4
+}
+
 /* Fix scaling images*/
 .fixed-size {
     max-width: none;

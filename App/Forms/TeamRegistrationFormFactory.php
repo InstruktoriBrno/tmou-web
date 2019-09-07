@@ -59,7 +59,7 @@ class TeamRegistrationFormFactory
             $age = $member->addText('age', 'Věk')
                 ->setRequired(false)
                 ->setType('number')
-                ->addRule(Form::MIN, 'Minimální věk je 18 let. Jestli je vám méně na TMOU nemůžete.', 18);
+                ->addRule(Form::MIN, 'Minimální věk člena je 15 let. Jestli je vám méně na TMOU nemůžete. Pokud je vám méně než 18 musíte mít alespoň jednoho dospělého v týmu.', 15);
             $newsletter = $member->addCheckbox('addToNewsletter', 'Zahrnout do newsletteru Instruktorů Brno');
 
             // Conditional validations
