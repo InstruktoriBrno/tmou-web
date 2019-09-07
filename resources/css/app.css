@@ -267,6 +267,18 @@ legend {
     @apply text-gray-500
 }
 
+.page-content ul {
+    @apply list-disc my-2
+}
+
+.page-content ol {
+    @apply list-decimal my-2
+}
+
+.page-content li {
+    @apply ml-6
+}
+
 /* Fix scaling images*/
 .fixed-size {
     max-width: none;
