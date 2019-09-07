@@ -11,6 +11,7 @@ module.exports = {
       colors: {
         'yellow-tmou': '#ffec01',
         'blue-tmou': '#031f35',
+        'black-tmou': '#01020c',
         'success-tmou': '#8CDA4C',
         'danger-tmou': '#C8A48C',
         'warning-tmou': '#ffec01',
@@ -33,6 +34,9 @@ module.exports = {
       borderWidth: {
         '5': '5px',
         '6': '6px'
+      },
+      zIndex: {
+        '-1': '-1'
       }
     }
   },

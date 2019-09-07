@@ -39,12 +39,6 @@ strong,
     font-family: 'LatoWebBold', sans-serif;
 }
 
-body {
-    background-image: url('../images/bg.png');
-    background-color: #050922;
-    background-position-x: center;
-}
-
 .dropdown {
     position: relative;
 }
@@ -303,4 +297,31 @@ legend {
 /* Fix Tracy bar */
 #tracy-debug-bar img {
     display: inline-block;
+}
+
+.parallax {
+    perspective: 1px;
+    height: 100vh;
+    overflow-x: hidden;
+    overflow-y: auto;
+}
+
+.parallax-layer {
+    position: absolute;
+    top: 0;
+    right: 0;
+    bottom: 0;
+    left: 0;
+}
+
+.parallax-layer-base {
+    transform: translateZ(0);
+}
+
+.parallax-layer-middle {
+    transform: translateZ(-0.5px) scale(1.5);
+}
+
+.parallax-layer-back {
+    transform: translateZ(-2px) translateY(-30vh) scale(3);
 }
