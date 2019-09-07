@@ -33,6 +33,12 @@ html {
     font-family: 'LatoWeb', sans-serif;
 }
 
+b,
+strong,
+.font-bold {
+    font-family: 'LatoWebBold', sans-serif;
+}
+
 body {
     background-image: url('../images/bg.png');
     background-color: #050922;
