@@ -5,6 +5,8 @@
 @tailwind utilities;
 @tailwind screens;
 
+/*! purgecss start ignore */
+
 @screen no {
     .container {
         @apply min-w-full px-0;
@@ -325,3 +327,5 @@ legend {
 .parallax-layer-back {
     transform: translateZ(-2px) translateY(-30vh) scale(3);
 }
+
+/*! purgecss end ignore */
