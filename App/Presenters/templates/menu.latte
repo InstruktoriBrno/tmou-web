@@ -6,7 +6,7 @@
     {if isset($event) && $event}
         <ul class="list-reset bg-yellow-tmou lg:rounded-sm p-2 my-4">
             {include menuItem.latte, link => $control->link('Pages:show', null, $event->getNumber()), label => 'Úvod', selected => $control::isPageCurrentlySelected($page ?? null, null, $event->getNumber())}
-            {include menuItem.latte, link => $control->link('Pages:show', null, $event->getNumber()), label => 'O hře', selected => $control::isPageCurrentlySelected($page ?? null, null, $event->getNumber())}
+            {include menuItem.latte, link => $control->link('Pages:show', 'about', $event->getNumber()), label => 'O hře', selected => $control::isPageCurrentlySelected($page ?? null, 'about', $event->getNumber())}
         </ul>
 
         <ul class="list-reset bg-yellow-tmou lg:rounded-sm p-2 my-4">
