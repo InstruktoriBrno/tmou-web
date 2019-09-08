@@ -31,8 +31,6 @@ RUN mkdir -p /etc/ssl/localcerts \
     && sed -i "s#/etc/ssl/certs/ssl-cert-snakeoil.pem#/etc/ssl/localcerts/apache.pem#g" /etc/apache2/sites-available/default-ssl.conf \
     && sed -i "s#/etc/ssl/private/ssl-cert-snakeoil.key#/etc/ssl/localcerts/apache.key#g" /etc/apache2/sites-available/default-ssl.conf \
     && a2enmod ssl rewrite proxy proxy_http && a2ensite default-ssl \
-    && sed -ri -e 's!/var/www/html!/var/www/html/www!g' /etc/apache2/sites-available/*.conf \
-    && sed -ri -e 's!/var/www/!/var/www/html/www!g' /etc/apache2/apache2.conf /etc/apache2/conf-available/*.conf \
     && echo "Listen 9990" >> /etc/apache2/ports.conf \
     && a2ensite keycloak
 

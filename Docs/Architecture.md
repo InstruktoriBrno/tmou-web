@@ -97,4 +97,24 @@ Pro kontrolu oprávnění v aplikaci se používají anotace (oživené v `Instr
 
 ## Práce se styly
 
-TBD
+Stylování aplikace je realizováno skrze knihovnu [Tailwind](https://tailwindcss.com/), vlastní styly a preprocessing.
+
+Šablona stylopisu (což je soubor, který se edituje vývojáři) je v `resources/css/app.css`. Preprocessing se spouští v kořenovém
+adresáři projektu `npm run compile css` (předtím je potřeba spustit zde `npm install`). Preprocesovaný a minifikovaný styl
+je k nalezení v `assets/css/app.css`.
+
+Potřebujete-li vlastní nové CSS třídy, přidávate je do `resources/css/app.css` do části mezi `/*! purgecss start ignore */` a `/*! purgecss end ignore */` (tím by měly být vždy zachovány po preprocessinug).
+
+Processing je poněkud komplikovanější, takže zde jsou důležité scénáře:
+
+1. Potřebujete v nějaké Latte šabloně změnit styl v rámci běžně vypadajícího HTML. V takovém případě přidáte příslušnou třídu podle Tailwind do `class` příslušného elementu.
+   Při preprocessingu Tailwind (resp PurgeCSS) najde použití této CSS třídy a převede ji i do finálního minifikovaného CSS.
+2. Potřebujete v nějaké Latte šabloně změnit styl v rámci nějakých Latte podmínek, maker atp. V takovém případě příslušná třída nemusí být nalezena automaticky (ať už jde o vaši třídu či z knihovny)
+   Pokud se to stane, přidejte tuto třídu do `postcss.config.js` whitelistu.
+3. Používáte v PHP kódu konkrétní třídy z knihovny Tailwind (či vlastně dodefinované), které se ale jinde nepoužívají a preprocessing je nemůže v PHP kódu nalézt (neprohledává jej). V takovém případě (pokud nejsou použity ani jinde)
+   by preprocessing třídy odstranil, lze je tedy přidat do whitelistu (což ale nefunguje například pro stylopisy `select {}`), nebo je tedy potřeba zařídit někde na stránce (v rámci Latte šablon) jejich použití
+   nebo příslušné stylování přidat přímo na těchto elementech (z čistého stavu), tak aby výsledný stav byl stejný. 
+
+Po každé změně samozřejmě následuje rekompilace stylopisu, viz výše.
+
+Protože formuláře a datagrid původně počítaly se stylováním Boostrapu, jsou příslušné třídy nastylované v `resources/css/app.css` pomocí původních CSS tříd.

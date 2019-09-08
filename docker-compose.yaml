@@ -32,7 +32,7 @@ services:
         volumes:
             - .:/var/www/html/
         environment:
-            APACHE_DOCUMENT_ROOT: /var/www/html/www
+            APACHE_DOCUMENT_ROOT: /var/www/html
             MYSQL_SERVER: db
             MYSQL_PORT: 3306
             MYSQL_USER: tmou

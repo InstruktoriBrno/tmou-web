@@ -32,11 +32,21 @@ Nezbytné předpoklady jsou:
 
 ## Postup aktualizace
 
-1. Odstavte web (typicky vytvořením stránky `index.html`, která se načte prioritněji než `index.php`, nebo dočasným přesměrováním v `.htaccess` vyjma povolené adresy).
+1. Odstavte web (viz níže Režim údržby).
 2. Zazálujte celou databázi před začátkem aktualzace.
 2. Aktualizujte repozitář na požadovanou verzi (pozor na neverzované změny!)
 3. Doinstalujte a aktualizujte závislosti dle požadavku dané verze pomocí `composer install --no-dev --optimize-autoloader --no-progress --no-interaction --no-suggest`.
 4. Smažte obsah adresáře `temp/cache`, v produkčním režimu se keš sama přegenerovává jen pokud chybí! (Bez toho by aplikace nemusela vůbec naběhnout, nebo by fungovala jako ve staré verzi.)
+
+## Režim údržby
+
+Web má připravený režim údržby (via `.htaccess` v kořenové složce projektu), pro jeho zapnutí stačí vytvořit v kořenové složce projektu
+soubor pojmenovaný `UNDER_MAINTENANCE`, který zapříčiní zobrazení `.maintenance.php` na všechny požadavky.
+
+Pro přístup během údržby je potřeba ve svém prohlížeči a na správné adrese vytvořit ve svém prohlížeči ve vývojářských nástrojích
+cookie s názvem `SKIP_MAINTENANCE` a hodnotu `true`. Po obnovení stránky by se web měl zobrazit, pokud ne, zkontrolujte přesnou shodu domény, platnost cookie a parametry ohledně její striktnosti.
+
+Pro ukončení stačí soubor `UNDER_MAINTENANCE` odstranit.
 
 ## Composer
 

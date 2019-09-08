@@ -1,1 +1,18 @@
-Require all denied
+<IfModule mod_rewrite.c>
+    RewriteEngine On
+    #RewriteBase /
+
+    # Redirect to www variant
+    RewriteCond %{HTTP_HOST} !^www\. [NC]
+    RewriteRule ^(.*)$ https://www.%{HTTP_HOST}/$1 [R=301,L]
+
+    # Maintenance - addd UNDER_MAINTENANCE file when there is a maintenance and all non-privileged people should get message instead
+    RewriteCond UNDER_MAINTENANCE -f
+    RewriteCond %{HTTP_COOKIE} !^.*SKIP_MAINTENANCE=true.*$
+    RewriteRule (.*) .maintenance.php [L]
+
+    # Route all trafic to www dir
+    RewriteCond %{REQUEST_URI} !^/www
+    RewriteCond %{REQUEST_URI} !^/old
+    RewriteRule ^(.*)$ /www/$1 [NC,L]
+</IfModule>
