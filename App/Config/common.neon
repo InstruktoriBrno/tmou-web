@@ -10,6 +10,10 @@ parameters:
     mail:
         noReply:
         replyTo:
+    sso:
+        cookieName: TMOU_SSO
+        cookieDomain: tmou.test
+        expiration: '+14 days' # should be same as session.expiration below
 
 recaptcha:
     siteKey: 6LdVSJwUAAAAAOBUowvrUg3I6JzKbbX22WDGwVso
@@ -101,6 +105,11 @@ services:
     - InstruktoriBrno\TMOU\Facades\Teams\ChangeTeamFacade
     - InstruktoriBrno\TMOU\Services\System\IsSLUGReservedService
     - InstruktoriBrno\TMOU\Services\Events\FindEventsService
+    - InstruktoriBrno\TMOU\Facades\Teams\CreateSSOSession(%sso.cookieName%, %sso.cookieDomain%, %sso.expiration%)
+    - InstruktoriBrno\TMOU\Facades\Teams\MaintainSSOSession(%sso.cookieName%, %sso.cookieDomain%, %sso.expiration%)
+    - InstruktoriBrno\TMOU\Facades\Teams\InvalidateSSOSession(%sso.cookieName%, %sso.cookieDomain%)
+    - InstruktoriBrno\TMOU\Commands\CleanSSOSessionsCommand
+    - InstruktoriBrno\TMOU\Facades\Teams\CleanSSOSessions
 
 extensions:
     nextras.form: Nextras\Forms\Bridges\NetteDI\FormsExtension

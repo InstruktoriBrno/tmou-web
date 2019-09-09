@@ -2,6 +2,7 @@
 namespace InstruktoriBrno\TMOU\Presenters;
 
 use InstruktoriBrno\TMOU\Enums\UserRole;
+use InstruktoriBrno\TMOU\Facades\Teams\MaintainSSOSession;
 use InstruktoriBrno\TMOU\Model\Page;
 use InstruktoriBrno\TMOU\Services\Events\FindEventsService;
 use Nette\Security\Identity;
@@ -32,6 +33,9 @@ abstract class BasePresenter extends Presenter
     /** @var FindEventsService @inject */
     public $findEventsService;
 
+    /** @var MaintainSSOSession @inject */
+    public $maintainSSOSession;
+
     protected function beforeRender()
     {
         parent::beforeRender();
@@ -44,6 +48,10 @@ abstract class BasePresenter extends Presenter
         if ($this->user->isAllowed(Resource::ADMIN_COMMON, Action::CHANGE_GAME_CLOCK) || $this->isImpersonated()) {
             $this->template->gameClockChange = true;
             $this->template->hasDatetimepicker = true;
+        }
+
+        if ($this->user->isLoggedIn() && $this->user->isInRole(UserRole::TEAM()->toScalar())) {
+            ($this->maintainSSOSession)($this->user->getId());
         }
 
         $this->template->events = ($this->findEventsService)();

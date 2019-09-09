@@ -10,6 +10,8 @@ parameters:
     mail:
         noReply: no-reply@example.com
         replyTo: reply-to@example.com
+    sso:
+        cookieDomain: tmou.test
 
 tracy:
     bar:

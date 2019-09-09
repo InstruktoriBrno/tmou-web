@@ -2,6 +2,7 @@
 namespace InstruktoriBrno\TMOU\Facades\Teams;
 
 use InstruktoriBrno\TMOU\Model\Event;
+use InstruktoriBrno\TMOU\Model\Team;
 use InstruktoriBrno\TMOU\Services\Teams\FindTeamByNameService;
 use Nette\Security\User;
 
@@ -28,10 +29,12 @@ class TeamLoginFacade
      * @param string $name
      * @param string $password
      *
+     * @return Team
+     *
      * @throws \InstruktoriBrno\TMOU\Facades\Teams\Exceptions\NoSuchTeamException
      * @throws \InstruktoriBrno\TMOU\Facades\Teams\Exceptions\InvalidTeamPasswordException
      */
-    public function __invoke(Event $event, string $name, string $password): void
+    public function __invoke(Event $event, string $name, string $password): Team
     {
 
         $team = ($this->findTeamByNameService)($event, $name);
@@ -45,6 +48,7 @@ class TeamLoginFacade
         $identity = $team->toIdentity();
         try {
             $this->user->login($identity);
+            return $team;
         } catch (\Nette\Security\AuthenticationException $e) {
             throw new \InstruktoriBrno\TMOU\Facades\Teams\Exceptions\TeamLoginUnknownException('Unkown team login failure.', 0, $e);
         }

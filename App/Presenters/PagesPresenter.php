@@ -8,6 +8,8 @@ use InstruktoriBrno\TMOU\Enums\Resource;
 use InstruktoriBrno\TMOU\Enums\UserRole;
 use InstruktoriBrno\TMOU\Facades\Teams\ChangeTeamFacade;
 use InstruktoriBrno\TMOU\Facades\Teams\ConsumePasswordResetFacade;
+use InstruktoriBrno\TMOU\Facades\Teams\CreateSSOSession;
+use InstruktoriBrno\TMOU\Facades\Teams\InvalidateSSOSession;
 use InstruktoriBrno\TMOU\Facades\Teams\RegisterTeamFacade;
 use InstruktoriBrno\TMOU\Facades\Teams\RequestPasswordResetFacade;
 use InstruktoriBrno\TMOU\Facades\Teams\TeamLoginFacade;
@@ -84,6 +86,12 @@ final class PagesPresenter extends BasePresenter
 
     /** @var FindTeamService @inject */
     public $findTeamService;
+
+    /** @var CreateSSOSession @inject */
+    public $createSSOSession;
+
+    /** @var InvalidateSSOSession @inject */
+    public $invalidateSSOSession;
 
 
     /** @var Event|null */
@@ -195,6 +203,7 @@ final class PagesPresenter extends BasePresenter
     public function actionLogout(int $eventNumber): void
     {
         $this->enforceMatchingEvent($eventNumber);
+        ($this->invalidateSSOSession)();
         $this->user->logout(true);
         $this->flashMessage('Byli jste úspěšně odhlášeni.', Flash::SUCCESS);
         $this->redirect('Pages:login', $eventNumber);
@@ -416,7 +425,8 @@ final class PagesPresenter extends BasePresenter
                 return;
             }
             try {
-                ($this->teamLoginFacade)($event, $values->name, $values->password);
+                $team = ($this->teamLoginFacade)($event, $values->name, $values->password);
+                ($this->createSSOSession)($team);
                 $this->flashMessage('Byli jste úspěšně přihlášeni.', Flash::SUCCESS);
                 $this->redirect('Pages:show', null, $event->getNumber());
             } catch (\InstruktoriBrno\TMOU\Facades\Teams\Exceptions\NoSuchTeamException $exception) {
@@ -425,6 +435,9 @@ final class PagesPresenter extends BasePresenter
             } catch (\InstruktoriBrno\TMOU\Facades\Teams\Exceptions\InvalidTeamPasswordException $exception) {
                 $form->addError('Heslo je chybné.');
                 return;
+            } catch (\InstruktoriBrno\TMOU\Facades\Teams\Exceptions\CannotCreateSSOSessionException $e) {
+                $this->flashMessage('Byli jste úspěšně přihlášeni zde, avšak nepodařilo se vás přihlásit do kvalifikačního systému a webinfa. Kontaktujte, prosím, organizátory.', Flash::WARNING);
+                $this->redirect('Pages:show', null, $event->getNumber());
             } catch (\InstruktoriBrno\TMOU\Facades\Teams\Exceptions\TeamLoginUnknownException $exception) {
                 $form->addError('Přihlášení selhalo, kontaktujte prosím organizátory.');
                 Debugger::log($exception, ILogger::EXCEPTION);

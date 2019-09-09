@@ -118,3 +118,19 @@ Processing je poněkud komplikovanější, takže zde jsou důležité scénář
 Po každé změně samozřejmě následuje rekompilace stylopisu, viz výše.
 
 Protože formuláře a datagrid původně počítaly se stylováním Boostrapu, jsou příslušné třídy nastylované v `resources/css/app.css` pomocí původních CSS tříd.
+
+## Single Sign On (SSO)
+
+Systémy pro kvalifikaci a hru nejsou na rozhodnutí týmu součástí webové prezentace a jsou jako samostatné projekty.
+Z toho plyne potřeba jednotného jednoduchého přihlášení, které je realizováno na TMOU skrze SSO cookie s náhodně generovaným tokenem.
+Cookie je vystavována v režimu `Strict`, `HTTP only` a `SameSite=Strict` režimu a to pro doménu dle konfigurace (viz klíč `sso.cookieDomain`, který by měl být vždy přepsán).
+
+Z toho plyne omezení, že není možné na žádné subdoméně této domény provozovat neověřený či nebezpečný obsah, protože taková konfigurace není bezpečná.
+
+Jeden tým může mít přihlášeno i více tokenů (tedy více uživatelů z jednoho týmu na více zařízeních), při odhlášení se maže token z daného zařízení, je-li k dispozici.
+
+Platnost přihlášení je stejná (a měla by být stejná) jako přihlášení do webu a to 14 dní. Životnost PHP session se ale postupně protahuje (při regenerování session při používání)
+ale životnost tokenu nikoliv. Z tohoto důvodu stránka kontroluje v případě, že je tým přihlášen a odhlášen zda SSO token existuje, pokud ne vytvoří nový
+(protože jinak by se musely týmy odhlásit a znovu přihlásit, takhle stačí jen přijít znovu na stránku).
+
+Jednou za čas je potřeba promazat uložené tokeny pomocí příkazu `bin/console clean-sso-sessions`.
