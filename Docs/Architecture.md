@@ -100,7 +100,7 @@ Pro kontrolu oprávnění v aplikaci se používají anotace (oživené v `Instr
 Stylování aplikace je realizováno skrze knihovnu [Tailwind](https://tailwindcss.com/), vlastní styly a preprocessing.
 
 Šablona stylopisu (což je soubor, který se edituje vývojáři) je v `resources/css/app.css`. Preprocessing se spouští v kořenovém
-adresáři projektu `npm run compile css` (předtím je potřeba spustit zde `npm install`). Preprocesovaný a minifikovaný styl
+adresáři projektu `npm run compile-css` (předtím je potřeba spustit zde `npm install`). Preprocesovaný a minifikovaný styl
 je k nalezení v `assets/css/app.css`.
 
 Potřebujete-li vlastní nové CSS třídy, přidávate je do `resources/css/app.css` do části mezi `/*! purgecss start ignore */` a `/*! purgecss end ignore */` (tím by měly být vždy zachovány po preprocessinug).
