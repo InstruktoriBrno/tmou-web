@@ -110,6 +110,19 @@ Toto se objeví pouze poté co uživatel zmáčkne tlačítko "Zobrazit"
 Toto se objeví pouze poté co uživatel zmáčkne tlačítko "Zobrazit řešení"
 \---
 
+Zanořování specifických bloků pro TMOU
+**************************************
+
+Zanořování výše uvedených bloků je možné, ale doporučujeme se mu výhýbat, protože působí potíže a může vést k nepřekládaným výsledkům.
+V případě použití je tedy doporučované důsledné testování.
+
+Při zanořování je potřeba dodržovat následující pravidla:
+1. Odřádkování (tak jak je vidět výše)
+2. Stejná uvozující a ukončující sekvence (tzn. /---- a \----)
+3. Vnější bloky musí více - než bloky vnitřní. Minimální počet je 3.
+4. Bloky pro odhalení týmům na základě stavu nelze zanořovat do sebe (tým může mít jen jeden stav) do ostatních zanořit lze.
+
+
 Specifická makra pro TMOU
 *************************
 
@@ -368,7 +381,7 @@ TMOU:event_team_changes_deadline:
                 if ($toDate !== null && $current > $toDate) {
                     return '';
                 }
-                return $matches[4];
+                return $this->preprocessRevealBlocks($matches[4]);
             },
             $value
         );
@@ -378,7 +391,7 @@ TMOU:event_team_changes_deadline:
     /**
      * Preprocess reveal blocks which are revealed to teams in given status as Texy cannot add regexes with "s"
      *
-     * /--- reveal (registered|qualified|playing) teams
+     * /--- reveal to (registered|qualified|playing) teams
      * content
      * \---
      */
