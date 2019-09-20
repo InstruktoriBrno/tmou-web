@@ -79,6 +79,13 @@ class PagesGrid extends Control
                 ->setClass('btn btn-xs btn-default');
         }
 
+        if ($this->user->isAllowed(Resource::PAGES, Action::VIEW)) {
+            $grid->addAction('show', '', 'Pages:show', ['eventNumber' => 'event.number', 'slug' => 'slug'])
+                ->setIcon('search')
+                ->addAttributes(['title' => 'Zobrazit stránku'])
+                ->setClass('btn btn-xs btn-default');
+        }
+
         if ($this->user->isAllowed(Resource::ADMIN_PAGES, Action::EDIT)) {
             $grid->addAction('edit', '', 'AdminPages:edit', ['pageId' => 'id'])
                 ->setIcon('edit')

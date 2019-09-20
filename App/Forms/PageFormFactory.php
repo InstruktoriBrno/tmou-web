@@ -65,6 +65,7 @@ class PageFormFactory
 
         $form->addPrimarySubmit('send', 'Uložit');
         $form->addSubmit('sendAndStay', 'Uložit a zůstat');
+        $form->addSubmit('sendAndShow', 'Uložit a zobrazit');
         $form->onSuccess[] = function (Form $form, $values) use ($onSuccess) {
             $onSuccess($form, $values);
         };
