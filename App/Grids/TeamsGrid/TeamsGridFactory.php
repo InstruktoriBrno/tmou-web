@@ -14,8 +14,8 @@ class TeamsGridFactory
         $this->dataGridFactory = $dataGridFactory;
     }
 
-    public function create(IDataSource $dataSource): TeamsGrid
+    public function create(int $eventNumber, IDataSource $dataSource): TeamsGrid
     {
-        return new TeamsGrid($dataSource, $this->dataGridFactory);
+        return new TeamsGrid($eventNumber, $dataSource, $this->dataGridFactory);
     }
 }
