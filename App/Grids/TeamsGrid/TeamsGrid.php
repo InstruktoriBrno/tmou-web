@@ -20,11 +20,15 @@ class TeamsGrid extends Control
     /** @var DataGridFactory */
     private $dataGridFactory;
 
-    public function __construct(IDataSource $dataSource, DataGridFactory $dataGridFactory)
+    /** @var int */
+    private $eventNumber;
+
+    public function __construct(int $eventNumber, IDataSource $dataSource, DataGridFactory $dataGridFactory)
     {
         parent::__construct();
         $this->dataSource = $dataSource;
         $this->dataGridFactory = $dataGridFactory;
+        $this->eventNumber = $eventNumber;
     }
 
     public function createComponentGrid(string $name): DataGrid
@@ -158,6 +162,13 @@ class TeamsGrid extends Control
 
 
         $grid->addExportCsv('CSV export', 'tmou-teams');
+
+        if ($this->user->isAllowed(Resource::ADMIN_TEAMS, Action::VIEW)) {
+            $grid->addToolbarButton('Teams:exportNewsletter', 'Export pro newsletter', ['eventNumber' => $this->eventNumber])
+                ->setIcon('download')
+                ->addAttributes(['title' => 'Export pro newsletter'])
+                ->setClass('btn btn-xs btn-default');
+        }
 
         if ($this->user->isAllowed(Resource::ADMIN_TEAMS, Action::DELETE)) {
             $grid->addAction('delete', '', 'Teams:delete', ['teamId' => 'id'])
