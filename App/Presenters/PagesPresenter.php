@@ -3,6 +3,7 @@ namespace InstruktoriBrno\TMOU\Presenters;
 
 use InstruktoriBrno\TMOU\Enums\Action;
 use InstruktoriBrno\TMOU\Enums\Flash;
+use InstruktoriBrno\TMOU\Enums\LoginContinueToIntents;
 use InstruktoriBrno\TMOU\Enums\ReservedSLUG;
 use InstruktoriBrno\TMOU\Enums\Resource;
 use InstruktoriBrno\TMOU\Enums\UserRole;
@@ -181,10 +182,15 @@ final class PagesPresenter extends BasePresenter
     }
 
     /** @privilege(InstruktoriBrno\TMOU\Enums\Resource::TEAM_COMMON,InstruktoriBrno\TMOU\Enums\Action::LOGIN) */
-    public function actionLogin(int $eventNumber): void
+    public function actionLogin(int $eventNumber, ?string $continueTo): void
     {
         $this->populateEventFromURL($eventNumber);
         $this->template->event = $this->event;
+        try {
+            $this->template->continueToQualification = LoginContinueToIntents::fromScalar($continueTo)->equals(LoginContinueToIntents::QUALIFICATION());
+        } catch (\Grifart\Enum\MissingValueDeclarationException $exception) {
+            $this->template->continueToQualification = false;
+        }
     }
 
     /** @privilege(InstruktoriBrno\TMOU\Enums\Resource::TEAM_COMMON,InstruktoriBrno\TMOU\Enums\Action::CHANGE_DETAILS) */
@@ -427,6 +433,15 @@ final class PagesPresenter extends BasePresenter
             try {
                 $team = ($this->teamLoginFacade)($event, $values->name, $values->password);
                 ($this->createSSOSession)($team);
+                $continueTo = $this->getParameter('continueTo');
+                try {
+                    if (LoginContinueToIntents::fromScalar($continueTo)->equals(LoginContinueToIntents::QUALIFICATION())) {
+                        $this->redirectUrl('https://kvalifikace.tmou.cz');
+                        return;
+                    }
+                } catch (\Grifart\Enum\MissingValueDeclarationException $exception) {
+                    // intentionally no-op
+                }
                 $this->flashMessage('Byli jste úspěšně přihlášeni.', Flash::SUCCESS);
                 $this->redirect('Pages:show', null, $event->getNumber());
             } catch (\InstruktoriBrno\TMOU\Facades\Teams\Exceptions\NoSuchTeamException $exception) {

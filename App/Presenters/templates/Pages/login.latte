@@ -5,10 +5,19 @@
 
     <div id="content">
         {if $user->isLoggedIn() && (int) $user->getIdentity()->eventNumber === $event->getNumber()}
-            <div class="alert alert-warning">V tomto ročníku jste právě přihlášeni.</div>
+            {if $continueToQualification}
+                <div class="alert alert-danger">Kvalfikační systém vás odkázal na přihlášení, ale zde jste již přihlášeni... Pokusili jsme se to napravit, zkuste přejít nyní na <a href="https://kvalifikace.tmou.cz">kvalifikační systém</a> a pokud se znovu ocitnete zde, kontaktujte organizátory.</div>
+            {else}
+                <div class="alert alert-warning">V tomto ročníku jste právě přihlášeni.</div>
+            {/if}
         {else}
             {if $user->isLoggedIn() && (int) $user->getIdentity()->eventNumber !== $event->getNumber()}
                 <div class="alert alert-warning">Aktuálně jste přihlášeni v {$user->getIdentity()->eventNumber}. ročníku. Přihlášením zde budete odhlášeni a přihlášeni do {$event->getNumber()}. ročníku.</div>
+            {/if}
+            {if $continueToQualification}
+                <div class="alert alert-info">
+                    Po přihlášení budete automaticky přesměrování zpátky kvalifikačního systému.
+                </div>
             {/if}
             {control loginForm}
             Pokud jste heslo zapomněli, požádejte <a href="{plink Pages:forgottenPassword, $event->getNumber()}">o nové heslo</a>.
