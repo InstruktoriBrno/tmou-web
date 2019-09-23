@@ -187,7 +187,7 @@ final class PagesPresenter extends BasePresenter
         $this->populateEventFromURL($eventNumber);
         $this->template->event = $this->event;
         try {
-            $this->template->continueToQualification = LoginContinueToIntents::fromScalar($continueTo)->equals(LoginContinueToIntents::QUALIFICATION());
+            $this->template->continueToQualification = LoginContinueToIntents::fromScalar($continueTo ?? '')->equals(LoginContinueToIntents::QUALIFICATION());
         } catch (\Grifart\Enum\MissingValueDeclarationException $exception) {
             $this->template->continueToQualification = false;
         }
