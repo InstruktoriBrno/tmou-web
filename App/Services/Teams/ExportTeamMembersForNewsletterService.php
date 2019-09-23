@@ -6,7 +6,7 @@ use InstruktoriBrno\TMOU\Model\Event;
 use InstruktoriBrno\TMOU\Model\TeamMember;
 use Ublaboo\Responses\CSVResponse;
 
-class ExportTeamMembersForNewsletter
+class ExportTeamMembersForNewsletterService
 {
     /** @var EntityManagerInterface */
     private $entityManager;
@@ -44,7 +44,7 @@ class ExportTeamMembersForNewsletter
             }
             $records[] = [
                 $member->getFullName(),
-                $member->getEmail()
+                $member->getEmail(),
             ];
         }
         return new CSVResponse($records, 'export-newsletter.csv');

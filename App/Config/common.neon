@@ -110,7 +110,8 @@ services:
     - InstruktoriBrno\TMOU\Facades\Teams\InvalidateSSOSession(%sso.cookieName%, %sso.cookieDomain%)
     - InstruktoriBrno\TMOU\Commands\CleanSSOSessionsCommand
     - InstruktoriBrno\TMOU\Facades\Teams\CleanSSOSessions
-    - InstruktoriBrno\TMOU\Services\Teams\ExportTeamMembersForNewsletter
+    - InstruktoriBrno\TMOU\Services\Teams\ExportTeamMembersForNewsletterService
+    - InstruktoriBrno\TMOU\Services\Teams\ExportAllTeamsService
 
 extensions:
     nextras.form: Nextras\Forms\Bridges\NetteDI\FormsExtension
