@@ -1,8 +1,10 @@
 <?php declare(strict_types=1);
 namespace InstruktoriBrno\TMOU\Facades\Teams;
 
+use Doctrine\ORM\EntityManagerInterface;
 use InstruktoriBrno\TMOU\Model\Event;
 use InstruktoriBrno\TMOU\Model\Team;
+use InstruktoriBrno\TMOU\Services\System\GameClockService;
 use InstruktoriBrno\TMOU\Services\Teams\FindTeamByNameService;
 use Nette\Security\User;
 
@@ -14,12 +16,22 @@ class TeamLoginFacade
     /** @var User */
     private $user;
 
+    /** @var EntityManagerInterface */
+    private $entityManager;
+
+    /** @var GameClockService */
+    private $gameClockService;
+
     public function __construct(
         FindTeamByNameService $deleteEventService,
-        User $user
+        User $user,
+        EntityManagerInterface $entityManager,
+        GameClockService $gameClockService
     ) {
         $this->findTeamByNameService = $deleteEventService;
         $this->user = $user;
+        $this->entityManager = $entityManager;
+        $this->gameClockService = $gameClockService;
     }
 
     /**
@@ -44,6 +56,10 @@ class TeamLoginFacade
         if (!$team->checkPassword($password)) {
             throw new \InstruktoriBrno\TMOU\Facades\Teams\Exceptions\InvalidTeamPasswordException;
         }
+
+        $team->touchLoggedAt($this->gameClockService->get());
+        $this->entityManager->persist($team);
+        $this->entityManager->flush();
 
         $identity = $team->toIdentity();
         try {

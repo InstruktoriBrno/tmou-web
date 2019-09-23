@@ -266,6 +266,56 @@ legend {
     @apply w-full bg-white p-2 !important
 }
 
+.datagrid a.btn {
+    padding: 4px 5px;
+    text-decoration: none;
+}
+
+.datagrid .fa-gear::before {
+    content: ""; /* Replace with fa-cog */
+}
+
+.datagrid .fa-check-square-o::before {
+    content: ""; /* Replace with fa-check-square */
+}
+
+.datagrid .fa-square-o::before {
+    content: ""; /* Replace with fa-square */
+}
+
+.datagrid .fa-repeat::before {
+    content: ""; /* Replace with fa-redo */
+}
+
+.datagrid input[type=text] {
+    @apply px-0;
+}
+
+.datagrid .show {
+    display: block;
+}
+
+.datagrid-settings ul,
+.datagrid-column-header-additions ul {
+    text-align: left;
+    list-style-type: none !important;
+}
+
+.datagrid-settings ul li,
+.datagrid-column-header-additions ul li {
+    margin-left: 0;
+}
+
+.datagrid-settings ul.dropdown-menu,
+.datagrid-column-header-additions ul.dropdown-menu {
+    padding: 5px;
+}
+
+.datagrid-settings ul li a,
+.datagrid-column-header-additions ul li a {
+    text-decoration: none;
+}
+
 /* Make links underlined in page content (white blocks) */
 .page-content a {
     @apply underline
