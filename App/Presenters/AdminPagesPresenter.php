@@ -132,6 +132,11 @@ final class AdminPagesPresenter extends BasePresenter
                 if ($sendAndStay->isSubmittedBy()) {
                     $this->redirect('AdminPages:edit', $page->getId());
                 }
+                /** @var SubmitButton $sendAndShow */
+                $sendAndShow = $form['sendAndShow'];
+                if ($sendAndShow->isSubmittedBy()) {
+                    $this->redirect('Pages:show', $page->getSlug(), $page->getEvent() !== null ? $page->getEvent()->getNumber() : null);
+                }
                 $this->redirect('AdminPages:', $page->getEvent() !== null ? $page->getEvent()->getNumber() : null);
             } catch (\InstruktoriBrno\TMOU\Model\Exceptions\SLUGTooLongException $e) {
                 /** @var TextInput $input */

@@ -1,6 +1,7 @@
 <?php declare(strict_types=1);
 namespace InstruktoriBrno\TMOU\Utils;
 
+use Nette\Utils\Random;
 use function in_array;
 use InstruktoriBrno\TMOU\Services\Events\EventMacroDataProvider;
 use InstruktoriBrno\TMOU\Services\System\GameClockService;
@@ -100,6 +101,27 @@ Objeví se pouze nekvalifikovaným týmům.
 /---reveal to playing teams
 Objeví se pouze hrajícím týmům.
 \---
+
+/---hidden
+Toto se objeví pouze poté co uživatel zmáčkne tlačítko "Zobrazit"
+\---
+
+/---hidden řešení
+Toto se objeví pouze poté co uživatel zmáčkne tlačítko "Zobrazit řešení"
+\---
+
+Zanořování specifických bloků pro TMOU
+**************************************
+
+Zanořování výše uvedených bloků je možné, ale doporučujeme se mu výhýbat, protože působí potíže a může vést k nepřekládaným výsledkům.
+V případě použití je tedy doporučované důsledné testování.
+
+Při zanořování je potřeba dodržovat následující pravidla:
+1. Odřádkování (tak jak je vidět výše)
+2. Stejná uvozující a ukončující sekvence (tzn. /---- a \----)
+3. Vnější bloky musí více - než bloky vnitřní. Minimální počet je 3.
+4. Bloky pro odhalení týmům na základě stavu nelze zanořovat do sebe (tým může mít jen jeden stav) do ostatních zanořit lze.
+
 
 Specifická makra pro TMOU
 *************************
@@ -359,7 +381,7 @@ TMOU:event_team_changes_deadline:
                 if ($toDate !== null && $current > $toDate) {
                     return '';
                 }
-                return $matches[4];
+                return $this->preprocessRevealBlocks($matches[4]);
             },
             $value
         );
@@ -369,7 +391,7 @@ TMOU:event_team_changes_deadline:
     /**
      * Preprocess reveal blocks which are revealed to teams in given status as Texy cannot add regexes with "s"
      *
-     * /--- reveal (registered|qualified|playing) teams
+     * /--- reveal to (registered|qualified|playing) teams
      * content
      * \---
      */
@@ -390,8 +412,33 @@ TMOU:event_team_changes_deadline:
         return $output ?? '';
     }
 
+    /**
+     * Preprocess hidden blocks which are revealed to user after click on proper button
+     *
+     * /---hidden
+     * content
+     * \---
+     * @param string $value
+     * @return string
+     */
+    private function preprocessHiddenBlocks(string $value): string
+    {
+        $regex = '#/(--++) *+hidden(.*)\\n(.*)$\n\\\\\\1#miuUs';
+        $output = preg_replace_callback(
+            $regex,
+            function ($matches) {
+                $key = Random::generate();
+                $output = sprintf('<a href="#hidden-%s" class="btn btn-primary collapse-toggle" title="%s" type="button">Zobrazit %s</a>', $key, $matches[2], $matches[2]);
+                $output .= sprintf('<div id="hidden-%s" class="collapse">%s</div>', $key, $this->preprocessHiddenBlocks($matches[3]));
+                return $output;
+            },
+            $value
+        );
+        return $output ?? '';
+    }
+
     public function __invoke(string $value): LatteHtml
     {
-        return new LatteHtml($this->getTexy()->process($this->preprocessRevealBlocks($this->preprocessRevealTeamsBlocks($value))));
+        return new LatteHtml($this->getTexy()->process($this->preprocessHiddenBlocks($this->preprocessRevealBlocks($this->preprocessRevealTeamsBlocks($value)))));
     }
 }

@@ -333,4 +333,24 @@ legend {
     transform: translateZ(-2px) translateY(-30vh) scale(3);
 }
 
+.collapse {
+    margin-top: 1rem;
+    margin-bottom: 2rem;
+    display: block;
+    max-height: 0;
+    overflow: hidden;
+    transition: max-height .5s cubic-bezier(0, 1, 0, 1);
+}
+
+.collapse.show {
+    max-height: 99em;
+    transition: max-height .5s ease-in-out;
+    overflow: visible;
+}
+
+a.collapse-toggle {
+    display: inline-block;
+    text-decoration: none;
+}
+
 /*! purgecss end ignore */
