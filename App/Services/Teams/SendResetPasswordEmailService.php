@@ -34,7 +34,7 @@ class SendResetPasswordEmailService
     public function __invoke(Team $team, PasswordResetTokenVO $token): void
     {
         $message = new Message();
-        $message->setFrom($this->mailFromNoReply, 'TMOU (neodpovídat)');
+        $message->setFrom($this->mailFromNoReply, 'TMOU');
         $message->addReplyTo($this->mailReplyTo, 'TMOU');
         $message->addTo($team->getEmail(), $team->getName());
         $message->setSubject(sprintf('[TMOU %s] Žádost o nové heslo týmu %s', $team->getEvent()->getNumber(), $team->getName()));

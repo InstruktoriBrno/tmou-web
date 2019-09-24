@@ -28,7 +28,7 @@ class SendRegistrationEmailService
     public function __invoke(Team $team): void
     {
         $message = new Message();
-        $message->setFrom($this->mailFromNoReply, 'TMOU (neodpovídat)');
+        $message->setFrom($this->mailFromNoReply, 'TMOU');
         $message->addReplyTo($this->mailReplyTo, 'TMOU');
         $message->addTo($team->getEmail(), $team->getName());
         $message->setSubject(sprintf('[TMOU %s] Registrace týmu %s', $team->getEvent()->getNumber(), $team->getName()));
