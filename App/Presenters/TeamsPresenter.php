@@ -9,6 +9,8 @@ use InstruktoriBrno\TMOU\Forms\ConfirmFormFactory;
 use InstruktoriBrno\TMOU\Grids\TeamsGrid\TeamsGrid;
 use InstruktoriBrno\TMOU\Grids\TeamsGrid\TeamsGridFactory;
 use InstruktoriBrno\TMOU\Services\Events\FindEventByNumberService;
+use InstruktoriBrno\TMOU\Services\Teams\ExportAllTeamsService;
+use InstruktoriBrno\TMOU\Services\Teams\ExportTeamMembersForNewsletterService;
 use InstruktoriBrno\TMOU\Services\Teams\FindTeamService;
 use InstruktoriBrno\TMOU\Services\Teams\FindTeamsOfEventForDataGridService;
 use InstruktoriBrno\TMOU\Services\Teams\TransformBackFromImpersonatedIdentity;
@@ -45,6 +47,12 @@ final class TeamsPresenter extends BasePresenter
     /** @var TransformBackFromImpersonatedIdentity @inject */
     public $transformBackFromImpersonatedIdentity;
 
+    /** @var ExportTeamMembersForNewsletterService @inject */
+    public $exportTeamMembersForNewsletter;
+
+    /** @var ExportAllTeamsService @inject */
+    public $exportAllTeamsService;
+
     /** @privilege(InstruktoriBrno\TMOU\Enums\Resource::ADMIN_TEAMS,InstruktoriBrno\TMOU\Enums\Action::VIEW) */
     public function actionDefault(int $eventNumber): void
     {
@@ -53,6 +61,26 @@ final class TeamsPresenter extends BasePresenter
             throw new \Nette\Application\BadRequestException("No such event with number [${eventNumber}].");
         }
         $this->template->event = $event;
+    }
+
+    /** @privilege(InstruktoriBrno\TMOU\Enums\Resource::ADMIN_TEAMS,InstruktoriBrno\TMOU\Enums\Action::EDIT) */
+    public function actionExport(int $eventNumber): void
+    {
+        $event = ($this->findEventServiceByNumber)($eventNumber);
+        if ($event === null) {
+            throw new \Nette\Application\BadRequestException("No such event with number [${eventNumber}].");
+        }
+        $this->sendResponse(($this->exportAllTeamsService)($event));
+    }
+
+    /** @privilege(InstruktoriBrno\TMOU\Enums\Resource::ADMIN_TEAMS,InstruktoriBrno\TMOU\Enums\Action::EDIT) */
+    public function actionExportNewsletter(int $eventNumber): void
+    {
+        $event = ($this->findEventServiceByNumber)($eventNumber);
+        if ($event === null) {
+            throw new \Nette\Application\BadRequestException("No such event with number [${eventNumber}].");
+        }
+        $this->sendResponse(($this->exportTeamMembersForNewsletter)($event));
     }
 
     /** @privilege(InstruktoriBrno\TMOU\Enums\Resource::ADMIN_TEAMS,InstruktoriBrno\TMOU\Enums\Action::DELETE) */
@@ -116,7 +144,7 @@ final class TeamsPresenter extends BasePresenter
         if ($event === null) {
             throw new \Nette\Application\BadRequestException("No such event with number [${eventNumber}].");
         }
-        return $this->teamsGridFactory->create(($this->findTeamsOfEventForDataGridService)($event));
+        return $this->teamsGridFactory->create($eventNumber, ($this->findTeamsOfEventForDataGridService)($event));
     }
 
     public function createComponentConfirmForm(): Form

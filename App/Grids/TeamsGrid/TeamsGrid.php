@@ -20,11 +20,15 @@ class TeamsGrid extends Control
     /** @var DataGridFactory */
     private $dataGridFactory;
 
-    public function __construct(IDataSource $dataSource, DataGridFactory $dataGridFactory)
+    /** @var int */
+    private $eventNumber;
+
+    public function __construct(int $eventNumber, IDataSource $dataSource, DataGridFactory $dataGridFactory)
     {
         parent::__construct();
         $this->dataSource = $dataSource;
         $this->dataGridFactory = $dataGridFactory;
+        $this->eventNumber = $eventNumber;
     }
 
     public function createComponentGrid(string $name): DataGrid
@@ -32,11 +36,16 @@ class TeamsGrid extends Control
         $grid = $this->dataGridFactory->create($this, $name);
 
         $grid->setDefaultPerPage(100);
+        $grid->setItemsPerPageList([50, 100, 200, 500]);
+        $grid->setColumnsHideable();
+        $grid->setRememberState(true);
 
         $grid->setDataSource($this->dataSource);
         $grid->addColumnNumber('id', 'ID')
+            ->setSortable()
             ->setFilterText();
         $grid->addColumnNumber('number', 'Číslo')
+            ->setSortable()
             ->setFilterText();
 
         $grid->addColumnText('gameStatus', 'Stav')
@@ -55,7 +64,14 @@ class TeamsGrid extends Control
                     return Html::el('span class="badge badge-xs badge-danger"')->setText('Nekvalifikován');
                 }
                 return null;
-            });
+            })
+            ->setFilterSelect([
+                null => 'Libovolný',
+                GameStatus::REGISTERED()->toScalar() => 'Registrován',
+                GameStatus::QUALIFIED()->toScalar() => 'Kvalifikován',
+                GameStatus::NOT_QUALIFIED()->toScalar() => 'Nekvalifikován',
+                GameStatus::PLAYING()->toScalar() => 'Hraje',
+            ]);
         $grid->addColumnText('paymentStatus', 'Platba')
             ->setRenderer(function (Team $team) {
                 $status = $team->getPaymentStatus();
@@ -66,21 +82,100 @@ class TeamsGrid extends Control
                     return Html::el('span class="badge badge-xs badge-success"')->setText('Ano')->setAttribute('title', $team->getPaymentPairedAt()->format('j. n. Y H:i:s'));
                 }
                 return null;
-            });
+            })
+            ->setFilterSelect([
+                null => 'Libovolný',
+                PaymentStatus::NOT_PAID()->toScalar() => 'Nezaplaceno',
+                PaymentStatus::PAID()->toScalar() => 'Zaplaceno',
+            ]);
 
         $grid->addColumnText('name', 'Jméno')
+            ->setSortable()
             ->setFilterText();
 
         $grid->addColumnText('email', 'E-mail')
+            ->setSortable()
             ->setFilterText();
         $grid->addColumnText('phone', 'Telefon')
+            ->setSortable()
             ->setFilterText();
-        $grid->addColumnText('phrase', 'Tajná fráze');
+        $grid->addColumnText('phrase', 'Tajná fráze')
+            ->setFilterText();
+
+
+        $grid->addColumnDateTime('registeredAt', 'Registrován')
+            ->setFormat('j.n.Y H:i:s')
+            ->setDefaultHide(true)
+            ->setSortable();
+        $grid->addColumnDateTime('lastUpdatedAt', 'Poslední změna')
+            ->setFormat('j.n.Y H:i:s')
+            ->setSortable();
+        $grid->addColumnDateTime('lastLoggedAt', 'Poslední přihlášení')
+            ->setFormat('j.n.Y H:i:s')
+            ->setSortable();
+
+        $grid->addColumnText('member1', '1. člen')
+            ->setRenderer(function (Team $team) {
+                $member = $team->getTeamMember(1);
+                if ($member !== null) {
+                    return $member->getFullName();
+                }
+                return null;
+            })
+            ->setDefaultHide(true);
+        $grid->addColumnText('member2', '2. člen')
+            ->setRenderer(function (Team $team) {
+                $member = $team->getTeamMember(2);
+                if ($member !== null) {
+                    return $member->getFullName();
+                }
+                return null;
+            })
+            ->setDefaultHide(true);
+        $grid->addColumnText('member3', '3. člen')
+            ->setRenderer(function (Team $team) {
+                $member = $team->getTeamMember(3);
+                if ($member !== null) {
+                    return $member->getFullName();
+                }
+                return null;
+            })
+            ->setDefaultHide(true);
+        $grid->addColumnText('member4', '4. člen')
+            ->setRenderer(function (Team $team) {
+                $member = $team->getTeamMember(4);
+                if ($member !== null) {
+                    return $member->getFullName();
+                }
+                return null;
+            })
+            ->setDefaultHide(true);
+        $grid->addColumnText('member5', '5. člen')
+            ->setRenderer(function (Team $team) {
+                $member = $team->getTeamMember(5);
+                if ($member !== null) {
+                    return $member->getFullName();
+                }
+                return null;
+            })
+            ->setDefaultHide(true);
+
 
         $grid->addExportCsv('CSV export', 'tmou-teams');
 
-        $grid->addColumnDateTime('registeredAt', 'Registrován');
-        $grid->addColumnDateTime('lastLoggedAt', 'Poslední přihlášení');
+        if ($this->user->isAllowed(Resource::ADMIN_TEAMS, Action::VIEW)) {
+            $grid->addToolbarButton('Teams:export', 'Export detailní', ['eventNumber' => $this->eventNumber])
+                ->setIcon('download')
+                ->addAttributes(['title' => 'Detailní export'])
+                ->setClass('btn btn-xs btn-default');
+        }
+
+        if ($this->user->isAllowed(Resource::ADMIN_TEAMS, Action::VIEW)) {
+            $grid->addToolbarButton('Teams:exportNewsletter', 'Export pro newsletter', ['eventNumber' => $this->eventNumber])
+                ->setIcon('download')
+                ->addAttributes(['title' => 'Export pro newsletter'])
+                ->setClass('btn btn-xs btn-default');
+        }
 
         if ($this->user->isAllowed(Resource::ADMIN_TEAMS, Action::DELETE)) {
             $grid->addAction('delete', '', 'Teams:delete', ['teamId' => 'id'])
