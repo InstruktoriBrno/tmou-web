@@ -5,7 +5,9 @@
     </div>
 
     <div id="content">
-        {$page->getContent()|texy}
+        {cache $page->getLastUpdatedAt(), expire => '1 day'}
+            {$page->getContent()|texy}
+        {/cache}
 
         <p><small>Poslední úprava: {$page->getLastUpdatedAt()|date:'j. n. Y H:i'}</small></p>
     </div>
