@@ -253,7 +253,7 @@ legend {
 }
 
 .bg-fail-tmou {
-    @apply bg-danger-tmou
+    background-color: #da4e4c;
 }
 
 
