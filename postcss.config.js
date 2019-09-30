@@ -5,7 +5,7 @@ const purgecss = require('@fullhuman/postcss-purgecss')({
         'App/**/*.latte'
     ],
     defaultExtractor: content => content.match(/[A-Za-z0-9-_:/]+/g) || [],
-    whitelist: ['tracy-debug-bar']
+    whitelist: ['tracy-debug-bar', 'bg-success-tmou']
 })
 
 module.exports = {

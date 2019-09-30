@@ -243,6 +243,21 @@ legend {
     @apply rounded p-1
 }
 
+/* Tables */
+
+
+.table-responsive {
+    display: block;
+    width: 100%;
+    overflow-x: auto;
+}
+
+.bg-fail-tmou {
+    @apply bg-danger-tmou
+}
+
+
+
 /* Datagrid */
 .datagrid {
     @apply p-0 !important

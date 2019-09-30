@@ -25,7 +25,8 @@
 {*            {include menuItem.latte, link => $control->link('Pages:qualification', $event->getNumber()), label => 'Kvalifikace', selected => $control->isLinkCurrent()}*}
 {*            {include menuItem.latte, link => $control->link('Pages:qualificationStatistics', $event->getNumber()), label => 'Statistiky', selected => $control->isLinkCurrent()}*}
 {*            {include menuItem.latte, link => $control->link('Pages:qualificationAnswers', $event->getNumber()), label => 'Statistika odpovědí', selected => $control->isLinkCurrent()}*}
-{*            {include menuItem.latte, link => $control->link('Pages:show', 'qualification-jokers', $event->getNumber()), label => 'Divoké karty', selected => $control::isPageCurrentlySelected($page ?? null, 'qualification-jokers', $event->getNumber())}*}
+            {include menuItem.latte, link => $control->link('Pages:show', 'qualification-results', $event->getNumber()), label => 'Výsledky kvalifikace', selected => $control::isPageCurrentlySelected($page ?? null, 'qualification-results', $event->getNumber())}
+            {include menuItem.latte, link => $control->link('Pages:show', 'wild-card', $event->getNumber()), label => 'Divoké karty', selected => $control::isPageCurrentlySelected($page ?? null, 'wild-card', $event->getNumber())}
             {include menuItem.latte, link => $control->link('Pages:teamsQualified', $event->getNumber()), label => 'Kvalifikované týmy', selected => $control->isLinkCurrent()}
         </ul>
 
