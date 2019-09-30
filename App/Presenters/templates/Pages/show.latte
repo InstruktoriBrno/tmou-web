@@ -5,9 +5,13 @@
     </div>
 
     <div id="content">
-        {cache $page->getLastUpdatedAt(), expire => '1 day'}
+        {if $page->getSLUG() === 'qualification-results'}
+            {cache $page->getLastUpdatedAt(), expire => '1 day'}
+                {$page->getContent()|texy}
+            {/cache}
+        {else}
             {$page->getContent()|texy}
-        {/cache}
+        {/if}
 
         <p><small>Poslední úprava: {$page->getLastUpdatedAt()|date:'j. n. Y H:i'}</small></p>
     </div>
