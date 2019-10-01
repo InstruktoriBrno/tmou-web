@@ -114,6 +114,8 @@ services:
     - InstruktoriBrno\TMOU\Services\Teams\ExportAllTeamsService
     - InstruktoriBrno\TMOU\Forms\TeamBatchMailingFormFactory
     - InstruktoriBrno\TMOU\Services\Teams\FindTeamsPairsInEventService
+    - InstruktoriBrno\TMOU\Services\Teams\FindTeamsForMailingInEventService
+    - InstruktoriBrno\TMOU\Facades\Teams\BatchMailTeamsFacade(%mail.noReply%)
 
 extensions:
     nextras.form: Nextras\Forms\Bridges\NetteDI\FormsExtension

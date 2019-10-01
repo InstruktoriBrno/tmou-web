@@ -4,6 +4,7 @@ namespace InstruktoriBrno\TMOU\Presenters;
 use InstruktoriBrno\TMOU\Enums\Action;
 use InstruktoriBrno\TMOU\Enums\Flash;
 use InstruktoriBrno\TMOU\Enums\Resource;
+use InstruktoriBrno\TMOU\Facades\Teams\BatchMailTeamsFacade;
 use InstruktoriBrno\TMOU\Facades\Teams\DeleteTeamFacade;
 use InstruktoriBrno\TMOU\Forms\ConfirmFormFactory;
 use InstruktoriBrno\TMOU\Forms\TeamBatchMailingFormFactory;
@@ -57,6 +58,9 @@ final class TeamsPresenter extends BasePresenter
 
     /** @var TeamBatchMailingFormFactory @inject */
     public $teamBatchMailingFormFactory;
+
+    /** @var BatchMailTeamsFacade @inject */
+    public $batchMailTeamsFacade;
 
     /** @privilege(InstruktoriBrno\TMOU\Enums\Resource::ADMIN_TEAMS,InstruktoriBrno\TMOU\Enums\Action::VIEW) */
     public function actionDefault(int $eventNumber): void
@@ -198,7 +202,14 @@ final class TeamsPresenter extends BasePresenter
         if ($event === null) {
             throw new \Nette\Application\BadRequestException("No such event with number [${eventNumber}].");
         }
-        return $this->teamBatchMailingFormFactory->create(function (Form $form, $values) {
+        return $this->teamBatchMailingFormFactory->create(function (Form $form, $values) use ($event) {
+            try {
+                [$sent, $failed] = ($this->batchMailTeamsFacade)($values, $event);
+                $this->flashMessage(sprintf('Hromadný e-mail byl úspěšně rozeslán %d adres, %d selhalo.', $sent, $failed), Flash::SUCCESS);
+            } catch (\Exception $exception) {
+                Debugger::log($exception, ILogger::EXCEPTION);
+                $form->addError('Hromadné odeslání selhalo. Více informací je uloženo v logu webu.');
+            }
         }, $event);
     }
 }

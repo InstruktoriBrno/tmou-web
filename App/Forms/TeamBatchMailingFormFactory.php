@@ -34,8 +34,10 @@ class TeamBatchMailingFormFactory
             GameStatus::PLAYING()->toScalar() => 'Hrající',
         ], 5);
         $form->addMultiSelect('teams', 'Týmy', ($this->findTeamsPairsInEventService)($event), 20);
+        $form->addText('subject', 'Předmět')
+            ->setRequired('Vyplňte, prosím, předmět e-mailu.');
         $form->addTextArea('content', 'Obsah', 50, 20)
-            ->setRequired('Vyplňte, prosím, obsah stránky');
+            ->setRequired('Vyplňte, prosím, obsah e-mailu.');
 
         $form->addPrimarySubmit('send', 'Rozeslat');
         $form->onSuccess[] = function (Form $form, $values) use ($onSuccess) {
