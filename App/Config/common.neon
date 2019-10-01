@@ -14,6 +14,9 @@ parameters:
         cookieName: TMOU_SSO
         cookieDomain: tmou.test
         expiration: '+14 days' # should be same as session.expiration below
+    mailgun:
+        apiKey:
+        apiBaseUrl:
 
 recaptcha:
     siteKey: 6LdVSJwUAAAAAOBUowvrUg3I6JzKbbX22WDGwVso
