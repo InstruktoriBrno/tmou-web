@@ -6,6 +6,7 @@ use InstruktoriBrno\TMOU\Enums\GameStatus;
 use InstruktoriBrno\TMOU\Model\Event;
 use InstruktoriBrno\TMOU\Model\Team;
 use InstruktoriBrno\TMOU\Services\Events\EventMacroDataProvider;
+use InstruktoriBrno\TMOU\Services\System\MailgunSenderService;
 use InstruktoriBrno\TMOU\Services\Teams\FindTeamService;
 use InstruktoriBrno\TMOU\Services\Teams\FindTeamsForMailingInEventService;
 use InstruktoriBrno\TMOU\Services\Teams\TeamMacroDataProvider;
@@ -32,13 +33,17 @@ class BatchMailTeamsFacade
     /** @var TemplateFactory */
     private $templateFactory;
 
+    /** @var MailgunSenderService */
+    private $mailgunSenderService;
+
     public function __construct(
         string $emailFrom,
         FindTeamsForMailingInEventService $findTeamsForMailingInEventService,
         FindTeamService $findTeamService,
         EventMacroDataProvider $eventMacroDataProvider,
         TeamMacroDataProvider $teamMacroDataProvider,
-        TemplateFactory $templateFactory
+        TemplateFactory $templateFactory,
+        MailgunSenderService $mailgunSenderService
     ) {
         $this->findTeamsForMailingInEventService = $findTeamsForMailingInEventService;
         $this->findTeamService = $findTeamService;
@@ -46,6 +51,7 @@ class BatchMailTeamsFacade
         $this->teamMacroDataProvider = $teamMacroDataProvider;
         $this->emailFrom = $emailFrom;
         $this->templateFactory = $templateFactory;
+        $this->mailgunSenderService = $mailgunSenderService;
     }
 
     /**
@@ -101,8 +107,12 @@ class BatchMailTeamsFacade
             $template->setParameters(['content' => $content, 'subject' => $subject]);
             $message->setHtmlBody($template->renderToString());
 
-            // TODO sending
-            $sent += 1;
+            $result = $this->mailgunSenderService->sendNetteMessage($message);
+            if ($result) {
+                $sent += 1;
+            } else {
+                $failed += 1;
+            }
         }
         return [$sent, $failed];
     }
