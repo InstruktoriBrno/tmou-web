@@ -33,7 +33,11 @@
 		"stevenmaguire/oauth2-keycloak": "dev-master",
 		"ramsey/uuid-doctrine": "^1.5",
 		"grifart/enum": "^0.2.0",
-		"texy/texy": "^3.0"
+		"texy/texy": "^3.0",
+		"mailgun/mailgun-php": "^3.0",
+		"psr/http-factory": "^1.0",
+		"nyholm/psr7": "^1.2",
+		"kriswallsmith/buzz": "^1.0"
 	},
 	"require-dev": {
 		"squizlabs/php_codesniffer": "3.*",

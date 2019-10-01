@@ -14,6 +14,10 @@ parameters:
         cookieName: TMOU_SSO
         cookieDomain: tmou.test
         expiration: '+14 days' # should be same as session.expiration below
+    mailgun:
+        apiKey:
+        apiBaseUrl:
+        domain:
 
 recaptcha:
     siteKey: 6LdVSJwUAAAAAOBUowvrUg3I6JzKbbX22WDGwVso
@@ -112,6 +116,11 @@ services:
     - InstruktoriBrno\TMOU\Facades\Teams\CleanSSOSessions
     - InstruktoriBrno\TMOU\Services\Teams\ExportTeamMembersForNewsletterService
     - InstruktoriBrno\TMOU\Services\Teams\ExportAllTeamsService
+    - InstruktoriBrno\TMOU\Forms\TeamBatchMailingFormFactory
+    - InstruktoriBrno\TMOU\Services\Teams\FindTeamsPairsInEventService
+    - InstruktoriBrno\TMOU\Services\Teams\FindTeamsForMailingInEventService
+    - InstruktoriBrno\TMOU\Facades\Teams\BatchMailTeamsFacade(%mail.noReply%)
+    - InstruktoriBrno\TMOU\Services\System\MailgunSenderService(%mailgun.apiKey%, %mailgun.apiBaseUrl%, %mailgun.domain%)
 
 extensions:
     nextras.form: Nextras\Forms\Bridges\NetteDI\FormsExtension
