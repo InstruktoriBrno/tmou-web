@@ -21,6 +21,7 @@ final class Action extends Enum
     public const FORGOTTEN_PASSWORD = 'forgotten_password';
     public const RESET_PASSWORD = 'reset_password';
     public const CHANGE_DETAILS = 'change_details';
+    public const BATCH_MAIL = 'batch_mail';
 
     public const QUALIFICATION = 'qualification';
 

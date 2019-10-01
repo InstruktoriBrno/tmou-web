@@ -1,10 +1,10 @@
 {block content}
     <div id="banner">
-        <h1 n:block=title>Týmy {$event->getNumber()}. ročníku</h1>
+        <h1 n:block=title>Hromadné mailování {$event->getNumber()}. ročníku</h1>
     </div>
 
     <div id="content">
-        {control teamsGrid}
+
         <a href="{plink AdminPages:, $event->getNumber()}"><i class="fas fa-arrow-left"></i> Seznam stránek {$event->getNumber()}. ročníku</a><br>
         <a href="{plink Events:}"><i class="fas fa-arrow-left"></i> Seznam ročníků</a><br>
     </div>

@@ -163,6 +163,13 @@ class TeamsGrid extends Control
 
         $grid->addExportCsv('CSV export', 'tmou-teams');
 
+        if ($this->user->isAllowed(Resource::ADMIN_TEAMS, Action::BATCH_MAIL)) {
+            $grid->addToolbarButton('Teams:batchMail', 'Hromadné mailování', ['eventNumber' => $this->eventNumber])
+                ->setIcon('envelope')
+                ->addAttributes(['title' => 'Hromadné mailování'])
+                ->setClass('btn btn-xs btn-default');
+        }
+
         if ($this->user->isAllowed(Resource::ADMIN_TEAMS, Action::VIEW)) {
             $grid->addToolbarButton('Teams:export', 'Export detailní', ['eventNumber' => $this->eventNumber])
                 ->setIcon('download')

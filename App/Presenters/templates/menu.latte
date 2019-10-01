@@ -75,6 +75,11 @@
                         <span class="pb-1 md:pb-0 text-base font-semibold">Týmy {$event->getNumber()}. ročníku</span>
                     </a>
                 </li>
+                <li class="py-1 md:my-0 lg:hover:bg-transparent rounded-sm">
+                    <a href="{plink Teams:batchMail, $event->getNumber()}" class="block pl-4 align-middle text-gray-800 no-underline hover:text-black border-l-4 border-transparent lg:hover:border-black">
+                        <span class="pb-1 md:pb-0 text-base font-semibold">Mailování {$event->getNumber()}. ročníku</span>
+                    </a>
+                </li>
                 <li class="py-1 lg:hover:bg-transparent rounded-sm mb-4">
                     <a href="{plink AdminPages:, $event->getNumber()}" class="block pl-4 align-middle text-gray-800 no-underline hover:text-black border-l-4 border-transparent lg:hover:border-black">
                         <span class="pb-1 md:pb-0 text-base font-semibold">Stránky {$event->getNumber()}. ročníku</span>

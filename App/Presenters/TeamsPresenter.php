@@ -63,6 +63,16 @@ final class TeamsPresenter extends BasePresenter
         $this->template->event = $event;
     }
 
+    /** @privilege(InstruktoriBrno\TMOU\Enums\Resource::ADMIN_TEAMS,InstruktoriBrno\TMOU\Enums\Action::VIEW) */
+    public function actionBatchMail(int $eventNumber): void
+    {
+        $event = ($this->findEventServiceByNumber)($eventNumber);
+        if ($event === null) {
+            throw new \Nette\Application\BadRequestException("No such event with number [${eventNumber}].");
+        }
+        $this->template->event = $event;
+    }
+
     /** @privilege(InstruktoriBrno\TMOU\Enums\Resource::ADMIN_TEAMS,InstruktoriBrno\TMOU\Enums\Action::EDIT) */
     public function actionExport(int $eventNumber): void
     {
