@@ -112,6 +112,8 @@ services:
     - InstruktoriBrno\TMOU\Facades\Teams\CleanSSOSessions
     - InstruktoriBrno\TMOU\Services\Teams\ExportTeamMembersForNewsletterService
     - InstruktoriBrno\TMOU\Services\Teams\ExportAllTeamsService
+    - InstruktoriBrno\TMOU\Forms\TeamBatchMailingFormFactory
+    - InstruktoriBrno\TMOU\Services\Teams\FindTeamsPairsInEventService
 
 extensions:
     nextras.form: Nextras\Forms\Bridges\NetteDI\FormsExtension

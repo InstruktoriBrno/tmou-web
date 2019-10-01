@@ -6,6 +6,7 @@ use InstruktoriBrno\TMOU\Enums\Flash;
 use InstruktoriBrno\TMOU\Enums\Resource;
 use InstruktoriBrno\TMOU\Facades\Teams\DeleteTeamFacade;
 use InstruktoriBrno\TMOU\Forms\ConfirmFormFactory;
+use InstruktoriBrno\TMOU\Forms\TeamBatchMailingFormFactory;
 use InstruktoriBrno\TMOU\Grids\TeamsGrid\TeamsGrid;
 use InstruktoriBrno\TMOU\Grids\TeamsGrid\TeamsGridFactory;
 use InstruktoriBrno\TMOU\Services\Events\FindEventByNumberService;
@@ -15,6 +16,7 @@ use InstruktoriBrno\TMOU\Services\Teams\FindTeamService;
 use InstruktoriBrno\TMOU\Services\Teams\FindTeamsOfEventForDataGridService;
 use InstruktoriBrno\TMOU\Services\Teams\TransformBackFromImpersonatedIdentity;
 use InstruktoriBrno\TMOU\Services\Teams\TransformToImpersonatedIdentity;
+use InstruktoriBrno\TMOU\Utils\TexyFilter;
 use Nette\Application\UI\Form;
 use Nette\Forms\Controls\SubmitButton;
 use Nette\Security\Identity;
@@ -53,6 +55,9 @@ final class TeamsPresenter extends BasePresenter
     /** @var ExportAllTeamsService @inject */
     public $exportAllTeamsService;
 
+    /** @var TeamBatchMailingFormFactory @inject */
+    public $teamBatchMailingFormFactory;
+
     /** @privilege(InstruktoriBrno\TMOU\Enums\Resource::ADMIN_TEAMS,InstruktoriBrno\TMOU\Enums\Action::VIEW) */
     public function actionDefault(int $eventNumber): void
     {
@@ -71,6 +76,7 @@ final class TeamsPresenter extends BasePresenter
             throw new \Nette\Application\BadRequestException("No such event with number [${eventNumber}].");
         }
         $this->template->event = $event;
+        $this->template->help = TexyFilter::getSyntaxHelp();
     }
 
     /** @privilege(InstruktoriBrno\TMOU\Enums\Resource::ADMIN_TEAMS,InstruktoriBrno\TMOU\Enums\Action::EDIT) */
@@ -183,5 +189,16 @@ final class TeamsPresenter extends BasePresenter
                 $this->redirect('Teams:', $team->getEvent()->getNumber());
             }
         });
+    }
+
+    public function createComponentBatchMailing(): Form
+    {
+        $eventNumber = (int) $this->getParameter('eventNumber');
+        $event = ($this->findEventServiceByNumber)($eventNumber);
+        if ($event === null) {
+            throw new \Nette\Application\BadRequestException("No such event with number [${eventNumber}].");
+        }
+        return $this->teamBatchMailingFormFactory->create(function (Form $form, $values) {
+        }, $event);
     }
 }

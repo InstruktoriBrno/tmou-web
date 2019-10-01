@@ -4,6 +4,11 @@
     </div>
 
     <div id="content">
+        <p>Vyberte kterým konkrétním týmům chcete hromadný e-mail zaslat nebo zobecněte výběr pomocí výběru celého stavu týmu &ndash; můžete vybrat více hodnot pomocí klávesy CTRL. Výběr e-mailů bude spojen a deduplikován. Můžete použít Texy formátování, ale používejte ho s rozvahou.</p>
+        {control batchMailing}
+
+        <h2>Nápověda</h2>
+        {$help}
 
         <a href="{plink AdminPages:, $event->getNumber()}"><i class="fas fa-arrow-left"></i> Seznam stránek {$event->getNumber()}. ročníku</a><br>
         <a href="{plink Events:}"><i class="fas fa-arrow-left"></i> Seznam ročníků</a><br>

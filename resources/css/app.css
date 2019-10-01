@@ -154,6 +154,10 @@ select.form-control {
     font-size: 100%;
 }
 
+select.form-control[multiple] {
+    background: transparent;
+}
+
 textarea {
     font-size: 100%;
 }
