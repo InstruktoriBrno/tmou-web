@@ -5,6 +5,15 @@
 
     <div id="content">
         <p>Vyberte kterým konkrétním týmům chcete hromadný e-mail zaslat nebo zobecněte výběr pomocí výběru celého stavu týmu &ndash; můžete vybrat více hodnot pomocí klávesy CTRL. Výběr e-mailů bude spojen a deduplikován. Můžete použít Texy formátování, ale používejte ho s rozvahou.</p>
+
+        {ifset $previews}
+            {foreach $previews as $preview}
+                <iframe id="preview-{$iterator->counter}"></iframe>
+                <script>
+                    document.querySelector('#preview-{$iterator->counter}').contentWindow.document.write({$preview});
+                </script>
+            {/foreach}
+        {/ifset}
         {control batchMailing}
 
         <h2>Nápověda</h2>

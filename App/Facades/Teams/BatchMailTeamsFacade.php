@@ -15,6 +15,8 @@ use Nette\Utils\ArrayHash;
 
 class BatchMailTeamsFacade
 {
+    const PREVIEW_LIMIT = 10;
+
     /** @var FindTeamsForMailingInEventService */
     private $findTeamsForMailingInEventService;
 
@@ -57,9 +59,10 @@ class BatchMailTeamsFacade
     /**
      * @param ArrayHash $values
      * @param Event $event
+     * @param bool $previewOnly
      * @return array
      */
-    public function __invoke(ArrayHash $values, Event $event): array
+    public function __invoke(ArrayHash $values, Event $event, bool $previewOnly): array
     {
         // Prepare the batch
         $states = $values->states;
@@ -86,6 +89,7 @@ class BatchMailTeamsFacade
         }
 
         // Send the batch
+        $previews = [];
         $sent = 0;
         $failed = 0;
         $this->eventMacroDataProvider->setEvent($event);
@@ -107,12 +111,23 @@ class BatchMailTeamsFacade
             $template->setParameters(['content' => $content, 'subject' => $subject]);
             $message->setHtmlBody($template->renderToString());
 
+            if ($previewOnly) {
+                $previews[] = $template->renderToString();
+                if (($sent + $failed) > self::PREVIEW_LIMIT) {
+                    throw new \InstruktoriBrno\TMOU\Facades\Teams\Exceptions\PreviewException($previews);
+                }
+                continue;
+            }
+
             $result = $this->mailgunSenderService->sendNetteMessage($message);
             if ($result) {
                 $sent += 1;
             } else {
                 $failed += 1;
             }
+        }
+        if ($previewOnly) {
+            throw new \InstruktoriBrno\TMOU\Facades\Teams\Exceptions\PreviewException($previews);
         }
         return [$sent, $failed];
     }

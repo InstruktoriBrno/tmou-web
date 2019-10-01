@@ -203,9 +203,19 @@ final class TeamsPresenter extends BasePresenter
             throw new \Nette\Application\BadRequestException("No such event with number [${eventNumber}].");
         }
         return $this->teamBatchMailingFormFactory->create(function (Form $form, $values) use ($event) {
+            /** @var SubmitButton $input */
+            $input = $form['preview'];
+            $previewOnly = false;
+            if ($input->isSubmittedBy()) {
+                $previewOnly = true;
+            }
             try {
-                [$sent, $failed] = ($this->batchMailTeamsFacade)($values, $event);
+                [$sent, $failed] = ($this->batchMailTeamsFacade)($values, $event, $previewOnly);
                 $this->flashMessage(sprintf('Hromadný e-mail byl úspěšně rozeslán %d adres, %d selhalo.', $sent, $failed), Flash::SUCCESS);
+                $this->redirect('this');
+            } catch (\InstruktoriBrno\TMOU\Facades\Teams\Exceptions\PreviewException $previewException) {
+                $this->template->previews = $previewException->getData();
+                $this->flashMessage('Níže můžete vidět až 10 náhledů z prvních mailů.', Flash::INFO);
             } catch (\Exception $exception) {
                 Debugger::log($exception, ILogger::EXCEPTION);
                 $form->addError('Hromadné odeslání selhalo. Více informací je uloženo v logu webu.');

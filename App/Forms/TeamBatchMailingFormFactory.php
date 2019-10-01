@@ -40,6 +40,7 @@ class TeamBatchMailingFormFactory
             ->setRequired('Vyplňte, prosím, obsah e-mailu.');
 
         $form->addPrimarySubmit('send', 'Rozeslat');
+        $form->addSubmit('preview', 'Náhled');
         $form->onSuccess[] = function (Form $form, $values) use ($onSuccess) {
             $onSuccess($form, $values);
         };
