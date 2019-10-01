@@ -98,7 +98,7 @@ class BatchMailTeamsFacade
 
             $template = $this->templateFactory->createTemplate();
             $template->setFile(__DIR__ . '/Templates/batchEmail.latte');
-            $template->setParameters(['content' => $content]);
+            $template->setParameters(['content' => $content, 'subject' => $subject]);
             $message->setHtmlBody($template->renderToString());
 
             // TODO sending
