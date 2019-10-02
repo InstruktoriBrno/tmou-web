@@ -116,6 +116,7 @@ class BatchMailTeamsFacade
                 if (($sent + $failed) > self::PREVIEW_LIMIT) {
                     throw new \InstruktoriBrno\TMOU\Facades\Teams\Exceptions\PreviewException($previews);
                 }
+                $sent += 1;
                 continue;
             }
 
