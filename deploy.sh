@@ -69,14 +69,10 @@ if [ "$MODE" == "production" ]; then
 fi;
 
 # Migrate database
-SUDO_CMD="";
-HOSTNAME=`hostname`
-if [ "$HOSTNAME" == "admiral" ]; then
-  SUDO_CMD='sudo -u www-data'
-fi;
 echo "Migrating database";
 if [ "$MODE" == "production" ]; then
-    $SUDO_CMD php bin/console migrations:migrate
+    php bin/console migrations:migrate
+    rm -rf temp/cache/* # due to user mismatch
 fi;
 
 echo "# Configure CRON"
