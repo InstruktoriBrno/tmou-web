@@ -5,8 +5,8 @@
 
     <div id="content">
         <div class="alert alert-warning">Mezi hrající týmy (a tedy na TMOU) se dostanete teprve po zaplacení účastnického poplatku.</div>
-        {include ../teamsList.latte, teams => $teams}
-        <hr />
         {include ../teamsStats.latte, teams => $teams}
+        <hr />
+        {include ../teamsList.latte, teams => $teams}
     </div>
 {/block}

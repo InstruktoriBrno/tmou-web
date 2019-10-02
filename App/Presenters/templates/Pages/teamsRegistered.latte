@@ -4,8 +4,8 @@
     </div>
 
     <div id="content">
-        {include ../teamsList.latte, teams => $teams}
-        <hr />
         {include ../teamsStats.latte, teams => $teams}
+        <hr />
+        {include ../teamsList.latte, teams => $teams}
     </div>
 {/block}
