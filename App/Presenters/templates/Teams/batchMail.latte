@@ -8,9 +8,13 @@
 
         {ifset $previews}
             {foreach $previews as $preview}
-                <iframe id="preview-{$iterator->counter}"></iframe>
+                <a href="#preview-{$iterator->counter}-wrapper" class="btn btn-secondary collapse-toggle" title=" {$iterator->counter}." type="button">Zobrazit {$iterator->counter}.</a>
+                <div id="preview-{$iterator->counter}-wrapper" class="collapse collapse-no-bottom-margin">
+                    <iframe class="mail-preview" id="preview-{$iterator->counter}"></iframe>
+                </div>
                 <script>
                     document.querySelector('#preview-{$iterator->counter}').contentWindow.document.write({$preview});
+                    document.querySelector('#preview-{$iterator->counter}').contentWindow.document.close();
                 </script>
             {/foreach}
         {/ifset}

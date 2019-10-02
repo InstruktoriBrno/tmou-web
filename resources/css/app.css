@@ -422,4 +422,16 @@ a.collapse-toggle {
     text-decoration: none;
 }
 
+iframe.mail-preview {
+    border: 1px solid #e0e0e0;
+    box-shadow: 0 1px 3px 0 rgba(0,0,0,.1),0 1px 2px 0 rgba(0,0,0,.06);
+    width: 100%;
+    min-height: 200px;
+    margin-bottom: 1rem;
+}
+
+.collapse-no-bottom-margin {
+    margin-bottom: 0;
+}
+
 /*! purgecss end ignore */

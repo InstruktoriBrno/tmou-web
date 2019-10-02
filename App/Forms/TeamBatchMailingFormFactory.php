@@ -39,7 +39,8 @@ class TeamBatchMailingFormFactory
         $form->addTextArea('content', 'Obsah', 50, 20)
             ->setRequired('Vyplňte, prosím, obsah e-mailu.');
 
-        $form->addPrimarySubmit('send', 'Rozeslat');
+        $form->addPrimarySubmit('send', 'Rozeslat')
+            ->setHtmlAttribute('onClick', 'return confirm("Opravdu chcete nyní rozeslat hromadný e-mail?")');
         $form->addSubmit('preview', 'Náhled');
         $form->onSuccess[] = function (Form $form, $values) use ($onSuccess) {
             $onSuccess($form, $values);
