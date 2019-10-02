@@ -2,7 +2,7 @@
   "name": "tmou-web",
   "version": "1.0.0",
   "description": "",
-  "dependencies": { },
+  "dependencies": {},
   "devDependencies": {
     "tailwindcss": "^1.1.2",
     "@fullhuman/postcss-purgecss": "^1.2.0",
