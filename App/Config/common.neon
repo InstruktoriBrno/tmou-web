@@ -121,6 +121,9 @@ services:
     - InstruktoriBrno\TMOU\Services\Teams\FindTeamsForMailingInEventService
     - InstruktoriBrno\TMOU\Facades\Teams\BatchMailTeamsFacade(%mail.noReply%)
     - InstruktoriBrno\TMOU\Services\System\MailgunSenderService(%mailgun.apiKey%, %mailgun.apiBaseUrl%, %mailgun.domain%)
+    - InstruktoriBrno\TMOU\Forms\TeamBatchGameStatusChangeFormFactory
+    - InstruktoriBrno\TMOU\Facades\Teams\BatchGameStatusChangeFacade
+    - InstruktoriBrno\TMOU\Services\Teams\ChangeTeamsGameStatusService
 
 extensions:
     nextras.form: Nextras\Forms\Bridges\NetteDI\FormsExtension

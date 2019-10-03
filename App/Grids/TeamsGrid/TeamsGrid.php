@@ -11,6 +11,7 @@ use InstruktoriBrno\TMOU\Model\Team;
 use Nette\Utils\Html;
 use Ublaboo\DataGrid\DataGrid;
 use Ublaboo\DataGrid\DataSource\IDataSource;
+use \Closure;
 
 class TeamsGrid extends Control
 {
@@ -23,12 +24,28 @@ class TeamsGrid extends Control
     /** @var int */
     private $eventNumber;
 
-    public function __construct(int $eventNumber, IDataSource $dataSource, DataGridFactory $dataGridFactory)
+    /** @var callable */
+    private $changeToPlaying;
+
+    /** @var callable */
+    private $changeToQualified;
+
+    /** @var callable */
+    private $changeToNotQualified;
+
+    /** @var callable */
+    private $changeToRegistered;
+
+    public function __construct(int $eventNumber, IDataSource $dataSource, DataGridFactory $dataGridFactory, callable $changeToPlaying, callable $changeToQualified, callable $changeToNotQualified, callable $changeToRegistered)
     {
         parent::__construct();
         $this->dataSource = $dataSource;
         $this->dataGridFactory = $dataGridFactory;
         $this->eventNumber = $eventNumber;
+        $this->changeToPlaying = $changeToPlaying;
+        $this->changeToQualified = $changeToQualified;
+        $this->changeToNotQualified = $changeToNotQualified;
+        $this->changeToRegistered = $changeToRegistered;
     }
 
     public function createComponentGrid(string $name): DataGrid
@@ -162,6 +179,17 @@ class TeamsGrid extends Control
 
 
         $grid->addExportCsv('CSV export', 'tmou-teams');
+
+        if ($this->user->isAllowed(Resource::ADMIN_TEAMS, Action::BATCH_GAME_STATUS_CHANGE)) {
+            $grid->addToolbarButton('Teams:batchGameStatusChange', 'Hromadná změna stavu', ['eventNumber' => $this->eventNumber])
+                ->setIcon('upload')
+                ->addAttributes(['title' => 'Hromadná změna stavu'])
+                ->setClass('btn btn-xs btn-default');
+            $grid->addGroupAction('Nastavit jako hrající')->onSelect[] = Closure::bind($this->changeToPlaying, $grid);
+            $grid->addGroupAction('Nastavit jako kvalifikovaný')->onSelect[] = Closure::bind($this->changeToQualified, $grid);
+            $grid->addGroupAction('Nastavit jako registrovaný')->onSelect[] = Closure::bind($this->changeToRegistered, $grid);
+            $grid->addGroupAction('Nastavit jako nekvalifikovaný')->onSelect[] = Closure::bind($this->changeToNotQualified, $grid);
+        }
 
         if ($this->user->isAllowed(Resource::ADMIN_TEAMS, Action::BATCH_MAIL)) {
             $grid->addToolbarButton('Teams:batchMail', 'Hromadné mailování', ['eventNumber' => $this->eventNumber])

@@ -1,0 +1,22 @@
+{block content}
+    <div id="banner">
+        <h1 n:block=title>Hromadné změna stavu týmů {$event->getNumber()}. ročníku</h1>
+    </div>
+
+    <div id="content">
+        <p>Tento nástroj slouží ke hromadné změně stavů týmů, pro to je potřeba dodat CSV formát v níže uvedeném formátu, včetně hlavičky. Změna stavu probíhá u všech týmů zároveň (buď tedy vše projde, či nikoliv). Jako ID týmu se používá ID z tabulky team, nikoliv číslo týmu v rámci ročníku.</p>
+
+        <code>
+            team_id;new_game_status<br>
+            1;QUALIFIED<br>
+            2;REGISTERED<br>
+            3;NOT_QUALIFIED<br>
+            4;PLAYING<br>
+        </code>
+
+        {control batchGameStatusChange}
+
+        <a href="{plink Teams:, $event->getNumber()}"><i class="fas fa-arrow-left"></i> Seznam týmů {$event->getNumber()}. ročníku</a><br>
+        <a href="{plink Events:}"><i class="fas fa-arrow-left"></i> Seznam ročníků</a><br>
+    </div>
+{/block}

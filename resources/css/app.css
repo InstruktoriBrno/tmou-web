@@ -434,4 +434,21 @@ iframe.mail-preview {
     margin-bottom: 0;
 }
 
+code {
+    border: 1px solid #e0e0e0;
+    background: #e0e0e0;
+    box-shadow: 0 1px 3px 0 rgba(0,0,0,.1),0 1px 2px 0 rgba(0,0,0,.06);
+    display: block;
+    padding: 1rem;
+    margin-bottom: 1rem;
+    font-family: monospace;
+}
+
+.datagrid .btn[name="group_action[submit]"] {
+    display: inline-block !important;
+}
+.datagrid .btn[hidden] {
+    display: none !important;
+}
+
 /*! purgecss end ignore */

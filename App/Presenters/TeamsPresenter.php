@@ -3,14 +3,18 @@ namespace InstruktoriBrno\TMOU\Presenters;
 
 use InstruktoriBrno\TMOU\Enums\Action;
 use InstruktoriBrno\TMOU\Enums\Flash;
+use InstruktoriBrno\TMOU\Enums\GameStatus;
 use InstruktoriBrno\TMOU\Enums\Resource;
+use InstruktoriBrno\TMOU\Facades\Teams\BatchGameStatusChangeFacade;
 use InstruktoriBrno\TMOU\Facades\Teams\BatchMailTeamsFacade;
 use InstruktoriBrno\TMOU\Facades\Teams\DeleteTeamFacade;
 use InstruktoriBrno\TMOU\Forms\ConfirmFormFactory;
+use InstruktoriBrno\TMOU\Forms\TeamBatchGameStatusChangeFormFactory;
 use InstruktoriBrno\TMOU\Forms\TeamBatchMailingFormFactory;
 use InstruktoriBrno\TMOU\Grids\TeamsGrid\TeamsGrid;
 use InstruktoriBrno\TMOU\Grids\TeamsGrid\TeamsGridFactory;
 use InstruktoriBrno\TMOU\Services\Events\FindEventByNumberService;
+use InstruktoriBrno\TMOU\Services\Teams\ChangeTeamsGameStatusService;
 use InstruktoriBrno\TMOU\Services\Teams\ExportAllTeamsService;
 use InstruktoriBrno\TMOU\Services\Teams\ExportTeamMembersForNewsletterService;
 use InstruktoriBrno\TMOU\Services\Teams\FindTeamService;
@@ -18,11 +22,13 @@ use InstruktoriBrno\TMOU\Services\Teams\FindTeamsOfEventForDataGridService;
 use InstruktoriBrno\TMOU\Services\Teams\TransformBackFromImpersonatedIdentity;
 use InstruktoriBrno\TMOU\Services\Teams\TransformToImpersonatedIdentity;
 use InstruktoriBrno\TMOU\Utils\TexyFilter;
+use Nette\Application\AbortException;
 use Nette\Application\UI\Form;
 use Nette\Forms\Controls\SubmitButton;
 use Nette\Security\Identity;
 use Tracy\Debugger;
 use Tracy\ILogger;
+use Ublaboo\DataGrid\DataGrid;
 
 final class TeamsPresenter extends BasePresenter
 {
@@ -62,6 +68,15 @@ final class TeamsPresenter extends BasePresenter
     /** @var BatchMailTeamsFacade @inject */
     public $batchMailTeamsFacade;
 
+    /** @var TeamBatchGameStatusChangeFormFactory @inject */
+    public $teamBatchGameStatusChangeFormFactory;
+
+    /** @var BatchGameStatusChangeFacade @inject */
+    public $batchGameStatusChangeFacade;
+
+    /** @var ChangeTeamsGameStatusService @inject */
+    public $changeTeamsGameStatusService;
+
     /** @privilege(InstruktoriBrno\TMOU\Enums\Resource::ADMIN_TEAMS,InstruktoriBrno\TMOU\Enums\Action::VIEW) */
     public function actionDefault(int $eventNumber): void
     {
@@ -81,6 +96,16 @@ final class TeamsPresenter extends BasePresenter
         }
         $this->template->event = $event;
         $this->template->help = TexyFilter::getSyntaxHelp();
+    }
+
+    /** @privilege(InstruktoriBrno\TMOU\Enums\Resource::ADMIN_TEAMS,InstruktoriBrno\TMOU\Enums\Action::BATCH_GAME_STATUS_CHANGE) */
+    public function actionBatchGameStatusChange(int $eventNumber): void
+    {
+        $event = ($this->findEventServiceByNumber)($eventNumber);
+        if ($event === null) {
+            throw new \Nette\Application\BadRequestException("No such event with number [${eventNumber}].");
+        }
+        $this->template->event = $event;
     }
 
     /** @privilege(InstruktoriBrno\TMOU\Enums\Resource::ADMIN_TEAMS,InstruktoriBrno\TMOU\Enums\Action::EDIT) */
@@ -164,7 +189,88 @@ final class TeamsPresenter extends BasePresenter
         if ($event === null) {
             throw new \Nette\Application\BadRequestException("No such event with number [${eventNumber}].");
         }
-        return $this->teamsGridFactory->create($eventNumber, ($this->findTeamsOfEventForDataGridService)($event));
+        $presenter = $this;
+        $changeToPlaying = function (array $ids) use ($presenter) {
+            if (!$presenter->user->isAllowed(Resource::ADMIN_TEAMS, Action::BATCH_GAME_STATUS_CHANGE)) {
+                $presenter->flashMessage('Nejste oprávněni provádět tuto operaci. Pokud věříte, že jde o chybu, kontaktujte správce.', Flash::DANGER);
+                $presenter->redrawControl('flashes');
+                return null;
+            }
+            $changed = ($presenter->changeTeamsGameStatusService)($ids, GameStatus::PLAYING());
+            if ($presenter->isAjax()) {
+                $presenter->flashMessage(sprintf('%d týmů bylo úspěšně změněno.', $changed), Flash::SUCCESS);
+                $presenter->redrawControl('flashes');
+                /** @var DataGrid $this */
+                $form = $this->getComponent('filter');
+                $values = $form->getValues();
+                $filter = array_key_exists('filter', $values) ? iterator_to_array($values['filter']) : [];
+                $this->setFilter($filter);
+                $this->reload();
+            } else {
+                $presenter->redirect('this');
+            }
+        };
+        $changeToQualified = function (array $ids) use ($presenter) {
+            if (!$presenter->user->isAllowed(Resource::ADMIN_TEAMS, Action::BATCH_GAME_STATUS_CHANGE)) {
+                $presenter->flashMessage('Nejste oprávněni provádět tuto operaci. Pokud věříte, že jde o chybu, kontaktujte správce.', Flash::DANGER);
+                $presenter->redrawControl('flashes');
+                return null;
+            }
+            $changed = ($presenter->changeTeamsGameStatusService)($ids, GameStatus::QUALIFIED());
+            if ($presenter->isAjax()) {
+                $presenter->flashMessage(sprintf('%d týmů bylo úspěšně změněno.', $changed), Flash::SUCCESS);
+                $presenter->redrawControl('flashes');
+                /** @var DataGrid $this */
+                $form = $this->getComponent('filter');
+                $values = $form->getValues();
+                $filter = array_key_exists('filter', $values) ? iterator_to_array($values['filter']) : [];
+                $this->setFilter($filter);
+                $this->reload();
+            } else {
+                $presenter->redirect('this');
+            }
+        };
+        $changeToNotQualified = function (array $ids) use ($presenter) {
+            if (!$presenter->user->isAllowed(Resource::ADMIN_TEAMS, Action::BATCH_GAME_STATUS_CHANGE)) {
+                $presenter->flashMessage('Nejste oprávněni provádět tuto operaci. Pokud věříte, že jde o chybu, kontaktujte správce.', Flash::DANGER);
+                $presenter->redrawControl('flashes');
+                return null;
+            }
+            $changed = ($presenter->changeTeamsGameStatusService)($ids, GameStatus::NOT_QUALIFIED());
+            if ($presenter->isAjax()) {
+                $presenter->flashMessage(sprintf('%d týmů bylo úspěšně změněno.', $changed), Flash::SUCCESS);
+                $presenter->redrawControl('flashes');
+                /** @var DataGrid $this */
+                $form = $this->getComponent('filter');
+                $values = $form->getValues();
+                $filter = array_key_exists('filter', $values) ? iterator_to_array($values['filter']) : [];
+                $this->setFilter($filter);
+                $this->reload();
+            } else {
+                $presenter->redirect('this');
+            }
+        };
+        $changeToRegistered = function (array $ids) use ($presenter) {
+            if (!$presenter->user->isAllowed(Resource::ADMIN_TEAMS, Action::BATCH_GAME_STATUS_CHANGE)) {
+                $presenter->flashMessage('Nejste oprávněni provádět tuto operaci. Pokud věříte, že jde o chybu, kontaktujte správce.', Flash::DANGER);
+                $presenter->redrawControl('flashes');
+                return null;
+            }
+            $changed = ($presenter->changeTeamsGameStatusService)($ids, GameStatus::REGISTERED());
+            if ($presenter->isAjax()) {
+                $presenter->flashMessage(sprintf('%d týmů bylo úspěšně změněno.', $changed), Flash::SUCCESS);
+                $presenter->redrawControl('flashes');
+                /** @var DataGrid $this */
+                $form = $this->getComponent('filter');
+                $values = $form->getValues();
+                $filter = array_key_exists('filter', $values) ? iterator_to_array($values['filter']) : [];
+                $this->setFilter($filter);
+                $this->reload();
+            } else {
+                $presenter->redirect('this');
+            }
+        };
+        return $this->teamsGridFactory->create($eventNumber, ($this->findTeamsOfEventForDataGridService)($event), $changeToPlaying, $changeToQualified, $changeToNotQualified, $changeToRegistered);
     }
 
     public function createComponentConfirmForm(): Form
@@ -223,6 +329,38 @@ final class TeamsPresenter extends BasePresenter
             } catch (\Exception $exception) {
                 Debugger::log($exception, ILogger::EXCEPTION);
                 $form->addError('Hromadné odeslání selhalo. Více informací je uloženo v logu webu.');
+            }
+        }, $event);
+    }
+
+    public function createComponentBatchGameStatusChange(): Form
+    {
+        $eventNumber = (int) $this->getParameter('eventNumber');
+        $event = ($this->findEventServiceByNumber)($eventNumber);
+        if ($event === null) {
+            throw new \Nette\Application\BadRequestException("No such event with number [${eventNumber}].");
+        }
+        return $this->teamBatchGameStatusChangeFormFactory->create(function (Form $form, $values) use ($event) {
+            if (!$this->user->isAllowed(Resource::ADMIN_TEAMS, Action::BATCH_GAME_STATUS_CHANGE)) {
+                $form->addError('Nejste oprávněni provádět tuto operaci. Pokud věříte, že jde o chybu, kontaktujte správce.');
+                return;
+            }
+            try {
+                [$changed, $other] = ($this->batchGameStatusChangeFacade)($values, $event);
+                $this->flashMessage(sprintf('Hromadný změna stavu proběhla úspěšně, změněno bylo %s týmů dle souboru a %d zbylých dle vašeho požadavku.', $changed, $other), Flash::SUCCESS);
+                $this->redirect('this');
+            } catch (\InstruktoriBrno\TMOU\Facades\Teams\Exceptions\UploadCouldNotBeenProcessedException $exception) {
+                $form->addError('Nahrání souboru selhalo.');
+            } catch (\InstruktoriBrno\TMOU\Facades\Teams\Exceptions\NoSuchTeamException $exception) {
+                $form->addError(sprintf('Neimportováno. Tým s ID %s nebyl nalezen.', $exception->getMessage()));
+            } catch (\InstruktoriBrno\TMOU\Facades\Teams\Exceptions\NoSuchGameStatusException $exception) {
+                $form->addError(sprintf('Neimportováno. Stav %s nebyl nalezen.', $exception->getMessage()));
+            } catch (\Exception $exception) {
+                if ($exception instanceof AbortException) {
+                    throw $exception;
+                }
+                Debugger::log($exception, ILogger::EXCEPTION);
+                $form->addError('Hromadná změna stavu selhala. Více informací je uloženo v logu webu.');
             }
         }, $event);
     }
