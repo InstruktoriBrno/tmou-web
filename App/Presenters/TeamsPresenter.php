@@ -72,7 +72,7 @@ final class TeamsPresenter extends BasePresenter
         $this->template->event = $event;
     }
 
-    /** @privilege(InstruktoriBrno\TMOU\Enums\Resource::ADMIN_TEAMS,InstruktoriBrno\TMOU\Enums\Action::VIEW) */
+    /** @privilege(InstruktoriBrno\TMOU\Enums\Resource::ADMIN_TEAMS,InstruktoriBrno\TMOU\Enums\Action::BATCH_MAIL) */
     public function actionBatchMail(int $eventNumber): void
     {
         $event = ($this->findEventServiceByNumber)($eventNumber);
