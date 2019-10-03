@@ -1,6 +1,7 @@
 <?php declare(strict_types=1);
 namespace InstruktoriBrno\TMOU\Services\Teams;
 
+use InstruktoriBrno\TMOU\Bridges\Latte\TemplateFactory;
 use InstruktoriBrno\TMOU\Model\Team;
 use InstruktoriBrno\TMOU\VO\PasswordResetTokenVO;
 use Nette\Application\LinkGenerator;
@@ -23,12 +24,16 @@ class SendResetPasswordEmailService
     /** @var LinkGenerator */
     private $linkGenerator;
 
-    public function __construct(string $mailFromNoReply, string $mailReplyTo, IMailer $mailer, LinkGenerator $linkGenerator)
+    /** @var TemplateFactory */
+    private $templateFactory;
+
+    public function __construct(string $mailFromNoReply, string $mailReplyTo, IMailer $mailer, LinkGenerator $linkGenerator, TemplateFactory $templateFactory)
     {
         $this->mailFromNoReply = $mailFromNoReply;
         $this->mailReplyTo = $mailReplyTo;
         $this->mailer = $mailer;
         $this->linkGenerator = $linkGenerator;
+        $this->templateFactory = $templateFactory;
     }
 
     public function __invoke(Team $team, PasswordResetTokenVO $token): void
@@ -37,17 +42,23 @@ class SendResetPasswordEmailService
         $message->setFrom($this->mailFromNoReply, 'TMOU');
         $message->addReplyTo($this->mailReplyTo, 'TMOU');
         $message->addTo($team->getEmail(), $team->getName());
-        $message->setSubject(sprintf('[TMOU %s] Žádost o nové heslo týmu %s', $team->getEvent()->getNumber(), $team->getName()));
-        $message->setBody(sprintf(
+        $message->setSubject($subject = sprintf('[TMOU %s] Žádost o nové heslo týmu %s', $team->getEvent()->getNumber(), $team->getName()));
+        $content = sprintf(
             "Zdravíme,\nněkdo požádal u týmu %s v %s. ročníku TMOU o nové heslo.\n\n
-            Pro nastavení nového hesla přejděte na stránku %s a zadejte kromě e-mailu též kód %s. 
+            Pro nastavení nového hesla přejděte na stránku <a href=\"%s\">%s</a> a zadejte kromě e-mailu též kód <b>%s</b>. 
             Tento kód je platný do %s, poté bude potřeba žádost opakovat.\n\n-- Vaši organizátoři",
             $team->getName(),
             $team->getEvent()->getNumber(),
             $this->linkGenerator->link('Pages:resetPassword', [$team->getEvent()->getNumber()]),
+            $this->linkGenerator->link('Pages:resetPassword', [$team->getEvent()->getNumber()]),
             $token->getToken(),
             $token->getExpiration()->format('j. n. Y H:i:s')
-        ));
+        );
+
+        $template = $this->templateFactory->createTemplate();
+        $template->setFile(__DIR__ . '/Templates/resetPasswordEmail.latte');
+        $template->setParameters(['content' => $content, 'subject' => $subject]);
+        $message->setHtmlBody($template->renderToString());
 
         try {
             $this->mailer->send($message);
