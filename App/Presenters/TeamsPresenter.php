@@ -203,6 +203,10 @@ final class TeamsPresenter extends BasePresenter
             throw new \Nette\Application\BadRequestException("No such event with number [${eventNumber}].");
         }
         return $this->teamBatchMailingFormFactory->create(function (Form $form, $values) use ($event) {
+            if (!$this->user->isAllowed(Resource::ADMIN_TEAMS, Action::BATCH_MAIL)) {
+                $form->addError('Nejste oprávněni provádět tuto operaci. Pokud věříte, že jde o chybu, kontaktujte správce.');
+                return;
+            }
             /** @var SubmitButton $input */
             $input = $form['preview'];
             $previewOnly = false;
