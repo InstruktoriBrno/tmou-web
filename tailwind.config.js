@@ -36,6 +36,9 @@ module.exports = {
         '5': '5px',
         '6': '6px'
       },
+      maxHeight: {
+        'screen-80': '80vh',
+      }
     }
   },
   variants: {},

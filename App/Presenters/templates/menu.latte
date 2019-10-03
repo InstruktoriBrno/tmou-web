@@ -2,7 +2,20 @@
 {var $isTeam = $user->isLoggedIn() && $user->isInRole(\InstruktoriBrno\TMOU\Enums\UserRole::TEAM()->toScalar())}
 {var $isMatchingEvent = $isTeam && isset($event) && $event && $user->getIdentity()->eventNumber === $event->getNumber()}
 
-<div class="w-full fixed lg:static hidden lg:h-auto overflow-x-hidden overflow-y-auto lg:overflow-y-hidden lg:block mt-0 bg-black lg:bg-transparent shadow lg:shadow-none z-20" id="nav-content">
+<div class="w-full
+            lg:static
+            hidden
+            lg:h-auto
+            overflow-x-hidden
+            overflow-y-auto
+            lg:overflow-y-hidden
+            lg:block
+            mt-0
+            bg-black lg:bg-transparent
+            shadow lg:shadow-none
+            max-h-screen-80 lg:max-h-full
+            overflow-y-auto"
+     id="nav-content">
     {if isset($event) && $event}
         <ul class="list-reset bg-yellow-tmou lg:rounded-sm p-2 my-4">
             {include menuItem.latte, link => $control->link('Pages:show', null, $event->getNumber()), label => 'Úvod', selected => $control::isPageCurrentlySelected($page ?? null, null, $event->getNumber())}
