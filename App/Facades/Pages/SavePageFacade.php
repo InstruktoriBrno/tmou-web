@@ -70,6 +70,7 @@ class SavePageFacade
                 $values->heading,
                 $event,
                 $values->content,
+                $values->caching_safe,
                 (bool) $values->hidden,
                 (bool) $values->default,
                 $values->revealAt
@@ -81,6 +82,7 @@ class SavePageFacade
                 $values->heading,
                 $event,
                 $values->content,
+                $values->caching_safe,
                 (bool) $values->hidden,
                 (bool) $values->default,
                 $values->revealAt

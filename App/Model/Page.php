@@ -44,6 +44,12 @@ class Page
     protected $event;
 
     /**
+     * @ORM\Column(type="boolean", nullable=false)
+     * @var bool
+     */
+    protected $cachingSafe;
+
+    /**
      * @ORM\Column(type="text")
      * @var string
      */
@@ -79,6 +85,7 @@ class Page
         string $heading,
         ?Event $event,
         string $content,
+        bool $cachingSafe,
         bool $hidden,
         bool $default,
         ?DateTimeImmutable $revealAt
@@ -88,6 +95,7 @@ class Page
         $this->heading = $heading;
         $this->event = $event;
         $this->content = $content;
+        $this->cachingSafe = $cachingSafe;
         $this->hidden = $hidden;
         $this->isDefault = $default;
         $this->revealAt = $revealAt;
@@ -100,6 +108,7 @@ class Page
         string $heading,
         ?Event $event,
         string $content,
+        bool $cachingSafe,
         bool $hidden,
         bool $default,
         ?DateTimeImmutable $revealAt
@@ -109,13 +118,12 @@ class Page
         $this->heading = $heading;
         $this->event = $event;
         $this->content = $content;
+        $this->cachingSafe = $cachingSafe;
         $this->hidden = $hidden;
         $this->isDefault = $default;
         $this->revealAt = $revealAt;
         $this->lastUpdatedAt = new DateTimeImmutable();
     }
-
-
 
     public function getId(): int
     {
@@ -148,6 +156,11 @@ class Page
     public function getContent(): string
     {
         return $this->content;
+    }
+
+    public function isCachingSafe(): bool
+    {
+        return $this->cachingSafe;
     }
 
     public function isHidden(): bool

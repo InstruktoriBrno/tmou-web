@@ -63,6 +63,9 @@ class PageFormFactory
         $form->addTextArea('content', 'Obsah', 50, 20)
             ->setRequired('Vyplňte, prosím, obsah stránky');
 
+        $form->addCheckbox('caching_safe', 'Kešovat')
+            ->setOption('description', 'Zaškrtněte pouze pokud stránka nepoužívá žádné týmová ani ročníková makra (keš je sdílená mezi týmy) a je větší (například obsahuje-li HTML bloby nad cca 30 KB).');
+
         $form->addPrimarySubmit('send', 'Uložit');
         $form->addSubmit('sendAndStay', 'Uložit a zůstat');
         $form->addSubmit('sendAndShow', 'Uložit a zobrazit');

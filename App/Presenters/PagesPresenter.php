@@ -142,7 +142,10 @@ final class PagesPresenter extends BasePresenter
         if (!$page->isRevealed($this->gameClockService->get()) && !$this->user->isAllowed(Resource::ADMIN_PAGES, Action::VIEW)) {
             throw new \Nette\Application\ForbiddenRequestException("Page with SLUG [${slug}] within event with number [${eventNumber}] was not yet revealed.");
         }
-        if ($page->getEvent() !== null) {
+        if ($page->isCachingSafe()) {
+            $this->eventMacroDataProvider->setEvent(null);
+            $this->teamMacroDataProvider->setTeam(null);
+        } else if ($page->getEvent() !== null) {
             $this->eventMacroDataProvider->setEvent($page->getEvent());
             if ($this->user->isLoggedIn() && $this->user->isInRole(UserRole::TEAM)) {
                 $team = ($this->findTeamService)($this->user->getId());

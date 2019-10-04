@@ -36,6 +36,7 @@ class FindPageForFormService
             'title' => $object->getTitle(),
             'heading' => $object->getHeading(),
             'content' => $object->getContent(),
+            'caching_safe' => $object->isCachingSafe(),
         ];
     }
 }
