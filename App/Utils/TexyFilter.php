@@ -110,6 +110,22 @@ Toto se objeví pouze poté co uživatel zmáčkne tlačítko "Zobrazit"
 Toto se objeví pouze poté co uživatel zmáčkne tlačítko "Zobrazit řešení"
 \---
 
+/---div .[alert alert-warning]
+Toto se zobrazí ve žlutém boxu.
+\---
+
+/---div .[alert alert-danger]
+Toto se zobrazí v červeném boxu.
+\---
+
+/---div .[alert alert-success]
+Toto se zobrazí v zeleném boxu.
+\---
+
+/---div .[alert alert-info]
+Toto se zobrazí ve světle žlutém boxu.
+\---
+
 Zanořování specifických bloků pro TMOU
 **************************************
 
