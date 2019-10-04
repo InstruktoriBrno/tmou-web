@@ -34,6 +34,7 @@ class BatchGameStatusChangeFacade
      * @throws \InstruktoriBrno\TMOU\Facades\Teams\Exceptions\UploadCouldNotBeenProcessedException
      * @throws \InstruktoriBrno\TMOU\Facades\Teams\Exceptions\NoSuchTeamException
      * @throws \InstruktoriBrno\TMOU\Facades\Teams\Exceptions\NoSuchGameStatusException
+     * @throws \InstruktoriBrno\TMOU\Facades\Teams\Exceptions\MalformedFormatException
      */
     public function __invoke(ArrayHash $values, Event $event): array
     {
@@ -59,6 +60,9 @@ class BatchGameStatusChangeFacade
         // Change desired states
         $changed = 0;
         foreach ($records as $record) {
+            if (count($record) !== 2) {
+                throw new \InstruktoriBrno\TMOU\Facades\Teams\Exceptions\MalformedFormatException(implode(';', $record));
+            }
             if (!array_key_exists($record['team_id'], $allTeams)) {
                 throw new \InstruktoriBrno\TMOU\Facades\Teams\Exceptions\NoSuchTeamException($record['team_id']);
             }

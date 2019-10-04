@@ -355,6 +355,8 @@ final class TeamsPresenter extends BasePresenter
                 $form->addError(sprintf('Neimportováno. Tým s ID %s nebyl nalezen.', $exception->getMessage()));
             } catch (\InstruktoriBrno\TMOU\Facades\Teams\Exceptions\NoSuchGameStatusException $exception) {
                 $form->addError(sprintf('Neimportováno. Stav %s nebyl nalezen.', $exception->getMessage()));
+            } catch (\InstruktoriBrno\TMOU\Facades\Teams\Exceptions\MalformedFormatException $exception) {
+                $form->addError(sprintf('Neimportováno. Řádek "%s" nemá správný počet sloupců.', $exception->getMessage()));
             } catch (\Exception $exception) {
                 if ($exception instanceof AbortException) {
                     throw $exception;
