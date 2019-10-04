@@ -380,6 +380,7 @@ legend {
     height: 100vh;
     overflow-x: hidden;
     overflow-y: auto;
+    -webkit-overflow-scrolling: touch; /* This disables parallax on mobiles as it works very quirky there */
 }
 
 .parallax-layer {
@@ -395,11 +396,36 @@ legend {
 }
 
 .parallax-layer-middle {
-    transform: translateZ(-1px) scale(2);
+    transform: translateZ(-1px) scale(2) translateY(-290px);
 }
 
+/* fix for the city appearing back down on scrolling */
+@media only screen and (max-width: 1425px), (max-height: 915px) {
+    .parallax-layer-middle {
+        transform: translateZ(-2px) scale(3) translateY(-290px);
+    }
+}
+
+/* fix landscapes mobiles */
+@media only screen and (max-height: 560px) {
+    .parallax-layer-middle {
+        transform: translateZ(-2px) scale(3) translateY(-200px);
+    }
+}
+
+@media only screen and (max-height: 340px) {
+    .parallax-layer-middle {
+        transform: translateZ(-2px) scale(3) translateY(-150px);
+    }
+}
+
+#make-keyboard-scrolling-great-again {
+    width: 1px;
+    height: 1px;
+    text-indent: -9999px;
+}
 .parallax-layer-back {
-    transform: translateZ(-2px) translateY(-30vh) scale(3);
+    transform: translateZ(-2px) translateY(-40vh) scale(3);
 }
 
 .collapse {
