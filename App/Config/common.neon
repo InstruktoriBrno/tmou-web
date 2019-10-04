@@ -144,6 +144,10 @@ migrations:
     versionsOrganization: null # null, year, year_and_month
     customTemplate: null # path to custom template
 
+decorator:
+    InstruktoriBrno\TMOU\Presenters\BasePresenter:
+        setup:
+            - setBuildTime(%buildTime%)
 dbal:
     debug: %debugMode%
     connection:

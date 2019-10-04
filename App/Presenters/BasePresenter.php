@@ -36,6 +36,9 @@ abstract class BasePresenter extends Presenter
     /** @var MaintainSSOSession @inject */
     public $maintainSSOSession;
 
+    /** @var int */
+    public $buildTime;
+
     protected function beforeRender()
     {
         parent::beforeRender();
@@ -55,6 +58,12 @@ abstract class BasePresenter extends Presenter
         }
 
         $this->template->events = ($this->findEventsService)();
+        $this->template->buildTime = $this->buildTime ?? time();
+    }
+
+    public function setBuildTime(int $time): void
+    {
+        $this->buildTime = $time;
     }
 
     public function isImpersonated(): bool

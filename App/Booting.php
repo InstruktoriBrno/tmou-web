@@ -1,6 +1,7 @@
 <?php declare(strict_types=1);
 namespace App;
 
+use Nette\DI\Compiler;
 use function getenv;
 use Nette\Configurator;
 
@@ -24,6 +25,12 @@ class Booting
 
         $configurator->addConfig(__DIR__ . '/Config/common.neon');
         $configurator->addConfig(__DIR__ . '/Config/local.neon');
+
+        $configurator->onCompile[] = function (Configurator $sender, Compiler $compiler) {
+            $compiler->addConfig(['parameters' => [
+                'buildTime' => time(),
+            ]]);
+        };
 
         return $configurator;
     }

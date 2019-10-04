@@ -10,7 +10,7 @@
         <meta name="keywords" content="Tmou, TMOU!, nocni hra, orientace, sifrovani, sifra, hadanka, soutez, zavod, vyzva, inteligence, mestska hra, narocne sifry, noc venku">
         <meta name="theme-color" content="#ffec01" />
 
-        <link rel="stylesheet" href="{$basePath}/assets/css/app.css">
+        <link rel="stylesheet" href="{$basePath}/assets/css/app.css?{$buildTime}">
         {if isset($hasDatagrid) && $hasDatagrid}
             <link rel="stylesheet" type="text/css" href="{$basePath}/assets/css/datagrid.css">
             <link rel="stylesheet" type="text/css" href="{$basePath}/assets/css/datagrid-spinners.css">
@@ -195,10 +195,10 @@
                 <script src="{$basePath}/assets/js/nextras.datetimepicker.init.js"></script>
             {/if}
             <script src="{$basePath}/assets/js/nette.ajax.js"></script>
-            <script src="{$basePath}/assets/js/clock.js"></script>
+            <script src="{$basePath}/assets/js/clock.js?{$buildTime}"></script>
             <script src="{$basePath}/assets/js/popper.min.js"></script>
             <script src="{$basePath}/assets/js/dropdown.js"></script>
-            <script src="{$basePath}/assets/js/menu-dropdown.js"></script>
+            <script src="{$basePath}/assets/js/menu-dropdown.js?{$buildTime}"></script>
             <script src="{$basePath}/assets/js/collapse.js"></script>
             <script src="{$basePath}/assets/js/util.js"></script>
             <script>
