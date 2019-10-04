@@ -3,6 +3,7 @@
 
 var navMenuDiv = document.getElementById("nav-content");
 var navMenu = document.getElementById("nav-toggle");
+var parallax = document.getElementById("parallax");
 document.onclick = check;
 
 function check(e) {
@@ -16,10 +17,15 @@ function check(e) {
             // click on the link
             if (navMenuDiv.classList.contains("hidden")) {
                 navMenuDiv.classList.remove("hidden");
-            } else { navMenuDiv.classList.add("hidden"); }
+                parallax.style.overflowY = 'hidden';
+            } else {
+                navMenuDiv.classList.add("hidden");
+                parallax.style.overflowY = 'auto';
+            }
         } else {
             // click both outside link and outside menu, hide menu
             navMenuDiv.classList.add("hidden");
+            parallax.style.overflowY = 'auto';
         }
     }
 }
