@@ -24,11 +24,10 @@
     <body class="bg-fixed bg-cover bg-black-tmou tracking-wider tracking-normal">
         <div class="overflow-hidden">
             <div class="parallax">
-                <div class="w-full parallax-layer parallax-layer-back bg-cover bg-top" style="height: 70vh; background-image: url('{$basePath}/assets/images/bg.png');">
+                <div class="w-full parallax-layer parallax-layer-back bg-cover bg-top" style="height: 60vh; background-image: url('{$basePath}/assets/images/bg.png'); background-size: cover; background-color: rgb(0, 3, 31); background-repeat: no-repeat; background-position: center;">
                 </div>
-                <div class="w-full flex flex-col parallax-layer parallax-layer-middle" style="height: 160vh;">
-                    <img src="{$basePath}/assets/images/bg-bottom.svg" class="flex flex-grow-0" style="min-width: 1200px;">
-                    <div class="w-full flex bg-black-tmou flex-grow"></div>
+                <div class="w-full flex flex-row parallax-layer parallax-layer-middle" style="height: 160vh; align-items: center; justify-content: center;">
+                    <img src="{$basePath}/assets/images/bg-bottom.svg" class="" style="min-width: 1200px; width: 100%;" alt="silhouette">
                 </div>
                 <div class="w-full parallax-layer parallax-layer-base">
                     <!-- Container -->
@@ -105,6 +104,7 @@
                             </div>
                             <!-- /Login bar -->
                             <!-- Jumbo tron -->
+                            <span id="make-keyboard-scrolling-great-again" tabindex="0"></span>
                             {if isset($homepage) && $homepage && $event}
                                 <div class="jumbotron m-0 p-8 text-white text-center z-0">
                                     <div class=" p-2 m-4">
@@ -168,7 +168,7 @@
                                     </p>
                                 </div>
                                 <div class="w-full xl:w-1/2 md:w-1/4 sm:min-w-full lg:justify-end lg:text-right text-center">
-                                    <h3 class="font-bold mb-0">Kontakt</h3>
+                                    <h3 class="font-bold mb-0" id="foo">Kontakt</h3>
                                     <ul class="list-reset items-center text-sm pt-1">
                                         <li>
                                             <span class="lg:hidden"><i class="far fa-envelope text-white mr-2 w-3 align-content-center"></i>&nbsp;</span><a class="inline-block no-underline hover:underline py-1" href="mailto:tmou@instruktori.cz">tmou@instruktori.cz</a><span class="hidden lg:inline">&nbsp;<i class="far fa-envelope text-white ml-2 w-3 align-content-center"></i></span>
@@ -204,6 +204,7 @@
             <script>
                 $.nette.init();
                 init_clock('time');
+                $('span#make-keyboard-scrolling-great-again').focus();
             </script>
             {if isset($hasRecaptcha) && $hasRecaptcha}
                 <script src="https://www.google.com/recaptcha/api.js?render=explicit"></script>
