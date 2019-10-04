@@ -36,8 +36,15 @@ class TeamsGrid extends Control
     /** @var callable */
     private $changeToRegistered;
 
-    public function __construct(int $eventNumber, IDataSource $dataSource, DataGridFactory $dataGridFactory, callable $changeToPlaying, callable $changeToQualified, callable $changeToNotQualified, callable $changeToRegistered)
-    {
+    public function __construct(
+        int $eventNumber,
+        IDataSource $dataSource,
+        DataGridFactory $dataGridFactory,
+        callable $changeToPlaying,
+        callable $changeToQualified,
+        callable $changeToNotQualified,
+        callable $changeToRegistered
+    ) {
         parent::__construct();
         $this->dataSource = $dataSource;
         $this->dataGridFactory = $dataGridFactory;
@@ -185,10 +192,10 @@ class TeamsGrid extends Control
                 ->setIcon('upload')
                 ->addAttributes(['title' => 'Hromadná změna stavu'])
                 ->setClass('btn btn-xs btn-default');
-            $grid->addGroupAction('Nastavit jako hrající')->onSelect[] = Closure::bind($this->changeToPlaying, $grid);
-            $grid->addGroupAction('Nastavit jako kvalifikovaný')->onSelect[] = Closure::bind($this->changeToQualified, $grid);
-            $grid->addGroupAction('Nastavit jako registrovaný')->onSelect[] = Closure::bind($this->changeToRegistered, $grid);
-            $grid->addGroupAction('Nastavit jako nekvalifikovaný')->onSelect[] = Closure::bind($this->changeToNotQualified, $grid);
+            $grid->addGroupAction('Nastavit jako hrající')->onSelect[] = Closure::fromCallable($this->changeToPlaying)->bindTo($grid);
+            $grid->addGroupAction('Nastavit jako kvalifikovaný')->onSelect[] = Closure::fromCallable($this->changeToQualified)->bindTo($grid);
+            $grid->addGroupAction('Nastavit jako registrovaný')->onSelect[] = Closure::fromCallable($this->changeToRegistered)->bindTo($grid);
+            $grid->addGroupAction('Nastavit jako nekvalifikovaný')->onSelect[] = Closure::fromCallable($this->changeToNotQualified)->bindTo($grid);
         }
 
         if ($this->user->isAllowed(Resource::ADMIN_TEAMS, Action::BATCH_MAIL)) {

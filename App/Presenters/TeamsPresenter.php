@@ -22,7 +22,6 @@ use InstruktoriBrno\TMOU\Services\Teams\FindTeamsOfEventForDataGridService;
 use InstruktoriBrno\TMOU\Services\Teams\TransformBackFromImpersonatedIdentity;
 use InstruktoriBrno\TMOU\Services\Teams\TransformToImpersonatedIdentity;
 use InstruktoriBrno\TMOU\Utils\TexyFilter;
-use Nette\Application\AbortException;
 use Nette\Application\UI\Form;
 use Nette\Forms\Controls\SubmitButton;
 use Nette\Security\Identity;
@@ -200,12 +199,14 @@ final class TeamsPresenter extends BasePresenter
             if ($presenter->isAjax()) {
                 $presenter->flashMessage(sprintf('%d týmů bylo úspěšně změněno.', $changed), Flash::SUCCESS);
                 $presenter->redrawControl('flashes');
-                /** @var DataGrid $this */
                 $form = $this->getComponent('filter');
+                /** @var mixed $values */
                 $values = $form->getValues();
                 $filter = array_key_exists('filter', $values) ? iterator_to_array($values['filter']) : [];
-                $this->setFilter($filter);
-                $this->reload();
+                /** @var DataGrid $grid */
+                $grid = $this;
+                $grid->setFilter($filter);
+                $grid->reload();
             } else {
                 $presenter->redirect('this');
             }
@@ -220,12 +221,14 @@ final class TeamsPresenter extends BasePresenter
             if ($presenter->isAjax()) {
                 $presenter->flashMessage(sprintf('%d týmů bylo úspěšně změněno.', $changed), Flash::SUCCESS);
                 $presenter->redrawControl('flashes');
-                /** @var DataGrid $this */
                 $form = $this->getComponent('filter');
+                /** @var mixed $values */
                 $values = $form->getValues();
                 $filter = array_key_exists('filter', $values) ? iterator_to_array($values['filter']) : [];
-                $this->setFilter($filter);
-                $this->reload();
+                /** @var DataGrid $grid */
+                $grid = $this;
+                $grid->setFilter($filter);
+                $grid->reload();
             } else {
                 $presenter->redirect('this');
             }
@@ -240,12 +243,14 @@ final class TeamsPresenter extends BasePresenter
             if ($presenter->isAjax()) {
                 $presenter->flashMessage(sprintf('%d týmů bylo úspěšně změněno.', $changed), Flash::SUCCESS);
                 $presenter->redrawControl('flashes');
-                /** @var DataGrid $this */
                 $form = $this->getComponent('filter');
+                /** @var mixed $values */
                 $values = $form->getValues();
                 $filter = array_key_exists('filter', $values) ? iterator_to_array($values['filter']) : [];
-                $this->setFilter($filter);
-                $this->reload();
+                /** @var DataGrid $grid */
+                $grid = $this;
+                $grid->setFilter($filter);
+                $grid->reload();
             } else {
                 $presenter->redirect('this');
             }
@@ -260,12 +265,14 @@ final class TeamsPresenter extends BasePresenter
             if ($presenter->isAjax()) {
                 $presenter->flashMessage(sprintf('%d týmů bylo úspěšně změněno.', $changed), Flash::SUCCESS);
                 $presenter->redrawControl('flashes');
-                /** @var DataGrid $this */
                 $form = $this->getComponent('filter');
+                /** @var mixed $values */
                 $values = $form->getValues();
                 $filter = array_key_exists('filter', $values) ? iterator_to_array($values['filter']) : [];
-                $this->setFilter($filter);
-                $this->reload();
+                /** @var DataGrid $grid */
+                $grid = $this;
+                $grid->setFilter($filter);
+                $grid->reload();
             } else {
                 $presenter->redirect('this');
             }
@@ -326,6 +333,8 @@ final class TeamsPresenter extends BasePresenter
             } catch (\InstruktoriBrno\TMOU\Facades\Teams\Exceptions\PreviewException $previewException) {
                 $this->template->previews = $previewException->getData();
                 $this->flashMessage('Níže můžete vidět až 10 náhledů z prvních mailů.', Flash::INFO);
+            } catch (\Nette\Application\AbortException $exception) {
+                throw $exception;
             } catch (\Exception $exception) {
                 Debugger::log($exception, ILogger::EXCEPTION);
                 $form->addError('Hromadné odeslání selhalo. Více informací je uloženo v logu webu.');
@@ -357,10 +366,9 @@ final class TeamsPresenter extends BasePresenter
                 $form->addError(sprintf('Neimportováno. Stav %s nebyl nalezen.', $exception->getMessage()));
             } catch (\InstruktoriBrno\TMOU\Facades\Teams\Exceptions\MalformedFormatException $exception) {
                 $form->addError(sprintf('Neimportováno. Řádek "%s" nemá správný počet sloupců.', $exception->getMessage()));
+            } catch (\Nette\Application\AbortException $exception) {
+                throw $exception;
             } catch (\Exception $exception) {
-                if ($exception instanceof AbortException) {
-                    throw $exception;
-                }
                 Debugger::log($exception, ILogger::EXCEPTION);
                 $form->addError('Hromadná změna stavu selhala. Více informací je uloženo v logu webu.');
             }

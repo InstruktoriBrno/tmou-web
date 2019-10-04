@@ -15,7 +15,7 @@ use Nette\Utils\ArrayHash;
 
 class BatchMailTeamsFacade
 {
-    const PREVIEW_LIMIT = 10;
+    private const PREVIEW_LIMIT = 10;
 
     /** @var FindTeamsForMailingInEventService */
     private $findTeamsForMailingInEventService;
@@ -95,7 +95,7 @@ class BatchMailTeamsFacade
         $this->eventMacroDataProvider->setEvent($event);
         $content = $values->content;
         $subject = $values->subject;
-        /** @var Team $team */
+        /** @var Team|mixed $team */
         foreach ($batch as $team) {
             if (!$team instanceof Team) {
                 continue;
