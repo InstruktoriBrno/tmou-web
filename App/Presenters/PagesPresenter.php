@@ -143,7 +143,7 @@ final class PagesPresenter extends BasePresenter
             throw new \Nette\Application\ForbiddenRequestException("Page with SLUG [${slug}] within event with number [${eventNumber}] was not yet revealed.");
         }
         if ($page->isCachingSafe()) {
-            $this->eventMacroDataProvider->setEvent(null);
+            $this->eventMacroDataProvider->setEvent($page->getEvent()); // Needed due to page link creation
             $this->teamMacroDataProvider->setTeam(null);
         } else if ($page->getEvent() !== null) {
             $this->eventMacroDataProvider->setEvent($page->getEvent());
