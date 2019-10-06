@@ -149,7 +149,7 @@ final class PagesPresenter extends BasePresenter
             $this->eventMacroDataProvider->setEvent($page->getEvent());
             if ($this->user->isLoggedIn() && $this->user->isInRole(UserRole::TEAM)) {
                 $team = ($this->findTeamService)($this->user->getId());
-                if ($team !== null && $team->getEvent()->getId() === $page->getEvent()->getNumber()) {
+                if ($team !== null && $team->getEvent()->getId() === $page->getEvent()->getId()) {
                     $this->teamMacroDataProvider->setTeam($team);
                 }
             }
