@@ -149,12 +149,13 @@ decorator:
         setup:
             - setBuildTime(%buildTime%)
 dbal:
-    debug: %debugMode%
+    debug: true
     connection:
         host: db
         user: tmou
         password: password
         dbname: tmou
+        persistent: false
         types:
             uuid_binary:
                 class: Ramsey\Uuid\Doctrine\UuidBinaryType
