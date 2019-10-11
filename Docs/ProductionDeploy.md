@@ -20,7 +20,7 @@ Nezbytné předpoklady jsou:
 2. Nainstalujte závislosti spuštěním `composer install --no-dev --optimize-autoloader --no-progress --no-interaction --no-suggest` v rootu webu.
 3. Získejte údaje pro připojení do databáze (adresa server, port, jméno, heslo, jméno databáze).  
    Pokud databázi nemáte, vytvořte si ji **s kódování `utf8mb4-czech`**!
-4. Nastavte možnost zápisu do adresářů `temp` a `log`: `chmod -R 777 temp log` (ujistěte se, že oprávnění má i proces webového serveru).
+4. Nastavte možnost zápisu do adresářů `temp` a `log`: `chmod -R 777 temp log payments` (ujistěte se, že oprávnění má i proces webového serveru).
 5. Vytvořte lokální konfiguraci `App/Config/local.neon`, viz `local.neon.template`,
    zde nastavte údaje pro přístup k databázi, recaptchu, adresu na které web poběží, maily...
 6. Smažte obsah adresáře `temp/cache`.
