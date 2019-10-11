@@ -386,11 +386,21 @@ final class TeamsPresenter extends BasePresenter
         if ($event === null) {
             throw new \Nette\Application\BadRequestException("No such event with number [${eventNumber}].");
         }
+        $filterStates = $this->getRequest()->getPost('filterStates');
+        $filterPaymentStates = $this->getRequest()->getPost('filterPaymentStates');
+
         return $this->teamBatchMailingFormFactory->create(function (Form $form, $values) use ($event) {
             if (!$this->user->isAllowed(Resource::ADMIN_TEAMS, Action::BATCH_MAIL)) {
                 $form->addError('Nejste oprávněni provádět tuto operaci. Pokud věříte, že jde o chybu, kontaktujte správce.');
                 return;
             }
+
+            /** @var SubmitButton $input */
+            $filter = $form['filter'];
+            if ($filter->isSubmittedBy()) {
+                return;
+            }
+
             /** @var SubmitButton $input */
             $input = $form['preview'];
             $previewOnly = false;
@@ -398,19 +408,23 @@ final class TeamsPresenter extends BasePresenter
                 $previewOnly = true;
             }
             try {
-                [$sent, $failed] = ($this->batchMailTeamsFacade)($values, $event, $previewOnly);
-                $this->flashMessage(sprintf('Hromadný e-mail byl úspěšně rozeslán %d adres, %d selhalo.', $sent, $failed), Flash::SUCCESS);
+                $sent = ($this->batchMailTeamsFacade)($values, $event, $previewOnly);
+                $this->flashMessage(sprintf('Hromadný e-mail byl úspěšně rozeslán následující počet adres: %d.', $sent), Flash::SUCCESS);
                 $this->redirect('this');
             } catch (\InstruktoriBrno\TMOU\Facades\Teams\Exceptions\PreviewException $previewException) {
                 $this->template->previews = $previewException->getData();
                 $this->flashMessage('Níže můžete vidět až 10 náhledů z prvních mailů.', Flash::INFO);
             } catch (\Nette\Application\AbortException $exception) {
                 throw $exception;
+            } catch (\InstruktoriBrno\TMOU\Facades\Teams\Exceptions\ReachedLimitException $exception) {
+                $form->addError('Hromadné odeslání selhalo z důvodu dosažení limitu MailGun API. K selhání došlo po úspěšném odeslání následujícímu počtu prvních adresátů: ' . $exception->getMessage() . '.');
+            } catch (\InstruktoriBrno\TMOU\Facades\Teams\Exceptions\UnknownSendingException $exception) {
+                $form->addError('Hromadné odeslání selhalo. Více informací je uloženo v logu webu. K selhání došlo po úspěšném odeslání následujícímu počtu prvních adresátů: ' . $exception->getMessage() . '.');
             } catch (\Exception $exception) {
                 Debugger::log($exception, ILogger::EXCEPTION);
                 $form->addError('Hromadné odeslání selhalo. Více informací je uloženo v logu webu.');
             }
-        }, $event);
+        }, $event, $filterStates, $filterPaymentStates);
     }
 
     public function createComponentBatchGameStatusChange(): Form

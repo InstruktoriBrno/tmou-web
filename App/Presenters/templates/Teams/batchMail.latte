@@ -14,10 +14,12 @@
             {foreach $previews as $preview}
                 <a href="#preview-{$iterator->counter}-wrapper" class="btn btn-secondary collapse-toggle" title=" {$iterator->counter}." type="button">Zobrazit {$iterator->counter}.</a>
                 <div id="preview-{$iterator->counter}-wrapper" class="collapse collapse-no-bottom-margin">
+                    Pro: {$preview['teamName']} (ID {$preview['teamId']}, číslo {$preview['teamNumber']})<br>
+                    Předmět: <b>{$preview['subject']}</b><br>
                     <iframe class="mail-preview" id="preview-{$iterator->counter}"></iframe>
                 </div>
                 <script>
-                    document.querySelector('#preview-{$iterator->counter}').contentWindow.document.write({$preview});
+                    document.querySelector('#preview-{$iterator->counter}').contentWindow.document.write({$preview['body']});
                     document.querySelector('#preview-{$iterator->counter}').contentWindow.document.close();
                 </script>
             {/foreach}

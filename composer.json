@@ -38,7 +38,8 @@
 		"psr/http-factory": "^1.0",
 		"nyholm/psr7": "^1.2",
 		"kriswallsmith/buzz": "^1.0",
-        "ext-curl": "*"
+        "ext-curl": "*",
+        "ext-json": "*"
     },
 	"require-dev": {
 		"squizlabs/php_codesniffer": "3.*",
