@@ -24,6 +24,9 @@ final class Error4xxPresenter extends Presenter
     /** @var int|null|string */
     public static $eventNumber;
 
+    /** @var int */
+    public $buildTime;
+
     public function startup(): void
     {
         parent::startup();
@@ -37,6 +40,13 @@ final class Error4xxPresenter extends Presenter
         if ($this->getRequest() !== null && !$this->getRequest()->isMethod(Request::FORWARD)) {
             $this->error();
         }
+
+        $this->template->buildTime = $this->buildTime;
+    }
+
+    public function setBuildTime(int $time): void
+    {
+        $this->buildTime = $time;
     }
 
     public static function isPageCurrentlySelected(?Page $page, ?string $slug, ?int $eventNumber): bool

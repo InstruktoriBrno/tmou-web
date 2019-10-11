@@ -159,6 +159,9 @@ decorator:
     InstruktoriBrno\TMOU\Presenters\BasePresenter:
         setup:
             - setBuildTime(%buildTime%)
+    InstruktoriBrno\TMOU\Presenters\Error4xxPresenter:
+        setup:
+            - setBuildTime(%buildTime%)
     InstruktoriBrno\TMOU\Presenters\CronPresenter:
         setup:
             - setApiKey(%cron.key%)
