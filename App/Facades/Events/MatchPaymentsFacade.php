@@ -204,6 +204,7 @@ class MatchPaymentsFacade
                                         $event->getNumber()
                                     ));
                                     $team->markAsPaid(new DateTimeImmutable());
+                                    $team->changeTeamGameStatus(GameStatus::PLAYING());
                                     $this->entityManager->persist($team);
                                 } else {
                                     $this->log(sprintf(
