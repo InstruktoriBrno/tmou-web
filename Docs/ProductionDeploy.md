@@ -86,3 +86,15 @@ a  `fio.token`, jejíž hodnotu získáte od správce příslušného účtu (st
 Po nasazení ručně spusťte období, které chcete dopárovat, ideálně nepřekrývající se s budoucími běhy automtaického párování.
 
 Více informací o fungování najdete v [párování plateb](PaymentsMatching.md).
+
+## Zasílání e-mailů na selhání
+
+Logovací systém (Tracy) umí zasílat při selhání e-mail, pro zapnutí této funkcionality je potřeba do `App/Config/local.neon`
+přidat následující kód (nebo přidat do již existující sekce):
+
+```neon
+tracy:
+    email:
+        - foo@example.com
+        - foo2@example.com 
+```
