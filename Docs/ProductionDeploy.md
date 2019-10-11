@@ -28,7 +28,7 @@ Nezbytné předpoklady jsou:
 9. Nakonfigurujte Apache tak, aby používal správnou verzi PHP a `DocumentRoot` směřoval do složky `www`.
 10. Přistupte skrze prohlížeč na nakonfigurovanou doménu a otestujte základní funkčnost webu.
 11. Ověřte, že citlivé soubory nejsou dostupné zvenčí, obzvláště soubor `App/Config/local.neon`.
-
+12. Nastavte CRON pro automatické párování plateb, viz samostatná sekce níže.
 
 ## Postup aktualizace
 
@@ -68,3 +68,21 @@ Je třeba vytvořit `tmou-web` klienta, správně nastavit:
 Taktéž je potřeba změnit `Access Type` na confidential. V `Mappers` je potřeba vytvořit Groups mapper, který bude do tokenů přidávat pod klíčem `groups` informace o skupinách uživatele.
 
 Uživatelům, kteří mají mít přístup do TMOU webu je potřeba přidat zařazení do skupiny `Organizátoři TMOU` nebo `tmou_org` (přesná shoda).
+
+## Automatické párování plateb
+
+Systém obsahuje automatizované párování plateb, tomu je potřeba zajistit automatizované spouštění, nejlépe via CRON:
+
+```
+# Run payment matching at 3:35 (AM) every day for the previous day
+YESTERDAY=`php -r "echo date('Y-m-d', time() - 60 * 60 * 24);"`
+CRON_KEY=<CRON_KEY>
+35 3 * * * wget "https://www.tmou.cz/cron/payments?apiKey=$CRON_KEY&start=$YESTERDAY&end=$YESTERDAY" >/dev/null 2>&1
+```
+
+Pro správnou funkčnost je potřeba v souboru `local.latte` nastavit hodnotu `cron.key`, kterou použijete v příkazu výše
+a  `fio.token`, jejíž hodnotu získáte od správce příslušného účtu (stačí token pouze ke čtení).
+
+Po nasazení ručně spusťte období, které chcete dopárovat, ideálně nepřekrývající se s budoucími běhy automtaického párování.
+
+Více informací o fungování najdete v [párování plateb](PaymentsMatching.md).

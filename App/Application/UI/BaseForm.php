@@ -4,10 +4,12 @@ namespace InstruktoriBrno\TMOU\Application\UI;
 use Nette\Application\UI\Form;
 use Nette\Forms\Controls\BaseControl;
 use Nette\Forms\Controls\SubmitButton;
+use Nextras\Forms\Controls\DatePicker;
 use Nextras\Forms\Controls\DateTimePicker;
 
 /**
  * @method DateTimePicker addDateTimePicker(string $name, string $label)
+ * @method DatePicker addDatePicker(string $name, string $label)
  */
 class BaseForm extends Form
 {

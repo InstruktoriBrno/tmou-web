@@ -167,6 +167,21 @@ final class EventsPresenter extends BasePresenter
                 $input = $form['paymentPairingCodeSuffixLength'];
                 $input->addError('Číslo určující délku sufixu VS musí být vyplněno pokud je vyplněn prefix VS.');
                 return;
+            } catch (\InstruktoriBrno\TMOU\Model\Exceptions\InvalidAmountException $e) {
+                /** @var TextInput $input */
+                $input = $form['amount'];
+                $input->addError('Startovné musí být nezáporná celá částka v korunách.');
+                return;
+            } catch (\InstruktoriBrno\TMOU\Model\Exceptions\MissingAmountException $e) {
+                /** @var TextInput $input */
+                $input = $form['amount'];
+                $input->addError('Pokud je zadán deadline platby, musí být vyplněna částka.');
+                return;
+            } catch (\InstruktoriBrno\TMOU\Model\Exceptions\MissingPaymentDeadlineException $e) {
+                /** @var TextInput $input */
+                $input = $form['paymentDeadline'];
+                $input->addError('Pokud je zadána částka, musí být vyplněn deadline platby.');
+                return;
             } catch (\InstruktoriBrno\TMOU\Model\Exceptions\InvalidPaymentPairingCodePrefixException $e) {
                 /** @var TextInput $input */
                 $input = $form['paymentPairingCodePrefix'];

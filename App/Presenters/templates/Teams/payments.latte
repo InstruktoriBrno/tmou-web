@@ -1,0 +1,22 @@
+{block content}
+    <div id="banner">
+        <h1 n:block=title>Log párování plateb</h1>
+    </div>
+
+    <div id="content">
+        <div class="alert alert-info">
+            Zde můžete vidět výpis automatizovaného párování. Výstup zobrazuje nejnovější řádky logu nahoře. Jednou za čas se hodí log
+            <a href="{plink Teams:payments, true}" class="btn btn-danger">Vyprázdnit</a>
+        </div>
+        <div class="my-4">
+            <a href="https://ib.fio.cz/ib/transparent?a=2500167471" target="_blank" class="btn btn-secondary">Výpis na webu FIO</a>
+        </div>
+        <table class="log-output">
+            {foreach $lines as $line}
+                {var $success = \Nette\Utils\Strings::startsWith($line, 'SUCCESS:')}
+                {var $attention = \Nette\Utils\Strings::startsWith($line, 'ATTENTION:')}
+                <tr><td class="{if $success}success{/if} {if $attention}attention{/if}">{$line}</td></tr>
+            {/foreach}
+        </table>
+    </div>
+{/block}

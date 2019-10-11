@@ -5,6 +5,7 @@ use InstruktoriBrno\TMOU\Enums\Action;
 use InstruktoriBrno\TMOU\Enums\Flash;
 use InstruktoriBrno\TMOU\Enums\GameStatus;
 use InstruktoriBrno\TMOU\Enums\Resource;
+use InstruktoriBrno\TMOU\Facades\Events\MatchPaymentsFacade;
 use InstruktoriBrno\TMOU\Facades\Teams\BatchGameStatusChangeFacade;
 use InstruktoriBrno\TMOU\Facades\Teams\BatchMailTeamsFacade;
 use InstruktoriBrno\TMOU\Facades\Teams\DeleteTeamFacade;
@@ -15,6 +16,7 @@ use InstruktoriBrno\TMOU\Grids\TeamsGrid\TeamsGrid;
 use InstruktoriBrno\TMOU\Grids\TeamsGrid\TeamsGridFactory;
 use InstruktoriBrno\TMOU\Services\Events\FindEventByNumberService;
 use InstruktoriBrno\TMOU\Services\Teams\ChangeTeamsGameStatusService;
+use InstruktoriBrno\TMOU\Services\Teams\ChangeTeamsPaymentStatusService;
 use InstruktoriBrno\TMOU\Services\Teams\ExportAllTeamsService;
 use InstruktoriBrno\TMOU\Services\Teams\ExportTeamMembersForNewsletterService;
 use InstruktoriBrno\TMOU\Services\Teams\FindTeamService;
@@ -76,6 +78,9 @@ final class TeamsPresenter extends BasePresenter
     /** @var ChangeTeamsGameStatusService @inject */
     public $changeTeamsGameStatusService;
 
+    /** @var ChangeTeamsPaymentStatusService @inject */
+    public $changeTeamsPaymentStatusService;
+
     /** @privilege(InstruktoriBrno\TMOU\Enums\Resource::ADMIN_TEAMS,InstruktoriBrno\TMOU\Enums\Action::VIEW) */
     public function actionDefault(int $eventNumber): void
     {
@@ -136,6 +141,19 @@ final class TeamsPresenter extends BasePresenter
         }
         $this->template->team = $team;
         $this->template->event = $team->getEvent();
+    }
+
+    /** @privilege(InstruktoriBrno\TMOU\Enums\Resource::ADMIN_TEAMS,InstruktoriBrno\TMOU\Enums\Action::VIEW) */
+    public function actionPayments(bool $emptyNow = false): void
+    {
+        $path = __DIR__ . '/../../payments/' . MatchPaymentsFacade::RUNS;
+        if ($emptyNow) {
+            file_put_contents($path, '');
+            $this->flashMessage('Log byl úspěšně vyprázdněn.', Flash::SUCCESS);
+            $this->redirect('this', false);
+        }
+        $content = file_get_contents($path);
+        $this->template->lines = array_reverse(explode("\n", (string) $content));
     }
 
     /** @privilege(InstruktoriBrno\TMOU\Enums\Resource::ADMIN_TEAMS,InstruktoriBrno\TMOU\Enums\Action::IMPERSONATE) */
@@ -277,7 +295,60 @@ final class TeamsPresenter extends BasePresenter
                 $presenter->redirect('this');
             }
         };
-        return $this->teamsGridFactory->create($eventNumber, ($this->findTeamsOfEventForDataGridService)($event), $changeToPlaying, $changeToQualified, $changeToNotQualified, $changeToRegistered);
+        $changeAsPaid = function (array $ids) use ($presenter) {
+            if (!$presenter->user->isAllowed(Resource::ADMIN_TEAMS, Action::BATCH_PAYMENT_STATUS_CHANGE)) {
+                $presenter->flashMessage('Nejste oprávněni provádět tuto operaci. Pokud věříte, že jde o chybu, kontaktujte správce.', Flash::DANGER);
+                $presenter->redrawControl('flashes');
+                return null;
+            }
+            $changed = ($presenter->changeTeamsPaymentStatusService)($ids, true);
+            if ($presenter->isAjax()) {
+                $presenter->flashMessage(sprintf('%d týmů bylo úspěšně změněno.', $changed), Flash::SUCCESS);
+                $presenter->redrawControl('flashes');
+                $form = $this->getComponent('filter');
+                /** @var mixed $values */
+                $values = $form->getValues();
+                $filter = array_key_exists('filter', $values) ? iterator_to_array($values['filter']) : [];
+                /** @var DataGrid $grid */
+                $grid = $this;
+                $grid->setFilter($filter);
+                $grid->reload();
+            } else {
+                $presenter->redirect('this');
+            }
+        };
+        $changeAsNotPaid = function (array $ids) use ($presenter) {
+            if (!$presenter->user->isAllowed(Resource::ADMIN_TEAMS, Action::BATCH_PAYMENT_STATUS_CHANGE)) {
+                $presenter->flashMessage('Nejste oprávněni provádět tuto operaci. Pokud věříte, že jde o chybu, kontaktujte správce.', Flash::DANGER);
+                $presenter->redrawControl('flashes');
+                return null;
+            }
+            $changed = ($presenter->changeTeamsPaymentStatusService)($ids, false);
+            if ($presenter->isAjax()) {
+                $presenter->flashMessage(sprintf('%d týmů bylo úspěšně změněno.', $changed), Flash::SUCCESS);
+                $presenter->redrawControl('flashes');
+                $form = $this->getComponent('filter');
+                /** @var mixed $values */
+                $values = $form->getValues();
+                $filter = array_key_exists('filter', $values) ? iterator_to_array($values['filter']) : [];
+                /** @var DataGrid $grid */
+                $grid = $this;
+                $grid->setFilter($filter);
+                $grid->reload();
+            } else {
+                $presenter->redirect('this');
+            }
+        };
+        return $this->teamsGridFactory->create(
+            $eventNumber,
+            ($this->findTeamsOfEventForDataGridService)($event),
+            $changeToPlaying,
+            $changeToQualified,
+            $changeToNotQualified,
+            $changeToRegistered,
+            $changeAsPaid,
+            $changeAsNotPaid
+        );
     }
 
     public function createComponentConfirmForm(): Form

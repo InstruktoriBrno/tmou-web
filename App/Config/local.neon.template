@@ -12,6 +12,11 @@ parameters:
         replyTo: reply-to@example.com
     sso:
         cookieDomain: tmou.test
+    cron:
+        key: replace-this-with-random-secret-value
+    fio:
+        token: replace-this-with-fio-token
+        notificationEmail: reply-to@example.com
 
 tracy:
     bar:

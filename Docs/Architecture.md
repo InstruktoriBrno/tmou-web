@@ -134,3 +134,10 @@ ale životnost tokenu nikoliv. Z tohoto důvodu stránka kontroluje v případě
 (protože jinak by se musely týmy odhlásit a znovu přihlásit, takhle stačí jen přijít znovu na stránku).
 
 Jednou za čas je potřeba promazat uložené tokeny pomocí příkazu `bin/console clean-sso-sessions`.
+
+## Pravidelné úlohy (CRON) 
+
+V obecnosti jsou dva způsoby realizace pravidelné úlohy. Lze je spouštět buď přistoupením na adresu s tokenem, nebo spouštět rovnou z příkazové řádky.
+CRON umí být nastaven na oba způsoby, avšak zde je vybrán první způsob z důvodu problémů, které by způsobilo spouštění pod jiným uživatelem než `www-data`.
+
+Jednotlivé invokovatelné akce jsou definovány v presenteru `InstruktoriBrno\TMOU\Presenters\CronPresenter`. 

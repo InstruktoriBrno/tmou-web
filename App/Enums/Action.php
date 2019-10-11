@@ -23,6 +23,7 @@ final class Action extends Enum
     public const CHANGE_DETAILS = 'change_details';
     public const BATCH_MAIL = 'batch_mail';
     public const BATCH_GAME_STATUS_CHANGE = 'batch_game_status_change';
+    public const BATCH_PAYMENT_STATUS_CHANGE = 'batch_payment_status_change';
 
     public const QUALIFICATION = 'qualification';
 

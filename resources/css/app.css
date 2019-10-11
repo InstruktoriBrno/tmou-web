@@ -217,6 +217,9 @@ legend {
 
     @apply bg-info-tmou outline-none
 }
+.page-content a.btn {
+    @apply no-underline
+}
 
 .alert {
     @apply p-4 rounded mb-4
@@ -475,6 +478,23 @@ code {
 }
 .datagrid .btn[hidden] {
     display: none !important;
+}
+
+table.log-output {
+    @apply font-mono text-xs mb-2;
+}
+table.log-output tr {
+    @apply mb-1;
+}
+table.log-output td {
+    @apply text-gray-500 p-1;
+}
+table.log-output td.success {
+    @apply text-success-tmou;
+}
+
+table.log-output td.attention {
+    color: #da4e4c;
 }
 
 /*! purgecss end ignore */

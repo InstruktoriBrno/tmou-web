@@ -2,6 +2,7 @@
 namespace InstruktoriBrno\TMOU\Forms;
 
 use Nette\Application\UI\Form;
+use Nette\Forms\Controls\TextInput;
 use Nette\SmartObject;
 
 class EventFormFactory
@@ -66,6 +67,21 @@ class EventFormFactory
         $form->addText('paymentPairingCodePrefix', 'Prefix VS');
         $form->addText('paymentPairingCodeSuffixLength', 'Délka sufixu VS')
             ->setOption('description', 'Na kolik míst bude formátováno číslo týmu.');
+        $form->addText('amount', 'Startovné')
+            ->setRequired(false)
+            ->setOption('description', 'Prázdné, nebo částka v celých korunách.')
+            ->addRule(Form::INTEGER, 'Startovné musí být nezáporná částka v celých korunách.')
+            ->addRule(Form::MIN, 'Startovné musí být nezáporná částka v celých korunách.', 0);
+        /** @var TextInput $amount */
+        $amount = $form['amount'];
+        $form->addDatePicker('paymentDeadline', 'Deadline platby')
+            ->setRequired(false)
+            ->setOption(
+                'description',
+                'Do tohoto termínu bude systém automaticky párovat platby, poté již budete muset provádět párování ručně. Poslední párování den po tomto termínu na datech do tohoto data včetně.'
+            )
+            ->addConditionOn($amount, Form::FILLED)
+                ->addRule(Form::FILLED, 'Vyplňte, prosím, deadline párování plateb.');
 
         $form->addPrimarySubmit('send', 'Uložit');
         $form->onSuccess[] = function (Form $form, $values) use ($onSuccess) {

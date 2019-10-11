@@ -104,6 +104,18 @@ class Event
      */
     protected $paymentPairingCodeSuffixLength;
 
+    /**
+     * @ORM\Column(type="integer", nullable=true)
+     * @var int|null
+     */
+    protected $amount;
+
+    /**
+     * @ORM\Column(type="datetime_immutable", nullable=true)
+     * @var DateTimeImmutable|null
+     */
+    protected $paymentDeadline;
+
     public function __construct(
         string $name,
         int $number,
@@ -118,7 +130,9 @@ class Event
         ?DateTimeImmutable $eventEnd,
         ?int $totalTeamCount,
         ?string $paymentPairingCodePrefix,
-        ?int $paymentPairingCodeSuffixLength
+        ?int $paymentPairingCodeSuffixLength,
+        ?int $amount,
+        ?DateTimeImmutable $paymentDeadline
     ) {
         static::validateDetails(
             $name,
@@ -134,7 +148,9 @@ class Event
             $eventEnd,
             $totalTeamCount,
             $paymentPairingCodePrefix,
-            $paymentPairingCodeSuffixLength
+            $paymentPairingCodeSuffixLength,
+            $amount,
+            $paymentDeadline
         );
 
         $this->name = $name;
@@ -151,6 +167,8 @@ class Event
         $this->totalTeamCount = $totalTeamCount;
         $this->paymentPairingCodePrefix = $paymentPairingCodePrefix;
         $this->paymentPairingCodeSuffixLength = $paymentPairingCodeSuffixLength;
+        $this->amount = $amount;
+        $this->paymentDeadline = $paymentDeadline;
     }
 
     public function updateDetails(
@@ -167,7 +185,9 @@ class Event
         ?DateTimeImmutable $eventEnd,
         ?int $totalTeamCount,
         ?string $paymentPairingCodePrefix,
-        ?int $paymentPairingCodeSuffixLength
+        ?int $paymentPairingCodeSuffixLength,
+        ?int $amount,
+        ?DateTimeImmutable $paymentDeadline
     ): void {
         static::validateDetails(
             $name,
@@ -183,7 +203,9 @@ class Event
             $eventEnd,
             $totalTeamCount,
             $paymentPairingCodePrefix,
-            $paymentPairingCodeSuffixLength
+            $paymentPairingCodeSuffixLength,
+            $amount,
+            $paymentDeadline
         );
 
         $this->name = $name;
@@ -200,6 +222,8 @@ class Event
         $this->totalTeamCount = $totalTeamCount;
         $this->paymentPairingCodePrefix = $paymentPairingCodePrefix;
         $this->paymentPairingCodeSuffixLength = $paymentPairingCodeSuffixLength;
+        $this->amount = $amount;
+        $this->paymentDeadline = $paymentDeadline;
     }
 
     public function getId(): int
@@ -303,6 +327,16 @@ class Event
         return $this->changeDeadline;
     }
 
+    public function getAmount(): ?int
+    {
+        return $this->amount;
+    }
+
+    public function getPaymentDeadline(): ?DateTimeImmutable
+    {
+        return $this->paymentDeadline;
+    }
+
     public static function validateDetails(
         string $name,
         int $number,
@@ -317,7 +351,9 @@ class Event
         ?DateTimeImmutable $eventEnd,
         ?int $totalTeamCount,
         ?string $paymentPairingCodePrefix,
-        ?int $paymentPairingCodeSuffixLength
+        ?int $paymentPairingCodeSuffixLength,
+        ?int $amount,
+        ?DateTimeImmutable $paymentDeadline
     ): void {
         if (Strings::length($name) > 255) {
             throw new \InstruktoriBrno\TMOU\Model\Exceptions\NameTooLongException();
@@ -366,6 +402,15 @@ class Event
         }
         if ($paymentPairingCodeSuffixLength !== null && $paymentPairingCodeSuffixLength < 1) {
             throw new \InstruktoriBrno\TMOU\Model\Exceptions\InvalidPaymentPairingCodeSuffixLengthException();
+        }
+        if ($amount !== null && $amount < 0) {
+            throw new \InstruktoriBrno\TMOU\Model\Exceptions\InvalidAmountException();
+        }
+        if (($amount !== null && $amount !== 0) && $paymentDeadline === null) {
+            throw new \InstruktoriBrno\TMOU\Model\Exceptions\MissingPaymentDeadlineException();
+        }
+        if (($amount === null || $amount === 0) && $paymentDeadline !== null) {
+            throw new \InstruktoriBrno\TMOU\Model\Exceptions\MissingAmountException();
         }
     }
 }

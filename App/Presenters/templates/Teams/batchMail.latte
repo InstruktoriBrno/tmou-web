@@ -6,6 +6,10 @@
     <div id="content">
         <p>Vyberte kterým konkrétním týmům chcete hromadný e-mail zaslat nebo zobecněte výběr pomocí výběru celého stavu týmu &ndash; můžete vybrat více hodnot pomocí klávesy CTRL. Výběr e-mailů bude spojen a deduplikován. Můžete použít Texy formátování, ale používejte ho s rozvahou.</p>
 
+        <div class="alert alert-warning">
+            Platební informace posílejte až poté, co budou týmy změněny do stavu kvalifikovaný. Jinak budete muset ručně párovat platby, které příjdou dříve než týmy do stavu kvalifikovaný přepnete.
+        </div>
+
         {ifset $previews}
             {foreach $previews as $preview}
                 <a href="#preview-{$iterator->counter}-wrapper" class="btn btn-secondary collapse-toggle" title=" {$iterator->counter}." type="button">Zobrazit {$iterator->counter}.</a>

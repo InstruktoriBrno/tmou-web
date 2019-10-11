@@ -283,6 +283,12 @@ class Team
         $this->paymentPairedAt = $paymentPairedAt;
     }
 
+    public function unmarkAsPaid(): void
+    {
+        $this->paymentStatus = PaymentStatus::NOT_PAID();
+        $this->paymentPairedAt = null;
+    }
+
     public function touchLoggedAt(DateTimeImmutable $loggedAt): void
     {
         $this->lastLoggedAt = $loggedAt;

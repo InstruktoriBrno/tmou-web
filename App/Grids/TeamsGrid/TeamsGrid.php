@@ -36,6 +36,12 @@ class TeamsGrid extends Control
     /** @var callable */
     private $changeToRegistered;
 
+    /** @var callable */
+    private $changeAsPaid;
+
+    /** @var callable */
+    private $changeAsNotPaid;
+
     public function __construct(
         int $eventNumber,
         IDataSource $dataSource,
@@ -43,7 +49,9 @@ class TeamsGrid extends Control
         callable $changeToPlaying,
         callable $changeToQualified,
         callable $changeToNotQualified,
-        callable $changeToRegistered
+        callable $changeToRegistered,
+        callable $changeAsPaid,
+        callable $changeAsNotPaid
     ) {
         parent::__construct();
         $this->dataSource = $dataSource;
@@ -53,6 +61,8 @@ class TeamsGrid extends Control
         $this->changeToQualified = $changeToQualified;
         $this->changeToNotQualified = $changeToNotQualified;
         $this->changeToRegistered = $changeToRegistered;
+        $this->changeAsPaid = $changeAsPaid;
+        $this->changeAsNotPaid = $changeAsNotPaid;
     }
 
     public function createComponentGrid(string $name): DataGrid
@@ -112,6 +122,8 @@ class TeamsGrid extends Control
                 PaymentStatus::NOT_PAID()->toScalar() => 'Nezaplaceno',
                 PaymentStatus::PAID()->toScalar() => 'Zaplaceno',
             ]);
+        $grid->addColumnDateTime('paymentPairedAt', 'Datum spárování platby')
+            ->setDefaultHide(true);
 
         $grid->addColumnText('name', 'Jméno')
             ->setSortable()
@@ -196,6 +208,10 @@ class TeamsGrid extends Control
             $grid->addGroupAction('Nastavit jako kvalifikovaný')->onSelect[] = Closure::fromCallable($this->changeToQualified)->bindTo($grid);
             $grid->addGroupAction('Nastavit jako registrovaný')->onSelect[] = Closure::fromCallable($this->changeToRegistered)->bindTo($grid);
             $grid->addGroupAction('Nastavit jako nekvalifikovaný')->onSelect[] = Closure::fromCallable($this->changeToNotQualified)->bindTo($grid);
+        }
+        if ($this->user->isAllowed(Resource::ADMIN_TEAMS, Action::BATCH_PAYMENT_STATUS_CHANGE)) {
+            $grid->addGroupAction('Nastavit jako zaplaceno')->onSelect[] = Closure::fromCallable($this->changeAsPaid)->bindTo($grid);
+            $grid->addGroupAction('Nastavit jako nezaplaceno')->onSelect[] = Closure::fromCallable($this->changeAsNotPaid)->bindTo($grid);
         }
 
         if ($this->user->isAllowed(Resource::ADMIN_TEAMS, Action::BATCH_MAIL)) {

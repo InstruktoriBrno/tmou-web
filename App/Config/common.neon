@@ -18,6 +18,12 @@ parameters:
         apiKey:
         apiBaseUrl:
         domain:
+    cron:
+        key:
+    fio:
+        apiURL: https://www.fio.cz/ib_api/rest/periods/__TOKEN__/__FROM__/__TO__/transactions.json
+        token:
+        notificationEmail:
 
 recaptcha:
     siteKey: 6LdVSJwUAAAAAOBUowvrUg3I6JzKbbX22WDGwVso
@@ -124,6 +130,11 @@ services:
     - InstruktoriBrno\TMOU\Forms\TeamBatchGameStatusChangeFormFactory
     - InstruktoriBrno\TMOU\Facades\Teams\BatchGameStatusChangeFacade
     - InstruktoriBrno\TMOU\Services\Teams\ChangeTeamsGameStatusService
+    - InstruktoriBrno\TMOU\Facades\Events\MatchPaymentsFacade(%fio.apiURL%, %fio.token%, %fio.notificationEmail%)
+    - InstruktoriBrno\TMOU\Services\Teams\FindTeamByEventNumberService
+    - InstruktoriBrno\TMOU\Services\Events\FindEventsWithMatchablePaymentsService
+    - InstruktoriBrno\TMOU\Services\Teams\ChangeTeamsPaymentStatusService
+    - InstruktoriBrno\TMOU\Services\Teams\SendPaymentsMatchingNotificationEmailService(%mail.noReply%, %fio.notificationEmail%)
 
 extensions:
     nextras.form: Nextras\Forms\Bridges\NetteDI\FormsExtension
@@ -148,6 +159,9 @@ decorator:
     InstruktoriBrno\TMOU\Presenters\BasePresenter:
         setup:
             - setBuildTime(%buildTime%)
+    InstruktoriBrno\TMOU\Presenters\CronPresenter:
+        setup:
+            - setApiKey(%cron.key%)
 dbal:
     debug: true
     connection:

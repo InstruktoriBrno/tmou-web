@@ -7,7 +7,7 @@ use InstruktoriBrno\TMOU\Model\Team;
 
 class TeamMacroDataProvider
 {
-    /** @var Team */
+    /** @var Team|null */
     private $team;
 
     public function setTeam(?Team $team): void

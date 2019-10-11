@@ -1,10 +1,10 @@
 <?php declare(strict_types=1);
 namespace InstruktoriBrno\TMOU\Services\Teams;
 
+use DateTimeImmutable;
 use Doctrine\ORM\EntityManagerInterface;
-use InstruktoriBrno\TMOU\Enums\GameStatus;
 
-class ChangeTeamsGameStatusService
+class ChangeTeamsPaymentStatusService
 {
     /** @var EntityManagerInterface */
     private $entityManager;
@@ -19,14 +19,14 @@ class ChangeTeamsGameStatusService
     }
 
     /**
-     * Change game status of teams with given ID
+     * Change payment status of teams with given ID
      *
      * @param int[] $ids
-     * @param GameStatus $newGameStatus
+     * @param bool $newPaymentStatus
      *
      * @return int
      */
-    public function __invoke(array $ids, GameStatus $newGameStatus): int
+    public function __invoke(array $ids, bool $newPaymentStatus): int
     {
         $changed = 0;
         foreach ($ids as $id) {
@@ -34,7 +34,11 @@ class ChangeTeamsGameStatusService
             if ($team === null) {
                 continue;
             }
-            $team->changeTeamGameStatus($newGameStatus);
+            if ($newPaymentStatus) {
+                $team->markAsPaid(new DateTimeImmutable());
+            } else {
+                $team->unmarkAsPaid();
+            }
             $this->entityManager->persist($team);
             $changed += 1;
         }

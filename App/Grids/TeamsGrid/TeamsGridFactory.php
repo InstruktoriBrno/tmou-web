@@ -14,8 +14,16 @@ class TeamsGridFactory
         $this->dataGridFactory = $dataGridFactory;
     }
 
-    public function create(int $eventNumber, IDataSource $dataSource, callable $changeToPlaying, callable $changeToQualified, callable $changeToNotQualified, callable $changeToRegistered): TeamsGrid
-    {
-        return new TeamsGrid($eventNumber, $dataSource, $this->dataGridFactory, $changeToPlaying, $changeToQualified, $changeToNotQualified, $changeToRegistered);
+    public function create(
+        int $eventNumber,
+        IDataSource $dataSource,
+        callable $changeToPlaying,
+        callable $changeToQualified,
+        callable $changeToNotQualified,
+        callable $changeToRegistered,
+        callable $changeAsPaid,
+        callable $changeAsNotPaid
+    ): TeamsGrid {
+        return new TeamsGrid($eventNumber, $dataSource, $this->dataGridFactory, $changeToPlaying, $changeToQualified, $changeToNotQualified, $changeToRegistered, $changeAsPaid, $changeAsNotPaid);
     }
 }

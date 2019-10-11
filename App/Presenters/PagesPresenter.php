@@ -145,7 +145,7 @@ final class PagesPresenter extends BasePresenter
         if ($page->isCachingSafe()) {
             $this->eventMacroDataProvider->setEvent($page->getEvent()); // Needed due to page link creation
             $this->teamMacroDataProvider->setTeam(null);
-        } else if ($page->getEvent() !== null) {
+        } elseif ($page->getEvent() !== null) {
             $this->eventMacroDataProvider->setEvent($page->getEvent());
             if ($this->user->isLoggedIn() && $this->user->isInRole(UserRole::TEAM)) {
                 $team = ($this->findTeamService)($this->user->getId());

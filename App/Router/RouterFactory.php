@@ -24,6 +24,7 @@ final class RouterFactory
         $router[] = new Route('admin/pages/[<eventNumber \d+>/][<action>]', 'AdminPages:default');
 
         // Administration of pages
+        $router[] = new Route('admin/teams/payments', 'Teams:payments');
         $router[] = new Route('admin/teams/[<eventNumber \d+>/][<action>]', 'Teams:default');
 
         // Administration of users (login, logout, organizators...)

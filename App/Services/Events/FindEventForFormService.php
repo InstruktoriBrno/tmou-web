@@ -42,6 +42,8 @@ class FindEventForFormService
             'totalTeamCount' => $object->getTotalTeamCount(),
             'paymentPairingCodePrefix' => $object->getPaymentPairingCodePrefix(),
             'paymentPairingCodeSuffixLength' => $object->getPaymentPairingCodeSuffixLength(),
+            'amount' => $object->getAmount(),
+            'paymentDeadline' => $object->getPaymentDeadline(),
         ];
     }
 }

@@ -36,6 +36,7 @@ class SaveEventFacade
      * @throws \InstruktoriBrno\TMOU\Model\Exceptions\InvalidEventIntervalException
      * @throws \InstruktoriBrno\TMOU\Model\Exceptions\MissingQualifiedTeamCountException
      * @throws \InstruktoriBrno\TMOU\Model\Exceptions\InvalidTeamCountException
+     * @throws \InstruktoriBrno\TMOU\Model\Exceptions\InvalidAmountException
      * @throws \InstruktoriBrno\TMOU\Model\Exceptions\InvalidRegistrationDeadlineException
      * @throws \InstruktoriBrno\TMOU\Model\Exceptions\MissingPaymentPairingCodePrefixException
      * @throws \InstruktoriBrno\TMOU\Model\Exceptions\MissingPaymentPairingCodeSuffixLengthException
@@ -44,6 +45,8 @@ class SaveEventFacade
      * @throws \InstruktoriBrno\TMOU\Model\Exceptions\ChangeDeadlineBeforeRegistrationDeadlineException
      * @throws \InstruktoriBrno\TMOU\Model\Exceptions\InvalidChangeDeadlineException
      * @throws \InstruktoriBrno\TMOU\Facades\Events\Exceptions\NonUniqueEventNumberException
+     * @throws \InstruktoriBrno\TMOU\Model\Exceptions\MissingPaymentDeadlineException
+     * @throws \InstruktoriBrno\TMOU\Model\Exceptions\MissingAmountException
      *
      */
     public function __invoke(ArrayHash $values, ?Event $event): void
@@ -63,7 +66,9 @@ class SaveEventFacade
                 $values->eventEnd,
                 $values->totalTeamCount === '' ? null : (int) $values->totalTeamCount,
                 $values->paymentPairingCodePrefix === '' ? null : $values->paymentPairingCodePrefix,
-                $values->paymentPairingCodeSuffixLength === '' ? null : (int) $values->paymentPairingCodeSuffixLength
+                $values->paymentPairingCodeSuffixLength === '' ? null : (int) $values->paymentPairingCodeSuffixLength,
+                $values->amount === '' ? null : (int) $values->amount,
+                $values->paymentDeadline
             );
         } else {
             $event = new Event(
@@ -80,7 +85,9 @@ class SaveEventFacade
                 $values->eventEnd,
                 $values->totalTeamCount === '' ? null : (int) $values->totalTeamCount,
                 $values->paymentPairingCodePrefix === '' ? null : $values->paymentPairingCodePrefix,
-                $values->paymentPairingCodeSuffixLength === '' ? null : (int) $values->paymentPairingCodeSuffixLength
+                $values->paymentPairingCodeSuffixLength === '' ? null : (int) $values->paymentPairingCodeSuffixLength,
+                $values->amount === '' ? null : (int) $values->amount,
+                $values->paymentDeadline
             );
         }
         if (!($this->isEventNumberUniqueService)($event)) {
