@@ -80,6 +80,11 @@ CRON_KEY=<CRON_KEY>
 35 3 * * * wget "https://www.tmou.cz/cron/payments?apiKey=$CRON_KEY&start=$YESTERDAY&end=$YESTERDAY" >/dev/null 2>&1
 ```
 
+Pro jednoduchost (a kompatibilitu s různými nástroji CRON) také připraven skript `payments/match-previous-day-payments.sh` a tedy stačí použít
+```
+35 3 * * * bash <PROJECT_PATH>/payments/match-previous-day-payments.sh >/dev/null 2>&1
+```
+
 Pro správnou funkčnost je potřeba v souboru `local.latte` nastavit hodnotu `cron.key`, kterou použijete v příkazu výše
 a  `fio.token`, jejíž hodnotu získáte od správce příslušného účtu (stačí token pouze ke čtení).
 
