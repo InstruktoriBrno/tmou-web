@@ -33,7 +33,7 @@
         <ul class="list-reset bg-yellow-tmou lg:rounded-sm p-2 my-4">
             <li class="py-1 md:my-0  lg:hover:bg-transparent rounded-sm">Kvalifikace</li>
             {include menuItem.latte, link => $control->link('Pages:show', 'qualification-rules', $event->getNumber()), label => 'Pravidla', selected => $control::isPageCurrentlySelected($page ?? null, 'qualification-rules', $event->getNumber())}
-            {include menuItem.latte, link => 'https://kvalifikace.tmou.cz', label => 'Hrát kvalifikaci'}
+{*            {include menuItem.latte, link => 'https://kvalifikace.tmou.cz', label => 'Hrát kvalifikaci'}*}
 
 {*            {include menuItem.latte, link => $control->link('Pages:qualification', $event->getNumber()), label => 'Kvalifikace', selected => $control->isLinkCurrent()}*}
 {*            {include menuItem.latte, link => $control->link('Pages:qualificationStatistics', $event->getNumber()), label => 'Statistiky', selected => $control->isLinkCurrent()}*}
