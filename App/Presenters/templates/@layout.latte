@@ -43,8 +43,8 @@
                                             <img src="{$basePath}/storage/{if isset($event) && $event}{$event->getNumber()}/{/if}logo.png" class="h-12 lg:h-auto lg:w-full rounded-lg lg:rounded-sm mx-auto" alt="Logo TMOU">
                                         </a>
                                     </div>
-                                    <div class="hidden lg:block dropdown lg:w-full flex-none lg:mb-0 lg:pb-0 text-right text-sm mt-0">
-                                        <button class="dropbtn bg-yellow-tmou rounded-sm rounded-t-none mt-0 p-1 px-4 pr-8 font-semibold">
+                                    <div class="block dropdown lg:w-full flex-none lg:mb-0 lg:pb-0 text-right text-sm mt-0">
+                                        <button class="dropbtn lg:mt-0 bg-yellow-tmou rounded-sm rounded-t-none mt-3 p-1 px-4 pr-8 font-semibold">
                                             {if isset($event) && $event}
                                                 TMOU {$event->getNumber()}
                                             {else}
@@ -54,7 +54,7 @@
                                         <div class="pointer-events-none absolute inset-y-0 right-0 flex items-center px-2"><svg class="fill-current h-4 w-4" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 20 20"><path d="M9.293 12.95l.707.707L15.657 8l-1.414-1.414L10 10.828 5.757 6.586 4.343 8z"></path></svg></div>
                                         <ul class="dropdown-content w-full bg-yellow-tmou rounded-lg p-3 shadow-xl text-left">
                                             {foreach $events as $_event}
-                                                <li><a class="border-l-4 p-1 my-1 border-yellow-tmou hover:border-black pl-4 block" href="{plink Pages:show, null, $_event->getNumber()}" title="{$_event->getName()}">TMOU {$_event->getNumber()}</a></li>
+                                                <li><a class="whitespace-pre lg:whitespace-normal border-l-4 p-1 my-1 border-yellow-tmou hover:border-black pl-4 block" href="{plink Pages:show, null, $_event->getNumber()}" title="{$_event->getName()}">TMOU {$_event->getNumber()}</a></li>
                                             {/foreach}
                                             <li><a class="border-l-4 p-1 my-1 border-yellow-tmou hover:border-black pl-4 block" href="{plink Pages:show}">Obecné</a></li>
                                             <li><a class="border-l-4 p-1 my-1 border-yellow-tmou hover:border-black pl-4 block" href="https://archiv.tmou.cz/archiv/index.html">Archiv</a></li>
