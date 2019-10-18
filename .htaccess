@@ -16,3 +16,15 @@
     RewriteCond %{REQUEST_URI} !^/old
     RewriteRule ^(.*)$ /www/$1 [NC,L]
 </IfModule>
+
+<IfModule mod_headers.c>
+    # Cache CSS, JS, FAVICON and FONTS for really long, if they change their ?<TIMESTAMP> will force update
+    <FilesMatch ".(css|js|ico|woff|woff2)$">
+        Header set Cache-Control "max-age=604800, public"
+    </FilesMatch>
+
+    # Cache some asset images that are not supposed to be changed as often, they will however change with build
+    <FilesMatch "bg-bottom\.svg|bg\.png|footer-sova\.png$">
+        Header set Cache-Control "max-age=604800, public"
+    </FilesMatch>
+</IfModule>
