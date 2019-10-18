@@ -30,6 +30,7 @@ use Nette\Security\Identity;
 use Tracy\Debugger;
 use Tracy\ILogger;
 use Ublaboo\DataGrid\DataGrid;
+use function assert;
 
 final class TeamsPresenter extends BasePresenter
 {
@@ -386,6 +387,7 @@ final class TeamsPresenter extends BasePresenter
         if ($event === null) {
             throw new \Nette\Application\BadRequestException("No such event with number [${eventNumber}].");
         }
+        assert($this->getRequest() !== null);
         $filterStates = $this->getRequest()->getPost('filterStates');
         $filterPaymentStates = $this->getRequest()->getPost('filterPaymentStates');
 
@@ -395,9 +397,8 @@ final class TeamsPresenter extends BasePresenter
                 return;
             }
 
-            /** @var SubmitButton $input */
             $filter = $form['filter'];
-            if ($filter->isSubmittedBy()) {
+            if ($filter instanceof SubmitButton && $filter->isSubmittedBy()) {
                 return;
             }
 
@@ -417,9 +418,13 @@ final class TeamsPresenter extends BasePresenter
             } catch (\Nette\Application\AbortException $exception) {
                 throw $exception;
             } catch (\InstruktoriBrno\TMOU\Facades\Teams\Exceptions\ReachedLimitException $exception) {
-                $form->addError('Hromadné odeslání selhalo z důvodu dosažení limitu MailGun API. K selhání došlo po úspěšném odeslání následujícímu počtu prvních adresátů: ' . $exception->getMessage() . '.');
+                $form->addError(
+                    'Hromadné odeslání selhalo z důvodu dosažení limitu MailGun API. K selhání došlo po úspěšném odeslání následujícímu počtu prvních adresátů: ' . $exception->getMessage() . '.'
+                );
             } catch (\InstruktoriBrno\TMOU\Facades\Teams\Exceptions\UnknownSendingException $exception) {
-                $form->addError('Hromadné odeslání selhalo. Více informací je uloženo v logu webu. K selhání došlo po úspěšném odeslání následujícímu počtu prvních adresátů: ' . $exception->getMessage() . '.');
+                $form->addError(
+                    'Hromadné odeslání selhalo. Více informací je uloženo v logu webu. K selhání došlo po úspěšném odeslání následujícímu počtu prvních adresátů: ' . $exception->getMessage() . '.'
+                );
             } catch (\Exception $exception) {
                 Debugger::log($exception, ILogger::EXCEPTION);
                 $form->addError('Hromadné odeslání selhalo. Více informací je uloženo v logu webu.');

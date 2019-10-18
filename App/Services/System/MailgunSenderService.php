@@ -4,6 +4,7 @@ namespace InstruktoriBrno\TMOU\Services\System;
 use InstruktoriBrno\TMOU\Utils\MailGunCustomHydrator;
 use InstruktoriBrno\TMOU\Utils\MailGunCustomSendResponse;
 use Mailgun\HttpClient\HttpClientConfigurator;
+use Mailgun\Model\Message\SendResponse;
 use Nette\Mail\Message;
 use Mailgun\Mailgun;
 use Psr\Http\Message\ResponseInterface;
@@ -40,7 +41,7 @@ class MailgunSenderService
      */
     public function sendNetteMessage(Message $message): bool
     {
-        /** @var MailGunCustomSendResponse $response */
+        /** @var MailGunCustomSendResponse|ResponseInterface|SendResponse $response */
         $response = $this->mailgunClient->messages()->send($this->domain, [
             'from'    => $message->getEncodedHeader('From'),
             'to'      => $message->getEncodedHeader('To'),
@@ -50,17 +51,20 @@ class MailgunSenderService
             'text'    => $message->getBody(),
             'html'    => $message->getHtmlBody(),
         ]);
+        if (!$response instanceof MailGunCustomSendResponse) {
+            Debugger::log($response, ILogger::ERROR);
+            throw new \InstruktoriBrno\TMOU\Services\System\Exceptions\UnexpectedResponseException();
+        }
 
         $remainingRecipientLimit = $response->getResponse()->getHeader('X-Recipient-Remaining');
         $remainingRateLimit = $response->getResponse()->getHeader('X-Ratelimit-Remaining');
-        if (
-            (is_array($remainingRecipientLimit) && isset($remainingRecipientLimit[0]) && (int) $remainingRecipientLimit[0] === 0) ||
-            (is_array($remainingRateLimit) && isset($remainingRateLimit[0]) && (int) $remainingRateLimit[0] === 0)
+        if ((isset($remainingRecipientLimit[0]) && (int) $remainingRecipientLimit[0] === 0) ||
+            (isset($remainingRateLimit[0]) && (int) $remainingRateLimit[0] === 0)
         ) {
             throw new \InstruktoriBrno\TMOU\Services\System\Exceptions\ReachedLimitException();
         }
 
-        if ($response->getResponse() instanceof ResponseInterface && $response->getResponse()->getStatusCode() === 200) {
+        if ($response->getResponse()->getStatusCode() === 200) {
             return true;
         }
         Debugger::log($response, ILogger::ERROR);

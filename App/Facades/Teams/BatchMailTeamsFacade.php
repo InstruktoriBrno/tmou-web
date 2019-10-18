@@ -128,7 +128,7 @@ class BatchMailTeamsFacade
                     'teamNumber' => $team->getNumber(),
                     'teamName' => $team->getName(),
                     'subject' => $subject,
-                    'body' => $template->renderToString()
+                    'body' => $template->renderToString(),
                 ];
                 if ($sent + 1 >= self::PREVIEW_LIMIT) {
                     throw new \InstruktoriBrno\TMOU\Facades\Teams\Exceptions\PreviewException($previews);

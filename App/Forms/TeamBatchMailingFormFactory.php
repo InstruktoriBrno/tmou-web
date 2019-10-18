@@ -30,13 +30,13 @@ class TeamBatchMailingFormFactory
 
         $gameStates = null;
         if (is_array($filterStates)) {
-            $gameStates = array_map(function (string $state) {
+            $gameStates = array_map(function (string $state): GameStatus {
                 return GameStatus::fromScalar($state);
             }, $filterStates);
         }
         $paymentStates = null;
         if (is_array($filterPaymentStates)) {
-            $paymentStates = array_map(function (string $state) {
+            $paymentStates = array_map(function (string $state): PaymentStatus {
                 return PaymentStatus::fromScalar($state);
             }, $filterPaymentStates);
         }

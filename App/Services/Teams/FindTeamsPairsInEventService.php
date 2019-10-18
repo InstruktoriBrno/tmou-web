@@ -45,7 +45,15 @@ class FindTeamsPairsInEventService
         $teams = $this->teamRepository->findBy($args, ['name' => 'ASC']);
         $output = [];
         foreach ($teams as $team) {
-            $output[$team->getId()] = sprintf('%s (ID %d, N %d, %s, %s, %s)', $team->getName(), $team->getId(), $team->getNumber(), $team->getGameStatus()->toScalar(), $team->getPaymentStatus()->toScalar(), $team->getEmail());
+            $output[$team->getId()] = sprintf(
+                '%s (ID %d, N %d, %s, %s, %s)',
+                $team->getName(),
+                $team->getId(),
+                $team->getNumber(),
+                $team->getGameStatus()->toScalar(),
+                $team->getPaymentStatus()->toScalar(),
+                $team->getEmail()
+            );
         }
         return $output;
     }

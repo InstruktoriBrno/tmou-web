@@ -1,5 +1,4 @@
 <?php declare(strict_types=1);
-
 namespace InstruktoriBrno\TMOU\Utils;
 
 use Psr\Http\Message\ResponseInterface;
@@ -43,6 +42,4 @@ final class MailGunCustomSendResponse
     {
         return $this->response;
     }
-
-
 }
