@@ -129,11 +129,16 @@ Z toho plyne omezení, že není možné na žádné subdoméně této domény p
 
 Jeden tým může mít přihlášeno i více tokenů (tedy více uživatelů z jednoho týmu na více zařízeních), při odhlášení se maže token z daného zařízení, je-li k dispozici.
 
-Platnost přihlášení je stejná (a měla by být stejná) jako přihlášení do webu a to 14 dní. Životnost PHP session se ale postupně protahuje (při regenerování session při používání)
-ale životnost tokenu nikoliv. Z tohoto důvodu stránka kontroluje v případě, že je tým přihlášen a odhlášen zda SSO token existuje, pokud ne vytvoří nový
-(protože jinak by se musely týmy odhlásit a znovu přihlásit, takhle stačí jen přijít znovu na stránku).
+Tyto jednoduché cookie je potřeba verifikovat, což lze se historicky dělalo přímým přístupem do databáze, což se ale ukázalo jako nevhodné řešení z výkonnostních důvodů.
+Z tohoto důvodu se vystavuje též druhá cookie (pod názvem `sso.jwtCookieName`) opět v režimu `Strict`, `HTTP only` a `SameSite=Strict` ve které je uložen JWT token.
+Existuje též rozhraní `/api/verify-sso?token=<TOKEN>&jwt=<JWT>`, kde lze ověřit zda je příslušné SSO ještě validní, v případě, že ale dotaz z nějakého důvodu selže, mělo by se předpokládat, že tomu tak je.
+
+Platnost SSO by měla být omezenější než přihlášení do webu (tedy méně než 14 dní). Stránka ale kontroluje při přístupu zda již token není expirovaný či jinak vadný
+a pokud tato eventualita nastane vystaví token nový.
 
 Jednou za čas je potřeba promazat uložené tokeny pomocí příkazu `bin/console clean-sso-sessions`.
+
+V rámci SSO JWT tokenu je k dispozici: `tid` s ID týmu, `tno` s číslem týmu v rámci ročníku, `tna` s názvem týmu.
 
 ## Pravidelné úlohy (CRON) 
 

@@ -1,9 +1,9 @@
 <?php declare(strict_types=1);
 namespace InstruktoriBrno\TMOU\Facades\Teams;
 
+use DateTimeImmutable;
 use Doctrine\ORM\EntityManagerInterface;
 use InstruktoriBrno\TMOU\Model\TeamSSOSession;
-use InstruktoriBrno\TMOU\Services\System\GameClockService;
 use Nette\Http\Request;
 use Nette\Http\Response;
 
@@ -19,22 +19,22 @@ class InvalidateSSOSession
     /** @var Response */
     private $response;
 
-    /** @var GameClockService */
-    private $gameClockService;
-
     /** @var string */
     private $cookieName;
 
     /** @var string */
     private $cookieDomain;
 
-    public function __construct(string $cookieName, string $cookieDomain, Request $request, Response $response, EntityManagerInterface $entityManager, GameClockService $gameClockService)
+    /** @var string */
+    private $jwtCookieName;
+
+    public function __construct(string $cookieName, string $jwtCookieName, string $cookieDomain, Request $request, Response $response, EntityManagerInterface $entityManager)
     {
         $this->request = $request;
         $this->entityManager = $entityManager;
         $this->response = $response;
-        $this->gameClockService = $gameClockService;
         $this->cookieName = $cookieName;
+        $this->jwtCookieName = $jwtCookieName;
         $this->cookieDomain = $cookieDomain;
     }
 
@@ -48,10 +48,11 @@ class InvalidateSSOSession
         /** @var TeamSSOSession|null $session */
         $session = $repository->findOneBy(['token' => $token]);
         $this->response->deleteCookie($this->cookieName, null, $this->cookieDomain, true);
+        $this->response->deleteCookie($this->jwtCookieName, null, $this->cookieDomain, true);
         if ($session === null) {
             return;
         }
-        $session->invalidate($this->gameClockService->get());
+        $session->invalidate(new DateTimeImmutable());
         $this->entityManager->persist($session);
         $this->entityManager->flush();
     }

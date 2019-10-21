@@ -12,6 +12,8 @@ parameters:
         replyTo: reply-to@example.com
     sso:
         cookieDomain: tmou.test
+        jwt:
+            secretKey: at-least-1024-bytes-long-random-key
     cron:
         key: replace-this-with-random-secret-value
     fio:

@@ -33,6 +33,12 @@ class TeamSSOSession
     protected $token;
 
     /**
+     * @ORM\Column(type="text", nullable=true)
+     * @var string
+     */
+    protected $jwt;
+
+    /**
      * @ORM\Column(type="boolean", nullable=false)
      * @var boolean
      */
@@ -53,12 +59,14 @@ class TeamSSOSession
     public function __construct(
         Team $team,
         DateTimeImmutable $createdAt,
-        DateTimeImmutable $expiresAt
+        DateTimeImmutable $expiresAt,
+        string $jwt
     ) {
         $this->team = $team;
         $this->createdAt = $createdAt;
         $this->expiresAt = $expiresAt;
         $this->token = Random::generate(255);
+        $this->jwt = $jwt;
         $this->valid = true;
     }
 
@@ -73,8 +81,23 @@ class TeamSSOSession
         return $this->token;
     }
 
+    public function getJWT(): ?string
+    {
+        return $this->jwt;
+    }
+
     public function getExpiration(): DateTimeImmutable
     {
         return $this->expiresAt;
+    }
+
+    public function isValid(): bool
+    {
+        return $this->valid;
+    }
+
+    public function matchesJWTToken(string $token): bool
+    {
+        return $this->jwt !== null && $this->jwt === $token;
     }
 }
