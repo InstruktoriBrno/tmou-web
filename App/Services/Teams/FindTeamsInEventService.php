@@ -24,6 +24,7 @@ class FindTeamsInEventService
 
     /**
      * Returns all teams registered on given event
+     * Note: this finds all teams of given event (not just in state registered)
      *
      * @param Event $event
      * @return Team[]
@@ -35,17 +36,18 @@ class FindTeamsInEventService
 
     /**
      * Returns all teams qualified on given event
+     * Note: this finds all teams in states qualified or playing on given event (not just in state playing)
      *
      * @param Event $event
      * @return Team[]
      */
     public function findQualifiedTeams(Event $event): array
     {
-        return $this->teamRepository->findBy(['event' => $event, 'gameStatus' => GameStatus::QUALIFIED()], ['name' => 'ASC']);
+        return $this->teamRepository->findBy(['event' => $event, 'gameStatus' => [GameStatus::QUALIFIED(), GameStatus::PLAYING()]], ['name' => 'ASC']);
     }
 
     /**
-     * Returns all teams qualified on given event
+     * Returns all teams playing on given event
      *
      * @param Event $event
      * @return Team[]
