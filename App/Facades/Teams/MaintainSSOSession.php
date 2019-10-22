@@ -75,7 +75,7 @@ class MaintainSSOSession
                 if (isset($decoded->exp)) {
                     try {
                         $expires = new DateTimeImmutable('@' . $decoded->exp);
-                        if ($expires !== null && $expires > new DateTimeImmutable()) {
+                        if ($expires > new DateTimeImmutable()) {
                             return;
                         }
                     } catch (\Exception $e) {

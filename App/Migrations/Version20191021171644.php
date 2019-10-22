@@ -1,5 +1,4 @@
 <?php declare(strict_types=1);
-
 namespace InstruktoriBrno\TMOU\Migrations;
 
 use Doctrine\DBAL\Schema\Schema;

@@ -25,12 +25,12 @@ class IsSSOValid
      */
     public function __invoke(string $token, ?string $jwt): IResponse
     {
-        /** @var TeamSSOSession $session */
+        /** @var TeamSSOSession|null $session */
         $session = $this->entityManager->getRepository(TeamSSOSession::class)->findOneBy(['token' => $token]);
         if ($session === null) {
             return new JsonResponse(['valid' => 'false']);
         }
-        if ($session->matchesJWTToken($jwt) && $session->isValid() && $session->getExpiration() > new DateTimeImmutable()) {
+        if ($jwt !== null && $session->matchesJWTToken($jwt) && $session->isValid() && $session->getExpiration() > new DateTimeImmutable()) {
             return new JsonResponse(['valid' => 'true']);
         }
         return new JsonResponse(['valid' => 'false']);
