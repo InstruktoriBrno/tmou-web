@@ -191,8 +191,10 @@ final class PagesPresenter extends BasePresenter
         $this->template->event = $this->event;
         try {
             $this->template->continueToQualification = LoginContinueToIntents::fromScalar($continueTo ?? '')->equals(LoginContinueToIntents::QUALIFICATION());
+            $this->template->continueToWebinfo = LoginContinueToIntents::fromScalar($continueTo ?? '')->equals(LoginContinueToIntents::WEBINFO());
         } catch (\Grifart\Enum\MissingValueDeclarationException $exception) {
             $this->template->continueToQualification = false;
+            $this->template->continueToWebinfo = false;
         }
     }
 
@@ -440,6 +442,10 @@ final class PagesPresenter extends BasePresenter
                 try {
                     if (LoginContinueToIntents::fromScalar($continueTo)->equals(LoginContinueToIntents::QUALIFICATION())) {
                         $this->redirectUrl('https://kvalifikace.tmou.cz');
+                        return;
+                    }
+                    if (LoginContinueToIntents::fromScalar($continueTo)->equals(LoginContinueToIntents::WEBINFO())) {
+                        $this->redirectUrl('https://webinfo.tmou.cz');
                         return;
                     }
                 } catch (\Grifart\Enum\MissingValueDeclarationException $exception) {
