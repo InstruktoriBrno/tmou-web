@@ -85,7 +85,7 @@ class MenuItemFormFactory
             ->setRequired('Vyplňte URL cílové stránky.');
 
         $form->addGroup('Zobrazení & odhalování');
-        $form->addCheckbox('for_anonymous', 'Pouze pro nepřihlášené nepřihlášené')
+        $form->addCheckbox('for_anonymous', 'Pouze pro nepřihlášené')
             ->setOption('description', 'Při zaškrnutí se objeví pouze nepřihlášeným. Další níže uvedené zaškrtávací volby už nemají žádný vliv.');
         $form->addCheckbox('for_organizators', 'Pro organizátory')
             ->setOption('description', 'Při zaškrnutí se objeví při přihlášení jako organizátor. Při zaškrnutí "Pro týmy" bude viditelné organizátorům i týmům.');
