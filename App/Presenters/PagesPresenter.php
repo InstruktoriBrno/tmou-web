@@ -163,27 +163,6 @@ final class PagesPresenter extends BasePresenter
         }
     }
 
-    /** @privilege(InstruktoriBrno\TMOU\Enums\Resource::TEAM_COMMON,InstruktoriBrno\TMOU\Enums\Action::QUALIFICATION) */
-    public function actionQualification(int $eventNumber): void
-    {
-        $this->populateEventFromURL($eventNumber);
-        $this->template->event = $this->event;
-    }
-
-    /** @privilege(InstruktoriBrno\TMOU\Enums\Resource::PAGES,InstruktoriBrno\TMOU\Enums\Action::VIEW) */
-    public function actionQualificationStatistics(int $eventNumber): void
-    {
-        $this->populateEventFromURL($eventNumber);
-        $this->template->event = $this->event;
-    }
-
-    /** @privilege(InstruktoriBrno\TMOU\Enums\Resource::PAGES,InstruktoriBrno\TMOU\Enums\Action::VIEW) */
-    public function actionQualificationAnswers(int $eventNumber): void
-    {
-        $this->populateEventFromURL($eventNumber);
-        $this->template->event = $this->event;
-    }
-
     /** @privilege(InstruktoriBrno\TMOU\Enums\Resource::TEAM_COMMON,InstruktoriBrno\TMOU\Enums\Action::LOGIN) */
     public function actionLogin(int $eventNumber, ?string $continueTo): void
     {
@@ -274,20 +253,6 @@ final class PagesPresenter extends BasePresenter
 
     /** @privilege(InstruktoriBrno\TMOU\Enums\Resource::PAGES,InstruktoriBrno\TMOU\Enums\Action::VIEW) */
     public function actionGameReports(int $eventNumber): void
-    {
-        $this->populateEventFromURL($eventNumber);
-        $this->template->event = $this->event;
-    }
-
-    /** @privilege(InstruktoriBrno\TMOU\Enums\Resource::PAGES,InstruktoriBrno\TMOU\Enums\Action::VIEW) */
-    public function actionGameStatistics(int $eventNumber): void
-    {
-        $this->populateEventFromURL($eventNumber);
-        $this->template->event = $this->event;
-    }
-
-    /** @privilege(InstruktoriBrno\TMOU\Enums\Resource::PAGES,InstruktoriBrno\TMOU\Enums\Action::VIEW) */
-    public function actionGameFlow(int $eventNumber): void
     {
         $this->populateEventFromURL($eventNumber);
         $this->template->event = $this->event;

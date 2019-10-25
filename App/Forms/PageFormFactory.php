@@ -35,7 +35,12 @@ class PageFormFactory
             ->setRequired(false)
             ->addRule(Form::MAX_LENGTH, 'SLUG stránky může být maximálně 191 znaků dlouhý.', 191)
             ->setOption('description', 'Slouží jako unikátní identifikace stránky v URL adrese v rámci ročníku. Některé hodnoty jsou rezervované. 
-            Pro vytvoření stránky aktualit na úvodní stránce použijte hodnotu "' . ReservedSLUG::UPDATES()->toScalar() . '".');
+            Pro vytvoření stránky aktualit na úvodní stránce použijte hodnotu "' . ReservedSLUG::UPDATES()->toScalar() . '". Dále můžete použít "' .
+                ReservedSLUG::QUALIFICATION_RESULTS()->toScalar() . '", "' .
+                ReservedSLUG::QUALIFICATION_ANSWERS()->toScalar() . '", "' .
+                ReservedSLUG::QUALIFICATION_STATISTICS()->toScalar() . '", "' .
+                ReservedSLUG::GAME_STATISTICS()->toScalar() . '", "' .
+                ReservedSLUG::GAME_FLOW()->toScalar() . '".');
         $form->addCheckbox('default', 'Výchozí')
             ->setOption('description', 'Určuje zda jde výchozí (úvodní) stránku ročníku, může být vždy maximálně jedna.');
 

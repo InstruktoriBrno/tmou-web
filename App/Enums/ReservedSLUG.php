@@ -6,7 +6,7 @@ use Grifart\Enum\Enum;
 
 /**
  *
- * @method static ReservedSLUG QUALIFICATION()
+ * @method static ReservedSLUG QUALIFICATION_RESULTS()
  * @method static ReservedSLUG QUALIFICATION_STATISTICS()
  * @method static ReservedSLUG QUALIFICATION_ANSWERS()
  *
@@ -32,9 +32,9 @@ final class ReservedSLUG extends Enum
 {
     use AutoInstances;
 
-    public const QUALIFICATION = 'qualification';
-    public const QUALIFICATION_STATISTICS = 'qualification-statistics';
-    public const QUALIFICATION_ANSWERS = 'qualification-answers';
+    public const QUALIFICATION_RESULTS = 'qualification-results'; // this can be added manually as this page is optional
+    public const QUALIFICATION_STATISTICS = 'qualification-statistics'; // this can be added manually as this page is optional
+    public const QUALIFICATION_ANSWERS = 'qualification-answers'; // this can be added manually as this page is optional
 
     public const REGISTRATION = 'registration';
     public const LOGIN = 'login';
@@ -50,18 +50,23 @@ final class ReservedSLUG extends Enum
     public const TEAMS_PLAYING = 'teams-playing';
 
     public const GAME_REPORTS = 'game-reports';
-    public const GAME_STATISTICS = 'game-statistics';
-    public const GAME_FLOW = 'game-flow';
+    public const GAME_STATISTICS = 'game-statistics'; // this can be added manually as this page is optional
+    public const GAME_FLOW = 'game-flow'; // this can be added manually as this page is optional
 
     public function isCreationAllowed(): bool
     {
-        return $this->equals(self::UPDATES());
+        return $this->equals(self::UPDATES())
+            || $this->equals(self::QUALIFICATION_RESULTS())
+            || $this->equals(self::QUALIFICATION_ANSWERS())
+            || $this->equals(self::QUALIFICATION_STATISTICS())
+            || $this->equals(self::GAME_STATISTICS())
+            || $this->equals(self::GAME_FLOW());
     }
 
     public static function toList(): array
     {
         return [
-            self::QUALIFICATION => 'Kvalifikace',
+            self::QUALIFICATION_RESULTS => 'Výsledky kvalifikace',
             self::QUALIFICATION_STATISTICS => 'Statistika kvalifikace',
             self::QUALIFICATION_ANSWERS => 'Odpovědi kvalifikace',
             self::REGISTRATION => 'Registrace',
