@@ -3,8 +3,10 @@ namespace InstruktoriBrno\TMOU\Presenters;
 
 use InstruktoriBrno\TMOU\Enums\UserRole;
 use InstruktoriBrno\TMOU\Facades\Teams\MaintainSSOSession;
+use InstruktoriBrno\TMOU\Model\Event;
 use InstruktoriBrno\TMOU\Model\Page;
 use InstruktoriBrno\TMOU\Services\Events\FindEventsService;
+use InstruktoriBrno\TMOU\Services\MenuItems\FindMenuItemsForDisplay;
 use Nette\Security\Identity;
 use function count;
 use InstruktoriBrno\TMOU\Enums\Action;
@@ -36,6 +38,9 @@ abstract class BasePresenter extends Presenter
     /** @var MaintainSSOSession @inject */
     public $maintainSSOSession;
 
+    /** @var FindMenuItemsForDisplay @inject */
+    public $findMenuItemsForDisplay;
+
     /** @var int */
     public $buildTime;
 
@@ -44,6 +49,7 @@ abstract class BasePresenter extends Presenter
         parent::beforeRender();
         if ($this->user->isAllowed(Resource::ADMIN_COMMON, Action::VIEW)) {
             $this->template->hasDatagrid = true;
+            $this->template->hasSelectize = true;
             $this->template->hasDatetimepicker = true;
         }
 
@@ -59,6 +65,13 @@ abstract class BasePresenter extends Presenter
 
         $this->template->events = ($this->findEventsService)();
         $this->template->buildTime = $this->buildTime ?? time();
+
+        $this->template->urlPath = $this->getHttpRequest()->getUrl()->getPath();
+        if (isset($this->template->event) && $this->template->event instanceof Event) {
+            $this->template->menuItems = ($this->findMenuItemsForDisplay)($this->template->event);
+        } else {
+            $this->template->menuItems = ($this->findMenuItemsForDisplay)(null);
+        }
     }
 
     public function setBuildTime(int $time): void

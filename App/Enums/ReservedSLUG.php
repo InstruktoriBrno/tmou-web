@@ -57,4 +57,26 @@ final class ReservedSLUG extends Enum
     {
         return $this->equals(self::UPDATES());
     }
+
+    public static function toList(): array
+    {
+        return [
+            self::QUALIFICATION => 'Kvalifikace',
+            self::QUALIFICATION_STATISTICS => 'Statistika kvalifikace',
+            self::QUALIFICATION_ANSWERS => 'Odpovědi kvalifikace',
+            self::REGISTRATION => 'Registrace',
+            self::LOGIN => 'Přihlášení',
+            self::LOGOUT => 'Odhlášení',
+            self::FORGOTTEN_PASSWORD => 'Zapomenuté heslo',
+            self::RESET_PASSWORD => 'Obnova hesla',
+            self::SETTINGS => 'Nastavení',
+            self::UPDATES => 'Aktuality',
+            self::TEAMS_REGISTERED => 'Zaregistrované týmy',
+            self::TEAMS_QUALIFIED => 'Kvalifikované týmy',
+            self::TEAMS_PLAYING => 'Hrající týmy',
+            self::GAME_REPORTS => 'Reporty ze hry',
+            self::GAME_STATISTICS => 'Statistiky hry',
+            self::GAME_FLOW => 'Průběh hry',
+        ];
+    }
 }

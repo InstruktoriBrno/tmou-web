@@ -141,6 +141,16 @@ services:
     - InstruktoriBrno\TMOU\Services\Teams\SendPaymentsMatchingNotificationEmailService(%mail.noReply%, %fio.notificationEmail%)
     - InstruktoriBrno\TMOU\Utils\JWT(%sso.jwt.secretKey%, %sso.jwt.algorithm%)
     - InstruktoriBrno\TMOU\Facades\Teams\IsSSOValid
+    - InstruktoriBrno\TMOU\Grids\MenuItemsGrid\MenuItemsGridFactory
+    - InstruktoriBrno\TMOU\Services\MenuItems\FindMenuItemsForDataGridService
+    - InstruktoriBrno\TMOU\Forms\MenuItemFormFactory
+    - InstruktoriBrno\TMOU\Services\MenuItems\FindMenuItemService
+    - InstruktoriBrno\TMOU\Facades\MenuItems\SaveMenuItemFacade
+    - InstruktoriBrno\TMOU\Services\MenuItems\FindMenuItemForFormService
+    - InstruktoriBrno\TMOU\Services\Pages\FindPagesPairsService
+    - InstruktoriBrno\TMOU\Services\MenuItems\DeleteMenuItemService
+    - InstruktoriBrno\TMOU\Facades\MenuItems\DeleteMenuItemFacade
+    - InstruktoriBrno\TMOU\Services\MenuItems\FindMenuItemsForDisplay
 
 extensions:
     nextras.form: Nextras\Forms\Bridges\NetteDI\FormsExtension

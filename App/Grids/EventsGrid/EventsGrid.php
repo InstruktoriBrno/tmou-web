@@ -99,6 +99,13 @@ class EventsGrid extends Control
                 ->setClass('btn btn-xs btn-default');
         }
 
+        if ($this->user->isAllowed(Resource::ADMIN_MENU_ITEMS, Action::EDIT)) {
+            $grid->addToolbarButton('Menu:', '')
+                ->setIcon('compass')
+                ->addAttributes(['title' => 'Položky menu bez ročníku'])
+                ->setClass('btn btn-xs btn-default');
+        }
+
         if ($this->user->isAllowed(Resource::ADMIN_PAGES, Action::EDIT)) {
             $grid->addToolbarButton('AdminPages:', '')
                 ->setIcon('file')
@@ -110,6 +117,13 @@ class EventsGrid extends Control
             $grid->addAction('event_pages', '', 'AdminPages:', ['eventNumber' => 'number'])
                 ->setIcon('file')
                 ->addAttributes(['title' => 'Stránky ročníku'])
+                ->setClass('btn btn-xs btn-default');
+        }
+
+        if ($this->user->isAllowed(Resource::ADMIN_MENU_ITEMS, Action::EDIT)) {
+            $grid->addAction('event_menu_items', '', 'Menu:', ['eventNumber' => 'number'])
+                ->setIcon('compass')
+                ->addAttributes(['title' => 'Položky menu ročníku'])
                 ->setClass('btn btn-xs btn-default');
         }
 

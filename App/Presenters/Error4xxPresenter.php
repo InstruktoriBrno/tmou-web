@@ -1,9 +1,11 @@
 <?php declare(strict_types=1);
 namespace InstruktoriBrno\TMOU\Presenters;
 
+use InstruktoriBrno\TMOU\Model\Event;
 use InstruktoriBrno\TMOU\Model\Page;
 use InstruktoriBrno\TMOU\Services\Events\FindEventByNumberService;
 use InstruktoriBrno\TMOU\Services\Events\FindEventsService;
+use InstruktoriBrno\TMOU\Services\MenuItems\FindMenuItemsForDisplay;
 use InstruktoriBrno\TMOU\Services\System\GameClockService;
 use Nette\Application\Request;
 use Nette\Application\UI\Presenter;
@@ -20,6 +22,9 @@ final class Error4xxPresenter extends Presenter
 
     /** @var GameClockService @inject */
     public $gameClockService;
+
+    /** @var FindMenuItemsForDisplay @inject */
+    public $findMenuItemsForDisplay;
 
     /** @var int|null|string */
     public static $eventNumber;
@@ -42,6 +47,13 @@ final class Error4xxPresenter extends Presenter
         }
 
         $this->template->buildTime = $this->buildTime;
+
+        $this->template->urlPath = $this->getHttpRequest()->getUrl()->getPath();
+        if (isset($this->template->event) && $this->template->event instanceof Event) {
+            $this->template->menuItems = ($this->findMenuItemsForDisplay)($this->template->event);
+        } else {
+            $this->template->menuItems = ($this->findMenuItemsForDisplay)(null);
+        }
     }
 
     public function setBuildTime(int $time): void

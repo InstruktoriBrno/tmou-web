@@ -20,6 +20,9 @@ final class RouterFactory
         // Administration of events
         $router[] = new Route('admin/events/<action>', 'Events:default');
 
+        // Administration of menu items
+        $router[] = new Route('admin/menu-items/[<eventNumber \d+>/]<action>', 'Menu:default');
+
         // Administration of pages
         $router[] = new Route('admin/pages/[<eventNumber \d+>/][<action>]', 'AdminPages:default');
 

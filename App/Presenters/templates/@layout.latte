@@ -19,6 +19,9 @@
         {if isset($hasDatetimepicker) && $hasDatetimepicker}
             <link rel="stylesheet" href="{$basePath}/assets/css/bootstrap-datetimepicker.min.css?{$buildTime}">
         {/if}
+        {if isset($hasSelectize) && $hasSelectize}
+            <link rel="stylesheet" href="{$basePath}/assets/css/selectize.custom.css?{$buildTime}">
+        {/if}
     </head>
 
     <body class="bg-fixed bg-cover bg-black-tmou tracking-wider tracking-normal">
@@ -214,6 +217,14 @@
                 <script src="{$basePath}/assets/js/datagrid.js?{$buildTime}"></script>
                 <script src="{$basePath}/assets/js/datagrid-instant-url-refresh.js?{$buildTime}"></script>
                 <script src="{$basePath}/assets/js/datagrid-spinners.js?{$buildTime}"></script>
+            {/if}
+            {if isset($hasSelectize) && $hasSelectize}
+                <script src="{$basePath}/assets/js/selectize.min.js?{$buildTime}"></script>
+                <script>
+                    $('.selectize').selectize({
+                        lockOptgroupOrder: true
+                    });
+                </script>
             {/if}
         {/block}
     </body>

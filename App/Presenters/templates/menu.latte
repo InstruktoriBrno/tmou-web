@@ -16,106 +16,102 @@
             max-h-screen-80 lg:max-h-full
             overflow-y-auto"
      id="nav-content">
-    {if isset($event) && $event}
-        <ul class="list-reset bg-yellow-tmou lg:rounded-sm p-2 my-4">
-            {include menuItem.latte, link => $control->link('Pages:show', null, $event->getNumber()), label => 'Úvod', selected => $control::isPageCurrentlySelected($page ?? null, null, $event->getNumber())}
-            {include menuItem.latte, link => $control->link('Pages:show', 'about', $event->getNumber()), label => 'O hře', selected => $control::isPageCurrentlySelected($page ?? null, 'about', $event->getNumber())}
-            {include menuItem.latte, link => $control->link('Pages:show', 'faq', $event->getNumber()), label => 'Časté otázky', selected => $control::isPageCurrentlySelected($page ?? null, 'faq', $event->getNumber())}
-        </ul>
+    {if isset($menuItems) && is_array($menuItems)}
+        {foreach $menuItems as $tagGroup}
+            {var $visibleItemsCount = 0}
+            {foreach $tagGroup as $menuItem}
+                {continueIf $menuItem->isHiddenForInTime($user, $currentTime)}
+                {var $visibleItemsCount += 1}
+            {/foreach}
+            {continueIf $visibleItemsCount === 0}
+            <ul class="list-reset bg-yellow-tmou lg:rounded-sm p-2 my-4">
+                {foreach $tagGroup as $menuItem}
+                    {if $iterator->isFirst() && $menuItem->getLabel()}
+                        <li class="py-1 md:my-0  lg:hover:bg-transparent rounded-sm">{$menuItem->getLabel()}</li>
+                    {/if}
 
-        <ul class="list-reset bg-yellow-tmou lg:rounded-sm p-2 my-4">
-            <li class="py-1 md:my-0  lg:hover:bg-transparent rounded-sm">Tým</li>
-            {if $isNotLogged || !$isMatchingEvent}{include menuItem.latte, link => $control->link('Pages:login', $event->getNumber()), label => 'Přihlášení', selected => $control->isLinkCurrent()}{/if}
-            {if $isNotLogged || !$isMatchingEvent}{include menuItem.latte, link => $control->link('Pages:registration', $event->getNumber()), label => 'Registrace', selected => $control->isLinkCurrent()}{/if}
-            {if $isTeam && $isMatchingEvent}{include menuItem.latte, link => $control->link('Pages:settings', $event->getNumber()), label => 'Nastavení týmu', selected => $control->isLinkCurrent()}{/if}
-            {include menuItem.latte, link => $control->link('Pages:teamsRegistered', $event->getNumber()), label => 'Registrované týmy', selected => $control->isLinkCurrent()}
-        </ul>
-        <ul class="list-reset bg-yellow-tmou lg:rounded-sm p-2 my-4">
-            <li class="py-1 md:my-0  lg:hover:bg-transparent rounded-sm">Kvalifikace</li>
-            {include menuItem.latte, link => $control->link('Pages:show', 'qualification-rules', $event->getNumber()), label => 'Pravidla', selected => $control::isPageCurrentlySelected($page ?? null, 'qualification-rules', $event->getNumber())}
-{*            {include menuItem.latte, link => 'https://kvalifikace.tmou.cz', label => 'Hrát kvalifikaci'}*}
-
-{*            {include menuItem.latte, link => $control->link('Pages:qualification', $event->getNumber()), label => 'Kvalifikace', selected => $control->isLinkCurrent()}*}
-{*            {include menuItem.latte, link => $control->link('Pages:qualificationStatistics', $event->getNumber()), label => 'Statistiky', selected => $control->isLinkCurrent()}*}
-{*            {include menuItem.latte, link => $control->link('Pages:qualificationAnswers', $event->getNumber()), label => 'Statistika odpovědí', selected => $control->isLinkCurrent()}*}
-            {include menuItem.latte, link => $control->link('Pages:show', 'qualification-results', $event->getNumber()), label => 'Výsledky kvalifikace', selected => $control::isPageCurrentlySelected($page ?? null, 'qualification-results', $event->getNumber())}
-            {include menuItem.latte, link => $control->link('Pages:show', 'wild-card', $event->getNumber()), label => 'Divoké karty', selected => $control::isPageCurrentlySelected($page ?? null, 'wild-card', $event->getNumber())}
-            {include menuItem.latte, link => $control->link('Pages:teamsQualified', $event->getNumber()), label => 'Kvalifikované týmy', selected => $control->isLinkCurrent()}
-        </ul>
-
-        <ul class="list-reset bg-yellow-tmou lg:rounded-sm p-2 my-4">
-            <li class="py-1 md:my-0  lg:hover:bg-transparent rounded-sm">Hra</li>
-            {include menuItem.latte, link => $control->link('Pages:show', 'rules', $event->getNumber()), label => 'Pravidla', selected => $control::isPageCurrentlySelected($page ?? null, 'rules', $event->getNumber())}
-            {include menuItem.latte, link => $control->link('Pages:teamsPlaying', $event->getNumber()), label => 'Hrající týmy', selected => $control->isLinkCurrent()}
-{*            {include menuItem.latte, link => $control->link('Pages:show', 'tasks', $event->getNumber()), label => 'Zadání a řešení', selected => $control::isPageCurrentlySelected($page ?? null, 'tasks', $event->getNumber())}*}
-{*            {include menuItem.latte, link => $control->link('Pages:gameReports', $event->getNumber()), label => 'Reportáže a dojmy', selected => $control->isLinkCurrent()}*}
-{*            {include menuItem.latte, link => $control->link('Pages:gameStatistics', $event->getNumber()), label => 'Statistiky', selected => $control->isLinkCurrent()}*}
-{*            {include menuItem.latte, link => $control->link('Pages:gameFlow', $event->getNumber()), label => 'Průchody hrou', selected => $control->isLinkCurrent()}*}
-        </ul>
-
-        <ul class="list-reset bg-yellow-tmou lg:rounded-sm p-2 my-4">
-            {include menuItem.latte, link => $control->link('Pages:show', 'media', null), label => 'TMOU v médiích', selected => $control::isPageCurrentlySelected($page ?? null, 'media', null)}
-            {include menuItem.latte, link => 'https://archiv.tmou.cz/archiv/manual_tmou.html', label => 'Manuál TMOU'}
-            {include menuItem.latte, link => $control->link('Pages:show', 'hall-of-fame', null), label => 'Síň slávy', selected => $control::isPageCurrentlySelected($page ?? null, 'hall-of-fame', null)}
-        </ul>
-    {else}
-        <ul class="list-reset bg-yellow-tmou lg:rounded-sm p-2 my-4">
-            {include menuItem.latte, link => $control->link('Pages:show', 'media', null), label => 'TMOU v médiích', selected => $control::isPageCurrentlySelected($page ?? null, 'media', null)}
-            {include menuItem.latte, link => 'https://archiv.tmou.cz/archiv/index.html', label => 'TMOU archiv'}
-            {include menuItem.latte, link => 'https://archiv.tmou.cz/archiv/manual_tmou.html', label => 'Manuál TMOU'}
-            {include menuItem.latte, link => $control->link('Pages:show', 'hall-of-fame', null), label => 'Síň slávy', selected => $control::isPageCurrentlySelected($page ?? null, 'hall-of-fame', null)}
-        </ul>
-
+                    {continueIf $menuItem->isHiddenForInTime($user, $currentTime)}
+                    {var $pageEventNumber = null}
+                    {var $link = null}
+                    {var $title = $menuItem->getTitle()}
+                    {var $class = $menuItem->getClass()}
+                    {var $content = $menuItem->getContent()}
+                    {var $isSelected = false}
+                    {if $menuItem->getTargetPage() !== null}
+                        {var $pageEventNumber = $menuItem->getTargetPage()->getEvent() !== null ? $menuItem->getTargetPage()->getEvent()->getNumber() : null}
+                        {var $link = $control->link('Pages:show', $menuItem->getTargetPage()->getSlug(), $pageEventNumber)}
+                        {var $isSelected = isset($page) && $page !== null && $page->getId() === $menuItem->getTargetPage()->getId()}
+                    {elseif $menuItem->getTargetUrl()}
+                        {var $link = $menuItem->getTargetUrl()}
+                    {elseif $menuItem->getTargetSlug() !== null && $menuItem->getTargetEvent() !== null}
+                        {var $pageEventNumber = $menuItem->getTargetEvent()->getNumber()}
+                        {var $link = $control->link('Pages:show', $menuItem->getTargetSlug(), $pageEventNumber)}
+                        {var $isSelected = isset($urlPath) && $urlPath === $link}
+                    {/if}
+                    {include menuItem.latte, link => $link, label => $content, title => $title, classes => $class, selected => $isSelected}
+                {/foreach}
+            </ul>
+        {/foreach}
     {/if}
 
     {if $user->isInRole(\InstruktoriBrno\TMOU\Enums\UserRole::ORG)}
         <ul class="list-reset bg-yellow-tmou lg:rounded-sm p-2 my-4 mt-16">
             {if isset($page) && $page}
                 <li class="py-1 lg:hover:bg-transparent rounded-sm mb-4">
-                    <a href="{plink AdminPages:edit, $page->getId()}" class="block pl-4 align-middle text-gray-800 no-underline hover:text-black border-l-4 border-transparent lg:hover:border-black">
+                    <a href="{plink AdminPages:edit, $page->getId()}" class="block pl-4 align-middle text-gray-800 no-underline hover:text-black border-l-4 border-transparent lg:hover:border-black {ifCurrent AdminPages:edit, $page->getId()}lg:border-black{/ifCurrent}">
                         <span class="pb-1 md:pb-0 text-base font-semibold">Upravit tuto stránku</span>
                     </a>
                 </li>
             {/if}
             {if isset($event) && $event}
                 <li class="py-1 md:my-0 lg:hover:bg-transparent rounded-sm">
-                    <a href="{plink Events:edit, $event->getId()}" class="block pl-4 align-middle text-gray-800 no-underline hover:text-black border-l-4 border-transparent lg:hover:border-black">
+                    <a href="{plink Events:edit, $event->getId()}" class="block pl-4 align-middle text-gray-800 no-underline hover:text-black border-l-4 border-transparent lg:hover:border-black {ifCurrent Events:edit, $event->getId()}lg:border-black{/ifCurrent}">
                         <span class="pb-1 md:pb-0 text-base font-semibold">Upravit {$event->getNumber()}. ročník</span>
                     </a>
                 </li>
                 <li class="py-1 md:my-0 lg:hover:bg-transparent rounded-sm">
-                    <a href="{plink Teams:, $event->getNumber()}" class="block pl-4 align-middle text-gray-800 no-underline hover:text-black border-l-4 border-transparent lg:hover:border-black">
+                    <a href="{plink Teams:, $event->getNumber()}" class="block pl-4 align-middle text-gray-800 no-underline hover:text-black border-l-4 border-transparent lg:hover:border-black {ifCurrent Teams:, $event->getNumber()}lg:border-black{/ifCurrent}">
                         <span class="pb-1 md:pb-0 text-base font-semibold">Týmy {$event->getNumber()}. ročníku</span>
                     </a>
                 </li>
                 <li class="py-1 md:my-0 lg:hover:bg-transparent rounded-sm">
-                    <a href="{plink Teams:batchMail, $event->getNumber()}" class="block pl-4 align-middle text-gray-800 no-underline hover:text-black border-l-4 border-transparent lg:hover:border-black">
+                    <a href="{plink Teams:batchMail, $event->getNumber()}" class="block pl-4 align-middle text-gray-800 no-underline hover:text-black border-l-4 border-transparent lg:hover:border-black {ifCurrent Teams:batchMail, $event->getNumber()}lg:border-black{/ifCurrent}">
                         <span class="pb-1 md:pb-0 text-base font-semibold">Mailování {$event->getNumber()}. ročníku</span>
                     </a>
                 </li>
-                <li class="py-1 lg:hover:bg-transparent rounded-sm mb-4">
-                    <a href="{plink AdminPages:, $event->getNumber()}" class="block pl-4 align-middle text-gray-800 no-underline hover:text-black border-l-4 border-transparent lg:hover:border-black">
+                <li class="py-1 md:my-0 lg:hover:bg-transparent rounded-sm">
+                    <a href="{plink AdminPages:, $event->getNumber()}" class="block pl-4 align-middle text-gray-800 no-underline hover:text-black border-l-4 border-transparent lg:hover:border-black {ifCurrent AdminPages:, $event->getNumber()}lg:border-black{/ifCurrent}">
                         <span class="pb-1 md:pb-0 text-base font-semibold">Stránky {$event->getNumber()}. ročníku</span>
+                    </a>
+                </li>
+                <li class="py-1 lg:hover:bg-transparent rounded-sm mb-4">
+                    <a href="{plink Menu:, $event->getNumber()}" class="block pl-4 align-middle text-gray-800 no-underline hover:text-black border-l-4 border-transparent lg:hover:border-black {ifCurrent Menu:, $event->getNumber()}lg:border-black{/ifCurrent}">
+                        <span class="pb-1 md:pb-0 text-base font-semibold">Menu {$event->getNumber()}. ročníku</span>
                     </a>
                 </li>
             {/if}
             <li class="py-1 md:my-0 lg:hover:bg-transparent rounded-sm">
-                <a href="{plink Admin:organizators}" class="block pl-4 align-middle text-gray-800 no-underline hover:text-black border-l-4 border-transparent lg:hover:border-black">
+                <a href="{plink Admin:organizators}" class="block pl-4 align-middle text-gray-800 no-underline hover:text-black border-l-4 border-transparent lg:hover:border-black {ifCurrent Admin:organizators}lg:border-black{/ifCurrent}">
                     <span class="pb-1 md:pb-0 text-base font-semibold">Organizátoři</span>
                 </a>
             </li>
             <li class="py-1 md:my-0 lg:hover:bg-transparent rounded-sm">
-                <a href="{plink Events:}" class="block pl-4 align-middle text-gray-800 no-underline hover:text-black border-l-4 border-transparent lg:hover:border-black">
+                <a href="{plink Events:}" class="block pl-4 align-middle text-gray-800 no-underline hover:text-black border-l-4 border-transparent lg:hover:border-black {ifCurrent Events:}lg:border-black{/ifCurrent}">
                     <span class="pb-1 md:pb-0 text-base font-semibold">Ročníky</span>
                 </a>
             </li>
             <li class="py-1 md:my-0 lg:hover:bg-transparent rounded-sm">
-                <a href="{plink AdminPages:}" class="block pl-4 align-middle text-gray-800 no-underline hover:text-black border-l-4 border-transparent lg:hover:border-black">
+                <a href="{plink AdminPages:}" class="block pl-4 align-middle text-gray-800 no-underline hover:text-black border-l-4 border-transparent lg:hover:border-black {ifCurrent AdminPages:}lg:border-black{/ifCurrent}">
                     <span class="pb-1 md:pb-0 text-base font-semibold">Stránky (obecné)</span>
                 </a>
             </li>
+            <li class="py-1 md:my-0 lg:hover:bg-transparent rounded-sm">
+                <a href="{plink Menu:}" class="block pl-4 align-middle text-gray-800 no-underline hover:text-black border-l-4 border-transparent lg:hover:border-black {ifCurrent Menu:}lg:border-black{/ifCurrent}">
+                    <span class="pb-1 md:pb-0 text-base font-semibold">Menu (obecné)</span>
+                </a>
+            </li>
             <li class="py-1 lg:hover:bg-transparent rounded-sm mb-4">
-                <a href="{plink Teams:payments}" class="block pl-4 align-middle text-gray-800 no-underline hover:text-black border-l-4 border-transparent lg:hover:border-black">
+                <a href="{plink Teams:payments}" class="block pl-4 align-middle text-gray-800 no-underline hover:text-black border-l-4 border-transparent lg:hover:border-black {ifCurrent Teams:payments}lg:border-black{/ifCurrent}">
                     <span class="pb-1 md:pb-0 text-base font-semibold">Log párování plateb</span>
                 </a>
             </li>

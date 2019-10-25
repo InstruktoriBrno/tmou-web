@@ -1,0 +1,14 @@
+{block content}
+    <div id="banner">
+        <h1 n:block=title>Nová položka menu</h1>
+    </div>
+
+    <div id="content">
+        {control menuItemForm}
+        {if isset($event) && $event}
+            <a href="{plink Menu:, $event->getNumber()}"><i class="fas fa-arrow-left"></i> Seznam položek menu {$event->getNumber()}. ročníku</a><br>
+        {/if}
+        <a href="{plink Menu:}"><i class="fas fa-arrow-left"></i> Seznam položek menu (bez ročníku)</a><br>
+        <a href="{plink Events:}"><i class="fas fa-arrow-left"></i> Seznam ročníků</a>
+    </div>
+{/block}
