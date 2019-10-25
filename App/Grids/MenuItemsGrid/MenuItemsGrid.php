@@ -34,6 +34,8 @@ class MenuItemsGrid extends Control
     {
         $grid = $this->dataGridFactory->create($this, $name);
 
+        $grid->setDefaultPerPage(50);
+
         $grid->setDataSource($this->dataSource);
         $grid->addColumnNumber('id', 'ID');
 
@@ -59,6 +61,13 @@ class MenuItemsGrid extends Control
                     return Html::el('a')->href($this->getPresenter()->link('Pages:show', $item->getTargetSlug(), $eventNumber))->setText($item->getContent())->setAttribute('title', $item->getTitle());
                 }
                 return null;
+            });
+        $grid->addColumnText('forAnonymous', 'Pouze nepřihlášení')
+            ->setRenderer(function (MenuItem $item) {
+                if ($item->isForAnonymous()) {
+                    return Html::el('span class="badge badge-xs badge-success"')->setText('Ano');
+                }
+                return Html::el('span class="badge badge-xs badge-warning"')->setText('Ne');
             });
         $grid->addColumnText('forOrganizators', 'Pro organizátory')
             ->setRenderer(function (MenuItem $item) {

@@ -85,10 +85,12 @@ class MenuItemFormFactory
             ->setRequired('Vyplňte URL cílové stránky.');
 
         $form->addGroup('Zobrazení & odhalování');
+        $form->addCheckbox('for_anonymous', 'Pouze pro nepřihlášené nepřihlášené')
+            ->setOption('description', 'Při zaškrnutí se objeví pouze nepřihlášeným. Další níže uvedené zaškrtávací volby už nemají žádný vliv.');
         $form->addCheckbox('for_organizators', 'Pro organizátory')
-            ->setOption('description', 'Při zaškrnutí se objeví při přihlášení jako organizátor. Při zaškrnutí obou polí bude viditelné organizátorům i týmům.');
+            ->setOption('description', 'Při zaškrnutí se objeví při přihlášení jako organizátor. Při zaškrnutí "Pro týmy" bude viditelné organizátorům i týmům.');
         $form->addCheckbox('for_teams', 'Pro týmy')
-            ->setOption('description', 'Při zaškrnutí se objeví při přihlášení jako tým. Při zaškrnutí obou polí bude viditelné organizátorům i týmům.');
+            ->setOption('description', 'Při zaškrnutí se objeví při přihlášení jako tým. Při zaškrnutí "Pro organizátory" bude viditelné organizátorům i týmům.');
         $form->addDateTimePicker('hide_at', 'Skrýt ve');
         $form->addDateTimePicker('reveal_at', 'Odhalit ve');
 

@@ -38,6 +38,7 @@ class FindMenuItemForFormService
             'target_event' => $object->getTargetEvent() !== null ? $object->getTargetEvent()->getId() : null,
             'target_slug' => $object->getTargetSlug(),
             'target_url' => $object->getTargetUrl(),
+            'for_anonymous' => $object->isForAnonymous(),
             'for_organizators' => $object->isForOrganizators(),
             'for_teams' => $object->isForTeams(),
             'hide_at' => $object->getHideAt(),

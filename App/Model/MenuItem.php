@@ -95,6 +95,12 @@ class MenuItem
      * @ORM\Column(type="boolean", nullable=false)
      * @var boolean
      */
+    protected $forAnonymous;
+
+    /**
+     * @ORM\Column(type="boolean", nullable=false)
+     * @var boolean
+     */
     protected $forOrganizators;
 
     /**
@@ -139,6 +145,7 @@ class MenuItem
         ?Event $targetEvent,
         ?ReservedSLUG $targetSlug,
         ?string $targetUrl,
+        bool $forAnonymous,
         bool $forOrganizators,
         bool $forTeams,
         ?DateTimeImmutable $revealAt,
@@ -156,6 +163,7 @@ class MenuItem
             $targetEvent,
             $targetSlug,
             $targetUrl,
+            $forAnonymous,
             $forOrganizators,
             $forTeams,
             $revealAt,
@@ -173,6 +181,7 @@ class MenuItem
         $this->targetEvent = $targetEvent;
         $this->targetSlug = $targetSlug !== null ? (string) $targetSlug->toScalar() : null;
         $this->targetUrl = $targetUrl;
+        $this->forAnonymous = $forAnonymous;
         $this->forOrganizators = $forOrganizators;
         $this->forTeams = $forTeams;
         $this->revealAt = $revealAt;
@@ -193,6 +202,7 @@ class MenuItem
         ?Event $targetEvent,
         ?ReservedSLUG $targetSlug,
         ?string $targetUrl,
+        bool $forAnonymous,
         bool $forOrganizators,
         bool $forTeams,
         ?DateTimeImmutable $revealAt,
@@ -210,6 +220,7 @@ class MenuItem
             $targetEvent,
             $targetSlug,
             $targetUrl,
+            $forAnonymous,
             $forOrganizators,
             $forTeams,
             $revealAt,
@@ -227,6 +238,7 @@ class MenuItem
         $this->targetEvent = $targetEvent;
         $this->targetSlug = $targetSlug !== null ? (string) $targetSlug->toScalar() : null;
         $this->targetUrl = $targetUrl;
+        $this->forAnonymous = $forAnonymous;
         $this->forOrganizators = $forOrganizators;
         $this->forTeams = $forTeams;
         $this->revealAt = $revealAt;
@@ -297,6 +309,11 @@ class MenuItem
         return $this->targetUrl;
     }
 
+    public function isForAnonymous(): bool
+    {
+        return $this->forAnonymous;
+    }
+
     public function isForOrganizators(): bool
     {
         return $this->forOrganizators;
@@ -357,6 +374,10 @@ class MenuItem
             return true;
         }
 
+        if ($this->forAnonymous && $user->isLoggedIn()) {
+            return true;
+        }
+
         if ($this->forOrganizators && $this->forTeams) {
             $outcome = !$user->isInRole(UserRole::TEAM) && !$user->isInRole(UserRole::ORG);
         } elseif ($this->forOrganizators && !$this->forTeams) {
@@ -380,6 +401,7 @@ class MenuItem
         ?Event $targetEvent,
         ?ReservedSLUG $targetSlug,
         ?string $targetUrl,
+        bool $forAnonymous,
         bool $forOrganizators,
         bool $forTeams,
         ?DateTimeImmutable $revealAt,
