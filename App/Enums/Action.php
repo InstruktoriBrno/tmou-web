@@ -26,8 +26,6 @@ final class Action extends Enum
     public const BATCH_GAME_STATUS_CHANGE = 'batch_game_status_change';
     public const BATCH_PAYMENT_STATUS_CHANGE = 'batch_payment_status_change';
 
-    public const QUALIFICATION = 'qualification';
-
     public const IMPERSONATE = 'impersonate';
     public const DEIMPERSONATE = 'deimpersonate';
 
