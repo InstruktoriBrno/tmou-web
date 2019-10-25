@@ -490,4 +490,31 @@ class Team
             ]
         );
     }
+
+    /**
+     * Returns whether given user can fill team review (e.g. is playing)
+     *
+     * @return bool
+     */
+    public function canFillTeamReview(): bool
+    {
+        return $this->gameStatus->equals(GameStatus::PLAYING());
+    }
+
+    /**
+     * Returns whether the team should fill the team review (e.g. not filled and can fill)
+     * @return bool|null
+     */
+    public function shouldFillTeamReview(): ?bool
+    {
+        if ($this->canFillTeamReview()) {
+            return $this->review === null;
+        }
+        return null;
+    }
+
+    public function getReview(): ?TeamReview
+    {
+        return $this->review;
+    }
 }

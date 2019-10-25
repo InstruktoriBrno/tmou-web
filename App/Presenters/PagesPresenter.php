@@ -13,17 +13,21 @@ use InstruktoriBrno\TMOU\Facades\Teams\CreateSSOSession;
 use InstruktoriBrno\TMOU\Facades\Teams\InvalidateSSOSession;
 use InstruktoriBrno\TMOU\Facades\Teams\RegisterTeamFacade;
 use InstruktoriBrno\TMOU\Facades\Teams\RequestPasswordResetFacade;
+use InstruktoriBrno\TMOU\Facades\Teams\SaveTeamReviewFacade;
 use InstruktoriBrno\TMOU\Facades\Teams\TeamLoginFacade;
 use InstruktoriBrno\TMOU\Forms\TeamForgottenPasswordFormFactory;
 use InstruktoriBrno\TMOU\Forms\TeamLoginFormFactory;
 use InstruktoriBrno\TMOU\Forms\TeamRegistrationFormFactory;
 use InstruktoriBrno\TMOU\Forms\TeamResetPasswordFormFactory;
+use InstruktoriBrno\TMOU\Forms\TeamReviewFormFactory;
 use InstruktoriBrno\TMOU\Model\Event;
 use InstruktoriBrno\TMOU\Services\Events\EventMacroDataProvider;
 use InstruktoriBrno\TMOU\Services\Events\FindEventByNumberService;
+use InstruktoriBrno\TMOU\Services\Events\FindEventTeamReviewsService;
 use InstruktoriBrno\TMOU\Services\Pages\FindPageInEventService;
 use InstruktoriBrno\TMOU\Services\System\IsSLUGReservedService;
 use InstruktoriBrno\TMOU\Services\Teams\FindTeamForFormService;
+use InstruktoriBrno\TMOU\Services\Teams\FindTeamReviewForFormService;
 use InstruktoriBrno\TMOU\Services\Teams\FindTeamService;
 use InstruktoriBrno\TMOU\Services\Teams\FindTeamsInEventService;
 use InstruktoriBrno\TMOU\Services\Teams\TeamMacroDataProvider;
@@ -94,6 +98,17 @@ final class PagesPresenter extends BasePresenter
     /** @var InvalidateSSOSession @inject */
     public $invalidateSSOSession;
 
+    /** @var TeamReviewFormFactory @inject */
+    public $teamReviewFormFactory;
+
+    /** @var SaveTeamReviewFacade @inject */
+    public $saveTeamReviewFacade;
+
+    /** @var FindTeamReviewForFormService @inject */
+    public $findTeamReviewForFormService;
+
+    /** @var FindEventTeamReviewsService @inject */
+    public $findEventTeamReviewsService;
 
     /** @var Event|null */
     private $event;
@@ -151,6 +166,7 @@ final class PagesPresenter extends BasePresenter
                 $team = ($this->findTeamService)($this->user->getId());
                 if ($team !== null && $team->getEvent()->getId() === $page->getEvent()->getId()) {
                     $this->teamMacroDataProvider->setTeam($team);
+                    $validTeam = $team;
                 }
             }
         }
@@ -160,6 +176,10 @@ final class PagesPresenter extends BasePresenter
         if ($homepage) {
             assert(is_string(ReservedSLUG::UPDATES()->toScalar()));
             $this->template->updates = ($this->findPageInEventService)(ReservedSLUG::UPDATES()->toScalar(), $eventNumber);
+            $this->template->showTeamReviewReminder = $page->getEvent() !== null
+                && $page->getEvent()->isPeriodForRemindingTeamReviews($this->gameClockService->get())
+                && isset($validTeam)
+                && $validTeam->shouldFillTeamReview() === true;
         }
     }
 
@@ -251,11 +271,25 @@ final class PagesPresenter extends BasePresenter
         $this->template->teams = $this->findTeamsInEventService->findPlayingTeams($event);
     }
 
+    /** @privilege(InstruktoriBrno\TMOU\Enums\Resource::TEAM_COMMON,InstruktoriBrno\TMOU\Enums\Action::CHANGE_REVIEW) */
+    public function actionTeamReport(int $eventNumber): void
+    {
+        $this->enforceMatchingEvent($eventNumber);
+        $this->populateEventFromURL($eventNumber);
+        if ($this->user->isLoggedIn() && $this->user->isInRole(UserRole::TEAM)) {
+            $team = ($this->findTeamService)($this->user->getId());
+            $this->template->canFillTeamReview = $team !== null && $team->canFillTeamReview();
+        }
+        $this->template->event = $this->event;
+    }
+
     /** @privilege(InstruktoriBrno\TMOU\Enums\Resource::PAGES,InstruktoriBrno\TMOU\Enums\Action::VIEW) */
     public function actionGameReports(int $eventNumber): void
     {
         $this->populateEventFromURL($eventNumber);
         $this->template->event = $this->event;
+        assert($this->event !== null);
+        $this->template->teamsWithReviews = ($this->findEventTeamReviewsService)($this->event);
     }
 
     public function createComponentRegistrationForm(): Form
@@ -484,5 +518,32 @@ final class PagesPresenter extends BasePresenter
                 return;
             }
         });
+    }
+
+    public function createComponentTeamReviewForm(): Form
+    {
+        $this->populateEventFromURL();
+        $event = $this->event;
+        assert($event !== null);
+        $team = ($this->findTeamService)($this->user->getId());
+        assert($team !== null);
+        $form = $this->teamReviewFormFactory->create(function (Form $form, ArrayHash $values) use ($team) {
+            if (!$this->user->isAllowed(Resource::TEAM_COMMON, Action::CHANGE_REVIEW)) {
+                $form->addError('Nejste oprávněni provádět tuto operaci. Pokud věříte, že jde o chybu, kontaktujte správce.');
+                return;
+            }
+
+            try {
+                ($this->saveTeamReviewFacade)($values, $team);
+            } catch (\InstruktoriBrno\TMOU\Facades\Teams\Exceptions\CannotCreateTeamReviewBeforeEventEndException $e) {
+                $form->addError('Před skončením hry nelze přidávat reportáže týmů.');
+                return;
+            }
+            $this->flashMessage('Reportáž vašeho týmu byla úspěšně uložena', Flash::SUCCESS);
+            $this->redirect('this');
+        });
+        $defaults = ($this->findTeamReviewForFormService)($team);
+        $form->setDefaults($defaults);
+        return $form;
     }
 }

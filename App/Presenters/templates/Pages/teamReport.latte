@@ -1,0 +1,16 @@
+{block content}
+    <div id="banner">
+        <h1 n:block=title>Reportáž týmu</h1>
+    </div>
+
+    <div id="content">
+        {if !isset($canFillTeamReview) || !$canFillTeamReview}
+            <div class="alert alert-danger">Reportáž týmu mohou vyplňovat jen hrající týmy.</div>
+        {elseif !$event->isPeriodForTeamReviews($currentTime)}
+            <div class="alert alert-warning">Reportáž týmu lze přidávat až po skončení hry.</div>
+        {else}
+            {control teamReviewForm}
+        {/if}
+
+    </div>
+{/block}

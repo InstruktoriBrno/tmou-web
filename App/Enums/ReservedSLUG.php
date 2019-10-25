@@ -23,6 +23,8 @@ use Grifart\Enum\Enum;
  * @method static ReservedSLUG TEAMS_QUALIFIED()
  * @method static ReservedSLUG TEAMS_PLAYING()
  *
+ * @method static ReservedSLUG TEAM_REPORT()
+ *
  * @method static ReservedSLUG GAME_REPORTS()
  * @method static ReservedSLUG GAME_STATISTICS()
  * @method static ReservedSLUG GAME_FLOW()
@@ -48,6 +50,8 @@ final class ReservedSLUG extends Enum
     public const TEAMS_REGISTERED = 'teams-registered';
     public const TEAMS_QUALIFIED = 'teams-qualified';
     public const TEAMS_PLAYING = 'teams-playing';
+
+    public const TEAM_REPORT = 'team-report';
 
     public const GAME_REPORTS = 'game-reports';
     public const GAME_STATISTICS = 'game-statistics'; // this can be added manually as this page is optional
@@ -78,6 +82,7 @@ final class ReservedSLUG extends Enum
             self::UPDATES => 'Aktuality',
             self::TEAMS_REGISTERED => 'Zaregistrované týmy',
             self::TEAMS_QUALIFIED => 'Kvalifikované týmy',
+            self::TEAM_REPORT => 'Reportáž týmu',
             self::TEAMS_PLAYING => 'Hrající týmy',
             self::GAME_REPORTS => 'Reporty ze hry',
             self::GAME_STATISTICS => 'Statistiky hry',

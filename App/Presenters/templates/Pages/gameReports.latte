@@ -1,9 +1,46 @@
 {block content}
     <div id="banner">
-        <h1 n:block=title>Reporty ze hry</h1>
+        <h1 n:block=title>První dojmy a reportáže</h1>
     </div>
 
     <div id="content">
-        <div class="alert alert-warning">TBD</div>
+        <ul>
+            <li><a href="#reportaze">Odkazy na reportáže</a></li>
+            <li><a href="#libilo">Co se líbilo</a></li>
+            <li><a href="#nelibilo">Co se nelíbilo</a></li>
+            <li><a href="#dojmy">Další dojmy a postřehy</a></li>
+        </ul>
+
+        <h2 id="reportaze">Odkazy na reportáže</h2>
+        {foreach $teamsWithReviews as $team}
+            {continueIf $team->getReview() === null}
+            {var $review = $team->getReview()}
+            {continueIf $review->getLink() === null || !\Nette\Utils\Validators::isUrl($review->getLink())}
+            <p>{$team->getName()}: <a href="{$review->getLink()}">{$review->getLink()}</a></p>
+        {/foreach}
+
+        <h2 id="libilo">Co se líbilo</h2>
+        {foreach $teamsWithReviews as $team}
+            {continueIf $team->getReview() === null}
+            {var $review = $team->getReview()}
+            {continueIf $review->getPositives() === null || trim($review->getPositives()) === ''}
+            <p>{$review->getPositives()}</p>
+        {/foreach}
+
+        <h2 id="nelibilo">Co se nelíbilo</h2>
+        {foreach $teamsWithReviews as $team}
+            {continueIf $team->getReview() === null}
+            {var $review = $team->getReview()}
+            {continueIf $review->getNegatives() === null || trim($review->getNegatives()) === ''}
+            <p>{$review->getNegatives()}</p>
+        {/foreach}
+
+        <h2 id="dojmy">Další dojmy a postřehy</h2>
+        {foreach $teamsWithReviews as $team}
+            {continueIf $team->getReview() === null}
+            {var $review = $team->getReview()}
+            {continueIf $review->getOthers() === null || trim($review->getOthers()) === ''}
+            <p title="{$team->getName()}"><b>{$team->getName()}</b><br>{$review->getOthers()}</p>
+        {/foreach}
     </div>
 {/block}

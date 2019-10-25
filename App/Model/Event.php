@@ -413,4 +413,26 @@ class Event
             throw new \InstruktoriBrno\TMOU\Model\Exceptions\MissingAmountException();
         }
     }
+
+    /**
+     * Returns whether it is period after end game when team review should be reminded
+     *
+     * @param DateTimeImmutable $now
+     * @return bool
+     */
+    public function isPeriodForRemindingTeamReviews(DateTimeImmutable $now): bool
+    {
+        return $this->eventEnd !== null && $now > $this->eventEnd && $now < $this->eventEnd->modify('+14 days');
+    }
+
+    /**
+     * Returns whether it is period after the team reviews can be manipulated
+     *
+     * @param DateTimeImmutable $now
+     * @return bool
+     */
+    public function isPeriodForTeamReviews(DateTimeImmutable $now): bool
+    {
+        return $now > $this->eventEnd;
+    }
 }

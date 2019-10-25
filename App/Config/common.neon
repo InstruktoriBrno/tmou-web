@@ -151,6 +151,10 @@ services:
     - InstruktoriBrno\TMOU\Services\MenuItems\DeleteMenuItemService
     - InstruktoriBrno\TMOU\Facades\MenuItems\DeleteMenuItemFacade
     - InstruktoriBrno\TMOU\Services\MenuItems\FindMenuItemsForDisplay
+    - InstruktoriBrno\TMOU\Forms\TeamReviewFormFactory
+    - InstruktoriBrno\TMOU\Facades\Teams\SaveTeamReviewFacade
+    - InstruktoriBrno\TMOU\Services\Teams\FindTeamReviewForFormService
+    - InstruktoriBrno\TMOU\Services\Events\FindEventTeamReviewsService
 
 extensions:
     nextras.form: Nextras\Forms\Bridges\NetteDI\FormsExtension
