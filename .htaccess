@@ -28,3 +28,7 @@
         Header set Cache-Control "max-age=604800, public"
     </FilesMatch>
 </IfModule>
+
+# Change upload limits
+php_value post_max_size 20M
+php_value upload_max_filesize 20M

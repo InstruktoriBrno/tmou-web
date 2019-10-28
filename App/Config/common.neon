@@ -155,6 +155,18 @@ services:
     - InstruktoriBrno\TMOU\Facades\Teams\SaveTeamReviewFacade
     - InstruktoriBrno\TMOU\Services\Teams\FindTeamReviewForFormService
     - InstruktoriBrno\TMOU\Services\Events\FindEventTeamReviewsService
+    - InstruktoriBrno\TMOU\Services\Files\FindStorageDirectoriesService
+    - InstruktoriBrno\TMOU\Services\Files\FindStorageSubdirFilesService
+    - InstruktoriBrno\TMOU\Forms\CreateNewDirectoryFormFactory
+    - InstruktoriBrno\TMOU\Forms\UploadFileFormFactory
+    - InstruktoriBrno\TMOU\Services\Files\UploadToStorageDirectoryService
+    - InstruktoriBrno\TMOU\Services\Files\CreateNewDirectoryInStorageDirectoryService
+    - InstruktoriBrno\TMOU\Services\Files\DeleteFileFromStorageDirectoryService
+    - InstruktoriBrno\TMOU\Facades\Files\DeleteStorageFileFacade
+    - InstruktoriBrno\TMOU\Forms\ChangeFileFormFactory
+    - InstruktoriBrno\TMOU\Services\Files\FindStorageDirectoriesPairsService
+    - InstruktoriBrno\TMOU\Services\Files\ChangeFileFromStorageDirectoryService
+    - InstruktoriBrno\TMOU\Facades\Files\ChangeStorageFileFacade
 
 extensions:
     nextras.form: Nextras\Forms\Bridges\NetteDI\FormsExtension

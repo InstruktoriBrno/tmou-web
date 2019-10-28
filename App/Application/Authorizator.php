@@ -30,6 +30,7 @@ class Authorizator implements IAuthorizator
         $this->acl->addResource(Resource::ADMIN_PAGES);
         $this->acl->addResource(Resource::ADMIN_TEAMS);
         $this->acl->addResource(Resource::ADMIN_MENU_ITEMS);
+        $this->acl->addResource(Resource::ADMIN_FILES);
 
         // Guest
         $this->acl->deny(UserRole::GUEST);
@@ -53,6 +54,7 @@ class Authorizator implements IAuthorizator
         $this->acl->allow(UserRole::ORG, Resource::ADMIN_PAGES);
         $this->acl->allow(UserRole::ORG, Resource::ADMIN_TEAMS);
         $this->acl->allow(UserRole::ORG, Resource::ADMIN_MENU_ITEMS);
+        $this->acl->allow(UserRole::ORG, Resource::ADMIN_FILES);
         $this->acl->deny(UserRole::ORG, Resource::TEAM_COMMON, Action::LOGIN);
         $this->acl->deny(UserRole::ORG, Resource::TEAM_COMMON, Action::REGISTER);
         $this->acl->deny(UserRole::ORG, Resource::TEAM_COMMON, Action::FORGOTTEN_PASSWORD);

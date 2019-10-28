@@ -1,0 +1,186 @@
+html, body {
+    padding: 0;
+    margin: 0;
+    font-family: sans-serif;
+    height: 100%;
+}
+.column-dirs {
+    float: left;
+    width: 25%;
+    background: #eeeeee;
+    padding: 1rem;
+    box-sizing: border-box;
+    height: 100%;
+    overflow: auto;
+}
+.column-files {
+    float: left;
+    width: 75%;
+    padding: 1rem;
+    box-sizing: border-box;
+    height: 100%;
+    overflow-x: hidden;
+    overflow-y: scroll;
+}
+
+body > div.row {
+    height: 100%;
+}
+
+h2 {
+    margin-top: 0;
+}
+
+.row:after {
+    content: "";
+    display: table;
+    clear: both;
+}
+
+.caret {
+    cursor: pointer;
+    user-select: none;
+    margin-left: -1.43rem;
+}
+
+.caret::before {
+    content: "\2795";
+    color: black;
+    display: inline-block;
+    margin-right: 3px;
+    font-size: 60%;
+    z-index: 100;
+}
+
+.no-caret {
+    margin-left: -0.1rem;
+}
+
+.nested {
+    height: 0;
+    overflow: hidden;
+}
+
+.active {
+    height: auto;
+    overflow: visible;
+}
+.caret-down::before {
+    content: "\2796";
+}
+
+/* Folders */
+ul, li {
+    list-style: none; margin: 0; padding: 0;
+}
+ul {
+    padding-left: 1rem;
+}
+li {
+    padding-left: 1rem;
+    border: 1px dotted black;
+    border-width: 0 0 1px 1px;
+}
+li.container {
+    border-bottom: 0;
+}
+li p {
+    margin: 0;
+    background: #eeeeee;
+    position: relative;
+    top: 0.5rem;
+}
+li p a  {
+    color: black;
+    text-decoration: none;
+    padding-right: 1rem;
+    padding-left: 0.5rem;
+}
+li ul {
+    border-top: 1px dotted black;
+    margin-left: -1rem;
+    padding-left: 1.5rem;
+}
+ul li:last-child ul {
+    border-left: 1px solid #eeeeee;
+    margin-left: -17px;
+}
+
+/* Files */
+table {
+    border-collapse: collapse;
+    width: 100%;
+    margin-bottom: 100px;
+}
+
+table th  {
+    background: #eeeeee;
+    text-align: left;
+}
+table td, table th {
+    padding: 4px;
+    font-size: 85%;
+}
+table td a {
+    color: black;
+    text-decoration: none;
+    word-wrap: break-word;
+    white-space: pre-wrap;
+    max-width: 180px;
+    display: inline-block;
+}
+table tr:nth-child(2n+1) {
+    background: #f9f9f9;
+}
+table tr.no-background {
+    background: white;
+}
+table td.actions {
+    min-width: 110px;
+    font-size: 120%;
+    text-align: left;
+}
+table td.actions a {
+    cursor: pointer;
+    margin-right: 2px;
+}
+a.delete {
+    color: darkred;
+}
+a.right {
+    float: right;
+}
+
+/* alerts */
+.alert {
+    margin-top: 1rem;
+    margin-bottom: 1rem;
+    padding: 1rem;
+}
+.alert-danger {
+    background: #C8A48C;
+}
+.alert-success {
+    background: #8CDA4C;
+}
+
+/* Responsivity */
+@media only screen and (max-width: 767px) {
+    .column-dirs {
+        width: 100%;
+        height: auto;
+    }
+    .column-files {
+        width: 100%;
+        height: auto;
+    }
+}
+@media only screen and (max-width: 520px) {
+    table tr td {
+        width: 100%;
+        display: block;
+    }
+    table tr th {
+        display: none;
+    }
+}

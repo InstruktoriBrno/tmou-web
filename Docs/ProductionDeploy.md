@@ -29,6 +29,8 @@ Nezbytné předpoklady jsou:
 10. Přistupte skrze prohlížeč na nakonfigurovanou doménu a otestujte základní funkčnost webu.
 11. Ověřte, že citlivé soubory nejsou dostupné zvenčí, obzvláště soubor `App/Config/local.neon`.
 12. Nastavte CRON pro automatické párování plateb, viz samostatná sekce níže.
+13. Ověřte, že ve složce `/www/storage` nelze přistupovat soubory `.php` ani `.phtml`, protože tato složka slouží k nahrávání obsahu, který by neměl být za žádných okolností spouštěn. (Mělo by být nastaveno automaticky v `/www/storage/.htaccess`.)
+14. Ověřte, že nastavení PHP, že je nastaveno alespoň `post_max_size=20M` a `upload_max_filesize=20M`. (Mělo být nastaveno automaticky v `/.htaccess`.)
 
 ## Postup aktualizace
 

@@ -226,6 +226,9 @@
                     });
                 </script>
             {/if}
+            {if isset($hasFileManager) && $hasFileManager}
+                <script src="{$basePath}/assets/js/filemanager-opener.js?{$buildTime}"></script>
+            {/if}
         {/block}
     </body>
 </html>

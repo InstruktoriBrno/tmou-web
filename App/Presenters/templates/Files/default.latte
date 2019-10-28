@@ -1,0 +1,96 @@
+{layout none}
+<!DOCTYPE html>
+<html lang="cs">
+
+    <head>
+        <meta charset="UTF-8">
+        <meta name="viewport" content="width=device-width, initial-scale=1.0">
+        <meta http-equiv="X-UA-Compatible" content="ie=edge">
+        <title>Správce souborů | TMOU!</title>
+        <link rel="stylesheet" href="{$basePath}/assets/fontawesome/css/all.css?{$buildTime}">
+        <link rel="stylesheet" href="{$basePath}/assets/css/filemanager.css?{$buildTime}">
+    </head>
+
+    <body>
+        <div class="row">
+            <div class="column-dirs" n:snippet="folders">
+                <h2>Složky</h2>
+                {include folder, dirs => $dirs, nested => false, prevPath => '/'}
+            </div>
+            <div class="column-files" n:snippet="files">
+                <h2>Soubory {$showedSubdir}</h2>
+                <table>
+                    <tr>
+                        <th>Jméno souboru</th>
+                        <th>Typ</th>
+                        <th>Velikost</th>
+                        <th>Datum změny</th>
+                        <th>Akce</th>
+                    </tr>
+                    {foreach $files as $file}
+                        <tr>
+                            {var $publicPath = \Nette\Utils\Strings::substring(realpath($file->getPathname()), \Nette\Utils\Strings::length($wwwDir))}
+                            <td><a href="{$publicPath}" target="_blank"><em>{$file->getBasename()}</em></a></td>
+                            <td>{\InstruktoriBrno\TMOU\Utils\MimeTypes::getName(mime_content_type($file->getPathname()))}</td>
+                            <td>{$file->getSize()|bytes}</td>
+                            <td>{$file->getMTime()|date: 'j. n. Y H:i:s'}</td>
+                            <td class="actions">
+                                <a href="{link deleteFile!, $file->getBasename()}" class="ajax delete" title="Smazat" onclick="return confirm('Opravdu chcete smazat soubor {$file->getBasename()}? Tato operace je nevratná.');"><i class="fas fa-trash"></i></a>
+                                <a title="Přejmenovat, přesunout" onclick="setEditedFile({$file->getBasename()}, {$showedSubdirWithoutStartingSlash === '' ? '/' : $showedSubdirWithoutStartingSlash})"><i class="fas fa-edit"></i></a>
+                                &nbsp;
+                                <a class="insert-as-image" data-src="{$publicPath}" data-text="{$file->getBasename()}" title="Vložit jako obrázek"><i class="far fa-image"></i></a>
+                                <a class="insert-as-image-link" data-src="{$publicPath}" data-text="{$file->getBasename()}" title="Vložit jako obrázkový odkaz"><i class="fab fa-searchengin"></i></a>
+                                <a class="insert-as-link" data-src="{$publicPath}" data-text="{$file->getBasename()}" title="Vložit jako textový odkaz"><i class="fas fa-link"></i></a>
+                                <a class="insert-as-link" data-src="{$publicPath}" title="Vložit jako textový odkaz s volitelným názvem"><i class="fas fa-heading"></i></a>
+                            </td>
+                        </tr>
+                    {/foreach}
+                    <tr class="no-background">
+                        <td colspan="5">
+                            <div n:foreach="$flashes as $flash" n:class="alert, $flash->type">{$flash->message}</div>
+                            <h3>Nahrát soubor</h3>
+                            {control uploadForm}
+                        </td>
+                    </tr>
+                    <tr class="no-background">
+                        <td colspan="5">
+                            <h3>Vytvořit složku</h3>
+                            {control newDirectoryForm}
+                        </td>
+                    </tr>
+                    <tr class="no-background">
+                        <td colspan="5">
+                            <h3>Přejmenovat či přesunout soubor</h3>
+                            {control changeFileForm}
+                        </td>
+                    </tr>
+                </table>
+            </div>
+        </div>
+        <script src="{$basePath}/assets/js/jquery-3.4.0.min.js?{$buildTime}"></script>
+        <script src="{$basePath}/assets/js/netteForms.min.js?{$buildTime}"></script>
+        <script src="{$basePath}/assets/js/nette.ajax.js?{$buildTime}"></script>
+        <script src="{$basePath}/assets/js/filemanager.js?{$buildTime}}"></script>
+        <script>
+            $.nette.init();
+        </script>
+    </body>
+</html>
+
+{define folder}
+    <ul n:inner-foreach="$dirs as $dir => $subdir" {if $nested}class="nested"{/if}>
+        <li {if $subdir !== null}class="container"{/if}>
+            <p>
+                <span class="{if $subdir !== null}caret{else}no-caret{/if}"></span>
+                {var $tempPath = '/' . ltrim($prevPath .'/' . $dir, '/')}
+                <a class="ajax" href="{link showFolder!, subdir => $tempPath}">{$dir}</a>
+                {if $tempPath !== '/'}
+                    <a href="{link deleteFile!, $tempPath}" class="ajax delete right" title="Smazat složku" onclick="return confirm('Opravdu chcete smazat celou složku {$tempPath} včetně veškerého obsahu? Tato operace je nevratná.');"><i class="fas fa-trash"></i></a>
+                {/if}
+            </p>
+            {if $subdir !== null}
+                {include folder, dirs => $subdir, nested => true, prevPath => $prevPath . '/' . $dir}
+            {/if}
+        </li>
+    </ul>
+{/define}

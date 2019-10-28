@@ -6,6 +6,7 @@ use InstruktoriBrno\TMOU\Services\Events\FindEventsPairsService;
 use Nette\Application\UI\Form;
 use Nette\Forms\Controls\Checkbox;
 use Nette\SmartObject;
+use Nette\Utils\Html;
 use Nextras\Forms\Controls\DateTimePicker;
 
 class PageFormFactory
@@ -65,8 +66,15 @@ class PageFormFactory
         $form->addText('heading', 'Nadpis')
             ->setRequired('Vyplňte, prosím, nadpis stránky.');
 
-        $form->addTextArea('content', 'Obsah', 50, 20)
-            ->setRequired('Vyplňte, prosím, obsah stránky');
+        $contentElementId = 'page-content';
+        $insertMedia = Html::el('button')
+            ->setText('Vložit média')
+            ->setAttribute('class', 'btn btn-secondary btn-small file-manager')
+            ->setAttribute('type', 'button')
+            ->setAttribute('data-target', $contentElementId);
+        $form->addTextArea('content', Html::el()->addText('Obsah')->addHtml('&nbsp;')->addHtml($insertMedia), 50, 20)
+            ->setRequired('Vyplňte, prosím, obsah stránky')
+            ->setHtmlId($contentElementId);
 
         $form->addCheckbox('caching_safe', 'Kešovat')
             ->setOption('description', 'Zaškrtněte pouze pokud stránka nepoužívá žádné týmová ani ročníková makra (keš je sdílená mezi týmy) a

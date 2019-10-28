@@ -183,6 +183,10 @@ legend {
     @apply px-4 py-2 font-bold rounded appearance-none
 }
 
+.btn-small {
+    @apply px-2 py-1
+}
+
 .btn-primary {
     @apply bg-yellow-tmou shadow cursor-pointer
 }

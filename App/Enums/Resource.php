@@ -15,6 +15,7 @@ use Grifart\Enum\Enum;
  * @method Resource ADMIN_ORGANIZATORS()
  * @method Resource ADMIN_TEAMS()
  * @method Resource ADMIN_MENU_ITEMS()
+ * @method Resource ADMIN_FILES()
  *
  * @method Resource TEAM_COMMON()
  *
@@ -32,6 +33,7 @@ final class Resource extends Enum
     public const ADMIN_PAGES = 'admin_pages';
     public const ADMIN_TEAMS = 'admin_teams';
     public const ADMIN_MENU_ITEMS = 'admin_menu_items';
+    public const ADMIN_FILES = 'admin_files';
 
     public const TEAM_COMMON = 'team_common';
 }

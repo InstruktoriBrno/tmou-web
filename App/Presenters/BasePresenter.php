@@ -51,6 +51,7 @@ abstract class BasePresenter extends Presenter
             $this->template->hasDatagrid = true;
             $this->template->hasSelectize = true;
             $this->template->hasDatetimepicker = true;
+            $this->template->hasFileManager = true;
         }
 
         $this->template->currentTime = $this->gameClockService->get();
