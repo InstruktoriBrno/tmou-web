@@ -14,3 +14,7 @@ vendor
 
 # Deployment related stuff
 composer.phar
+
+# Assets
+www/storage/*
+!www/storage/.htaccess
