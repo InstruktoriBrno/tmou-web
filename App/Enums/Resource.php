@@ -19,6 +19,8 @@ use Grifart\Enum\Enum;
  *
  * @method Resource TEAM_COMMON()
  *
+ * @method Resource DISCUSSION()
+ *
  */
 final class Resource extends Enum
 {
@@ -36,4 +38,6 @@ final class Resource extends Enum
     public const ADMIN_FILES = 'admin_files';
 
     public const TEAM_COMMON = 'team_common';
+
+    public const DISCUSSION = 'discussion';
 }

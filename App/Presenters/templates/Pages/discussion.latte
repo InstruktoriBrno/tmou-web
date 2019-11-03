@@ -1,0 +1,42 @@
+{define title}Diskuze{/define}
+{block content}
+    <div id="banner">
+        <h1>Diskuze</h1>
+        <h2>Vlákna</h2>
+        <p>Vlákna jsou řazeny dle poslední aktivity sestupně. Zobrazeno je na vždy maximálně {$threadsLimit} vláken.</p>
+        {if count($threads) === 0}
+            <div class="alert alert-info">Žádná diskuzní vlákna.</div>
+        {/if}
+        <hr>
+        {foreach $threads as $thread}
+            {var $lastSeenDiscussionAt = $currentUserEntity === null ? null : $currentUserEntity->getLastSeenDiscussionAt()}
+            {var $newForCurrentUser = $lastSeenDiscussionAt === null || $lastSeenDiscussionAt < $thread->getUpdatedAt()}
+            <div>
+                <a href="{plink this, thread => $thread->getId(), page => $currentPage}">{$thread->getTitle()}</a>
+                <span class="badge badge-warning" n:if="$thread->getEvent() !== null">TMOU {$thread->getEvent()->getNumber()}</span>
+                <span title="Poslední příspěvek" class="float-right inline-block">
+                    {if $newForCurrentUser}
+                        <b>{$thread->getUpdatedAt()|date: 'j. n. Y. H:i'}</b>
+                    {else}
+                        {$thread->getUpdatedAt()|date: 'j. n. Y. H:i'}
+                    {/if}
+                </span>
+            </div>
+            <hr>
+        {/foreach}
+        <div class="text-center">
+            <a n:if="$currentPage !== 0" class="inline-block float-left" href="{plink this, page => $currentPage - 1}"><i class="fas fa-arrow-left"></i> Zobrazit novější vlákna</a>
+            <a n:if="count($threads) === $threadsLimit" class="inline-block float-right" href="{plink this, page => $currentPage + 1}">Zobrazit starší vlákna <i class="fas fa-arrow-right"></i></a>
+            <a n:if="$user->isLoggedIn()" href="{plink markAllAsRead!}" class="btn btn-primary btn-small {if $currentPage === 0}float-left{elseif count($threads) !== $threadsLimit}float-right{/if}">Označit vše jako přečtené</a>
+        </div>
+        <div class="clearfix"></div>
+    </div>
+
+    <div id="content">
+        {if $user->isLoggedIn()}
+            <h2>Založit nové vlákno</h2>
+            {control newThreadForm}
+            {$help}
+        {/if}
+    </div>
+{/block}

@@ -29,6 +29,8 @@ use Grifart\Enum\Enum;
  * @method static ReservedSLUG GAME_STATISTICS()
  * @method static ReservedSLUG GAME_FLOW()
  *
+ * @method static ReservedSLUG DISCUSSION()
+ *
  */
 final class ReservedSLUG extends Enum
 {
@@ -56,6 +58,8 @@ final class ReservedSLUG extends Enum
     public const GAME_REPORTS = 'game-reports';
     public const GAME_STATISTICS = 'game-statistics'; // this can be added manually as this page is optional
     public const GAME_FLOW = 'game-flow'; // this can be added manually as this page is optional
+
+    public const DISCUSSION = 'discussion';
 
     public function isCreationAllowed(): bool
     {
@@ -87,6 +91,7 @@ final class ReservedSLUG extends Enum
             self::GAME_REPORTS => 'Reporty ze hry',
             self::GAME_STATISTICS => 'Statistiky hry',
             self::GAME_FLOW => 'Průběh hry',
+            self::DISCUSSION => 'Diskuze',
         ];
     }
 }

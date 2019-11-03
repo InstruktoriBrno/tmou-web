@@ -501,4 +501,19 @@ table.log-output td.attention {
     color: #da4e4c;
 }
 
+.avatar {
+    width: 64px;
+    height: 64px;
+    line-height: 64px;
+    overflow: hidden;
+}
+.post-content {
+    padding-left: 80px;
+    font-size: 85%;
+}
+
+blockquote {
+    @apply border-l-2 border-gray-400 ml-0 pl-4 bg-gray-100
+}
+
 /*! purgecss end ignore */

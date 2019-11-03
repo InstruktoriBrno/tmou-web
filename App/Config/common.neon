@@ -167,6 +167,18 @@ services:
     - InstruktoriBrno\TMOU\Services\Files\FindStorageDirectoriesPairsService
     - InstruktoriBrno\TMOU\Services\Files\ChangeFileFromStorageDirectoryService
     - InstruktoriBrno\TMOU\Facades\Files\ChangeStorageFileFacade
+    - InstruktoriBrno\TMOU\Forms\NewPostFormFactory
+    - InstruktoriBrno\TMOU\Forms\NewThreadFormFactory
+    - InstruktoriBrno\TMOU\Facades\Discussions\SaveNewThreadFacade
+    - InstruktoriBrno\TMOU\Services\Discussions\FindThreadsService
+    - InstruktoriBrno\TMOU\Services\Discussions\FindThreadService
+    - InstruktoriBrno\TMOU\Services\Discussions\FindThreadPostsService
+    - InstruktoriBrno\TMOU\Facades\Discussions\SaveNewPostFacade
+    - InstruktoriBrno\TMOU\Facades\Discussions\ToggleHidePostFacade
+    - InstruktoriBrno\TMOU\Facades\Discussions\ToggleLockThreadFacade
+    - InstruktoriBrno\TMOU\Services\Discussions\FindPostService
+    - InstruktoriBrno\TMOU\Facades\Discussions\MarkAllAsReadFacade
+    - InstruktoriBrno\TMOU\Services\Events\FindEventsPairsOpenedForDiscussionService
 
 extensions:
     nextras.form: Nextras\Forms\Bridges\NetteDI\FormsExtension

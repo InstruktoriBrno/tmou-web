@@ -1,0 +1,101 @@
+{define title}{$thread->getTitle()}{/define}
+{block content}
+    <div id="banner">
+        <h1>Diskuze</h1>
+    </div>
+
+    <div id="content">
+        <h2>{$thread->getTitle()}</h2>
+        <div><span class="badge badge-warning" n:if="$thread->getEvent() !== null">TMOU {$thread->getEvent()->getNumber()}</span></div>
+        <p><a href="{plink Pages:discussion, page => $currentPage}"><i class="fas fa-arrow-left"></i> Zpět na seznam vláken</a></p>
+        {if !isset($posts) || count($posts) === 0}
+            <div class="alert alert-info">V současnosti neexistuje žádná příspěvky v tomto vlákně.</div>
+        {else}
+            <hr>
+        {/if}
+        <div n:snippet="posts">
+            {foreach $posts as $post}
+                {last}
+                    <a id="end"></a>
+                {/last}
+                <div id="post-{$iterator->getCounter()}">
+                    {var $author = $post->getTeam() ?? $post->getOrganizator()}
+                    {var $lastSeenDiscussionAt = $currentUserEntity === null ? null : $currentUserEntity->getLastSeenDiscussionAt()}
+                    {var $newForCurrentUser = $lastSeenDiscussionAt === null || $lastSeenDiscussionAt < $thread->getUpdatedAt()}
+                    <div class="float-left mr-4 inline-block avatar rounded-full text-center align-middle text-2xl text-white" style="background: {$author->getShortcutColor()|noEscape}">{$author->getShortcut()}</div>
+                    <div>
+                        {var $teamName = $post->getTeam() !== null ? $post->getTeam()->getName() : null}
+                        {var $organizatorName = $post->getOrganizator() !== null ? 'Organizátoři (' . $post->getOrganizator()->getGivenName() . ' ' . $post->getOrganizator()->getFamilyName() . ')' : null}
+                        <b>{$teamName ?? $organizatorName}</b>
+                        #{$iterator->getCounter()}
+                        {if $user->isLoggedIn() && !$thread->isLocked()}
+                            <a href="#new-post" class="insert-discussion-ref" data-id="{$iterator->getCounter()}">odkázat</a>
+                            <a href="#new-post" class="insert-discussion-quote" data-content="{$post->getContent()}">citovat</a>
+                        {/if}
+                        <span class="inline-block float-right">
+                            {if $newForCurrentUser}
+                                <b>{$post->getCreatedAt()|date: 'j. n. Y H:i'}</b>
+                            {else}
+                                {$post->getCreatedAt()|date: 'j. n. Y H:i'}
+                            {/if}
+                        </span>
+                        {if $user->isLoggedIn() && $user->isInRole(\InstruktoriBrno\TMOU\Enums\UserRole::ORG)}
+                            <span class="inline-block float-right">
+                                {if $post->isHidden()}
+                                    <a class="btn btn-small btn-secondary ajax" href="{plink hidePost!, $post->getId()}" title="odskrýt obsah příspěvku">odskrýt</a>
+                                {else}
+                                    <a class="btn btn-small btn-secondary ajax" href="{plink hidePost!, $post->getId()}" title="skrýt obsah příspěvku">skrýt</a>
+                                {/if}
+                                &nbsp;
+                            </span>
+                        {/if}
+                    </div>
+                    <div class="post-content">
+                        {if $post->isHidden()}
+                            <p><em>Tento příspěvek byl skryt organizátory.</em></p>
+                        {else}
+                            {$post->getContent()|smallTexy}
+                        {/if}
+                    </div>
+                </div>
+                <hr>
+            {/foreach}
+        </div>
+        <div n:snippet="form">
+            {if $user->isLoggedIn()}
+                {if $thread->isLocked()}
+                    <div class="alert alert-warning">
+                        Toto vlákno bylo organizátory uzamčeno.
+                    </div>
+                {elseif $thread->isClosed()}
+                    <div class="alert alert-warning">
+                        Toto vlákno bylo automaticky uzamčeno, protože se vztahuje k ročníku, který skončil před více než 6 měsíci.
+                    </div>
+                {else}
+                    <h2 id="new-post">Přidat příspěvek</h2>
+                    {control newPostForm}
+                    {$help}
+                {/if}
+                {if !$thread->isClosed()}
+                    {include lockToggle}
+                {/if}
+            {/if}
+        </div>
+        <div>
+            <a href="{plink Pages:discussion, page => $currentPage}"><i class="fas fa-arrow-left"></i> Zpět na seznam vláken</a>
+        </div>
+    </div>
+{/block}
+
+{define lockToggle}
+    {if $user->isInRole(\InstruktoriBrno\TMOU\Enums\UserRole::ORG)}
+        <span class="inline-block float-right mb-1">
+            {if $thread->isLocked()}
+                <a class="ajax btn btn-primary" href="{plink lockThread!, $thread->getId()}" title="uzamknout pro vkládání dalších příspěvků">Odemknout</a>
+            {else}
+                <a class="ajax btn btn-primary" href="{plink lockThread!, $thread->getId()}" title="odemknout pro vkládání dalších příspěvků">Uzamknout</a>
+            {/if}
+            &nbsp;
+        </span>
+    {/if}
+{/define}

@@ -13,6 +13,9 @@ final class RouterFactory
     {
         $router = new RouteList();
 
+        // Discussions
+        $router[] = new Route('[<eventNumber \d+>/]page/discussion[/thread/<thread>]', 'Pages:discussion');
+
         // Pages (reserved and with slug)
         $router[] = new Route('[<eventNumber \d+>/]page/<slug>', 'Pages:show');
         $router[] = new Route('[<eventNumber \d+>/]page/<action>', 'Pages:show');

@@ -204,6 +204,9 @@
             <script src="{$basePath}/assets/js/menu-dropdown.js?{$buildTime}"></script>
             <script src="{$basePath}/assets/js/collapse.js?{$buildTime}"></script>
             <script src="{$basePath}/assets/js/util.js?{$buildTime}"></script>
+            {ifCurrent Pages:discussion}
+                <script src="{$basePath}/assets/js/discussion.js?{$buildTime}"></script>
+            {/ifCurrent}
             <script>
                 $.nette.init();
                 init_clock('time');

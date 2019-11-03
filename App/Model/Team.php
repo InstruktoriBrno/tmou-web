@@ -13,6 +13,8 @@ use Nette\Security\Identity;
 use Nette\Security\Passwords;
 use Nette\Utils\Random;
 use Nette\Utils\Strings;
+use function hexdec;
+use function sha1;
 
 /**
  * @ORM\Entity
@@ -125,6 +127,12 @@ class Team
      * @var DateTimeImmutable|null
      */
     protected $lastLoggedAt;
+
+    /**
+     * @ORM\Column(type="datetime_immutable", nullable=true)
+     * @var DateTimeImmutable|null
+     */
+    protected $lastSeenDiscussionAt;
 
 
     /**
@@ -516,5 +524,40 @@ class Team
     public function getReview(): ?TeamReview
     {
         return $this->review;
+    }
+
+    public function getLastSeenDiscussionAt(): ?DateTimeImmutable
+    {
+        return $this->lastSeenDiscussionAt;
+    }
+
+    public function touchSeenDiscussion(DateTimeImmutable $now): void
+    {
+        $this->lastSeenDiscussionAt = $now;
+    }
+
+    public function getShortcut(): string
+    {
+        $words = explode(" ", $this->name);
+        $acronym = "";
+
+        foreach ($words as $w) {
+            $acronym .= $w[0];
+        }
+        return Strings::upper($acronym);
+    }
+
+    public function getShortcutColor(): string
+    {
+        $color = hexdec(Strings::substring(sha1($this->name), 0, 2));
+        $intensity = 25
+            + hexdec(Strings::substring(sha1($this->name), 2, 1))
+            + hexdec(Strings::substring(sha1($this->name), 3, 1))
+            + hexdec(Strings::substring(sha1($this->name), 4, 1))
+            + hexdec(Strings::substring(sha1($this->name), 5, 1))
+            + hexdec(Strings::substring(sha1($this->name), 6, 1))
+        ;
+        $lightness = 40;
+        return "hsl($color, $intensity%, $lightness%);";
     }
 }

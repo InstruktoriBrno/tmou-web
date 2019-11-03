@@ -7,6 +7,11 @@ use InstruktoriBrno\TMOU\Enums\LoginContinueToIntents;
 use InstruktoriBrno\TMOU\Enums\ReservedSLUG;
 use InstruktoriBrno\TMOU\Enums\Resource;
 use InstruktoriBrno\TMOU\Enums\UserRole;
+use InstruktoriBrno\TMOU\Facades\Discussions\MarkAllAsReadFacade;
+use InstruktoriBrno\TMOU\Facades\Discussions\SaveNewPostFacade;
+use InstruktoriBrno\TMOU\Facades\Discussions\SaveNewThreadFacade;
+use InstruktoriBrno\TMOU\Facades\Discussions\ToggleHidePostFacade;
+use InstruktoriBrno\TMOU\Facades\Discussions\ToggleLockThreadFacade;
 use InstruktoriBrno\TMOU\Facades\Teams\ChangeTeamFacade;
 use InstruktoriBrno\TMOU\Facades\Teams\ConsumePasswordResetFacade;
 use InstruktoriBrno\TMOU\Facades\Teams\CreateSSOSession;
@@ -15,15 +20,24 @@ use InstruktoriBrno\TMOU\Facades\Teams\RegisterTeamFacade;
 use InstruktoriBrno\TMOU\Facades\Teams\RequestPasswordResetFacade;
 use InstruktoriBrno\TMOU\Facades\Teams\SaveTeamReviewFacade;
 use InstruktoriBrno\TMOU\Facades\Teams\TeamLoginFacade;
+use InstruktoriBrno\TMOU\Forms\NewPostFormFactory;
+use InstruktoriBrno\TMOU\Forms\NewThreadFormFactory;
 use InstruktoriBrno\TMOU\Forms\TeamForgottenPasswordFormFactory;
 use InstruktoriBrno\TMOU\Forms\TeamLoginFormFactory;
 use InstruktoriBrno\TMOU\Forms\TeamRegistrationFormFactory;
 use InstruktoriBrno\TMOU\Forms\TeamResetPasswordFormFactory;
 use InstruktoriBrno\TMOU\Forms\TeamReviewFormFactory;
 use InstruktoriBrno\TMOU\Model\Event;
+use InstruktoriBrno\TMOU\Model\Organizator;
+use InstruktoriBrno\TMOU\Model\Team;
+use InstruktoriBrno\TMOU\Services\Discussions\FindPostService;
+use InstruktoriBrno\TMOU\Services\Discussions\FindThreadPostsService;
+use InstruktoriBrno\TMOU\Services\Discussions\FindThreadService;
+use InstruktoriBrno\TMOU\Services\Discussions\FindThreadsService;
 use InstruktoriBrno\TMOU\Services\Events\EventMacroDataProvider;
 use InstruktoriBrno\TMOU\Services\Events\FindEventByNumberService;
 use InstruktoriBrno\TMOU\Services\Events\FindEventTeamReviewsService;
+use InstruktoriBrno\TMOU\Services\Organizators\FindOrganizatorByIdService;
 use InstruktoriBrno\TMOU\Services\Pages\FindPageInEventService;
 use InstruktoriBrno\TMOU\Services\System\IsSLUGReservedService;
 use InstruktoriBrno\TMOU\Services\Teams\FindTeamForFormService;
@@ -31,11 +45,13 @@ use InstruktoriBrno\TMOU\Services\Teams\FindTeamReviewForFormService;
 use InstruktoriBrno\TMOU\Services\Teams\FindTeamService;
 use InstruktoriBrno\TMOU\Services\Teams\FindTeamsInEventService;
 use InstruktoriBrno\TMOU\Services\Teams\TeamMacroDataProvider;
+use InstruktoriBrno\TMOU\Utils\SmallTexyFilter;
 use Nette\Application\Routers\Route;
 use Nette\Application\UI\Form;
 use Nette\Forms\Controls\TextInput;
 use Nette\Security\Identity;
 use Nette\Utils\ArrayHash;
+use Nette\Utils\Validators;
 use Tracy\Debugger;
 use Tracy\ILogger;
 
@@ -109,6 +125,42 @@ final class PagesPresenter extends BasePresenter
 
     /** @var FindEventTeamReviewsService @inject */
     public $findEventTeamReviewsService;
+
+    /** @var NewThreadFormFactory @inject */
+    public $newThreadFormFactory;
+
+    /** @var NewPostFormFactory @inject */
+    public $newPostFormFactory;
+
+    /** @var SaveNewThreadFacade @inject */
+    public $saveNewThreadFacade;
+
+    /** @var FindThreadsService @inject */
+    public $findThreadsService;
+
+    /** @var FindThreadService @inject */
+    public $findThreadService;
+
+    /** @var FindThreadPostsService @inject */
+    public $findThreadPostsService;
+
+    /** @var SaveNewPostFacade @inject */
+    public $saveNewPostFacade;
+
+    /** @var ToggleHidePostFacade @inject */
+    public $toggleHidePostFacade;
+
+    /** @var ToggleLockThreadFacade @inject */
+    public $toggleLockThreadFacade;
+
+    /** @var FindPostService @inject */
+    public $findPostService;
+
+    /** @var FindOrganizatorByIdService @inject */
+    public $findOrganizatorService;
+
+    /** @var MarkAllAsReadFacade @inject */
+    public $markAllAsReadFacade;
 
     /** @var Event|null */
     private $event;
@@ -290,6 +342,46 @@ final class PagesPresenter extends BasePresenter
         $this->template->event = $this->event;
         assert($this->event !== null);
         $this->template->teamsWithReviews = ($this->findEventTeamReviewsService)($this->event);
+    }
+
+    /** @privilege(InstruktoriBrno\TMOU\Enums\Resource::PAGES,InstruktoriBrno\TMOU\Enums\Action::VIEW) */
+    public function actionDiscussion(?int $eventNumber, ?int $thread, int $page = 0): void
+    {
+        if ($eventNumber !== null) {
+            $this->populateEventFromURL($eventNumber);
+        }
+        $this->template->event = $this->event;
+        $this->template->help = SmallTexyFilter::getSyntaxHelp();
+        $this->template->currentPage = $page;
+        $this->template->currentUserEntity = $this->getCurrentUserEntity();
+
+        if ($thread !== null) {
+            $threadEntity = ($this->findThreadService)($thread);
+            if ($threadEntity === null) {
+                throw new \Nette\Application\BadRequestException("No such thread with ID ${thread}.");
+            }
+            $this->template->thread = $threadEntity;
+            $this->template->posts = ($this->findThreadPostsService)($threadEntity);
+            $this->setView('discussion.thread');
+        } else {
+            $page = max(0, $page);
+            $this->template->threadsLimit = $threadsLimit = 2; // 50;
+            $this->template->threads = ($this->findThreadsService)($page, $threadsLimit);
+        }
+    }
+
+    /**
+     * @return Organizator|Team|null
+     */
+    private function getCurrentUserEntity()
+    {
+        if ($this->user->isLoggedIn() && $this->user->isInRole(UserRole::ORG)) {
+            return ($this->findOrganizatorService)($this->user->getId());
+        }
+        if ($this->user->isLoggedIn() && $this->user->isInRole(UserRole::TEAM)) {
+            return ($this->findTeamService)($this->user->getId());
+        }
+        return null;
     }
 
     public function createComponentRegistrationForm(): Form
@@ -545,5 +637,118 @@ final class PagesPresenter extends BasePresenter
         $defaults = ($this->findTeamReviewForFormService)($team);
         $form->setDefaults($defaults);
         return $form;
+    }
+
+    public function createComponentNewThreadForm(): Form
+    {
+        $form = $this->newThreadFormFactory->create(function (Form $form, ArrayHash $values) {
+            if (!$this->user->isAllowed(Resource::DISCUSSION, Action::NEW_THREAD)) {
+                $this->flashMessage('Nejste oprávněni provádět tuto operaci. Pokud věříte, že jde o chybu, kontaktujte správce.', Flash::DANGER);
+                return;
+            }
+            try {
+                $thread = ($this->saveNewThreadFacade)($values, $this->getUser());
+            } catch (\InstruktoriBrno\TMOU\Facades\Discussions\Exceptions\TitleIsTooLongException $e) {
+                $form->addError('Název nového vlákna může být maximálně 191 znaků dlouhý.');
+                return;
+            } catch (\InstruktoriBrno\TMOU\Facades\Discussions\Exceptions\EventIsClosedException $e) {
+                $this->flashMessage('V tomto vlákně již nelze přidávat další příspěvky, to lze pouze půl rok po skončení příslušného ročníku.', Flash::WARNING);
+                return;
+            } catch (\InstruktoriBrno\TMOU\Facades\Discussions\Exceptions\NoSuchEventException $e) {
+                $form->addError('Vybraný ročník neexistuje. Kontaktujte, prosím, správce.');
+                return;
+            }
+            $this->flashMessage('Nové vlákno bylo úspěšně založeno.', Flash::SUCCESS);
+            $this->redirect('this', ['thread' => $thread->getId()]);
+        });
+        if ($this->event !== null) {
+            $form->setDefaults(['event' => $this->event->getId()]);
+        }
+        return $form;
+    }
+
+    public function createComponentNewPostForm(): Form
+    {
+        $thread = $this->getParameter('thread');
+        if ($thread === null || !Validators::isNumericInt($thread)) {
+            throw new \Nette\Application\BadRequestException("Invalid thread ${thread}.");
+        }
+        $threadEntity = ($this->findThreadService)((int) $thread);
+        if ($threadEntity === null) {
+            throw new \Nette\Application\BadRequestException("No such thread with ID ${thread}.");
+        }
+        $form = $this->newPostFormFactory->create(function (Form $form, ArrayHash $values) use ($threadEntity) {
+            if (!$this->user->isAllowed(Resource::DISCUSSION, Action::NEW_POST)) {
+                $this->flashMessage('Nejste oprávněni provádět tuto operaci. Pokud věříte, že jde o chybu, kontaktujte správce.', Flash::DANGER);
+                return;
+            }
+            try {
+                $post = ($this->saveNewPostFacade)($threadEntity, $values, $this->getUser());
+            } catch (\InstruktoriBrno\TMOU\Facades\Discussions\Exceptions\EventIsClosedException $e) {
+                $this->flashMessage('V tomto vlákně již nelze přidávat další příspěvky, to lze pouze půl rok po skončení příslušného ročníku.', Flash::WARNING);
+                return;
+            } catch (\InstruktoriBrno\TMOU\Facades\Discussions\Exceptions\EventIsLockedException $e) {
+                $this->flashMessage('V tomto vlákně již nelze přidávat další příspěvky protože bylo organizátory uzamčeno.', Flash::WARNING);
+                return;
+            }
+            $this->flashMessage('Nový příspěvek byl úspěšně přidán.', Flash::SUCCESS);
+            $this->redirect('this#end', ['thread' => $post->getThread()->getId()]);
+        });
+        if ($this->event !== null) {
+            $form->setDefaults(['event' => $this->event->getId()]);
+        }
+        return $form;
+    }
+
+    /** @privilege(InstruktoriBrno\TMOU\Enums\Resource::DISCUSSION,InstruktoriBrno\TMOU\Enums\Action::HIDE_POST) */
+    public function handleHidePost(int $postId): void
+    {
+        $post = ($this->findPostService)($postId);
+        if ($post === null) {
+            throw new \Nette\Application\BadRequestException("No such post with ID ${postId}.");
+        }
+        ($this->toggleHidePostFacade)($post);
+        if ($this->isAjax()) {
+            $this->redrawControl('posts');
+        } else {
+            if ($post->isHidden()) {
+                $this->flashMessage('Příspěvek byl úspěšně skryt.', Flash::SUCCESS);
+            } else {
+                $this->flashMessage('Příspěvek byl úspěšně odskryt.', Flash::SUCCESS);
+            }
+            $this->redirect('this');
+        }
+    }
+
+    /** @privilege(InstruktoriBrno\TMOU\Enums\Resource::DISCUSSION,InstruktoriBrno\TMOU\Enums\Action::LOCK_THREAD) */
+    public function handleLockThread(int $threadId): void
+    {
+        $thread = ($this->findThreadService)($threadId);
+        if ($thread === null) {
+            throw new \Nette\Application\BadRequestException("No such thread with ID ${threadId}.");
+        }
+        ($this->toggleLockThreadFacade)($thread);
+        if ($this->isAjax()) {
+            $this->redrawControl('form');
+        } else {
+            if ($thread->isLocked()) {
+                $this->flashMessage('Vlákno bylo úspěšně uzamčeno.', Flash::SUCCESS);
+            } else {
+                $this->flashMessage('Vlákno bylo úspěšně odemčeno.', Flash::SUCCESS);
+            }
+            $this->redirect('this');
+        }
+    }
+
+    /** @privilege(InstruktoriBrno\TMOU\Enums\Resource::DISCUSSION,InstruktoriBrno\TMOU\Enums\Action::MARK_ALL_AS_READ) */
+    public function handleMarkAllAsRead(): void
+    {
+        try {
+            ($this->markAllAsReadFacade)($this->user);
+        } catch (\InstruktoriBrno\TMOU\Facades\Discussions\Exceptions\NoSuchUserException $exception) {
+            throw new \Nette\Application\BadRequestException("Obtaining of user {$this->user->getId()} has failed.");
+        }
+        $this->flashMessage('Všechny diskuze byly označeny jako přečtené.', Flash::SUCCESS);
+        $this->redirect('this');
     }
 }

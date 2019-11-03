@@ -4,6 +4,7 @@ namespace InstruktoriBrno\TMOU\Bridges\Latte;
 use InstruktoriBrno\TMOU\Services\Events\EventMacroDataProvider;
 use InstruktoriBrno\TMOU\Services\System\GameClockService;
 use InstruktoriBrno\TMOU\Services\Teams\TeamMacroDataProvider;
+use InstruktoriBrno\TMOU\Utils\SmallTexyFilter;
 use InstruktoriBrno\TMOU\Utils\TexyFilter;
 use Nette\Application\UI;
 
@@ -37,6 +38,7 @@ class TemplateFactory extends \Nette\Bridges\ApplicationLatte\TemplateFactory
     {
         $template = parent::createTemplate($control);
         $template->addFilter('texy', new TexyFilter($this->gameClockService, $this->teamMacroDataProvider, $this->eventMacroDataProvider));
+        $template->addFilter('smallTexy', new SmallTexyFilter());
         return $template;
     }
 }

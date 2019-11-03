@@ -32,6 +32,8 @@ class Authorizator implements IAuthorizator
         $this->acl->addResource(Resource::ADMIN_MENU_ITEMS);
         $this->acl->addResource(Resource::ADMIN_FILES);
 
+        $this->acl->addResource(Resource::DISCUSSION);
+
         // Guest
         $this->acl->deny(UserRole::GUEST);
 
@@ -46,6 +48,9 @@ class Authorizator implements IAuthorizator
         // Team
         $this->acl->allow(UserRole::TEAM, Resource::TEAM_COMMON);
         $this->acl->allow(UserRole::TEAM, Resource::ADMIN_TEAMS, Action::DEIMPERSONATE);
+        $this->acl->allow(UserRole::TEAM, Resource::DISCUSSION, Action::NEW_POST);
+        $this->acl->allow(UserRole::TEAM, Resource::DISCUSSION, Action::NEW_THREAD);
+        $this->acl->allow(UserRole::TEAM, Resource::DISCUSSION, Action::MARK_ALL_AS_READ);
 
         // Org
         $this->acl->allow(UserRole::ORG, Resource::ADMIN_COMMON);
@@ -55,6 +60,7 @@ class Authorizator implements IAuthorizator
         $this->acl->allow(UserRole::ORG, Resource::ADMIN_TEAMS);
         $this->acl->allow(UserRole::ORG, Resource::ADMIN_MENU_ITEMS);
         $this->acl->allow(UserRole::ORG, Resource::ADMIN_FILES);
+        $this->acl->allow(UserRole::ORG, Resource::DISCUSSION);
         $this->acl->deny(UserRole::ORG, Resource::TEAM_COMMON, Action::LOGIN);
         $this->acl->deny(UserRole::ORG, Resource::TEAM_COMMON, Action::REGISTER);
         $this->acl->deny(UserRole::ORG, Resource::TEAM_COMMON, Action::FORGOTTEN_PASSWORD);

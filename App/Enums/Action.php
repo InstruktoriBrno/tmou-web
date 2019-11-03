@@ -27,6 +27,12 @@ final class Action extends Enum
     public const BATCH_PAYMENT_STATUS_CHANGE = 'batch_payment_status_change';
     public const MANAGE = 'manage';
 
+    public const NEW_POST = 'new_post';
+    public const NEW_THREAD = 'new_thread';
+    public const LOCK_THREAD = 'lock_thread';
+    public const HIDE_POST = 'hide_post';
+    public const MARK_ALL_AS_READ = 'mark_all_as_read';
+
     public const IMPERSONATE = 'impersonate';
     public const DEIMPERSONATE = 'deimpersonate';
 
