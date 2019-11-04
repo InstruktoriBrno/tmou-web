@@ -98,8 +98,10 @@ class TeamRegistrationFormFactory
             $teamEmail->setDisabled(true);
         }
 
-        $form->addInvisibleReCaptcha('recaptcha')
-            ->setRequired('Ověřte, prosím, že jste člověk.');
+        if ($registration) {
+            $form->addInvisibleReCaptcha('recaptcha')
+                ->setRequired('Ověřte, prosím, že jste člověk.');
+        }
 
         $form->addPrimarySubmit('send', $registration ? 'Registrovat' : 'Uložit');
         $form->onSuccess[] = function (Form $form, $values) use ($onSuccess) {
