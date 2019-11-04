@@ -233,7 +233,12 @@ class MatchPaymentsFacade
                 }
             }
             if ($sendNotification) {
-                ($this->sendPaymentsMatchingNotificationEmailService)($event);
+                try {
+                    ($this->sendPaymentsMatchingNotificationEmailService)($event);
+                } catch (\Exception $exception) {
+                    // prevent failing when notification sending fails, but still logs it
+                    Debugger::log($exception, ILogger::EXCEPTION);
+                }
                 $this->log(sprintf('SENDING EVENT ID %s NUMBER %s NOTIFICATION FOR ATTENTION', $event->getId(), $event->getNumber()));
             }
             $this->log(sprintf('PROCESSING EVENT ID %s NUMBER %s FINISHED', $event->getId(), $event->getNumber()));
