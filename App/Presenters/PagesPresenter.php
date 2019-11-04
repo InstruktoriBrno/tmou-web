@@ -280,6 +280,7 @@ final class PagesPresenter extends BasePresenter
         $this->template->now = $now = $this->gameClockService->get();
         $this->template->deadline = $deadline = $event->getRegistrationDeadline();
         $this->template->isOpen = $deadline !== null && $now < $deadline;
+        $this->template->hasRecaptcha = true;
     }
 
     /** @privilege(InstruktoriBrno\TMOU\Enums\Resource::TEAM_COMMON,InstruktoriBrno\TMOU\Enums\Action::FORGOTTEN_PASSWORD) */

@@ -1,6 +1,7 @@
 <?php declare(strict_types=1);
 namespace InstruktoriBrno\TMOU\Application\UI;
 
+use Contributte\ReCaptcha\Forms\InvisibleReCaptchaField;
 use Nette\Application\UI\Form;
 use Nette\Forms\Controls\BaseControl;
 use Nette\Forms\Controls\SubmitButton;
@@ -10,6 +11,7 @@ use Nextras\Forms\Controls\DateTimePicker;
 /**
  * @method DateTimePicker addDateTimePicker(string $name, string $label)
  * @method DatePicker addDatePicker(string $name, string $label)
+ * @method InvisibleReCaptchaField addInvisibleReCaptcha(string $name)
  */
 class BaseForm extends Form
 {
