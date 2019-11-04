@@ -3,7 +3,7 @@
     <div id="banner">
         <h1>Diskuze</h1>
         <h2>Vlákna</h2>
-        <p>Vlákna jsou řazeny dle poslední aktivity sestupně. Zobrazeno je na vždy maximálně {$threadsLimit} vláken.</p>
+        <p>Vlákna jsou řazeny dle poslední aktivity sestupně. Zobrazeno je maximálně {$threadsLimit} {if $threadsLimit > 1 && $threadsLimit < 5}vlákna{elseif $threadsLimit >= 5 || $threadsLimit === 0}vláken{else}vlákno{/if}, pro další vlákna použijte stránkování ve spodní části stránky.</p>
         {if count($threads) === 0}
             <div class="alert alert-info">Žádná diskuzní vlákna.</div>
         {/if}

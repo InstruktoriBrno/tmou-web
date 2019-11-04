@@ -366,7 +366,7 @@ final class PagesPresenter extends BasePresenter
             $this->setView('discussion.thread');
         } else {
             $page = max(0, $page);
-            $this->template->threadsLimit = $threadsLimit = 2; // 50;
+            $this->template->threadsLimit = $threadsLimit = 50;
             $this->template->threads = ($this->findThreadsService)($page, $threadsLimit);
         }
     }
