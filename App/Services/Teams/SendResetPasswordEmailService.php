@@ -44,9 +44,9 @@ class SendResetPasswordEmailService
         $message->addTo($team->getEmail(), $team->getName());
         $message->setSubject($subject = sprintf('[TMOU %s] Žádost o nové heslo týmu %s', $team->getEvent()->getNumber(), $team->getName()));
         $content = sprintf(
-            "Zdravíme,\nněkdo požádal u týmu %s v %s. ročníku TMOU o nové heslo.\n\n
+            "Zdravíme,<br>někdo požádal u týmu %s v %s. ročníku TMOU o nové heslo.<br><br>
             Pro nastavení nového hesla přejděte na stránku <a href=\"%s\">%s</a> a zadejte kromě e-mailu též kód <b>%s</b>. 
-            Tento kód je platný do %s, poté bude potřeba žádost opakovat.\n\n-- Vaši organizátoři",
+            Tento kód je platný do %s, poté bude potřeba žádost opakovat.<br><br>-- Vaši organizátoři",
             $team->getName(),
             $team->getEvent()->getNumber(),
             $this->linkGenerator->link('Pages:resetPassword', [$team->getEvent()->getNumber()]),
