@@ -6,7 +6,7 @@
 
     <div id="content">
         <h2>{$thread->getTitle()}</h2>
-        <div><span class="badge badge-warning" n:if="$thread->getEvent() !== null">TMOU {$thread->getEvent()->getNumber()}</span></div>
+        <div><span class="badge badge-warning" n:if="$thread->getEvent() instanceof \InstruktoriBrno\TMOU\Model\Event">TMOU {$thread->getEvent()->getNumber()}</span></div>
         <p><a href="{plink Pages:discussion, page => $currentPage}"><i class="fas fa-arrow-left"></i> Zpět na seznam vláken</a></p>
         {if !isset($posts) || count($posts) === 0}
             <div class="alert alert-info">V současnosti neexistuje žádná příspěvky v tomto vlákně.</div>

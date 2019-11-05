@@ -13,7 +13,7 @@
             {var $newForCurrentUser = $lastSeenDiscussionAt === null || $lastSeenDiscussionAt < $thread->getUpdatedAt()}
             <div>
                 <a href="{plink this, thread => $thread->getId(), page => $currentPage}">{$thread->getTitle()}</a>
-                <span class="badge badge-warning" n:if="$thread->getEvent() !== null">TMOU {$thread->getEvent()->getNumber()}</span>
+                <span class="badge badge-warning" n:if="$thread->getEvent() instanceof \InstruktoriBrno\TMOU\Model\Event">TMOU {$thread->getEvent()->getNumber()}</span>
                 <span title="Poslední příspěvek" class="float-right inline-block">
                     {if $newForCurrentUser}
                         <b>{$thread->getUpdatedAt()|date: 'j. n. Y. H:i'}</b>

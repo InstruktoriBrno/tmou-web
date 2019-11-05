@@ -20,7 +20,7 @@ class Thread
     protected $id;
 
     /**
-     * @ORM\ManyToOne(targetEntity="Event")
+     * @ORM\ManyToOne(targetEntity="Event", fetch="EAGER")
      * @ORM\JoinColumn(name="event_id", referencedColumnName="id", nullable=true)
      * @var Event|null
      */

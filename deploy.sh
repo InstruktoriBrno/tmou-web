@@ -50,6 +50,7 @@ fi;
 
 # Clean caches etc.
 rm -rf temp/cache/*
+rm -rf temp/proxies/*
 
 # Install composer as aliases do not work in non-interactive scripts
 if [ ! -f "composer.phar" ]; then
@@ -73,6 +74,7 @@ echo "Migrating database";
 if [ "$MODE" == "production" ]; then
     php bin/console migrations:migrate
     rm -rf temp/cache/* # due to user mismatch
+    rm -rf temp/proxies/* # due to user mismatch
 fi;
 
 echo "# Configure CRON"
