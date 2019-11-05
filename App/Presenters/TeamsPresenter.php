@@ -82,7 +82,7 @@ final class TeamsPresenter extends BasePresenter
     /** @var ChangeTeamsPaymentStatusService @inject */
     public $changeTeamsPaymentStatusService;
 
-    /** @privilege(InstruktoriBrno\TMOU\Enums\Resource::ADMIN_TEAMS,InstruktoriBrno\TMOU\Enums\Action::VIEW) */
+    /** @privilege(InstruktoriBrno\TMOU\Enums\Resource::ADMIN_TEAMS,InstruktoriBrno\TMOU\Enums\Action::VIEW,InstruktoriBrno\TMOU\Enums\PrivilegeEnforceMethod::TRIGGER_ADMIN_LOGIN) */
     public function actionDefault(int $eventNumber): void
     {
         $event = ($this->findEventServiceByNumber)($eventNumber);
@@ -92,7 +92,7 @@ final class TeamsPresenter extends BasePresenter
         $this->template->event = $event;
     }
 
-    /** @privilege(InstruktoriBrno\TMOU\Enums\Resource::ADMIN_TEAMS,InstruktoriBrno\TMOU\Enums\Action::BATCH_MAIL) */
+    /** @privilege(InstruktoriBrno\TMOU\Enums\Resource::ADMIN_TEAMS,InstruktoriBrno\TMOU\Enums\Action::BATCH_MAIL,InstruktoriBrno\TMOU\Enums\PrivilegeEnforceMethod::TRIGGER_ADMIN_LOGIN) */
     public function actionBatchMail(int $eventNumber): void
     {
         $event = ($this->findEventServiceByNumber)($eventNumber);
@@ -103,7 +103,7 @@ final class TeamsPresenter extends BasePresenter
         $this->template->help = TexyFilter::getSyntaxHelp();
     }
 
-    /** @privilege(InstruktoriBrno\TMOU\Enums\Resource::ADMIN_TEAMS,InstruktoriBrno\TMOU\Enums\Action::BATCH_GAME_STATUS_CHANGE) */
+    /** @privilege(InstruktoriBrno\TMOU\Enums\Resource::ADMIN_TEAMS,InstruktoriBrno\TMOU\Enums\Action::BATCH_GAME_STATUS_CHANGE,InstruktoriBrno\TMOU\Enums\PrivilegeEnforceMethod::TRIGGER_ADMIN_LOGIN) */
     public function actionBatchGameStatusChange(int $eventNumber): void
     {
         $event = ($this->findEventServiceByNumber)($eventNumber);
@@ -113,7 +113,7 @@ final class TeamsPresenter extends BasePresenter
         $this->template->event = $event;
     }
 
-    /** @privilege(InstruktoriBrno\TMOU\Enums\Resource::ADMIN_TEAMS,InstruktoriBrno\TMOU\Enums\Action::EDIT) */
+    /** @privilege(InstruktoriBrno\TMOU\Enums\Resource::ADMIN_TEAMS,InstruktoriBrno\TMOU\Enums\Action::EDIT,InstruktoriBrno\TMOU\Enums\PrivilegeEnforceMethod::TRIGGER_ADMIN_LOGIN) */
     public function actionExport(int $eventNumber): void
     {
         $event = ($this->findEventServiceByNumber)($eventNumber);
@@ -123,7 +123,7 @@ final class TeamsPresenter extends BasePresenter
         $this->sendResponse(($this->exportAllTeamsService)($event));
     }
 
-    /** @privilege(InstruktoriBrno\TMOU\Enums\Resource::ADMIN_TEAMS,InstruktoriBrno\TMOU\Enums\Action::EDIT) */
+    /** @privilege(InstruktoriBrno\TMOU\Enums\Resource::ADMIN_TEAMS,InstruktoriBrno\TMOU\Enums\Action::EDIT,InstruktoriBrno\TMOU\Enums\PrivilegeEnforceMethod::TRIGGER_ADMIN_LOGIN) */
     public function actionExportNewsletter(int $eventNumber): void
     {
         $event = ($this->findEventServiceByNumber)($eventNumber);
@@ -133,7 +133,7 @@ final class TeamsPresenter extends BasePresenter
         $this->sendResponse(($this->exportTeamMembersForNewsletter)($event));
     }
 
-    /** @privilege(InstruktoriBrno\TMOU\Enums\Resource::ADMIN_TEAMS,InstruktoriBrno\TMOU\Enums\Action::DELETE) */
+    /** @privilege(InstruktoriBrno\TMOU\Enums\Resource::ADMIN_TEAMS,InstruktoriBrno\TMOU\Enums\Action::DELETE,InstruktoriBrno\TMOU\Enums\PrivilegeEnforceMethod::TRIGGER_ADMIN_LOGIN) */
     public function actionDelete(int $teamId): void
     {
         $team = ($this->findTeamService)($teamId);
@@ -144,7 +144,7 @@ final class TeamsPresenter extends BasePresenter
         $this->template->event = $team->getEvent();
     }
 
-    /** @privilege(InstruktoriBrno\TMOU\Enums\Resource::ADMIN_TEAMS,InstruktoriBrno\TMOU\Enums\Action::VIEW) */
+    /** @privilege(InstruktoriBrno\TMOU\Enums\Resource::ADMIN_TEAMS,InstruktoriBrno\TMOU\Enums\Action::VIEW,InstruktoriBrno\TMOU\Enums\PrivilegeEnforceMethod::TRIGGER_ADMIN_LOGIN) */
     public function actionPayments(bool $emptyNow = false): void
     {
         $path = __DIR__ . '/../../payments/' . MatchPaymentsFacade::RUNS;
@@ -157,7 +157,7 @@ final class TeamsPresenter extends BasePresenter
         $this->template->lines = array_reverse(explode("\n", (string) $content));
     }
 
-    /** @privilege(InstruktoriBrno\TMOU\Enums\Resource::ADMIN_TEAMS,InstruktoriBrno\TMOU\Enums\Action::IMPERSONATE) */
+    /** @privilege(InstruktoriBrno\TMOU\Enums\Resource::ADMIN_TEAMS,InstruktoriBrno\TMOU\Enums\Action::IMPERSONATE,InstruktoriBrno\TMOU\Enums\PrivilegeEnforceMethod::TRIGGER_ADMIN_LOGIN) */
     public function actionImpersonate(int $teamId): void
     {
         $team = ($this->findTeamService)($teamId);

@@ -51,7 +51,7 @@ final class FilesPresenter extends BasePresenter
     /** @var ChangeStorageFileFacade @inject */
     public $changeStorageFileFacade;
 
-    /** @privilege(InstruktoriBrno\TMOU\Enums\Resource::ADMIN_FILES,InstruktoriBrno\TMOU\Enums\Action::MANAGE) */
+    /** @privilege(InstruktoriBrno\TMOU\Enums\Resource::ADMIN_FILES,InstruktoriBrno\TMOU\Enums\Action::MANAGE,InstruktoriBrno\TMOU\Enums\PrivilegeEnforceMethod::TRIGGER_ADMIN_LOGIN) */
     public function actionDefault(?string $subdir = null): void
     {
         $this->template->showedSubdir = $subdir ?? '/';
@@ -63,7 +63,7 @@ final class FilesPresenter extends BasePresenter
         $this->template->wwwDir = realpath(__DIR__ . '/../../www/');
     }
 
-    /** @privilege(InstruktoriBrno\TMOU\Enums\Resource::ADMIN_FILES,InstruktoriBrno\TMOU\Enums\Action::MANAGE) */
+    /** @privilege(InstruktoriBrno\TMOU\Enums\Resource::ADMIN_FILES,InstruktoriBrno\TMOU\Enums\Action::MANAGE,InstruktoriBrno\TMOU\Enums\PrivilegeEnforceMethod::TRIGGER_ADMIN_LOGIN) */
     public function handleShowFolder(?string $subdir): void
     {
         try {
@@ -78,7 +78,7 @@ final class FilesPresenter extends BasePresenter
         }
     }
 
-    /** @privilege(InstruktoriBrno\TMOU\Enums\Resource::ADMIN_FILES,InstruktoriBrno\TMOU\Enums\Action::MANAGE) */
+    /** @privilege(InstruktoriBrno\TMOU\Enums\Resource::ADMIN_FILES,InstruktoriBrno\TMOU\Enums\Action::MANAGE,InstruktoriBrno\TMOU\Enums\PrivilegeEnforceMethod::TRIGGER_ADMIN_LOGIN) */
     public function handleDeleteFile(string $name): void
     {
         $subdir = $this->getParameter('subdir');

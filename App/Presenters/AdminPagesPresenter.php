@@ -53,7 +53,7 @@ final class AdminPagesPresenter extends BasePresenter
     /** @var DeletePageFacade @inject */
     public $deletePageFacade;
 
-    /** @privilege(InstruktoriBrno\TMOU\Enums\Resource::ADMIN_PAGES,InstruktoriBrno\TMOU\Enums\Action::VIEW) */
+    /** @privilege(InstruktoriBrno\TMOU\Enums\Resource::ADMIN_PAGES,InstruktoriBrno\TMOU\Enums\Action::VIEW,InstruktoriBrno\TMOU\Enums\PrivilegeEnforceMethod::TRIGGER_ADMIN_LOGIN) */
     public function actionDefault(?int $eventNumber): void
     {
         $event = null;
@@ -63,7 +63,7 @@ final class AdminPagesPresenter extends BasePresenter
         $this->template->event = $event;
     }
 
-    /** @privilege(InstruktoriBrno\TMOU\Enums\Resource::ADMIN_PAGES,InstruktoriBrno\TMOU\Enums\Action::CREATE) */
+    /** @privilege(InstruktoriBrno\TMOU\Enums\Resource::ADMIN_PAGES,InstruktoriBrno\TMOU\Enums\Action::CREATE,InstruktoriBrno\TMOU\Enums\PrivilegeEnforceMethod::TRIGGER_ADMIN_LOGIN) */
     public function actionAdd(?int $eventNumber): void
     {
         $event = null;
@@ -74,7 +74,7 @@ final class AdminPagesPresenter extends BasePresenter
         $this->template->help = TexyFilter::getSyntaxHelp();
     }
 
-    /** @privilege(InstruktoriBrno\TMOU\Enums\Resource::ADMIN_PAGES,InstruktoriBrno\TMOU\Enums\Action::EDIT) */
+    /** @privilege(InstruktoriBrno\TMOU\Enums\Resource::ADMIN_PAGES,InstruktoriBrno\TMOU\Enums\Action::EDIT,InstruktoriBrno\TMOU\Enums\PrivilegeEnforceMethod::TRIGGER_ADMIN_LOGIN) */
     public function actionEdit(int $pageId): void
     {
         $page = ($this->findPageService)($pageId);
@@ -86,7 +86,7 @@ final class AdminPagesPresenter extends BasePresenter
         $this->template->help = TexyFilter::getSyntaxHelp();
     }
 
-    /** @privilege(InstruktoriBrno\TMOU\Enums\Resource::ADMIN_PAGES,InstruktoriBrno\TMOU\Enums\Action::DELETE) */
+    /** @privilege(InstruktoriBrno\TMOU\Enums\Resource::ADMIN_PAGES,InstruktoriBrno\TMOU\Enums\Action::DELETE,InstruktoriBrno\TMOU\Enums\PrivilegeEnforceMethod::TRIGGER_ADMIN_LOGIN) */
     public function actionDelete(int $pageId): void
     {
         $page = ($this->findPageService)($pageId);

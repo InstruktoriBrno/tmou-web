@@ -18,12 +18,12 @@ final class AdminPresenter extends BasePresenter
     /** @var FindOrganizatorForDataGrid @inject */
     public $findOrganizatorForDataGrid;
 
-    /** @privilege(InstruktoriBrno\TMOU\Enums\Resource::ADMIN_COMMON,InstruktoriBrno\TMOU\Enums\Action::VIEW) */
+    /** @privilege(InstruktoriBrno\TMOU\Enums\Resource::ADMIN_COMMON,InstruktoriBrno\TMOU\Enums\Action::VIEW,InstruktoriBrno\TMOU\Enums\PrivilegeEnforceMethod::TRIGGER_ADMIN_LOGIN) */
     public function actionDefault(): void
     {
     }
 
-    /** @privilege(InstruktoriBrno\TMOU\Enums\Resource::ADMIN_COMMON,InstruktoriBrno\TMOU\Enums\Action::LOGIN) */
+    /** @privilege(InstruktoriBrno\TMOU\Enums\Resource::ADMIN_COMMON,InstruktoriBrno\TMOU\Enums\Action::LOGIN,InstruktoriBrno\TMOU\Enums\PrivilegeEnforceMethod::TRIGGER_ADMIN_LOGIN) */
     public function actionLogin(): void
     {
         try {
@@ -40,7 +40,7 @@ final class AdminPresenter extends BasePresenter
         }
     }
 
-    /** @privilege(InstruktoriBrno\TMOU\Enums\Resource::ADMIN_COMMON,InstruktoriBrno\TMOU\Enums\Action::LOGIN) */
+    /** @privilege(InstruktoriBrno\TMOU\Enums\Resource::ADMIN_COMMON,InstruktoriBrno\TMOU\Enums\Action::LOGIN,InstruktoriBrno\TMOU\Enums\PrivilegeEnforceMethod::TRIGGER_ADMIN_LOGIN) */
     public function actionPostLogin(): void
     {
         if ($this->user->isLoggedIn() && $this->request->getParameter('state') !== null) {
@@ -55,7 +55,7 @@ final class AdminPresenter extends BasePresenter
         }
     }
 
-    /** @privilege(InstruktoriBrno\TMOU\Enums\Resource::ADMIN_COMMON,InstruktoriBrno\TMOU\Enums\Action::LOGOUT) */
+    /** @privilege(InstruktoriBrno\TMOU\Enums\Resource::ADMIN_COMMON,InstruktoriBrno\TMOU\Enums\Action::LOGOUT,InstruktoriBrno\TMOU\Enums\PrivilegeEnforceMethod::TRIGGER_ADMIN_LOGIN) */
     public function actionLogout(): void
     {
         $this->user->logout(true);
@@ -63,7 +63,7 @@ final class AdminPresenter extends BasePresenter
         $this->redirect('Homepage:');
     }
 
-    /** @privilege(InstruktoriBrno\TMOU\Enums\Resource::ADMIN_ORGANIZATORS,InstruktoriBrno\TMOU\Enums\Action::VIEW) */
+    /** @privilege(InstruktoriBrno\TMOU\Enums\Resource::ADMIN_ORGANIZATORS,InstruktoriBrno\TMOU\Enums\Action::VIEW,InstruktoriBrno\TMOU\Enums\PrivilegeEnforceMethod::TRIGGER_ADMIN_LOGIN) */
     public function actionOrganizators(): void
     {
     }

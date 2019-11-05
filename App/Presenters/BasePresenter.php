@@ -133,8 +133,17 @@ abstract class BasePresenter extends Presenter
     {
         if (!$this->user->isAllowed($resource, $action)) {
             if (!$this->user->isLoggedIn()) {
-                $this->flashMessage('Nejprve se přihlaste.', Flash::INFO);
-                $this->redirect('Admin:login', ['backlink' => $this->storeRequest()]);
+                if ($method === PrivilegeEnforceMethod::TRIGGER_ADMIN_LOGIN) {
+                    $this->redirect('Admin:login', ['backlink' => $this->storeRequest()]);
+                } else {
+                    $eventNumber = $this->getParameter('eventNumber');
+                    if ($eventNumber === null) {
+                        $this->flashMessage('Stránka, kterou jste chtěli navšívit není bez přihlášení dostupná. Nejprve se prosím přihlaste.', Flash::INFO);
+                        $this->redirect('Pages:show');
+                    }
+                    $this->flashMessage('Pro přístup na tuto stránku se nejprve přihlaste.', Flash::INFO);
+                    $this->redirect('Pages:login', ['backlink' => $this->storeRequest(), 'eventNumber' => $eventNumber]);
+                }
             } else {
                 $this->flashMessage('Nejste oprávněni k použití této funkcionality. Pokud věříte, že jde o chybu kontaktujte správce', Flash::DANGER);
                 if ($method === PrivilegeEnforceMethod::NOT_AVAILABLE) {

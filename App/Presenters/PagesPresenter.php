@@ -236,7 +236,7 @@ final class PagesPresenter extends BasePresenter
     }
 
     /** @privilege(InstruktoriBrno\TMOU\Enums\Resource::TEAM_COMMON,InstruktoriBrno\TMOU\Enums\Action::LOGIN) */
-    public function actionLogin(int $eventNumber, ?string $continueTo): void
+    public function actionLogin(int $eventNumber, ?string $continueTo, ?string $backlink): void
     {
         $this->populateEventFromURL($eventNumber);
         $this->template->event = $this->event;
@@ -520,9 +520,10 @@ final class PagesPresenter extends BasePresenter
     public function createComponentLoginForm(): Form
     {
         $this->populateEventFromURL();
+        $backlink = $this->getParameter('backlink');
         $event = $this->event;
         assert($event !== null);
-        return $this->teamLoginFormFactory->create(function (Form $form, $values) use ($event) {
+        return $this->teamLoginFormFactory->create(function (Form $form, $values) use ($backlink, $event) {
             if (!$this->user->isAllowed(Resource::TEAM_COMMON, Action::LOGIN)) {
                 $form->addError('Nejste oprávněni provádět tuto operaci. Pokud věříte, že jde o chybu, kontaktujte správce.');
                 return;
@@ -542,6 +543,9 @@ final class PagesPresenter extends BasePresenter
                     }
                 } catch (\Grifart\Enum\MissingValueDeclarationException $exception) {
                     // intentionally no-op
+                }
+                if ($backlink !== null) {
+                    $this->restoreRequest($backlink);
                 }
                 $this->flashMessage('Byli jste úspěšně přihlášeni.', Flash::SUCCESS);
                 $this->redirect('Pages:show', null, $event->getNumber());

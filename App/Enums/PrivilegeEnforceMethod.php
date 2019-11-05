@@ -7,6 +7,8 @@ class PrivilegeEnforceMethod
 
     public const NOT_AVAILABLE = 2;
 
+    public const TRIGGER_ADMIN_LOGIN = 3;
+
     /**
      * @param string|int $value
      *
@@ -19,6 +21,9 @@ class PrivilegeEnforceMethod
         }
         if ((int) $value === static::NOT_AVAILABLE) {
             return static::NOT_AVAILABLE;
+        }
+        if ((int) $value === static::TRIGGER_ADMIN_LOGIN) {
+            return static::TRIGGER_ADMIN_LOGIN;
         }
         throw new \InvalidArgumentException("Invalid value [$value]");
     }
