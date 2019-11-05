@@ -133,6 +133,9 @@ final class MenuPresenter extends BasePresenter
             } catch (\InstruktoriBrno\TMOU\Model\Exceptions\MixedLinkOptionsException | \InstruktoriBrno\TMOU\Model\Exceptions\InvalidLinkOptionsException $e) {
                 $form->addError('Nastavení cíle není validní, překontrolujte, zda je vše vyplněno.');
                 return;
+            } catch (\InstruktoriBrno\TMOU\Model\Exceptions\InvalidLinkWithoutEventException $e) {
+                $form->addError('Tuto systémovou stránku nelze odkazovat bez ročníku.');
+                return;
             } catch (\InstruktoriBrno\TMOU\Model\Exceptions\InvalidUrlException $e) {
                 /** @var TextInput $input */
                 $input = $form['target_url'];

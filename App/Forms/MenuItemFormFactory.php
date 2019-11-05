@@ -64,7 +64,9 @@ class MenuItemFormFactory
             ->toggle('target-slug');
 
         $form->addSelect('target_event', 'Ročník', ($this->findEventsPairsService)())
-            ->setOption('id', 'target-event');
+            ->setPrompt('Mimo ročníky')
+            ->setOption('id', 'target-event')
+            ->setOption('description', 'Mimo ročníky je podporována pouze stránka "Diskuze".');
         $targetPage = $form->addSelect('target_page', 'Stránka', ($this->findPagesPairsService)());
         $targetPage
             ->setOption('id', 'target-page')

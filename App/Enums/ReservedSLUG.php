@@ -71,6 +71,11 @@ final class ReservedSLUG extends Enum
             || $this->equals(self::GAME_FLOW());
     }
 
+    public function canBeLinkedWithoutEvent(): bool
+    {
+        return $this->equals(self::DISCUSSION());
+    }
+
     public static function toList(): array
     {
         return [

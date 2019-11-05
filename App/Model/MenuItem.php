@@ -412,7 +412,7 @@ class MenuItem
         ) {
             throw new \InstruktoriBrno\TMOU\Model\Exceptions\MixedLinkOptionsException();
         }
-        if ($targetEvent !== null && $targetSlug !== null &&
+        if ($targetSlug !== null &&
             ($targetPage !== null || $targetUrl !== null)
         ) {
             throw new \InstruktoriBrno\TMOU\Model\Exceptions\MixedLinkOptionsException();
@@ -424,6 +424,10 @@ class MenuItem
         }
         if ($targetPage === null && $targetEvent === null && $targetSlug === null && $targetUrl === null) {
             throw new \InstruktoriBrno\TMOU\Model\Exceptions\InvalidLinkOptionsException();
+        }
+
+        if ($targetSlug !== null && $targetEvent === null && !$targetSlug->canBeLinkedWithoutEvent()) {
+            throw new \InstruktoriBrno\TMOU\Model\Exceptions\InvalidLinkWithoutEventException();
         }
 
         if ($targetUrl !== null && !Validators::isUrl($targetUrl)) {

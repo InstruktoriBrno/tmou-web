@@ -43,8 +43,8 @@
                         {var $isSelected = isset($page) && $page !== null && $page->getId() === $menuItem->getTargetPage()->getId()}
                     {elseif $menuItem->getTargetUrl()}
                         {var $link = $menuItem->getTargetUrl()}
-                    {elseif $menuItem->getTargetSlug() !== null && $menuItem->getTargetEvent() !== null}
-                        {var $pageEventNumber = $menuItem->getTargetEvent()->getNumber()}
+                    {elseif $menuItem->getTargetSlug() !== null}
+                        {var $pageEventNumber = $menuItem->getTargetEvent() !== null ? $menuItem->getTargetEvent()->getNumber() : null}
                         {var $link = $control->link('Pages:show', $menuItem->getTargetSlug(), $pageEventNumber)}
                         {var $isSelected = isset($urlPath) && $urlPath === $link}
                     {/if}

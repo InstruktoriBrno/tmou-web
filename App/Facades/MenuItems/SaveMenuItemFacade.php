@@ -70,8 +70,8 @@ class SaveMenuItemFacade
         }
         if ($values->type === 'page2') {
             $targetUrl = null;
-            $targetEvent = ($this->findEventService)($values->target_event);
-            if ($targetEvent === null) {
+            $targetEvent = $values->target_event !== null ? ($this->findEventService)($values->target_event) : null;
+            if ($values->target_event !== null && $targetEvent === null) {
                 throw new \InstruktoriBrno\TMOU\Facades\MenuItems\Exceptions\NoSuchEventException;
             }
             $targetPage = null;
