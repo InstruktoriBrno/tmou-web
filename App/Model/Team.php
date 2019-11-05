@@ -542,7 +542,17 @@ class Team
         $acronym = "";
 
         foreach ($words as $w) {
-            $acronym .= $w[0];
+            $letter = Strings::substring($w, 0, 1);
+            if (!Strings::match($letter, '~[\w\d]~u')) {
+                continue;
+            }
+            $acronym .= $letter;
+            if (Strings::length($acronym) === 3) {
+                break;
+            }
+        }
+        if (Strings::length($acronym) === 0) {
+            return (string) $this->number;
         }
         return Strings::upper($acronym);
     }

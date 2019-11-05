@@ -22,10 +22,10 @@
                     {var $author = $post->getTeam() ?? $post->getOrganizator()}
                     {var $lastSeenDiscussionAt = $currentUserEntity === null ? null : $currentUserEntity->getLastSeenDiscussionAt()}
                     {var $newForCurrentUser = $lastSeenDiscussionAt === null || $lastSeenDiscussionAt < $thread->getUpdatedAt()}
-                    <div class="float-left mr-4 inline-block avatar rounded-full text-center align-middle text-2xl text-white" style="background: {$author->getShortcutColor()|noEscape}">{$author->getShortcut()}</div>
+                    {var $teamName = $post->getTeam() !== null ? $post->getTeam()->getName() : null}
+                    {var $organizatorName = $post->getOrganizator() !== null ? 'Organizátoři (' . $post->getOrganizator()->getGivenName() . ' ' . $post->getOrganizator()->getFamilyName() . ')' : null}
+                    <div class="float-left mr-4 inline-block avatar rounded-full text-center align-middle text-2xl text-white" style="background: {$author->getShortcutColor()|noEscape}" title="{$teamName ?? $organizatorName}">{$author->getShortcut()}</div>
                     <div>
-                        {var $teamName = $post->getTeam() !== null ? $post->getTeam()->getName() : null}
-                        {var $organizatorName = $post->getOrganizator() !== null ? 'Organizátoři (' . $post->getOrganizator()->getGivenName() . ' ' . $post->getOrganizator()->getFamilyName() . ')' : null}
                         <b>{$teamName ?? $organizatorName}</b>
                         #{$iterator->getCounter()}
                         {if $user->isLoggedIn() && !$thread->isLocked()}
