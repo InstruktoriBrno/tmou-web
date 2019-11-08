@@ -14,6 +14,7 @@ use Nette\Security\Passwords;
 use Nette\Utils\Random;
 use Nette\Utils\Strings;
 use function hexdec;
+use function is_array;
 use function sha1;
 
 /**
@@ -543,7 +544,8 @@ class Team
 
         foreach ($words as $w) {
             $letter = Strings::substring($w, 0, 1);
-            if (!Strings::match($letter, '~[\w\d]~u')) {
+            $match = Strings::match($letter, '~[\w\d]~u');
+            if (!is_array($match) || count($match) !== 1) {
                 continue;
             }
             $acronym .= $letter;
