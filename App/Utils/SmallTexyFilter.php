@@ -5,7 +5,11 @@ use Latte\Runtime\Html as LatteHtml;
 use Nette\Utils\Html;
 use Texy\HandlerInvocation;
 use Texy\HtmlElement;
+use Texy\Link;
+use Texy\Modifier;
 use Texy\Texy;
+use function array_unique;
+use function implode;
 
 class SmallTexyFilter
 {
@@ -92,6 +96,36 @@ Hodit se též může horní index^^takhle^^ nebo index^2, také spodní index__
                 $el->attrs['rel'] = 'nofollow';
                 $el->setText("[$refName]");
                 return $el;
+            });
+
+            // Add noopener and noreferrer to links
+            $this->texy->addHandler('linkURL', function (HandlerInvocation $parser, $link) {
+                if ($link instanceof Link) {
+                    $el = $parser->getTexy()->linkModule->solve(null, $link, $link->URL);
+                    if (!$el instanceof HtmlElement) {
+                        return $parser->proceed();
+                    }
+                    $rels = [$el->attrs['rel'] ?? null];
+                    $rels[] = 'noopener';
+                    $rels[] = 'noreferrer';
+                    $el->attrs['rel'] = implode(' ', array_unique($rels));
+                    return $el;
+                }
+                return $parser->proceed();
+            });
+            $this->texy->addHandler('phrase', function (HandlerInvocation $parser, $phrase, $content, Modifier $modifier, Link $link = null) {
+                if ($link instanceof Link) {
+                    $el = $parser->getTexy()->linkModule->solve(null, $link, $content);
+                    if (!$el instanceof HtmlElement) {
+                        return $parser->proceed();
+                    }
+                    $rels = [$el->attrs['rel'] ?? null];
+                    $rels[] = 'noopener';
+                    $rels[] = 'noreferrer';
+                    $el->attrs['rel'] = implode(' ', array_unique($rels));
+                    return $el;
+                }
+                return $parser->proceed();
             });
         }
 
