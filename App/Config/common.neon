@@ -179,6 +179,8 @@ services:
     - InstruktoriBrno\TMOU\Services\Discussions\FindPostService
     - InstruktoriBrno\TMOU\Facades\Discussions\MarkAllAsReadFacade
     - InstruktoriBrno\TMOU\Services\Events\FindEventsPairsOpenedForDiscussionService
+    - InstruktoriBrno\TMOU\Commands\CreateTestDataCommand
+    - InstruktoriBrno\TMOU\Facades\System\CreateTestDataFacade
 
 extensions:
     nextras.form: Nextras\Forms\Bridges\NetteDI\FormsExtension

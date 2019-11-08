@@ -32,6 +32,18 @@ Nezbytné předpoklady jsou:
    Opětovné volání `docker-compose up` spustí předchozí stav.  
    Úplné smazání kontejnerů lze provést pomocí `docker-compose down`.  
    Kompletní rebuild kontejnerů lze provést pomocí `docker-compose up --build`.
+   
+## Testovací data
+
+Pro jednoduchost vývoje v delším časovém horizontu je připraveno automatizované vytváření dat.
+Tyto data lze vytvářet pouze na existující databázi ve které ale nejsou žádná data (vyjma již přihlášených organizátorů).
+Po vytvoření migrací je třeba zevnitř kontejneru `docker-compose exec webserver bash` spustit `php bin/console create-test-data`.
+
+Toto vytvoří:
+- Ročník v aktuálním roce se hrou první víkend v listopadu a kvalifikací poslední zářiový víkend.
+- Vytvoří standardní sadu stránek & menu ročníku.
+- Vytvoří 4 týmy.
+- Vytvoří 2 diskuzní vlákna.
 
 ## Přístup k databázi
 
