@@ -56,8 +56,8 @@ class MenuItemsGrid extends Control
                         ->setAttribute('title', $item->getTitle());
                 } elseif ($item->getTargetUrl() !== null) {
                     return Html::el('a')->href($item->getTargetUrl())->setText($item->getContent())->setAttribute('title', $item->getTitle());
-                } elseif ($item->getTargetSlug() !== null && $item->getTargetEvent() !== null) {
-                    $eventNumber = $item->getTargetEvent()->getNumber();
+                } elseif ($item->getTargetSlug() !== null) {
+                    $eventNumber = $item->getTargetEvent() !== null ? $item->getTargetEvent()->getNumber() : null;
                     return Html::el('a')->href($this->getPresenter()->link('Pages:show', $item->getTargetSlug(), $eventNumber))->setText($item->getContent())->setAttribute('title', $item->getTitle());
                 }
                 return null;
