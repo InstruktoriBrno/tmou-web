@@ -130,13 +130,6 @@ class Team
     protected $lastLoggedAt;
 
     /**
-     * @ORM\Column(type="datetime_immutable", nullable=true)
-     * @var DateTimeImmutable|null
-     */
-    protected $lastSeenDiscussionAt;
-
-
-    /**
      * @ORM\OneToMany(targetEntity="TeamMember", mappedBy="team", cascade={"persist", "remove"}, orphanRemoval=true)
      * @var TeamMember[]|Collection
      */
@@ -525,16 +518,6 @@ class Team
     public function getReview(): ?TeamReview
     {
         return $this->review;
-    }
-
-    public function getLastSeenDiscussionAt(): ?DateTimeImmutable
-    {
-        return $this->lastSeenDiscussionAt;
-    }
-
-    public function touchSeenDiscussion(DateTimeImmutable $now): void
-    {
-        $this->lastSeenDiscussionAt = $now;
     }
 
     public function getShortcut(): string

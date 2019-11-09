@@ -20,8 +20,8 @@
                 {/last}
                 <div id="post-{$iterator->getCounter()}">
                     {var $author = $post->getTeam() ?? $post->getOrganizator()}
-                    {var $lastSeenDiscussionAt = $currentUserEntity === null ? null : $currentUserEntity->getLastSeenDiscussionAt()}
-                    {var $newForCurrentUser = $lastSeenDiscussionAt === null || $lastSeenDiscussionAt < $thread->getUpdatedAt()}
+                    {var $lastSeenDiscussionAt = isset($acks[$thread->getId()]) ? $acks[$thread->getId()]->getAt() : null}
+                    {var $newForCurrentUser = $lastSeenDiscussionAt === null || $lastSeenDiscussionAt < $post->getCreatedAt()}
                     {var $teamName = $post->getTeam() !== null ? $post->getTeam()->getName() : null}
                     {var $organizatorName = $post->getOrganizator() !== null ? 'Organizátoři (' . $post->getOrganizator()->getGivenName() . ' ' . $post->getOrganizator()->getFamilyName() . ')' : null}
                     <div class="float-left mr-4 inline-block avatar rounded-full text-center align-middle text-2xl text-white" style="background: {$author->getShortcutColor()|noEscape}" title="{$teamName ?? $organizatorName}">{$author->getShortcut()}</div>
@@ -60,6 +60,9 @@
                 </div>
                 <hr>
             {/foreach}
+        </div>
+        <div>
+            <a href="{plink Pages:discussion, page => $currentPage}"><i class="fas fa-arrow-left"></i> Zpět na seznam vláken</a>
         </div>
         <div n:snippet="form">
             {if $user->isLoggedIn()}

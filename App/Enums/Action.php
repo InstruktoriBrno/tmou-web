@@ -32,7 +32,7 @@ final class Action extends Enum
     public const NEW_THREAD = 'new_thread';
     public const LOCK_THREAD = 'lock_thread';
     public const HIDE_POST = 'hide_post';
-    public const MARK_ALL_AS_READ = 'mark_all_as_read';
+    public const MARK_THREAD_AS_READ = 'mark_thread_as_read';
 
     public const IMPERSONATE = 'impersonate';
     public const DEIMPERSONATE = 'deimpersonate';

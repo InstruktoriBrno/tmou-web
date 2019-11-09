@@ -50,7 +50,7 @@ class Authorizator implements IAuthorizator
         $this->acl->allow(UserRole::TEAM, Resource::ADMIN_TEAMS, Action::DEIMPERSONATE);
         $this->acl->allow(UserRole::TEAM, Resource::DISCUSSION, Action::NEW_POST);
         $this->acl->allow(UserRole::TEAM, Resource::DISCUSSION, Action::NEW_THREAD);
-        $this->acl->allow(UserRole::TEAM, Resource::DISCUSSION, Action::MARK_ALL_AS_READ);
+        $this->acl->allow(UserRole::TEAM, Resource::DISCUSSION, Action::MARK_THREAD_AS_READ);
 
         // Org
         $this->acl->allow(UserRole::ORG, Resource::ADMIN_COMMON);

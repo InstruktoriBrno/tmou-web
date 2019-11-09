@@ -7,7 +7,7 @@ use InstruktoriBrno\TMOU\Enums\LoginContinueToIntents;
 use InstruktoriBrno\TMOU\Enums\ReservedSLUG;
 use InstruktoriBrno\TMOU\Enums\Resource;
 use InstruktoriBrno\TMOU\Enums\UserRole;
-use InstruktoriBrno\TMOU\Facades\Discussions\MarkAllAsReadFacade;
+use InstruktoriBrno\TMOU\Facades\Discussions\MarkThreadAsReadFacade;
 use InstruktoriBrno\TMOU\Facades\Discussions\SaveNewPostFacade;
 use InstruktoriBrno\TMOU\Facades\Discussions\SaveNewThreadFacade;
 use InstruktoriBrno\TMOU\Facades\Discussions\ToggleHidePostFacade;
@@ -32,6 +32,7 @@ use InstruktoriBrno\TMOU\Model\Organizator;
 use InstruktoriBrno\TMOU\Model\Team;
 use InstruktoriBrno\TMOU\Services\Discussions\FindLastPostsForThreads;
 use InstruktoriBrno\TMOU\Services\Discussions\FindPostService;
+use InstruktoriBrno\TMOU\Services\Discussions\FindThreadAcknowledgementByThreadsAndUserService;
 use InstruktoriBrno\TMOU\Services\Discussions\FindThreadPostsService;
 use InstruktoriBrno\TMOU\Services\Discussions\FindThreadService;
 use InstruktoriBrno\TMOU\Services\Discussions\FindThreadsService;
@@ -160,11 +161,14 @@ final class PagesPresenter extends BasePresenter
     /** @var FindOrganizatorByIdService @inject */
     public $findOrganizatorService;
 
-    /** @var MarkAllAsReadFacade @inject */
-    public $markAllAsReadFacade;
+    /** @var MarkThreadAsReadFacade @inject */
+    public $markThreadAsReadFacade;
 
     /** @var FindLastPostsForThreads @inject */
     public $findLastPostsForThreads;
+
+    /** @var FindThreadAcknowledgementByThreadsAndUserService @inject */
+    public $findThreadAcknowledgementByThreads;
 
     /** @var Event|null */
     private $event;
@@ -367,12 +371,21 @@ final class PagesPresenter extends BasePresenter
             }
             $this->template->thread = $threadEntity;
             $this->template->posts = ($this->findThreadPostsService)($threadEntity);
+            $this->template->acks = ($this->findThreadAcknowledgementByThreads)([$threadEntity], $this->user);
             $this->setView('discussion.thread');
+            if ($this->user->isAllowed(Resource::DISCUSSION, Action::MARK_THREAD_AS_READ)) {
+                try {
+                    ($this->markThreadAsReadFacade)($threadEntity, $this->user);
+                } catch (\InstruktoriBrno\TMOU\Facades\Discussions\Exceptions\NoSuchUserException $exception) {
+                    Debugger::log($exception, ILogger::EXCEPTION);
+                }
+            }
         } else {
             $page = max(0, $page);
             $this->template->threadsLimit = $threadsLimit = 50;
             $this->template->threads = $threads = ($this->findThreadsService)($page, $threadsLimit);
             $this->template->threadsLatestsPosts = ($this->findLastPostsForThreads)($threads);
+            $this->template->acks = ($this->findThreadAcknowledgementByThreads)($threads, $this->user);
         }
     }
 
@@ -748,17 +761,5 @@ final class PagesPresenter extends BasePresenter
             }
             $this->redirect('this');
         }
-    }
-
-    /** @privilege(InstruktoriBrno\TMOU\Enums\Resource::DISCUSSION,InstruktoriBrno\TMOU\Enums\Action::MARK_ALL_AS_READ) */
-    public function handleMarkAllAsRead(): void
-    {
-        try {
-            ($this->markAllAsReadFacade)($this->user);
-        } catch (\InstruktoriBrno\TMOU\Facades\Discussions\Exceptions\NoSuchUserException $exception) {
-            throw new \Nette\Application\BadRequestException("Obtaining of user {$this->user->getId()} has failed.");
-        }
-        $this->flashMessage('Všechny diskuze byly označeny jako přečtené.', Flash::SUCCESS);
-        $this->redirect('this');
     }
 }

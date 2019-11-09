@@ -177,7 +177,7 @@ services:
     - InstruktoriBrno\TMOU\Facades\Discussions\ToggleHidePostFacade
     - InstruktoriBrno\TMOU\Facades\Discussions\ToggleLockThreadFacade
     - InstruktoriBrno\TMOU\Services\Discussions\FindPostService
-    - InstruktoriBrno\TMOU\Facades\Discussions\MarkAllAsReadFacade
+    - InstruktoriBrno\TMOU\Facades\Discussions\MarkThreadAsReadFacade
     - InstruktoriBrno\TMOU\Services\Events\FindEventsPairsOpenedForDiscussionService
     - InstruktoriBrno\TMOU\Commands\CreateTestDataCommand
     - InstruktoriBrno\TMOU\Facades\System\CreateTestDataFacade
@@ -186,6 +186,9 @@ services:
     - InstruktoriBrno\TMOU\Services\Pages\FindPagesInEventService
     - InstruktoriBrno\TMOU\Facades\System\CopyEventContentFacade
     - InstruktoriBrno\TMOU\Services\Discussions\FindLastPostsForThreads
+    - InstruktoriBrno\TMOU\Services\Discussions\FindThreadAcknowledgementByOrganizatorService
+    - InstruktoriBrno\TMOU\Services\Discussions\FindThreadAcknowledgementByTeamService
+    - InstruktoriBrno\TMOU\Services\Discussions\FindThreadAcknowledgementByThreadsAndUserService
 
 extensions:
     nextras.form: Nextras\Forms\Bridges\NetteDI\FormsExtension

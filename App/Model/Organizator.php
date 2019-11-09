@@ -60,12 +60,6 @@ class Organizator
     protected $lastLogin;
 
     /**
-     * @ORM\Column(type="datetime_immutable", nullable=true)
-     * @var DateTimeImmutable|null
-     */
-    protected $lastSeenDiscussionAt;
-
-    /**
      * @ORM\Column(type="organizator_role", nullable=true)
      * @var OrganizatorRole|null
      */
@@ -169,16 +163,6 @@ class Organizator
                 'email' => $this->email,
             ]
         );
-    }
-
-    public function getLastSeenDiscussionAt(): ?DateTimeImmutable
-    {
-        return $this->lastSeenDiscussionAt;
-    }
-
-    public function touchSeenDiscussion(DateTimeImmutable $now): void
-    {
-        $this->lastSeenDiscussionAt = $now;
     }
 
     public function getShortcut(): string
