@@ -5,7 +5,7 @@ use Doctrine\ORM\EntityManagerInterface;
 use InstruktoriBrno\TMOU\Model\Event;
 use InstruktoriBrno\TMOU\Model\MenuItem;
 
-class FindMenuItemsForDisplay
+class FindMenuItemsInEventService
 {
     /** @var EntityManagerInterface */
     private $entityManager;
@@ -16,11 +16,11 @@ class FindMenuItemsForDisplay
     }
 
     /**
-     * Returns data source for grid of all men items of given event
+     * Returns all menu items of given event
      *
      * @param Event|null $event
      *
-     * @return array
+     * @return MenuItem[]
      */
     public function __invoke(?Event $event = null): array
     {
@@ -35,15 +35,6 @@ class FindMenuItemsForDisplay
         $qb->orderBy('mi.tag', 'ASC');
         $qb->addOrderBy('mi.weight', 'ASC');
         $qb->addOrderBy('mi.content', 'ASC');
-        $results = $qb->getQuery()->getResult();
-        $output = [];
-        /** @var MenuItem $row */
-        foreach ($results as $row) {
-            if (!isset($output[$row->getTag()])) {
-                $output[$row->getTag()] = [];
-            }
-            $output[$row->getTag()][] = $row;
-        }
-        return $output;
+        return $qb->getQuery()->getResult();
     }
 }

@@ -113,6 +113,13 @@ class EventsGrid extends Control
                 ->setClass('btn btn-xs btn-default');
         }
 
+        if ($this->user->isAllowed(Resource::ADMIN_EVENTS, Action::COPY_CONTENT)) {
+            $grid->addToolbarButton('Events:copyContent', '')
+                ->setIcon('copy')
+                ->addAttributes(['title' => 'Kopírovat obsah ročníku'])
+                ->setClass('btn btn-xs btn-default');
+        }
+
         if ($this->user->isAllowed(Resource::ADMIN_PAGES, Action::EDIT)) {
             $grid->addAction('event_pages', '', 'AdminPages:', ['eventNumber' => 'number'])
                 ->setIcon('file')

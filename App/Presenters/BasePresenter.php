@@ -6,7 +6,7 @@ use InstruktoriBrno\TMOU\Facades\Teams\MaintainSSOSession;
 use InstruktoriBrno\TMOU\Model\Event;
 use InstruktoriBrno\TMOU\Model\Page;
 use InstruktoriBrno\TMOU\Services\Events\FindEventsService;
-use InstruktoriBrno\TMOU\Services\MenuItems\FindMenuItemsForDisplay;
+use InstruktoriBrno\TMOU\Services\MenuItems\FindMenuItemsForDisplayService;
 use Nette\Security\Identity;
 use function count;
 use InstruktoriBrno\TMOU\Enums\Action;
@@ -38,7 +38,7 @@ abstract class BasePresenter extends Presenter
     /** @var MaintainSSOSession @inject */
     public $maintainSSOSession;
 
-    /** @var FindMenuItemsForDisplay @inject */
+    /** @var FindMenuItemsForDisplayService @inject */
     public $findMenuItemsForDisplay;
 
     /** @var int */

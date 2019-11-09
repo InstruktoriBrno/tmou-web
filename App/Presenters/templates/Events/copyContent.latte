@@ -1,0 +1,11 @@
+{block content}
+    <div id="banner">
+        <h1 n:block=title>Kopírování obsahu ročníku</h1>
+    </div>
+
+    <div id="content">
+        <p class="text-sm">Tato funkcionalita zkopíruje stránky a položky menu z vybraného ročníku do vybraného ročníku. Cílový ročník nesmí mít žádné stránky ani položky menu. Budou automaticky upraveny ročníky stránek a položek menu, všechny data a časy odhalování a skrývání budou posunuty o 1 rok vpřed. U položek menu také budou automaticky přepnuty na nově vytvořené stránky ty odkazy, které mají vybranou cílovou stránku, ostatní (absolutní) odkazy a odkazy v textu, které obsahují ročník, bude potřeba změnit ručně.</p>
+        {control copyEventContentForm}
+        <a href="{plink Events:}"><i class="fas fa-arrow-left"></i> Seznam ročníků</a>
+    </div>
+{/block}

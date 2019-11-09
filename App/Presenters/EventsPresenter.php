@@ -6,7 +6,9 @@ use InstruktoriBrno\TMOU\Enums\Flash;
 use InstruktoriBrno\TMOU\Enums\Resource;
 use InstruktoriBrno\TMOU\Facades\Events\DeleteEventFacade;
 use InstruktoriBrno\TMOU\Facades\Events\SaveEventFacade;
+use InstruktoriBrno\TMOU\Facades\System\CopyEventContentFacade;
 use InstruktoriBrno\TMOU\Forms\ConfirmFormFactory;
+use InstruktoriBrno\TMOU\Forms\CopyEventContentFormFactory;
 use InstruktoriBrno\TMOU\Forms\EventFormFactory;
 use InstruktoriBrno\TMOU\Grids\EventsGrid\EventsGrid;
 use InstruktoriBrno\TMOU\Grids\EventsGrid\EventsGridFactory;
@@ -48,8 +50,19 @@ final class EventsPresenter extends BasePresenter
     /** @var DeleteEventFacade @inject */
     public $deleteEventFacade;
 
+    /** @var CopyEventContentFormFactory @inject */
+    public $copyEventContentFormFactory;
+
+    /** @var CopyEventContentFacade @inject */
+    public $copyEventContentFacade;
+
     /** @privilege(InstruktoriBrno\TMOU\Enums\Resource::ADMIN_EVENTS,InstruktoriBrno\TMOU\Enums\Action::VIEW,InstruktoriBrno\TMOU\Enums\PrivilegeEnforceMethod::TRIGGER_ADMIN_LOGIN) */
     public function actionDefault(): void
+    {
+    }
+
+    /** @privilege(InstruktoriBrno\TMOU\Enums\Resource::ADMIN_EVENTS,InstruktoriBrno\TMOU\Enums\Action::COPY_CONTENT,InstruktoriBrno\TMOU\Enums\PrivilegeEnforceMethod::TRIGGER_ADMIN_LOGIN) */
+    public function actionCopyContent(): void
     {
     }
 
@@ -224,6 +237,31 @@ final class EventsPresenter extends BasePresenter
             } else {
                 $this->redirect('Events:');
             }
+        });
+    }
+
+    public function createComponentCopyEventContentForm(): Form
+    {
+        return $this->copyEventContentFormFactory->create(function (Form $form, $values) {
+            if (!$this->user->isAllowed(Resource::ADMIN_EVENTS, Action::COPY_CONTENT)) {
+                $form->addError('Nejste oprávněni provádět tuto operaci. Pokud věříte, že jde o chybu, kontaktujte správce.');
+                return;
+            }
+
+            try {
+                ($this->copyEventContentFacade)($values->from, $values->to);
+            } catch (\InstruktoriBrno\TMOU\Facades\System\Exceptions\NonEmptyEventContentException $exception) {
+                $form->addError('V cílovém ročníku již existují nějaké stránky či položky menu.');
+                return;
+            } catch (\InstruktoriBrno\TMOU\Facades\System\Exceptions\CannotCopyFromToException $exception) {
+                $form->addError('Zdrojový a cílový ročník nemohou být stejné.');
+                return;
+            } catch (\InstruktoriBrno\TMOU\Facades\System\Exceptions\NoSuchEventException $exception) {
+                $form->addError('Zdrojový nebo cílový ročník nebyl nalezen, opakujte akci a v případě selhání kontaktujte správce.');
+                return;
+            }
+            $this->flashMessage('Stránky a položky menu vybraného ročníku byly úspěšně zkopírovány.', Flash::SUCCESS);
+            $this->redirect('Events:');
         });
     }
 }

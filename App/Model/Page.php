@@ -14,7 +14,7 @@ class Page
      * @ORM\Id
      * @ORM\Column(type="integer")
      * @ORM\GeneratedValue
-     * @var integer
+     * @var integer|null
      */
     protected $id;
 
@@ -186,5 +186,19 @@ class Page
     public function isDefault(): bool
     {
         return $this->isDefault;
+    }
+
+    public function __clone()
+    {
+        $this->id = null;
+    }
+
+    public function switchToEvent(Event $event): void
+    {
+        $this->event = $event;
+        if ($this->revealAt !== null) {
+            $this->revealAt = $this->revealAt->modify('+1 year');
+        }
+        $this->lastUpdatedAt = new DateTimeImmutable();
     }
 }

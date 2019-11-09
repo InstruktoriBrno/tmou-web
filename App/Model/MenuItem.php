@@ -18,7 +18,7 @@ class MenuItem
      * @ORM\Id
      * @ORM\Column(type="integer")
      * @ORM\GeneratedValue
-     * @var integer
+     * @var integer|null
      */
     protected $id;
 
@@ -432,6 +432,31 @@ class MenuItem
 
         if ($targetUrl !== null && !Validators::isUrl($targetUrl)) {
             throw new \InstruktoriBrno\TMOU\Model\Exceptions\InvalidUrlException();
+        }
+    }
+
+    public function __clone()
+    {
+        $this->id = null;
+    }
+
+    public function switchToEvent(Event $event, ?Page $page): void
+    {
+        $this->event = $event;
+        if ($this->revealAt !== null) {
+            $this->revealAt = $this->revealAt->modify('+1 year');
+        }
+        if ($this->hideAt !== null) {
+            $this->hideAt = $this->hideAt->modify('+1 year');
+        }
+        $this->updatedAt = new DateTimeImmutable();
+        $this->createdAt = new DateTimeImmutable();
+
+        if ($this->targetEvent !== null) {
+            $this->targetEvent = $event;
+        }
+        if ($this->targetPage !== null) {
+            $this->targetPage = $page;
         }
     }
 }

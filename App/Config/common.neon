@@ -150,7 +150,7 @@ services:
     - InstruktoriBrno\TMOU\Services\Pages\FindPagesPairsService
     - InstruktoriBrno\TMOU\Services\MenuItems\DeleteMenuItemService
     - InstruktoriBrno\TMOU\Facades\MenuItems\DeleteMenuItemFacade
-    - InstruktoriBrno\TMOU\Services\MenuItems\FindMenuItemsForDisplay
+    - InstruktoriBrno\TMOU\Services\MenuItems\FindMenuItemsForDisplayService
     - InstruktoriBrno\TMOU\Forms\TeamReviewFormFactory
     - InstruktoriBrno\TMOU\Facades\Teams\SaveTeamReviewFacade
     - InstruktoriBrno\TMOU\Services\Teams\FindTeamReviewForFormService
@@ -181,6 +181,10 @@ services:
     - InstruktoriBrno\TMOU\Services\Events\FindEventsPairsOpenedForDiscussionService
     - InstruktoriBrno\TMOU\Commands\CreateTestDataCommand
     - InstruktoriBrno\TMOU\Facades\System\CreateTestDataFacade
+    - InstruktoriBrno\TMOU\Forms\CopyEventContentFormFactory
+    - InstruktoriBrno\TMOU\Services\MenuItems\FindMenuItemsInEventService
+    - InstruktoriBrno\TMOU\Services\Pages\FindPagesInEventService
+    - InstruktoriBrno\TMOU\Facades\System\CopyEventContentFacade
 
 extensions:
     nextras.form: Nextras\Forms\Bridges\NetteDI\FormsExtension
