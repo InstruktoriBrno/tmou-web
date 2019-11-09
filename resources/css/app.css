@@ -96,7 +96,13 @@ strong,
 }
 
 p {
-    @apply text-justify py-2;
+    @apply text-left py-2;
+}
+
+@screen md {
+    p {
+        @apply text-justify;
+    }
 }
 
 h1 {
@@ -510,6 +516,15 @@ table.log-output td.attention {
 .post-content {
     padding-left: 80px;
     font-size: 85%;
+}
+
+.post-team-name {
+    overflow: hidden;
+    text-overflow: ellipsis;
+    white-space: nowrap;
+    max-width: 260px;
+    display: block;
+    float: left;
 }
 
 blockquote {

@@ -30,6 +30,7 @@ use InstruktoriBrno\TMOU\Forms\TeamReviewFormFactory;
 use InstruktoriBrno\TMOU\Model\Event;
 use InstruktoriBrno\TMOU\Model\Organizator;
 use InstruktoriBrno\TMOU\Model\Team;
+use InstruktoriBrno\TMOU\Services\Discussions\FindLastPostsForThreads;
 use InstruktoriBrno\TMOU\Services\Discussions\FindPostService;
 use InstruktoriBrno\TMOU\Services\Discussions\FindThreadPostsService;
 use InstruktoriBrno\TMOU\Services\Discussions\FindThreadService;
@@ -161,6 +162,9 @@ final class PagesPresenter extends BasePresenter
 
     /** @var MarkAllAsReadFacade @inject */
     public $markAllAsReadFacade;
+
+    /** @var FindLastPostsForThreads @inject */
+    public $findLastPostsForThreads;
 
     /** @var Event|null */
     private $event;
@@ -367,7 +371,8 @@ final class PagesPresenter extends BasePresenter
         } else {
             $page = max(0, $page);
             $this->template->threadsLimit = $threadsLimit = 50;
-            $this->template->threads = ($this->findThreadsService)($page, $threadsLimit);
+            $this->template->threads = $threads = ($this->findThreadsService)($page, $threadsLimit);
+            $this->template->threadsLatestsPosts = ($this->findLastPostsForThreads)($threads);
         }
     }
 

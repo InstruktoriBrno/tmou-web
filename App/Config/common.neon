@@ -185,6 +185,7 @@ services:
     - InstruktoriBrno\TMOU\Services\MenuItems\FindMenuItemsInEventService
     - InstruktoriBrno\TMOU\Services\Pages\FindPagesInEventService
     - InstruktoriBrno\TMOU\Facades\System\CopyEventContentFacade
+    - InstruktoriBrno\TMOU\Services\Discussions\FindLastPostsForThreads
 
 extensions:
     nextras.form: Nextras\Forms\Bridges\NetteDI\FormsExtension

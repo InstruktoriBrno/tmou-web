@@ -14,11 +14,19 @@
             <div>
                 <a href="{plink this, thread => $thread->getId(), page => $currentPage}">{$thread->getTitle()}</a>
                 <span class="badge badge-warning" n:if="$thread->getEvent() instanceof \InstruktoriBrno\TMOU\Model\Event">TMOU {$thread->getEvent()->getNumber()}</span>
-                <span title="Poslední příspěvek" class="float-right inline-block">
+                <span class="block min-w-full md:float-right md:inline-block md:w-auto text-sm md:min-w-0">
+                    {var $lastPost = $threadsLatestsPosts[$thread->getId()] ?? null}
+                    {var $lastPostTimestamp = $lastPost !== null ? $lastPost->getCreatedAt()->format('j. n. Y. H:i') : $thread->getUpdatedAt()->format('j. n. Y. H:i')}
+                    {if $lastPost !== null}
+                        {var $lastPostAuthor = $lastPost->getTeam() ?? $lastPost->getOrganizator()}
+                        {var $teamName = $lastPost->getTeam() !== null ? $lastPost->getTeam()->getName() : null}
+                        {var $organizatorName = $lastPost->getOrganizator() !== null ? 'Organizátoři (' . $lastPost->getOrganizator()->getGivenName() . ' ' . $lastPost->getOrganizator()->getFamilyName() . ')' : null}
+                        <span class="post-team-name" title="{$teamName ?? $organizatorName}">{$teamName ?? $organizatorName}</span>&nbsp;
+                    {/if}
                     {if $newForCurrentUser}
-                        <b>{$thread->getUpdatedAt()|date: 'j. n. Y. H:i'}</b>
+                        <b title="Poslední příspěvek" class="block md:inline-block">{$lastPostTimestamp}</b>
                     {else}
-                        {$thread->getUpdatedAt()|date: 'j. n. Y. H:i'}
+                        <span title="Poslední příspěvek">{$lastPostTimestamp}</span>
                     {/if}
                 </span>
             </div>

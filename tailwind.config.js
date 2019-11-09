@@ -41,6 +41,8 @@ module.exports = {
       }
     }
   },
+  float: ['responsive'],
+  display: ['responsive'],
   variants: {},
   plugins: []
 }

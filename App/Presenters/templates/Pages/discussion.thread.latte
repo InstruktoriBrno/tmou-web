@@ -32,7 +32,7 @@
                             <a href="#new-post" class="insert-discussion-ref" data-id="{$iterator->getCounter()}">odkázat</a>
                             <a href="#new-post" class="insert-discussion-quote" data-content="{$post->getContent()}">citovat</a>
                         {/if}
-                        <span class="inline-block float-right">
+                        <span class="inline-block float-left sm:float-right">
                             {if $newForCurrentUser}
                                 <b>{$post->getCreatedAt()|date: 'j. n. Y H:i'}</b>
                             {else}
