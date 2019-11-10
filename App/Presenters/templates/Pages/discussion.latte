@@ -12,9 +12,9 @@
             {var $lastSeenDiscussionAt = isset($acks[$thread->getId()]) ? $acks[$thread->getId()]->getAt() : null}
             {var $newForCurrentUser = $lastSeenDiscussionAt === null || $lastSeenDiscussionAt < $thread->getUpdatedAt()}
             <div>
-                <a href="{plink this, thread => $thread->getId(), page => $currentPage}">{$thread->getTitle()}</a>
-                <span class="badge badge-warning" n:if="$thread->getEvent() instanceof \InstruktoriBrno\TMOU\Model\Event">TMOU {$thread->getEvent()->getNumber()}</span>
-                <span class="block min-w-full md:float-right md:inline-block md:w-auto text-sm md:min-w-0">
+                <a class="thread-name" href="{plink this, thread => $thread->getId(), page => $currentPage}" title="{$thread->getTitle()}">{$thread->getTitle()|truncate: 40}</a>
+                <span class="badge badge-warning whitespace-pre" n:if="$thread->getEvent() instanceof \InstruktoriBrno\TMOU\Model\Event">TMOU {$thread->getEvent()->getNumber()}</span>
+                <span class="block min-w-full xl:float-right xl:inline-block xl:w-auto text-sm xl:min-w-0">
                     {var $lastPost = $threadsLatestsPosts[$thread->getId()] ?? null}
                     {var $lastPostTimestamp = $lastPost !== null ? $lastPost->getCreatedAt()->format('j. n. Y. H:i') : $thread->getUpdatedAt()->format('j. n. Y. H:i')}
                     {if $lastPost !== null}
@@ -24,9 +24,9 @@
                         <span class="post-team-name" title="{$teamName ?? $organizatorName}">{$teamName ?? $organizatorName}</span>&nbsp;
                     {/if}
                     {if $newForCurrentUser}
-                        <b title="Poslední příspěvek" class="block md:inline-block">{$lastPostTimestamp}</b>
+                        <b title="Poslední příspěvek" class="block md:inline-block whitespace-pre">{$lastPostTimestamp}</b>
                     {else}
-                        <span title="Poslední příspěvek">{$lastPostTimestamp}</span>
+                        <span class="whitespace-pre" title="Poslední příspěvek">{$lastPostTimestamp}</span>
                     {/if}
                 </span>
             </div>

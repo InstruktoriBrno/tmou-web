@@ -6,7 +6,7 @@
 
     <div id="content">
         <h2>{$thread->getTitle()}</h2>
-        <div><span class="badge badge-warning" n:if="$thread->getEvent() instanceof \InstruktoriBrno\TMOU\Model\Event">TMOU {$thread->getEvent()->getNumber()}</span></div>
+        <div><span class="badge badge-warning whitespace-pre" n:if="$thread->getEvent() instanceof \InstruktoriBrno\TMOU\Model\Event">TMOU {$thread->getEvent()->getNumber()}</span></div>
         <p><a href="{plink Pages:discussion, page => $currentPage}"><i class="fas fa-arrow-left"></i> Zpět na seznam vláken</a></p>
         {if !isset($posts) || count($posts) === 0}
             <div class="alert alert-info">V současnosti neexistuje žádná příspěvky v tomto vlákně.</div>
@@ -25,7 +25,7 @@
                     {var $teamName = $post->getTeam() !== null ? $post->getTeam()->getName() : null}
                     {var $organizatorName = $post->getOrganizator() !== null ? 'Organizátoři (' . $post->getOrganizator()->getGivenName() . ' ' . $post->getOrganizator()->getFamilyName() . ')' : null}
                     <div class="float-left mr-4 inline-block avatar rounded-full text-center align-middle text-2xl text-white" style="background: {$author->getShortcutColor()|noEscape}" title="{$teamName ?? $organizatorName}">{$author->getShortcut()}</div>
-                    <div>
+                    <div class="post-header">
                         <b>{$teamName ?? $organizatorName}</b>
                         #{$iterator->getCounter()}
                         {if $user->isLoggedIn() && !$thread->isLocked()}
@@ -51,6 +51,7 @@
                         {/if}
                     </div>
                     <div class="post-content">
+                        <div style="clear:right"></div>
                         {if $post->isHidden()}
                             <p><em>Tento příspěvek byl skryt organizátory.</em></p>
                         {else}
@@ -82,10 +83,10 @@
                 {if !$thread->isClosed()}
                     {include lockToggle}
                 {/if}
+                <div>
+                    <a href="{plink Pages:discussion, page => $currentPage}"><i class="fas fa-arrow-left"></i> Zpět na seznam vláken</a>
+                </div>
             {/if}
-        </div>
-        <div>
-            <a href="{plink Pages:discussion, page => $currentPage}"><i class="fas fa-arrow-left"></i> Zpět na seznam vláken</a>
         </div>
     </div>
 {/block}

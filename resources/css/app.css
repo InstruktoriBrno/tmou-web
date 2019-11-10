@@ -524,6 +524,10 @@ table.log-output td.attention {
     font-size: 85%;
 }
 
+.post-header {
+    padding-left: 80px;
+}
+
 .post-team-name {
     overflow: hidden;
     text-overflow: ellipsis;
