@@ -273,6 +273,13 @@ legend {
     background-color: #da4e4c;
 }
 
+.bg-hint-tmou {
+  background-color: #8CA4C8;
+}
+
+.bg-hint-capitulation-tmou {
+  background-image: linear-gradient(to right, #8CA4C8, #DA4E4C);
+}
 
 
 /* Datagrid */
