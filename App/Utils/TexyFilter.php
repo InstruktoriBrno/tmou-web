@@ -49,11 +49,13 @@ Odstavce se dělají oddělením pomocí prázdného řádku.
 
 ------
 
-/---div .[wrapper]
+/---div .[wrapper #gallery]
 
-DIV element s CSS třídou.
+DIV element s CSS třídou a ID.
 
-Následuje nečíslovaný seznam s CSS třídou a ukázkou základního formátování
+Odstavec s třídou a ID. .[bigger #big] 
+
+Následuje nečíslovaný seznam s CSS třídou a ukázkou základního formátování.
 
 .[spaced]
 - **tučný** řez písmo nebo *kurzíva*
