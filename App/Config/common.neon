@@ -228,6 +228,7 @@ dbal:
         password: password
         dbname: tmou
         persistent: false
+        charset: utf8mb4
         types:
             uuid_binary:
                 class: Ramsey\Uuid\Doctrine\UuidBinaryType
