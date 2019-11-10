@@ -477,7 +477,7 @@ final class PagesPresenter extends BasePresenter
                 return;
             }
             try {
-                ($this->changeTeamFacade)($values, $this->user);
+                ($this->changeTeamFacade)($values, $this->user, $this->isImpersonated());
                 $this->flashMessage('Údaje vašeho týmu byly úspěšně změněny.', Flash::SUCCESS);
                 $this->redirect('Pages:settings', $event->getNumber());
             } catch (\InstruktoriBrno\TMOU\Model\Exceptions\NameTooLongException $exception) {

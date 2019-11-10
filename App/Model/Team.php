@@ -216,7 +216,7 @@ class Team
     public function updateDetails(
         string $name,
         string $email,
-        string $password,
+        ?string $password,
         ?string $newPassword,
         string $phrase,
         string $phone,

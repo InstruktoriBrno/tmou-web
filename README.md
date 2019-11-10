@@ -13,6 +13,7 @@ Dokumentace:
 - [architektura](Docs/Architecture.md),
 - [best pratices, hinty atp.](Docs/Hints.md).
 - [automatické párování plateb](Docs/PaymentsMatching.md)
+- [tipy a triky](Docs/UsageTips.md)
 
 Omezení:
 - [omezení](Docs/Limitations.md)

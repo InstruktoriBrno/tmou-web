@@ -51,6 +51,7 @@ class ChangeTeamFacade
     /**
      * @param ArrayHash $values
      * @param User $user
+     * @param bool $isImpersonated
      *
      * @throws \InstruktoriBrno\TMOU\Model\Exceptions\NameTooLongException
      * @throws \InstruktoriBrno\TMOU\Model\Exceptions\PhraseTooLongException
@@ -65,7 +66,7 @@ class ChangeTeamFacade
      * @throws \InstruktoriBrno\TMOU\Facades\Teams\Exceptions\OutOfRegistrationIntervalException
      * @throws \InstruktoriBrno\TMOU\Facades\Teams\Exceptions\NoSuchTeamException
      */
-    public function __invoke(ArrayHash $values, User $user): void
+    public function __invoke(ArrayHash $values, User $user, bool $isImpersonated = false): void
     {
         if (!$user->isInRole(UserRole::TEAM)) {
             throw new \InstruktoriBrno\TMOU\Exceptions\LogicException('Should not been called for non-team users.');
@@ -114,7 +115,7 @@ class ChangeTeamFacade
         $team->updateDetails(
             $values->name,
             $values->email,
-            $values->oldPassword,
+            $isImpersonated ? null : $values->oldPassword,
             $values->password === '' ? null : $values->password,
             $values->phrase,
             $values->phone,
