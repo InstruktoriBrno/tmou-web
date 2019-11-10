@@ -135,9 +135,9 @@
                                     </div>
                                     <div>
                                         {if !$user->isLoggedIn() || (int) $user->getIdentity()->eventNumber !== $event->getNumber()}
-                                            <a href="{plink Pages:show, \InstruktoriBrno\TMOU\Enums\ReservedSLUG::REGISTRATION, $event->getNumber()}" class="rounded-sm p-4 m-4 mx-10 border-4 border-yellow-tmou text-xl font-bold hover:bg-yellow-tmou hover:text-black block sm:inline-block sm:w-56 bg-black-60%">Zaregistrovat se</a>
+                                            <a n:if="$currentTime < $event->getRegistrationDeadline()" href="{plink Pages:show, \InstruktoriBrno\TMOU\Enums\ReservedSLUG::REGISTRATION, $event->getNumber()}" class="rounded-sm p-4 m-4 mx-10 border-4 border-yellow-tmou text-xl font-bold hover:bg-yellow-tmou hover:text-black block sm:inline-block sm:w-56 bg-black-60%">Zaregistrovat se</a>
                                         {/if}
-                                        <a href="{plink Pages:show, 'rules', $event->getNumber()}" class="rounded-sm p-4 m-4 mx-10 border-4 border-yellow-tmou text-xl font-bold hover:bg-yellow-tmou hover:text-black block sm:inline-block sm:w-56 bg-black-60%">Pravidla</a>
+                                        <a n:if="$currentTime < $event->getEventEnd()" href="{plink Pages:show, 'rules', $event->getNumber()}" class="rounded-sm p-4 m-4 mx-10 border-4 border-yellow-tmou text-xl font-bold hover:bg-yellow-tmou hover:text-black block sm:inline-block sm:w-56 bg-black-60%">Pravidla</a>
                                     </div>
                                 </div>
                             {/if}
