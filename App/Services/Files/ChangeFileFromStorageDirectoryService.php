@@ -20,15 +20,13 @@ class ChangeFileFromStorageDirectoryService
      * @throws \InstruktoriBrno\TMOU\Services\Files\Exceptions\SourceFileDoesNotExistsException
      * @throws \InstruktoriBrno\TMOU\Services\Files\Exceptions\DestinationFileAlreadyExistsException
      * @throws \InstruktoriBrno\TMOU\Services\Files\Exceptions\InvalidStorageSubdirException
-     * @throws \InstruktoriBrno\TMOU\Services\Files\Exceptions\FileDeleteFailedException
+     * @throws \InstruktoriBrno\TMOU\Services\Files\Exceptions\FileMoveFailedException
      */
     public function __invoke(string $oldFilename, string $newFilename, ?string $oldSubdir, string $newSubdir): void
     {
         $storageDir = __DIR__ . '/../../../www/storage';
         $srcFilepath = $storageDir . '/' . $oldSubdir . '/' . $oldFilename;
         $destFilepath = $storageDir . '/' . $newSubdir . '/' . $newFilename;
-        bdump($srcFilepath);
-        bdump($destFilepath);
         if (!file_exists($srcFilepath)) {
             throw new \InstruktoriBrno\TMOU\Services\Files\Exceptions\SourceFileDoesNotExistsException("Source file ${srcFilepath} does not exists.");
         }
@@ -44,7 +42,7 @@ class ChangeFileFromStorageDirectoryService
         try {
             FileSystem::rename($srcFilepath, $destFilepath);
         } catch (\Nette\IOException $exception) {
-            throw new \InstruktoriBrno\TMOU\Services\Files\Exceptions\FileDeleteFailedException('Move failed', 0, $exception);
+            throw new \InstruktoriBrno\TMOU\Services\Files\Exceptions\FileMoveFailedException('Move failed', 0, $exception);
         }
     }
 }
