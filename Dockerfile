@@ -1,4 +1,4 @@
-FROM php:7.1-apache
+FROM php:7.4-apache
 MAINTAINER Jan Drábek <jan@drabek.cz>
 
 # Enable various PHP extensions
@@ -9,13 +9,13 @@ RUN apt-get update && apt-get install -y \
         unzip \
         git \
         mariadb-client \
-    && docker-php-ext-configure gd --with-freetype-dir=/usr/include/ --with-jpeg-dir=/usr/include/ \
-    && docker-php-ext-install -j$(nproc) pdo pdo_mysql mysqli opcache gd zip \
+    && docker-php-ext-configure gd --with-freetype=/usr/include/ --with-jpeg=/usr/include/ \
+    && docker-php-ext-install -j$(nproc) pdo pdo_mysql mysqli opcache gd \
     && apt-get clean \
     && rm -rf /var/lib/apt/lists/*
 
 # Enable XDebug
-RUN pecl install xdebug-2.5.0 \
+RUN pecl install xdebug-2.9.6 \
     && docker-php-ext-enable xdebug \
     && echo "xdebug.remote_enable=on" >> /usr/local/etc/php/conf.d/docker-php-ext-xdebug.ini \
     && echo "xdebug.remote_autostart=off" >> /usr/local/etc/php/conf.d/docker-php-ext-xdebug.ini \
@@ -35,8 +35,9 @@ RUN mkdir -p /etc/ssl/localcerts \
     && a2ensite keycloak
 
 # Install Composer
+# If this line fails when building Docker container, please check the checksum on https://getcomposer.org/download/
 RUN php -r "copy('https://getcomposer.org/installer', 'composer-setup.php');" \
-    && php -r "if (hash_file('sha384', 'composer-setup.php') === 'a5c698ffe4b8e849a443b120cd5ba38043260d5c4023dbf93e1558871f1f07f58274fc6f4c93bcfd858c6bd0775cd8d1') { echo 'Installer verified'; } else { echo 'Installer corrupt'; unlink('composer-setup.php'); } echo PHP_EOL;" \
+    && php -r "if (hash_file('sha384', 'composer-setup.php') === 'e5325b19b381bfd88ce90a5ddb7823406b2a38cff6bb704b0acc289a09c8128d4a8ce2bbafcd1fcbdc38666422fe2806') { echo 'Installer verified'; } else { echo 'Installer corrupt'; unlink('composer-setup.php'); } echo PHP_EOL;" \
     && php composer-setup.php --install-dir /usr/local/bin \
     && php -r "unlink('composer-setup.php');" \
     && ln -s /usr/local/bin/composer.phar /usr/local/bin/composer
