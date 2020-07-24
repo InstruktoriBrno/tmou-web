@@ -23,7 +23,7 @@
 		"tracy/tracy": "^2.6",
 		"nextras/forms": "dev-master",
 		"nettrine/dbal": "^0.3.0",
-		"nettrine/orm": "^0.3.0",
+		"nettrine/orm": "^0.3.1",
 		"contributte/console": "^0.5.0",
 		"nettrine/migrations": "^0.5.0",
 		"contributte/recaptcha": "^3.1",
