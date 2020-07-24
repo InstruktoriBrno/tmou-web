@@ -12,7 +12,7 @@ class FindStorageDirectoriesService
     /**
      * Find all directories (as tree) in public storage directory
      *
-     * @return array
+     * @return array<string, mixed>
      */
     public function __invoke(): array
     {
@@ -35,6 +35,10 @@ class FindStorageDirectoriesService
         return $data;
     }
 
+    /**
+     * @param array<mixed> $array
+     * @return bool
+     */
     private function recursiveKsort(array &$array): bool
     {
         foreach ($array as &$value) {

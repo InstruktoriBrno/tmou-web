@@ -36,7 +36,7 @@ class ChangeFileFormFactory
             );
         $form->addSelect('targetDir', 'Nová rodičovská složka', ($this->findStorageDirectoriesPairsService)());
         $form->addPrimarySubmit('perform', 'Provést');
-        $form->onSuccess[] = function (Form $form, $values) use ($onSuccess) {
+        $form->onSuccess[] = function (Form $form, $values) use ($onSuccess): void {
             $onSuccess($form, $values);
         };
         return $form;

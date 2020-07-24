@@ -61,23 +61,21 @@ class CreateSSOSession
         ];
         $token = $this->jwt->encode($payload);
 
-        for ($attempts = 100; $attempts > 0; $attempts--) {
-            try {
-                $session = new TeamSSOSession(
-                    $team,
-                    $now,
-                    $expiration,
-                    $token
-                );
-                $this->entityManager->persist($session);
-                $this->entityManager->flush();
-                $this->response->setCookie($this->cookieName, $session->getToken(), $session->getExpiration(), null, $this->cookieDomain, true, true, 'Strict');
-                $this->response->setCookie($this->jwtCookieName, $session->getJWT(), $session->getExpiration(), null, $this->cookieDomain, true, true, 'Strict');
-                return;
-            } catch (\Doctrine\DBAL\Exception\UniqueConstraintViolationException $e) {
-                $this->entityManager->clear();
-                throw new \InstruktoriBrno\TMOU\Facades\Teams\Exceptions\CannotCreateSSOSessionException;
-            }
+        try {
+            $session = new TeamSSOSession(
+                $team,
+                $now,
+                $expiration,
+                $token
+            );
+            $this->entityManager->persist($session);
+            $this->entityManager->flush();
+            $this->response->setCookie($this->cookieName, $session->getToken(), $session->getExpiration(), null, $this->cookieDomain, true, true, 'Strict');
+            $this->response->setCookie($this->jwtCookieName, $session->getJWT(), $session->getExpiration(), null, $this->cookieDomain, true, true, 'Strict');
+            return;
+        } catch (\Doctrine\DBAL\Exception\UniqueConstraintViolationException $e) {
+            $this->entityManager->clear();
+            throw new \InstruktoriBrno\TMOU\Facades\Teams\Exceptions\CannotCreateSSOSessionException;
         }
     }
 }

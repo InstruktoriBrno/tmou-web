@@ -6,6 +6,7 @@ use Stevenmaguire\OAuth2\Client\Provider\Keycloak as KeycloakLibrary;
 
 class Keycloak extends KeycloakLibrary
 {
+    // @phpstan-ignore-next-line
     public function __construct(array $options = [], array $collaborators = [], bool $debugMode = false)
     {
         parent::__construct($options, $collaborators);

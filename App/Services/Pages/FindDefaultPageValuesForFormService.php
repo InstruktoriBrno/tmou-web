@@ -19,7 +19,7 @@ class FindDefaultPageValuesForFormService
      *
      * @param int|null $eventNumber
      *
-     * @return array
+     * @return array<string, int>
      */
     public function __invoke(?int $eventNumber): array
     {

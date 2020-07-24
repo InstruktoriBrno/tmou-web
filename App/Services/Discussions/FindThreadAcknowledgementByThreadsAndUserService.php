@@ -1,14 +1,16 @@
 <?php declare(strict_types=1);
 namespace InstruktoriBrno\TMOU\Services\Discussions;
 
+use Doctrine\Common\Persistence\ObjectRepository; // phpcs:ignore
 use InstruktoriBrno\TMOU\Enums\UserRole;
+use InstruktoriBrno\TMOU\Model\Thread;
 use InstruktoriBrno\TMOU\Model\ThreadAcknowledgement;
 use Doctrine\ORM\EntityManagerInterface;
 use Nette\Security\User;
 
 class FindThreadAcknowledgementByThreadsAndUserService
 {
-    /** @var \Doctrine\Common\Persistence\ObjectRepository */
+    /** @var ObjectRepository<ThreadAcknowledgement> */
     private $threadAcknowledgementRepository;
 
     /** @var EntityManagerInterface */
@@ -20,6 +22,11 @@ class FindThreadAcknowledgementByThreadsAndUserService
         $this->entityManager = $entityManager;
     }
 
+    /**
+     * @param Thread[] $threads
+     * @param User $user
+     * @return array<int, ThreadAcknowledgement>
+     */
     public function __invoke(array $threads, User $user): array
     {
         $conditions = ['thread' => $threads];

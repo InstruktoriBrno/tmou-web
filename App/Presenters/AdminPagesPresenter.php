@@ -176,7 +176,7 @@ final class AdminPagesPresenter extends BasePresenter
 
     public function createComponentConfirmForm(): Form
     {
-        return $this->confirmFormFactory->create(function (Form $form, $values) {
+        return $this->confirmFormFactory->create(function (Form $form, $values): void {
             $page = ($this->findPageService)((int) $this->getParameter('pageId'));
             $eventNumber = $page !== null && $page->getEvent() !== null ? $page->getEvent()->getNumber() : null;
 

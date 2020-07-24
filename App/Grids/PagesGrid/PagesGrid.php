@@ -42,7 +42,7 @@ class PagesGrid extends Control
             ->setFilterText();
 
         $grid->addColumnText('title', 'Název')
-            ->setRenderer(function (Page $page) {
+            ->setRenderer(function (Page $page): Html {
                 $output = Html::el();
                 $output->addText($page->getTitle());
                 if ($page->isDefault()) {
@@ -53,7 +53,7 @@ class PagesGrid extends Control
             });
 
         $grid->addColumnText('hidden', 'Skrývaný')
-            ->setRenderer(function (Page $item) {
+            ->setRenderer(function (Page $item): Html {
                 if (!$item->isHidden()) {
                     return Html::el('span class="badge badge-xs badge-default"')->setText('Ne');
                 }
@@ -63,7 +63,7 @@ class PagesGrid extends Control
         $grid->addColumnDateTime('revealAt', 'Odhalit v');
 
         $grid->addColumnText('visible', 'Zobrazený')
-            ->setRenderer(function (Page $item) {
+            ->setRenderer(function (Page $item): Html {
                 if ($item->isRevealed(new DateTimeImmutable())) {
                     return Html::el('span class="badge badge-xs badge-success"')->setText('Ano');
                 }

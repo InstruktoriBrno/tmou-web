@@ -92,7 +92,7 @@ class BatchMailTeamsFacade
         }
 
         // Sort teams by their alphabetical name, to make sending deterministic
-        uasort($batch, function (Team $team1, Team $team2) {
+        uasort($batch, function (Team $team1, Team $team2): int {
             return $team1->getName() <=> $team2->getName();
         });
 

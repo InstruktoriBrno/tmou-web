@@ -17,7 +17,7 @@ class FindEventsPairsService
     /**
      * Returns given pairs of ID and event name in array as key and value
      *
-     * @return array
+     * @return array<int, string>
      */
     public function __invoke(): array
     {

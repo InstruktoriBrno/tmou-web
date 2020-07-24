@@ -76,6 +76,9 @@ final class ReservedSLUG extends Enum
         return $this->equals(self::DISCUSSION());
     }
 
+    /**
+     * @return array<string, string>
+     */
     public static function toList(): array
     {
         return [

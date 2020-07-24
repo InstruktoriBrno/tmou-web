@@ -408,7 +408,7 @@ final class PagesPresenter extends BasePresenter
         $this->populateEventFromURL();
         $event = $this->event;
         assert($event !== null);
-        return $this->teamRegistrationFormFactory->create(function (Form $form, $values) use ($event) {
+        return $this->teamRegistrationFormFactory->create(function (Form $form, $values) use ($event): void {
             if (!$this->user->isAllowed(Resource::TEAM_COMMON, Action::REGISTER)) {
                 $form->addError('Nejste oprávněni provádět tuto operaci. Pokud věříte, že jde o chybu, kontaktujte správce.');
                 return;
@@ -471,7 +471,7 @@ final class PagesPresenter extends BasePresenter
         $this->populateEventFromURL();
         $event = $this->event;
         assert($event !== null);
-        $form = $this->teamRegistrationFormFactory->create(function (Form $form, $values) use ($event) {
+        $form = $this->teamRegistrationFormFactory->create(function (Form $form, $values) use ($event): void {
             if (!$this->user->isAllowed(Resource::TEAM_COMMON, Action::CHANGE_DETAILS)) {
                 $form->addError('Nejste oprávněni provádět tuto operaci. Pokud věříte, že jde o chybu, kontaktujte správce.');
                 return;
@@ -541,7 +541,7 @@ final class PagesPresenter extends BasePresenter
         $backlink = $this->getParameter('backlink');
         $event = $this->event;
         assert($event !== null);
-        return $this->teamLoginFormFactory->create(function (Form $form, $values) use ($backlink, $event) {
+        return $this->teamLoginFormFactory->create(function (Form $form, $values) use ($backlink, $event): void {
             if (!$this->user->isAllowed(Resource::TEAM_COMMON, Action::LOGIN)) {
                 $form->addError('Nejste oprávněni provádět tuto operaci. Pokud věříte, že jde o chybu, kontaktujte správce.');
                 return;
@@ -589,7 +589,7 @@ final class PagesPresenter extends BasePresenter
         $this->populateEventFromURL();
         $event = $this->event;
         assert($event !== null);
-        return $this->teamForgottenPasswordFormFactory->create(function (Form $form, ArrayHash $values) use ($event) {
+        return $this->teamForgottenPasswordFormFactory->create(function (Form $form, ArrayHash $values) use ($event): void {
             if (!$this->user->isAllowed(Resource::TEAM_COMMON, Action::FORGOTTEN_PASSWORD)) {
                 $form->addError('Nejste oprávněni provádět tuto operaci. Pokud věříte, že jde o chybu, kontaktujte správce.');
                 return;
@@ -610,7 +610,7 @@ final class PagesPresenter extends BasePresenter
         $this->populateEventFromURL();
         $event = $this->event;
         assert($event !== null);
-        return $this->teamResetPasswordFormFactory->create(function (Form $form, ArrayHash $values) use ($event) {
+        return $this->teamResetPasswordFormFactory->create(function (Form $form, ArrayHash $values) use ($event): void {
             if (!$this->user->isAllowed(Resource::TEAM_COMMON, Action::RESET_PASSWORD)) {
                 $form->addError('Nejste oprávněni provádět tuto operaci. Pokud věříte, že jde o chybu, kontaktujte správce.');
                 return;
@@ -642,7 +642,7 @@ final class PagesPresenter extends BasePresenter
         assert($event !== null);
         $team = ($this->findTeamService)($this->user->getId());
         assert($team !== null);
-        $form = $this->teamReviewFormFactory->create(function (Form $form, ArrayHash $values) use ($team) {
+        $form = $this->teamReviewFormFactory->create(function (Form $form, ArrayHash $values) use ($team): void {
             if (!$this->user->isAllowed(Resource::TEAM_COMMON, Action::CHANGE_REVIEW)) {
                 $form->addError('Nejste oprávněni provádět tuto operaci. Pokud věříte, že jde o chybu, kontaktujte správce.');
                 return;
@@ -664,7 +664,7 @@ final class PagesPresenter extends BasePresenter
 
     public function createComponentNewThreadForm(): Form
     {
-        $form = $this->newThreadFormFactory->create(function (Form $form, ArrayHash $values) {
+        $form = $this->newThreadFormFactory->create(function (Form $form, ArrayHash $values): void {
             if (!$this->user->isAllowed(Resource::DISCUSSION, Action::NEW_THREAD)) {
                 $this->flashMessage('Nejste oprávněni provádět tuto operaci. Pokud věříte, že jde o chybu, kontaktujte správce.', Flash::DANGER);
                 return;
@@ -700,7 +700,7 @@ final class PagesPresenter extends BasePresenter
         if ($threadEntity === null) {
             throw new \Nette\Application\BadRequestException("No such thread with ID ${thread}.");
         }
-        $form = $this->newPostFormFactory->create(function (Form $form, ArrayHash $values) use ($threadEntity) {
+        $form = $this->newPostFormFactory->create(function (Form $form, ArrayHash $values) use ($threadEntity): void {
             if (!$this->user->isAllowed(Resource::DISCUSSION, Action::NEW_POST)) {
                 $this->flashMessage('Nejste oprávněni provádět tuto operaci. Pokud věříte, že jde o chybu, kontaktujte správce.', Flash::DANGER);
                 return;

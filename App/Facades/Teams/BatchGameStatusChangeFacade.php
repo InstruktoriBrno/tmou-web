@@ -29,7 +29,7 @@ class BatchGameStatusChangeFacade
     /**
      * @param ArrayHash $values
      * @param Event $event
-     * @return array
+     * @return array{0: int, 1: int}
      * @throws \League\Csv\Exception
      * @throws \InstruktoriBrno\TMOU\Facades\Teams\Exceptions\UploadCouldNotBeenProcessedException
      * @throws \InstruktoriBrno\TMOU\Facades\Teams\Exceptions\NoSuchTeamException

@@ -160,7 +160,7 @@ final class MenuPresenter extends BasePresenter
 
     public function createComponentConfirmForm(): Form
     {
-        return $this->confirmFormFactory->create(function (Form $form, $values) {
+        return $this->confirmFormFactory->create(function (Form $form, $values): void {
             $menuItem = ($this->findMenuItemService)((int) $this->getParameter('menuItemId'));
             $eventNumber = $menuItem !== null && $menuItem->getEvent() !== null ? $menuItem->getEvent()->getNumber() : null;
 

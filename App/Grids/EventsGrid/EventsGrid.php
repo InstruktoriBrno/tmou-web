@@ -35,7 +35,7 @@ class EventsGrid extends Control
             ->setFilterText();
 
         $grid->addColumnText('name', 'Název')
-            ->setRenderer(function (Event $item) {
+            ->setRenderer(function (Event $item): Html {
                 return Html::el('span')
                     ->setAttribute('title', $item->getMotto())
                     ->setText($item->getName());
@@ -44,7 +44,7 @@ class EventsGrid extends Control
             ->setFilterText();
 
         $grid->addColumnText('hasQualification', 'Kvalifikace')
-            ->setRenderer(function (Event $item) {
+            ->setRenderer(function (Event $item): Html {
                 if (!$item->hasQualification()) {
                     return Html::el('span class="badge badge-xs badge-danger"')->setText('Ne');
                 }
@@ -62,7 +62,7 @@ class EventsGrid extends Control
             });
 
         $grid->addColumnText('totalTeamCount', 'Počet týmů')
-            ->setRenderer(function (Event $item) {
+            ->setRenderer(function (Event $item): Html {
                 $el = Html::el();
                 if ($item->hasQualification()) {
                     $el->addText($item->getQualifiedTeamCount());
@@ -78,7 +78,7 @@ class EventsGrid extends Control
             });
 
         $grid->addColumnText('eventStart', 'Termín')
-            ->setRenderer(function (Event $item) {
+            ->setRenderer(function (Event $item): Html {
                 if ($item->hasEventInterval()) {
                     /** @var DateTimeImmutable $from */
                     $from = $item->getEventStart();

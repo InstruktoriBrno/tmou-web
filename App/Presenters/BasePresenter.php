@@ -157,7 +157,7 @@ abstract class BasePresenter extends Presenter
 
     public function createComponentGameClock(): Form
     {
-        return $this->gameClockFormFactory->create(function (Form $form, ArrayHash $values) {
+        return $this->gameClockFormFactory->create(function (Form $form, ArrayHash $values): void {
             if (!$this->user->isAllowed(Resource::ADMIN_COMMON, Action::CHANGE_GAME_CLOCK) && !$this->isImpersonated()) {
                 $form->addError('Nejste oprávněni provádět tuto operaci. Pokud věříte, že jde o chybu, kontaktujte správce.');
                 return;

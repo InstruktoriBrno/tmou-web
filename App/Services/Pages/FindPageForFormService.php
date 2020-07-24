@@ -20,7 +20,7 @@ class FindPageForFormService
      *
      * @param int $id
      *
-     * @return array
+     * @return array<string, mixed>
      */
     public function __invoke(int $id): array
     {

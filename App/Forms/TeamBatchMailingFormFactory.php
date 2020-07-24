@@ -1,10 +1,10 @@
 <?php declare(strict_types=1);
 namespace InstruktoriBrno\TMOU\Forms;
 
+use InstruktoriBrno\TMOU\Application\UI\BaseForm;
 use InstruktoriBrno\TMOU\Enums\GameStatus;
 use InstruktoriBrno\TMOU\Enums\PaymentStatus;
 use InstruktoriBrno\TMOU\Model\Event;
-use InstruktoriBrno\TMOU\Model\Team;
 use InstruktoriBrno\TMOU\Services\Teams\FindTeamsPairsInEventService;
 use Nette\Application\UI\Form;
 use Nette\SmartObject;
@@ -24,6 +24,14 @@ class TeamBatchMailingFormFactory
         $this->factory = $factory;
         $this->findTeamsPairsInEventService = $findTeamsPairsInEventService;
     }
+
+    /**
+     * @param callable $onSuccess
+     * @param Event $event
+     * @param array<string>|null $filterStates
+     * @param array<string>|null $filterPaymentStates
+     * @return Form
+     */
     public function create(callable $onSuccess, Event $event, ?array $filterStates, ?array $filterPaymentStates): Form
     {
         $form = $this->factory->create();
@@ -76,7 +84,7 @@ class TeamBatchMailingFormFactory
         $form->addPrimarySubmit('send', 'Rozeslat')
             ->setHtmlAttribute('onClick', 'return confirm("Opravdu chcete nyní rozeslat hromadný e-mail?")');
         $form->addSubmit('preview', 'Náhled');
-        $form->onSuccess[] = function (Form $form, $values) use ($onSuccess) {
+        $form->onSuccess[] = function (BaseForm $form, $values) use ($onSuccess): void {
             $onSuccess($form, $values);
         };
         return $form;
@@ -86,12 +94,12 @@ class TeamBatchMailingFormFactory
      * @param Event $event
      * @param GameStatus[]|null $gameStates
      * @param PaymentStatus[]|null $paymentStates
-     * @return Team[]
+     * @return array<int, string>
      */
     private function getTeams(Event $event, ?array $gameStates, ?array $paymentStates): array
     {
         $teams = ($this->findTeamsPairsInEventService)($event, $gameStates, $paymentStates);
-        uasort($teams, function (string $team1, string $team2) {
+        uasort($teams, function (string $team1, string $team2): int {
             return $team1 <=> $team2;
         });
         return $teams;

@@ -3,7 +3,7 @@ namespace InstruktoriBrno\TMOU\Model;
 
 use DateTimeImmutable;
 use Doctrine\Common\Collections\ArrayCollection;
-use Doctrine\Common\Collections\Collection;
+use Doctrine\Common\Collections\Collection; // phpcs:ignore
 use Doctrine\ORM\Mapping as ORM;
 use InstruktoriBrno\TMOU\Enums\GameStatus;
 use InstruktoriBrno\TMOU\Enums\PaymentStatus;
@@ -131,7 +131,7 @@ class Team
 
     /**
      * @ORM\OneToMany(targetEntity="TeamMember", mappedBy="team", cascade={"persist", "remove"}, orphanRemoval=true)
-     * @var TeamMember[]|Collection
+     * @var TeamMember[]|Collection<int, TeamMember>
      */
     protected $members;
 
@@ -400,6 +400,14 @@ class Team
         $this->passwordHash = Passwords::hash($password);
     }
 
+    /**
+     * @param string $name
+     * @param string $phrase
+     * @param string $email
+     * @param string|null $password
+     * @param array<TeamMember> $members
+     * @param string|null $newPassword
+     */
     private function validateDetails(
         string $name,
         string $phrase,
@@ -425,6 +433,7 @@ class Team
         }
         $numbers = [];
         foreach ($members as $member) {
+            // @phpstan-ignore-next-line better safe than sorry
             if (!$member instanceof TeamMember) {
                 throw new \InstruktoriBrno\TMOU\Model\Exceptions\InvalidTeamMemberException;
             }

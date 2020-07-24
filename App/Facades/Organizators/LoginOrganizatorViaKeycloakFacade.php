@@ -161,6 +161,10 @@ class LoginOrganizatorViaKeycloakFacade
         }
     }
 
+    /**
+     * @param array<string>|null $groups
+     * @return OrganizatorRole|null
+     */
     private function determineRoleFromGroups(?array $groups): ?OrganizatorRole
     {
         if ($groups === null || count($groups) === 0) {

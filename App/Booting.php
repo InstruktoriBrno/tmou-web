@@ -26,7 +26,7 @@ class Booting
         $configurator->addConfig(__DIR__ . '/Config/common.neon');
         $configurator->addConfig(__DIR__ . '/Config/local.neon');
 
-        $configurator->onCompile[] = function (Configurator $sender, Compiler $compiler) {
+        $configurator->onCompile[] = function (Configurator $sender, Compiler $compiler): void {
             $compiler->addConfig(['parameters' => [
                 'buildTime' => time(),
             ]]);

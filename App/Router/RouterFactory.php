@@ -9,6 +9,9 @@ final class RouterFactory
 {
     use StaticClass;
 
+    /**
+     * @return RouteList<Route>
+     */
     public static function createRouter(): RouteList
     {
         $router = new RouteList();

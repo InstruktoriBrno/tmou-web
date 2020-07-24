@@ -1,6 +1,7 @@
 <?php declare(strict_types=1);
 namespace InstruktoriBrno\TMOU\Forms;
 
+use InstruktoriBrno\TMOU\Application\UI\BaseForm;
 use InstruktoriBrno\TMOU\Enums\ReservedSLUG;
 use InstruktoriBrno\TMOU\Services\Events\FindEventsPairsService;
 use InstruktoriBrno\TMOU\Services\Pages\FindPagesPairsService;
@@ -100,7 +101,7 @@ class MenuItemFormFactory
         $form->addPrimarySubmit('send', 'Uložit');
         $form->addSubmit('sendAndStay', 'Uložit a zůstat');
 
-        $form->onSuccess[] = function (Form $form, $values) use ($onSuccess) {
+        $form->onSuccess[] = function (BaseForm $form, $values) use ($onSuccess): void {
             $onSuccess($form, $values);
         };
         return $form;

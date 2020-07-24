@@ -83,7 +83,7 @@ class TeamsGrid extends Control
             ->setFilterText();
 
         $grid->addColumnText('gameStatus', 'Stav')
-            ->setRenderer(function (Team $team) {
+            ->setRenderer(function (Team $team): ?Html {
                 $status = $team->getGameStatus();
                 if ($status->equals(GameStatus::REGISTERED())) {
                     return Html::el('span class="badge badge-xs badge-info"')->setText('Registrován');
@@ -107,7 +107,7 @@ class TeamsGrid extends Control
                 GameStatus::PLAYING()->toScalar() => 'Hraje',
             ]);
         $grid->addColumnText('paymentStatus', 'Platba')
-            ->setRenderer(function (Team $team) {
+            ->setRenderer(function (Team $team): ?Html {
                 $status = $team->getPaymentStatus();
                 if ($status->equals(PaymentStatus::NOT_PAID())) {
                     return Html::el('span class="badge badge-xs badge-danger"')->setText('Ne');
@@ -151,7 +151,7 @@ class TeamsGrid extends Control
             ->setSortable();
 
         $grid->addColumnText('member1', '1. člen')
-            ->setRenderer(function (Team $team) {
+            ->setRenderer(function (Team $team): ?string {
                 $member = $team->getTeamMember(1);
                 if ($member !== null) {
                     return $member->getFullName();
@@ -160,7 +160,7 @@ class TeamsGrid extends Control
             })
             ->setDefaultHide(true);
         $grid->addColumnText('member2', '2. člen')
-            ->setRenderer(function (Team $team) {
+            ->setRenderer(function (Team $team): ?string {
                 $member = $team->getTeamMember(2);
                 if ($member !== null) {
                     return $member->getFullName();
@@ -169,7 +169,7 @@ class TeamsGrid extends Control
             })
             ->setDefaultHide(true);
         $grid->addColumnText('member3', '3. člen')
-            ->setRenderer(function (Team $team) {
+            ->setRenderer(function (Team $team): ?string {
                 $member = $team->getTeamMember(3);
                 if ($member !== null) {
                     return $member->getFullName();
@@ -178,7 +178,7 @@ class TeamsGrid extends Control
             })
             ->setDefaultHide(true);
         $grid->addColumnText('member4', '4. člen')
-            ->setRenderer(function (Team $team) {
+            ->setRenderer(function (Team $team): ?string {
                 $member = $team->getTeamMember(4);
                 if ($member !== null) {
                     return $member->getFullName();
@@ -187,7 +187,7 @@ class TeamsGrid extends Control
             })
             ->setDefaultHide(true);
         $grid->addColumnText('member5', '5. člen')
-            ->setRenderer(function (Team $team) {
+            ->setRenderer(function (Team $team): ?string {
                 $member = $team->getTeamMember(5);
                 if ($member !== null) {
                     return $member->getFullName();

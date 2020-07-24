@@ -17,7 +17,7 @@ class FindEventsService
     /**
      * Returns all events sorted by number in descending manner
      *
-     * @return array
+     * @return Event[]
      */
     public function __invoke(): array
     {
