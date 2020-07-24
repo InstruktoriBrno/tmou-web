@@ -31,7 +31,7 @@ class TeamResetPasswordFormFactory
             ->setRequired('Vyplňte, prosím, nové heslo pro kontrolu shody.')
             ->addRule(Form::EQUAL, 'Hesla se musí shodovat.', $form['password']);
 
-        $form->addPrimarySubmit('send', 'Požádat o nové heslo');
+        $form->addPrimarySubmit('send', 'Nastavit nové heslo');
         $form->onSuccess[] = function (Form $form, $values) use ($onSuccess) {
             $onSuccess($form, $values);
         };
