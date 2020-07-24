@@ -1,5 +1,5 @@
 {var $members = 0}
-{var $values}
+{var $values = []}
 {foreach $teams as $team}
     {var $members += $team->getMembersCount()}
     {foreach $team->getMembers() as $member }
