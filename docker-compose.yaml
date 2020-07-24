@@ -45,7 +45,7 @@ services:
                 aliases:
                     - tmou.test
     keycloak:
-        image: jboss/keycloak
+        image: jboss/keycloak:7.0.1
         ports:
             - ${IP}:9990:8443
         volumes:
