@@ -49,7 +49,7 @@ class BatchGameStatusChangeFacade
         // Load given CSV
         try {
             $stmt = (new Statement());
-            $records = $stmt->process($csv);
+            $records = $stmt->process($csv, ['team_id', 'new_game_status']);
         } catch (\League\Csv\Exception $exception) {
             throw new \InstruktoriBrno\TMOU\Facades\Teams\Exceptions\UploadCouldNotBeenProcessedException;
         }
