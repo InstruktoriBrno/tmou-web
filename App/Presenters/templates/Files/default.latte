@@ -85,7 +85,7 @@
                 {var $tempPath = '/' . ltrim($prevPath .'/' . $dir, '/')}
                 <a class="ajax" href="{link showFolder!, subdir => $tempPath}">{$dir}</a>
                 {if $tempPath !== '/'}
-                    <a href="{link deleteFile!, $tempPath}" class="ajax delete right" title="Smazat složku" onclick="return confirm('Opravdu chcete smazat celou složku {$tempPath} včetně veškerého obsahu? Tato operace je nevratná.');"><i class="fas fa-trash"></i></a>
+                    <a href="{link deleteFile!, name => $tempPath, subdir => null}" class="ajax delete right" title="Smazat složku" onclick="return confirm('Opravdu chcete smazat celou složku {$tempPath} včetně veškerého obsahu? Tato operace je nevratná.');"><i class="fas fa-trash"></i></a>
                 {/if}
             </p>
             {if $subdir !== null}
