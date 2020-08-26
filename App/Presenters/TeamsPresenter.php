@@ -220,8 +220,8 @@ final class TeamsPresenter extends BasePresenter
                 $presenter->redrawControl('flashes');
                 $form = $this->getComponent('filter');
                 /** @var mixed $values */
-                $values = $form->getValues();
-                $filter = array_key_exists('filter', $values) ? iterator_to_array($values['filter']) : [];
+                $values = $form->getValues(true);
+                $filter = array_key_exists('filter', $values) ? ($values['filter']) : [];
                 /** @var DataGrid $grid */
                 $grid = $this;
                 $grid->setFilter($filter);
@@ -242,8 +242,8 @@ final class TeamsPresenter extends BasePresenter
                 $presenter->redrawControl('flashes');
                 $form = $this->getComponent('filter');
                 /** @var mixed $values */
-                $values = $form->getValues();
-                $filter = array_key_exists('filter', $values) ? iterator_to_array($values['filter']) : [];
+                $values = $form->getValues(true);
+                $filter = array_key_exists('filter', $values) ? ($values['filter']) : [];
                 /** @var DataGrid $grid */
                 $grid = $this;
                 $grid->setFilter($filter);
@@ -264,8 +264,8 @@ final class TeamsPresenter extends BasePresenter
                 $presenter->redrawControl('flashes');
                 $form = $this->getComponent('filter');
                 /** @var mixed $values */
-                $values = $form->getValues();
-                $filter = array_key_exists('filter', $values) ? iterator_to_array($values['filter']) : [];
+                $values = $form->getValues(true);
+                $filter = array_key_exists('filter', $values) ? ($values['filter']) : [];
                 /** @var DataGrid $grid */
                 $grid = $this;
                 $grid->setFilter($filter);
@@ -286,8 +286,8 @@ final class TeamsPresenter extends BasePresenter
                 $presenter->redrawControl('flashes');
                 $form = $this->getComponent('filter');
                 /** @var mixed $values */
-                $values = $form->getValues();
-                $filter = array_key_exists('filter', $values) ? iterator_to_array($values['filter']) : [];
+                $values = $form->getValues(true);
+                $filter = array_key_exists('filter', $values) ? ($values['filter']) : [];
                 /** @var DataGrid $grid */
                 $grid = $this;
                 $grid->setFilter($filter);
@@ -308,8 +308,8 @@ final class TeamsPresenter extends BasePresenter
                 $presenter->redrawControl('flashes');
                 $form = $this->getComponent('filter');
                 /** @var mixed $values */
-                $values = $form->getValues();
-                $filter = array_key_exists('filter', $values) ? iterator_to_array($values['filter']) : [];
+                $values = $form->getValues(true);
+                $filter = array_key_exists('filter', $values) ? ($values['filter']) : [];
                 /** @var DataGrid $grid */
                 $grid = $this;
                 $grid->setFilter($filter);
@@ -330,8 +330,8 @@ final class TeamsPresenter extends BasePresenter
                 $presenter->redrawControl('flashes');
                 $form = $this->getComponent('filter');
                 /** @var mixed $values */
-                $values = $form->getValues();
-                $filter = array_key_exists('filter', $values) ? iterator_to_array($values['filter']) : [];
+                $values = $form->getValues(true);
+                $filter = array_key_exists('filter', $values) ? ($values['filter']) : [];
                 /** @var DataGrid $grid */
                 $grid = $this;
                 $grid->setFilter($filter);
