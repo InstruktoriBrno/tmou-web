@@ -15,8 +15,7 @@ final class OrganizatorRole extends Enum
 
     public static function mapFromGroup(string $group): ?self
     {
-        if (
-            $group === '/Organizátoři TMOU' // deprecated
+        if ($group === '/Organizátoři TMOU' // deprecated
             || $group === '/tmou_org' // deprecated
             || $group === '/akce_tmou-web'
         ) {
