@@ -220,8 +220,8 @@ final class TeamsPresenter extends BasePresenter
                 $presenter->redrawControl('flashes');
                 $form = $this->getComponent('filter');
                 /** @var mixed $values */
-                $values = $form->getValues();
-                $filter = array_key_exists('filter', $values) ? iterator_to_array($values['filter']) : [];
+                $values = $form->getValues(true);
+                $filter = array_key_exists('filter', $values) ? ($values['filter']) : [];
                 /** @var DataGrid $grid */
                 $grid = $this;
                 $grid->setFilter($filter);
@@ -242,8 +242,8 @@ final class TeamsPresenter extends BasePresenter
                 $presenter->redrawControl('flashes');
                 $form = $this->getComponent('filter');
                 /** @var mixed $values */
-                $values = $form->getValues();
-                $filter = array_key_exists('filter', $values) ? iterator_to_array($values['filter']) : [];
+                $values = $form->getValues(true);
+                $filter = array_key_exists('filter', $values) ? ($values['filter']) : [];
                 /** @var DataGrid $grid */
                 $grid = $this;
                 $grid->setFilter($filter);
@@ -264,8 +264,8 @@ final class TeamsPresenter extends BasePresenter
                 $presenter->redrawControl('flashes');
                 $form = $this->getComponent('filter');
                 /** @var mixed $values */
-                $values = $form->getValues();
-                $filter = array_key_exists('filter', $values) ? iterator_to_array($values['filter']) : [];
+                $values = $form->getValues(true);
+                $filter = array_key_exists('filter', $values) ? ($values['filter']) : [];
                 /** @var DataGrid $grid */
                 $grid = $this;
                 $grid->setFilter($filter);
@@ -286,8 +286,8 @@ final class TeamsPresenter extends BasePresenter
                 $presenter->redrawControl('flashes');
                 $form = $this->getComponent('filter');
                 /** @var mixed $values */
-                $values = $form->getValues();
-                $filter = array_key_exists('filter', $values) ? iterator_to_array($values['filter']) : [];
+                $values = $form->getValues(true);
+                $filter = array_key_exists('filter', $values) ? ($values['filter']) : [];
                 /** @var DataGrid $grid */
                 $grid = $this;
                 $grid->setFilter($filter);
@@ -308,8 +308,8 @@ final class TeamsPresenter extends BasePresenter
                 $presenter->redrawControl('flashes');
                 $form = $this->getComponent('filter');
                 /** @var mixed $values */
-                $values = $form->getValues();
-                $filter = array_key_exists('filter', $values) ? iterator_to_array($values['filter']) : [];
+                $values = $form->getValues(true);
+                $filter = array_key_exists('filter', $values) ? ($values['filter']) : [];
                 /** @var DataGrid $grid */
                 $grid = $this;
                 $grid->setFilter($filter);
@@ -330,8 +330,8 @@ final class TeamsPresenter extends BasePresenter
                 $presenter->redrawControl('flashes');
                 $form = $this->getComponent('filter');
                 /** @var mixed $values */
-                $values = $form->getValues();
-                $filter = array_key_exists('filter', $values) ? iterator_to_array($values['filter']) : [];
+                $values = $form->getValues(true);
+                $filter = array_key_exists('filter', $values) ? ($values['filter']) : [];
                 /** @var DataGrid $grid */
                 $grid = $this;
                 $grid->setFilter($filter);
@@ -354,7 +354,7 @@ final class TeamsPresenter extends BasePresenter
 
     public function createComponentConfirmForm(): Form
     {
-        return $this->confirmFormFactory->create(function (Form $form, $values) {
+        return $this->confirmFormFactory->create(function (Form $form, $values): void {
             $teamId = (int) $this->getParameter('teamId');
             $team = ($this->findTeamService)($teamId);
             assert($team !== null);
@@ -391,7 +391,7 @@ final class TeamsPresenter extends BasePresenter
         $filterStates = $this->getRequest()->getPost('filterStates');
         $filterPaymentStates = $this->getRequest()->getPost('filterPaymentStates');
 
-        return $this->teamBatchMailingFormFactory->create(function (Form $form, $values) use ($event) {
+        return $this->teamBatchMailingFormFactory->create(function (Form $form, $values) use ($event): void {
             if (!$this->user->isAllowed(Resource::ADMIN_TEAMS, Action::BATCH_MAIL)) {
                 $form->addError('Nejste oprávněni provádět tuto operaci. Pokud věříte, že jde o chybu, kontaktujte správce.');
                 return;
@@ -439,7 +439,7 @@ final class TeamsPresenter extends BasePresenter
         if ($event === null) {
             throw new \Nette\Application\BadRequestException("No such event with number [${eventNumber}].");
         }
-        return $this->teamBatchGameStatusChangeFormFactory->create(function (Form $form, $values) use ($event) {
+        return $this->teamBatchGameStatusChangeFormFactory->create(function (Form $form, $values) use ($event): void {
             if (!$this->user->isAllowed(Resource::ADMIN_TEAMS, Action::BATCH_GAME_STATUS_CHANGE)) {
                 $form->addError('Nejste oprávněni provádět tuto operaci. Pokud věříte, že jde o chybu, kontaktujte správce.');
                 return;

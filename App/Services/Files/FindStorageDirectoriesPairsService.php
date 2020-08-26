@@ -11,7 +11,7 @@ class FindStorageDirectoriesPairsService
     /**
      * Find all directories (as tree) in public storage directory
      *
-     * @return array
+     * @return array<string, mixed>
      */
     public function __invoke(): array
     {

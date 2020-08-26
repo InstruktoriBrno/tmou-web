@@ -1,6 +1,7 @@
 <?php declare(strict_types=1);
 namespace InstruktoriBrno\TMOU\Forms;
 
+use InstruktoriBrno\TMOU\Application\UI\BaseForm;
 use Nette\Application\UI\Form;
 use Nette\SmartObject;
 
@@ -24,7 +25,7 @@ class GameClockFormFactory
 
         $form->addPrimarySubmit('send', 'Nastavit');
         $form->addSubmit('reset', 'Obnovit');
-        $form->onSuccess[] = function (Form $form, $values) use ($onSuccess) {
+        $form->onSuccess[] = function (BaseForm $form, $values) use ($onSuccess): void {
             $onSuccess($form, $values);
         };
         return $form;

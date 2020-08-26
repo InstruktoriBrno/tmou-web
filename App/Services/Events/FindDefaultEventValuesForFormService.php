@@ -15,7 +15,7 @@ class FindDefaultEventValuesForFormService
 
     /**
      * Returns defaults (typical values) for new event
-     * @return array
+     * @return array<string, mixed>
      */
     public function __invoke(): array
     {

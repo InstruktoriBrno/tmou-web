@@ -10,7 +10,7 @@ class FindTeamReviewForFormService
      *
      * @param Team $team
      *
-     * @return array
+     * @return array<string, string|null>
      */
     public function __invoke(Team $team): array
     {

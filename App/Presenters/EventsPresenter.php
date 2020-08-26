@@ -218,7 +218,7 @@ final class EventsPresenter extends BasePresenter
 
     public function createComponentConfirmForm(): Form
     {
-        return $this->confirmFormFactory->create(function (Form $form, $values) {
+        return $this->confirmFormFactory->create(function (Form $form, $values): void {
             /** @var SubmitButton $yes */
             $yes = $form['yes'];
             if ($yes->isSubmittedBy()) {
@@ -242,7 +242,7 @@ final class EventsPresenter extends BasePresenter
 
     public function createComponentCopyEventContentForm(): Form
     {
-        return $this->copyEventContentFormFactory->create(function (Form $form, $values) {
+        return $this->copyEventContentFormFactory->create(function (Form $form, $values): void {
             if (!$this->user->isAllowed(Resource::ADMIN_EVENTS, Action::COPY_CONTENT)) {
                 $form->addError('Nejste oprávněni provádět tuto operaci. Pokud věříte, že jde o chybu, kontaktujte správce.');
                 return;

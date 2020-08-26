@@ -53,7 +53,7 @@ Odstavce se dělají oddělením pomocí prázdného řádku.
 
 DIV element s CSS třídou a ID.
 
-Odstavec s třídou a ID. .[bigger #big] 
+Odstavec s třídou a ID. .[bigger #big]
 
 Následuje nečíslovaný seznam s CSS třídou a ukázkou základního formátování.
 
@@ -81,7 +81,7 @@ Objeví se jen ve vymezeném časovém období.
 \---
 
 /---reveal from QUALIFICATION_START to GAME_END
-Objeví se jen mezi datem začátkem kvalifikace (je-li kvalifikace) a datem konce hry. 
+Objeví se jen mezi datem začátkem kvalifikace (je-li kvalifikace) a datem konce hry.
 \---
 
 /---reveal from 2019-01-01 10:00:00 to -
@@ -187,8 +187,9 @@ TMOU:event_team_changes_deadline:
             if ($this->eventMacroDataProvider->getEventNumber() !== '') {
                 $this->texy->linkModule->root = '../../' . $this->eventMacroDataProvider->getEventNumber();
             }
-            $this->texy->registerLinePattern(function (LineParser $parser, array $matches) {
+            $this->texy->registerLinePattern(function (LineParser $parser, array $matches): string {
                 $section = $matches[1];
+                /** @var string $type */
                 $type = $matches[2];
                 if ($section === 'team') {
                     if ($type === 'id') {
@@ -289,7 +290,7 @@ TMOU:event_team_changes_deadline:
         $regex = '#/(--++) *+reveal *+from *+(.*) *+to *+(.*)\\n(.*)$\n\\\\\\1#miuUs';
         $output = preg_replace_callback(
             $regex,
-            function ($matches) {
+            function ($matches): string {
                 $from = trim($matches[2]);
                 $to = trim($matches[3]);
 
@@ -444,7 +445,7 @@ TMOU:event_team_changes_deadline:
         $regex = '#/(--++) *+hidden(.*)\\n(.*)$\n\\\\\\1#miuUs';
         $output = preg_replace_callback(
             $regex,
-            function ($matches) {
+            function ($matches): string {
                 $key = Random::generate();
                 $output = sprintf('<a href="#hidden-%s" class="btn btn-primary collapse-toggle" title="%s" type="button">Zobrazit %s</a>', $key, $matches[2], $matches[2]);
                 $output .= sprintf('<div id="hidden-%s" class="collapse">%s</div>', $key, $this->preprocessHiddenBlocks($matches[3]));

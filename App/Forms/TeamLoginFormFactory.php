@@ -1,6 +1,7 @@
 <?php declare(strict_types=1);
 namespace InstruktoriBrno\TMOU\Forms;
 
+use InstruktoriBrno\TMOU\Application\UI\BaseForm;
 use Nette\Application\UI\Form;
 use Nette\SmartObject;
 
@@ -26,7 +27,7 @@ class TeamLoginFormFactory
             ->setRequired('Vyplňte, prosím, heslo.');
 
         $form->addPrimarySubmit('send', 'Přihlásit');
-        $form->onSuccess[] = function (Form $form, $values) use ($onSuccess) {
+        $form->onSuccess[] = function (BaseForm $form, $values) use ($onSuccess): void {
             $onSuccess($form, $values);
         };
         return $form;

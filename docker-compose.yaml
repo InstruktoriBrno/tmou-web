@@ -6,8 +6,8 @@ services:
         restart: always
         user: mysql
         volumes:
-            - ./.mysql:/var/lib/mysql
-            - ./.mysql-config:/etc/mysql/conf.d
+            - ${PROJECT_DIR}/.mysql:/var/lib/mysql
+            - ${PROJECT_DIR}/.mysql-config:/etc/mysql/conf.d
         ports:
             - ${IP}:3306:3306
         environment:
@@ -30,7 +30,7 @@ services:
             - ${IP}:80:80
             - ${IP}:443:443
         volumes:
-            - .:/var/www/html/
+            - ${PROJECT_DIR}:/var/www/html/
         environment:
             APACHE_DOCUMENT_ROOT: /var/www/html
             MYSQL_SERVER: db
@@ -45,11 +45,11 @@ services:
                 aliases:
                     - tmou.test
     keycloak:
-        image: jboss/keycloak
+        image: jboss/keycloak:7.0.1
         ports:
             - ${IP}:9990:8443
         volumes:
-            - ./.keycloak/realm-export.json:/tmp/realm-export.json
+            - ${PROJECT_DIR}/.keycloak/realm-export.json:/tmp/realm-export.json
         environment:
             KEYCLOAK_IMPORT: /tmp/realm-export.json
             KEYCLOAK_USER: admin

@@ -1,6 +1,7 @@
 <?php declare(strict_types=1);
 namespace InstruktoriBrno\TMOU\Forms;
 
+use InstruktoriBrno\TMOU\Application\UI\BaseForm;
 use Nette\Application\UI\Form;
 use Nette\SmartObject;
 
@@ -24,7 +25,7 @@ class TeamForgottenPasswordFormFactory
             ->addRule(Form::MAX_LENGTH, 'E-mail může být maximálně 255 znaků dlouhý.', 255);
 
         $form->addPrimarySubmit('send', 'Požádat o nové heslo');
-        $form->onSuccess[] = function (Form $form, $values) use ($onSuccess) {
+        $form->onSuccess[] = function (BaseForm $form, $values) use ($onSuccess): void {
             $onSuccess($form, $values);
         };
         return $form;

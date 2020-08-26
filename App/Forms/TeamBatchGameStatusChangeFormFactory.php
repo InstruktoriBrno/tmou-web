@@ -1,6 +1,7 @@
 <?php declare(strict_types=1);
 namespace InstruktoriBrno\TMOU\Forms;
 
+use InstruktoriBrno\TMOU\Application\UI\BaseForm;
 use InstruktoriBrno\TMOU\Enums\GameStatus;
 use InstruktoriBrno\TMOU\Model\Event;
 use InstruktoriBrno\TMOU\Services\Teams\FindTeamsPairsInEventService;
@@ -39,7 +40,7 @@ class TeamBatchGameStatusChangeFormFactory
             ->setOption('description', 'Tento stav bude nastaven týmům, které nejsou v souboru přítomny.');
 
         $form->addPrimarySubmit('send', 'Provést');
-        $form->onSuccess[] = function (Form $form, $values) use ($onSuccess) {
+        $form->onSuccess[] = function (BaseForm $form, $values) use ($onSuccess): void {
             $onSuccess($form, $values);
         };
         return $form;

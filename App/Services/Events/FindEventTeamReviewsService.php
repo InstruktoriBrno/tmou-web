@@ -19,7 +19,7 @@ class FindEventTeamReviewsService
     /**
      * Returns all team reviews from given event sorted by addition date in asceding manner
      *
-     * @return array
+     * @return TeamReview[]
      */
     public function __invoke(Event $event): array
     {

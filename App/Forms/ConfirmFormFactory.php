@@ -22,7 +22,7 @@ class ConfirmFormFactory
             ->getControlPrototype()->appendAttribute('class', 'btn-danger');
         $form->addCancel('no', 'Ne')
             ->getControlPrototype()->appendAttribute('class', 'btn-secondary');
-        $form->onSuccess[] = function (Form $form, $values) use ($onSuccess) {
+        $form->onSuccess[] = function (Form $form, $values) use ($onSuccess): void {
             $onSuccess($form, $values);
         };
         return $form;

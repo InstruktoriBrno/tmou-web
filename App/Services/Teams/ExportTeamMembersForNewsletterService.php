@@ -25,7 +25,6 @@ class ExportTeamMembersForNewsletterService
      */
     public function __invoke(Event $event): CSVResponse
     {
-        /** @var TeamMember[] $members */
         $qb = $this->entityManager->createQueryBuilder();
         $qb->from(TeamMember::class, 'tm')
             ->select('tm')
@@ -35,6 +34,7 @@ class ExportTeamMembersForNewsletterService
             ->setParameter('event', $event);
 
         $query = $qb->getQuery();
+        /** @var TeamMember[] $members */
         $members = $query->getResult();
         $records = [];
         $records[] = ['fullname', 'email'];

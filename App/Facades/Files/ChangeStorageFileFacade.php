@@ -24,7 +24,7 @@ class ChangeStorageFileFacade
     public function __invoke(?string $subdir, ArrayHash $values): void
     {
         try {
-            ($this->changeFileFromStorageDirectoryService)($values->original, $values->name, $subdir, $values->targetDir);
+            ($this->changeFileFromStorageDirectoryService)($values->original, $values->name, (string) $subdir, (string) $values->targetDir);
         } catch (\InstruktoriBrno\TMOU\Services\Files\Exceptions\FileMoveFailedException | \InstruktoriBrno\TMOU\Services\Files\Exceptions\InvalidStorageSubdirException $e) {
             throw new \InstruktoriBrno\TMOU\Facades\Files\Exceptions\FileMoveFailedException($e->getMessage(), $e->getCode(), $e);
         } catch (\InstruktoriBrno\TMOU\Services\Files\Exceptions\DestinationFileAlreadyExistsException $e) {

@@ -14,7 +14,7 @@ class UploadToStorageDirectoryService
      * @param FileUpload[] $uploads
      * @param bool $overwrite
      * @param string|null $subdir
-     * @return array
+     * @return array<int, int>
      */
     public function __invoke(array $uploads, bool $overwrite, ?string $subdir): array
     {

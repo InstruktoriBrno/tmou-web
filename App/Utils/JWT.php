@@ -21,6 +21,10 @@ class JWT
         $this->algorithm = $algorithm;
     }
 
+    /**
+     * @param array<string, mixed> $data
+     * @return string
+     */
     public function encode(array $data): string
     {
         return FirebaseJWT::encode($data, $this->secretKey, $this->algorithm);

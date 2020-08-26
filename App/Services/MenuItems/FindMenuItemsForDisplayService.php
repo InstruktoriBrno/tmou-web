@@ -20,7 +20,7 @@ class FindMenuItemsForDisplayService
      *
      * @param Event|null $event
      *
-     * @return array
+     * @return array<string, array<int, MenuItem>>
      */
     public function __invoke(?Event $event = null): array
     {

@@ -1,7 +1,7 @@
 <?php declare(strict_types=1);
 namespace InstruktoriBrno\TMOU\Services\Teams;
 
-use Doctrine\Common\Persistence\ObjectRepository;
+use Doctrine\Common\Persistence\ObjectRepository; // phpcs:ignore
 use Doctrine\ORM\EntityManagerInterface;
 use Doctrine\ORM\EntityRepository;
 use InstruktoriBrno\TMOU\Enums\GameStatus;
@@ -14,7 +14,7 @@ class FindTeamsPairsInEventService
     /** @var EntityManagerInterface */
     private $entityManager;
 
-    /** @var ObjectRepository|EntityRepository */
+    /** @var ObjectRepository<Team>|EntityRepository */
     private $teamRepository;
 
     public function __construct(EntityManagerInterface $entityManager)
@@ -29,7 +29,7 @@ class FindTeamsPairsInEventService
      * @param Event $event
      * @param GameStatus[]|null $gameStates
      * @param PaymentStatus[]|null $paymentStates
-     * @return array
+     * @return array<int, string>
      */
     public function __invoke(Event $event, ?array $gameStates, ?array $paymentStates): array
     {

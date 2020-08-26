@@ -11,7 +11,7 @@ class FindStorageSubdirFilesService
     /**
      * Find all files from given subdir of public storage directory
      *
-     * @return array
+     * @return array<string, \SplFileInfo>
      */
     public function __invoke(?string $subdir): array
     {

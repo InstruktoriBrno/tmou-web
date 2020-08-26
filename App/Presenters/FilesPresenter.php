@@ -103,14 +103,14 @@ final class FilesPresenter extends BasePresenter
 
     public function createComponentUploadForm(): Form
     {
-        return $this->uploadFileFormFactory->create(function (Form $form, ArrayHash $values) {
+        return $this->uploadFileFormFactory->create(function (Form $form, ArrayHash $values): void {
             if (!($this->user->isAllowed(Resource::ADMIN_FILES, Action::MANAGE))) {
                 $this->flashMessage('Nejste oprávněni provádět tuto operaci. Pokud věříte, že jde o chybu, kontaktujte správce.', Flash::DANGER);
                 $this->redrawControl('files');
                 return;
             }
             $subdir = $this->getParameter('subdir');
-            /** @var FileUpload[] $fileUpload */
+            /** @var FileUpload[] $fileUploads */
             $fileUploads = $values->files;
             [$stored, $skipped] = ($this->uploadToStorageDirectoryService)($fileUploads, $values->overwrite, $subdir);
             $this->flashMessage("Nahráno bylo ${stored} souborů, přeskočeno bylo ${skipped} souborů.", Flash::SUCCESS);
@@ -125,7 +125,7 @@ final class FilesPresenter extends BasePresenter
 
     public function createComponentNewDirectoryForm(): Form
     {
-        return $this->createNewDirectoryFormFactory->create(function (Form $form, ArrayHash $values) {
+        return $this->createNewDirectoryFormFactory->create(function (Form $form, ArrayHash $values): void {
             if (!($this->user->isAllowed(Resource::ADMIN_FILES, Action::MANAGE))) {
                 $this->flashMessage('Nejste oprávněni provádět tuto operaci. Pokud věříte, že jde o chybu, kontaktujte správce.', Flash::DANGER);
                 $this->redrawControl('files');
@@ -157,7 +157,7 @@ final class FilesPresenter extends BasePresenter
 
     public function createComponentChangeFileForm(): Form
     {
-        return $this->changeFileFormFactory->create(function (Form $form, ArrayHash $values) {
+        return $this->changeFileFormFactory->create(function (Form $form, ArrayHash $values): void {
             if (!($this->user->isAllowed(Resource::ADMIN_FILES, Action::MANAGE))) {
                 $this->flashMessage('Nejste oprávněni provádět tuto operaci. Pokud věříte, že jde o chybu, kontaktujte správce.', Flash::DANGER);
                 $this->redrawControl('files');

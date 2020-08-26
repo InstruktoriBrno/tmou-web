@@ -14,7 +14,7 @@ class PaymentStatusType extends Type
     private const LENGTH = 128;
 
     /**
-     * @param array $fieldDeclaration
+     * @param mixed[] $fieldDeclaration
      * @param AbstractPlatform $platform
      * @return string
      */

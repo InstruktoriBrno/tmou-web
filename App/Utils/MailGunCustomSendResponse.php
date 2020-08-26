@@ -18,6 +18,11 @@ final class MailGunCustomSendResponse
     {
     }
 
+    /**
+     * @param array{id: mixed, message: mixed} $data
+     * @param ResponseInterface $response
+     * @return self
+     */
     public static function create(array $data, ResponseInterface $response): self
     {
         $model = new self();

@@ -820,6 +820,11 @@ class CreateTestDataFacade
         return $team;
     }
 
+    /**
+     * @param Event $event
+     * @param Team $team1
+     * @return array{0: Thread, 1: Post, 2: Post}
+     */
     public function getFirstThread(Event $event, Team $team1): array
     {
         $thread = new Thread($event, 'První diskuze', null, $team1, false);
@@ -828,6 +833,12 @@ class CreateTestDataFacade
         return [$thread, $post1, $post2];
     }
 
+    /**
+     * @param Event $event
+     * @param Team $team2
+     * @param Team $team3
+     * @return array{0: Thread, 1: Post, 2: Post, 3: Post}
+     */
     public function getSecondThread(Event $event, Team $team2, Team $team3): array
     {
         $thread = new Thread($event, 'Druhá diskuze', null, $team2, false);

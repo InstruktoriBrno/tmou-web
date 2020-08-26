@@ -1,6 +1,7 @@
 <?php declare(strict_types=1);
 namespace InstruktoriBrno\TMOU\Forms;
 
+use InstruktoriBrno\TMOU\Application\UI\BaseForm;
 use InstruktoriBrno\TMOU\Services\Events\FindEventsPairsService;
 use Nette\Application\UI\Form;
 use Nette\SmartObject;
@@ -26,7 +27,7 @@ class NewPostFormFactory
         $form->addTextArea('content', 'Příspěvek', 40, 10)
             ->setRequired('Vyplňte, prosím, obsah prvního příspěvku');
         $form->addPrimarySubmit('create', 'Vytvořit');
-        $form->onSuccess[] = function (Form $form, $values) use ($onSuccess) {
+        $form->onSuccess[] = function (BaseForm $form, $values) use ($onSuccess): void {
             $onSuccess($form, $values);
         };
         return $form;

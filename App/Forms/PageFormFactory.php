@@ -1,6 +1,7 @@
 <?php declare(strict_types=1);
 namespace InstruktoriBrno\TMOU\Forms;
 
+use InstruktoriBrno\TMOU\Application\UI\BaseForm;
 use InstruktoriBrno\TMOU\Enums\ReservedSLUG;
 use InstruktoriBrno\TMOU\Services\Events\FindEventsPairsService;
 use Nette\Application\UI\Form;
@@ -35,7 +36,7 @@ class PageFormFactory
         $form->addText('slug', 'SLUG')
             ->setRequired(false)
             ->addRule(Form::MAX_LENGTH, 'SLUG stránky může být maximálně 191 znaků dlouhý.', 191)
-            ->setOption('description', 'Slouží jako unikátní identifikace stránky v URL adrese v rámci ročníku. Některé hodnoty jsou rezervované. 
+            ->setOption('description', 'Slouží jako unikátní identifikace stránky v URL adrese v rámci ročníku. Některé hodnoty jsou rezervované.
             Pro vytvoření stránky aktualit na úvodní stránce použijte hodnotu "' . ReservedSLUG::UPDATES()->toScalar() . '". Dále můžete použít "' .
                 ReservedSLUG::QUALIFICATION_RESULTS()->toScalar() . '", "' .
                 ReservedSLUG::QUALIFICATION_ANSWERS()->toScalar() . '", "' .
@@ -83,7 +84,7 @@ class PageFormFactory
         $form->addPrimarySubmit('send', 'Uložit');
         $form->addSubmit('sendAndStay', 'Uložit a zůstat');
         $form->addSubmit('sendAndShow', 'Uložit a zobrazit');
-        $form->onSuccess[] = function (Form $form, $values) use ($onSuccess) {
+        $form->onSuccess[] = function (BaseForm $form, $values) use ($onSuccess): void {
             $onSuccess($form, $values);
         };
         return $form;

@@ -26,7 +26,7 @@ class UploadFileFormFactory
         $form->addCheckbox('overwrite', 'Přepsat existující')
             ->setOption('description', 'Bez zaškrtnutí tohoto pole budou existující soubory přeskočeny');
         $form->addPrimarySubmit('upload', 'Nahrát');
-        $form->onSuccess[] = function (Form $form, $values) use ($onSuccess) {
+        $form->onSuccess[] = function (Form $form, $values) use ($onSuccess): void {
             $onSuccess($form, $values);
         };
         return $form;

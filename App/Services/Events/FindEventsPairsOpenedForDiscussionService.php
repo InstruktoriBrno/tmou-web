@@ -18,7 +18,7 @@ class FindEventsPairsOpenedForDiscussionService
     /**
      * Returns given pairs of ID and event name in array as key and value which are open for discussions
      *
-     * @return array
+     * @return array<int, string>
      */
     public function __invoke(): array
     {

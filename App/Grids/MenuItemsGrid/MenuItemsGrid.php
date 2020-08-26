@@ -46,7 +46,7 @@ class MenuItemsGrid extends Control
         $grid->addColumnText('weight', 'Váha');
 
         $grid->addColumnText('targetPage', 'Cíl')
-            ->setRenderer(function (MenuItem $item) {
+            ->setRenderer(function (MenuItem $item): ?Html {
                 assert($this->getPresenter() !== null);
                 if ($item->getTargetPage() !== null) {
                     $eventNumber = $item->getTargetPage()->getEvent() !== null ? $item->getTargetPage()->getEvent()->getNumber() : null;
@@ -63,21 +63,21 @@ class MenuItemsGrid extends Control
                 return null;
             });
         $grid->addColumnText('forAnonymous', 'Pouze nepřihlášení')
-            ->setRenderer(function (MenuItem $item) {
+            ->setRenderer(function (MenuItem $item): Html {
                 if ($item->isForAnonymous()) {
                     return Html::el('span class="badge badge-xs badge-success"')->setText('Ano');
                 }
                 return Html::el('span class="badge badge-xs badge-warning"')->setText('Ne');
             });
         $grid->addColumnText('forOrganizators', 'Pro organizátory')
-            ->setRenderer(function (MenuItem $item) {
+            ->setRenderer(function (MenuItem $item): Html {
                 if ($item->isForOrganizators()) {
                     return Html::el('span class="badge badge-xs badge-success"')->setText('Ano');
                 }
                 return Html::el('span class="badge badge-xs badge-warning"')->setText('Ne');
             });
         $grid->addColumnText('forTeams', 'Pro týmy')
-            ->setRenderer(function (MenuItem $item) {
+            ->setRenderer(function (MenuItem $item): Html {
                 if ($item->isForTeams()) {
                     return Html::el('span class="badge badge-xs badge-success"')->setText('Ano');
                 }

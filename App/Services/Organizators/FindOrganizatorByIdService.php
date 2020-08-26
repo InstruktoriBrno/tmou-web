@@ -1,13 +1,13 @@
 <?php declare(strict_types=1);
 namespace InstruktoriBrno\TMOU\Services\Organizators;
 
-use function assert;
+use Doctrine\Common\Persistence\ObjectRepository; // phpcs:ignore
 use Doctrine\ORM\EntityManagerInterface;
 use InstruktoriBrno\TMOU\Model\Organizator;
 
 class FindOrganizatorByIdService
 {
-    /** @var \Doctrine\Common\Persistence\ObjectRepository */
+    /** @var ObjectRepository<Organizator> */
     private $organizatorsRepository;
 
     public function __construct(EntityManagerInterface $entityManager)
@@ -17,8 +17,6 @@ class FindOrganizatorByIdService
 
     public function __invoke(int $id): ?Organizator
     {
-        $object = $this->organizatorsRepository->find($id);
-        assert($object instanceof Organizator || $object === null);
-        return $object;
+        return $this->organizatorsRepository->find($id);
     }
 }

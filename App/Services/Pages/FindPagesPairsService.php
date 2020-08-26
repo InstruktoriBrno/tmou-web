@@ -17,7 +17,7 @@ class FindPagesPairsService
     /**
      * Returns given pairs of ID and event name in array as key and value
      *
-     * @return array
+     * @return array<string, array<int, string>>
      */
     public function __invoke(): array
     {

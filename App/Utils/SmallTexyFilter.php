@@ -90,7 +90,7 @@ Hodit se též může horní index^^takhle^^ nebo index^2, také spodní index__
             $this->texy->allowedClasses = Texy::NONE;
 
             // references link [1] [2] will be processed to reference the Nth post
-            $this->texy->addHandler('newReference', function (HandlerInvocation $parser, $refName) {
+            $this->texy->addHandler('newReference', function (HandlerInvocation $parser, $refName): HtmlElement {
                 $el = new HtmlElement('a');
                 $el->attrs['href'] = '#post-' . $refName;
                 $el->attrs['rel'] = 'nofollow';

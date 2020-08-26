@@ -30,7 +30,7 @@ class CopyEventContentFormFactory
             ->setRequired('Vyberte, prosím, cílový ročník do kterého se má kopírovat.');
 
         $form->addPrimarySubmit('copy', 'Kopírovat');
-        $form->onSuccess[] = function (Form $form, $values) use ($onSuccess) {
+        $form->onSuccess[] = function (Form $form, $values) use ($onSuccess): void {
             $onSuccess($form, $values);
         };
         return $form;

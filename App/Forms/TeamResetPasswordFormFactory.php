@@ -1,6 +1,7 @@
 <?php declare(strict_types=1);
 namespace InstruktoriBrno\TMOU\Forms;
 
+use InstruktoriBrno\TMOU\Application\UI\BaseForm;
 use Nette\Application\UI\Form;
 use Nette\SmartObject;
 
@@ -31,8 +32,8 @@ class TeamResetPasswordFormFactory
             ->setRequired('Vyplňte, prosím, nové heslo pro kontrolu shody.')
             ->addRule(Form::EQUAL, 'Hesla se musí shodovat.', $form['password']);
 
-        $form->addPrimarySubmit('send', 'Požádat o nové heslo');
-        $form->onSuccess[] = function (Form $form, $values) use ($onSuccess) {
+        $form->addPrimarySubmit('send', 'Nastavit nové heslo');
+        $form->onSuccess[] = function (BaseForm $form, $values) use ($onSuccess): void {
             $onSuccess($form, $values);
         };
         return $form;

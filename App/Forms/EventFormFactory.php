@@ -1,6 +1,7 @@
 <?php declare(strict_types=1);
 namespace InstruktoriBrno\TMOU\Forms;
 
+use InstruktoriBrno\TMOU\Application\UI\BaseForm;
 use Nette\Application\UI\Form;
 use Nette\Forms\Controls\TextInput;
 use Nette\SmartObject;
@@ -84,7 +85,7 @@ class EventFormFactory
                 ->addRule(Form::FILLED, 'Vyplňte, prosím, deadline párování plateb.');
 
         $form->addPrimarySubmit('send', 'Uložit');
-        $form->onSuccess[] = function (Form $form, $values) use ($onSuccess) {
+        $form->onSuccess[] = function (BaseForm $form, $values) use ($onSuccess): void {
             $onSuccess($form, $values);
         };
         return $form;
