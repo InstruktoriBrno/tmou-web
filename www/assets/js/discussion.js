@@ -40,3 +40,12 @@ body.on('click', '.insert-discussion-quote', function () {
     insertAtCursor2(input, textToInsert);
 });
 
+$(function(){
+    var focusablePost = $('.post-focus');
+    if (!focusablePost.length) {
+        return;
+    }
+    $("#parallax").animate({
+        scrollTop: focusablePost.offset().top - 300 // Offset due to menu and previous post visibility
+    }, 400);
+});

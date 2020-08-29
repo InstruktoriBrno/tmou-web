@@ -14,13 +14,14 @@
             <hr>
         {/if}
         <div n:snippet="posts">
+            {var $firstUnseenMarked = false}
             {foreach $posts as $post}
                 {last}
                     <a id="end"></a>
                 {/last}
-                <div id="post-{$iterator->getCounter()}">
+                {var $lastSeenDiscussionAt = isset($acks[$thread->getId()]) ? $acks[$thread->getId()]->getAt() : null}
+                <div id="post-{$iterator->getCounter()}" {if ($lastSeenDiscussionAt === null || $post->getCreatedAt() > $lastSeenDiscussionAt) && !$firstUnseenMarked}class="post-focus" {var $firstUnseenMarked = true}{/if}>
                     {var $author = $post->getTeam() ?? $post->getOrganizator()}
-                    {var $lastSeenDiscussionAt = isset($acks[$thread->getId()]) ? $acks[$thread->getId()]->getAt() : null}
                     {var $newForCurrentUser = $lastSeenDiscussionAt === null || $lastSeenDiscussionAt < $post->getCreatedAt()}
                     {var $teamName = $post->getTeam() !== null ? $post->getTeam()->getName() : null}
                     {if $post->getNickname() !== null}
@@ -64,6 +65,11 @@
                 </div>
                 <hr>
             {/foreach}
+          {if $firstUnseenMarked}
+                <script>
+
+                </script>
+          {/if}
         </div>
         <div>
             <a href="{plink Pages:discussion, page => $currentPage}"><i class="fas fa-arrow-left"></i> Zpět na seznam vláken</a>
