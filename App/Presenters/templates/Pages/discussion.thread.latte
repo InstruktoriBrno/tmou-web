@@ -23,6 +23,9 @@
                     {var $lastSeenDiscussionAt = isset($acks[$thread->getId()]) ? $acks[$thread->getId()]->getAt() : null}
                     {var $newForCurrentUser = $lastSeenDiscussionAt === null || $lastSeenDiscussionAt < $post->getCreatedAt()}
                     {var $teamName = $post->getTeam() !== null ? $post->getTeam()->getName() : null}
+                    {if $post->getNickname() !== null}
+                        {var $teamName = $teamName . ' (' . $post->getNickname() . ')'}
+                    {/if}
                     {var $organizatorName = $post->getOrganizator() !== null ? 'Organizátoři (' . $post->getOrganizator()->getGivenName() . ' ' . $post->getOrganizator()->getFamilyName() . ')' : null}
                     <div class="float-left mr-4 inline-block avatar rounded-full text-center align-middle text-2xl text-white" style="background: {$author->getShortcutColor()|noEscape}" title="{$teamName ?? $organizatorName}">{$author->getShortcut()}</div>
                     <div class="post-header">

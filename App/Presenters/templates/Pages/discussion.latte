@@ -20,6 +20,9 @@
                     {if $lastPost !== null}
                         {var $lastPostAuthor = $lastPost->getTeam() ?? $lastPost->getOrganizator()}
                         {var $teamName = $lastPost->getTeam() !== null ? $lastPost->getTeam()->getName() : null}
+                        {if $lastPost->getNickname() !== null}
+                            {var $teamName = $teamName . ' (' . $lastPost->getNickname() . ')'}
+                        {/if}
                         {var $organizatorName = $lastPost->getOrganizator() !== null ? 'Organizátoři (' . $lastPost->getOrganizator()->getGivenName() . ' ' . $lastPost->getOrganizator()->getFamilyName() . ')' : null}
                         <span class="post-team-name" title="{$teamName ?? $organizatorName}">{$teamName ?? $organizatorName}</span>&nbsp;
                     {/if}

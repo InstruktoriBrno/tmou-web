@@ -42,6 +42,7 @@ use InstruktoriBrno\TMOU\Services\Events\FindEventTeamReviewsService;
 use InstruktoriBrno\TMOU\Services\Organizators\FindOrganizatorByIdService;
 use InstruktoriBrno\TMOU\Services\Pages\FindPageInEventService;
 use InstruktoriBrno\TMOU\Services\System\IsSLUGReservedService;
+use InstruktoriBrno\TMOU\Services\System\RememberedNicknameService;
 use InstruktoriBrno\TMOU\Services\Teams\FindTeamForFormService;
 use InstruktoriBrno\TMOU\Services\Teams\FindTeamReviewForFormService;
 use InstruktoriBrno\TMOU\Services\Teams\FindTeamService;
@@ -56,6 +57,7 @@ use Nette\Utils\ArrayHash;
 use Nette\Utils\Validators;
 use Tracy\Debugger;
 use Tracy\ILogger;
+use function array_merge;
 
 final class PagesPresenter extends BasePresenter
 {
@@ -169,6 +171,9 @@ final class PagesPresenter extends BasePresenter
 
     /** @var FindThreadAcknowledgementByThreadsAndUserService @inject */
     public $findThreadAcknowledgementByThreads;
+
+    /** @var RememberedNicknameService @inject */
+    public $rememberedNicknameService;
 
     /** @var Event|null */
     private $event;
@@ -683,10 +688,12 @@ final class PagesPresenter extends BasePresenter
             }
             $this->flashMessage('Nové vlákno bylo úspěšně založeno.', Flash::SUCCESS);
             $this->redirect('this', ['thread' => $thread->getId()]);
-        });
+        }, $this->user->isInRole(UserRole::ORG));
+        $defaults = ['nickname' => $this->rememberedNicknameService->get()];
         if ($this->event !== null) {
-            $form->setDefaults(['event' => $this->event->getId()]);
+            $defaults = array_merge($defaults, ['event' => $this->event->getId()]);
         }
+        $form->setDefaults($defaults);
         return $form;
     }
 
@@ -716,10 +723,12 @@ final class PagesPresenter extends BasePresenter
             }
             $this->flashMessage('Nový příspěvek byl úspěšně přidán.', Flash::SUCCESS);
             $this->redirect('this#end', ['thread' => $post->getThread()->getId()]);
-        });
+        }, $this->user->isInRole(UserRole::ORG));
+        $defaults = ['nickname' => $this->rememberedNicknameService->get()];
         if ($this->event !== null) {
-            $form->setDefaults(['event' => $this->event->getId()]);
+            $defaults = array_merge($defaults, ['event' => $this->event->getId()]);
         }
+        $form->setDefaults($defaults);
         return $form;
     }
 

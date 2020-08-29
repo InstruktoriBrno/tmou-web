@@ -189,6 +189,7 @@ services:
     - InstruktoriBrno\TMOU\Services\Discussions\FindThreadAcknowledgementByOrganizatorService
     - InstruktoriBrno\TMOU\Services\Discussions\FindThreadAcknowledgementByTeamService
     - InstruktoriBrno\TMOU\Services\Discussions\FindThreadAcknowledgementByThreadsAndUserService
+    - InstruktoriBrno\TMOU\Services\System\RememberedNicknameService
 
 extensions:
     nextras.form: Nextras\Forms\Bridges\NetteDI\FormsExtension

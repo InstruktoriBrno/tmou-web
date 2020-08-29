@@ -32,6 +32,12 @@ class Post
     protected $content;
 
     /**
+     * @ORM\Column(type="text", nullable=true)
+     * @var string|null
+     */
+    protected $nickname;
+
+    /**
      * @ORM\ManyToOne(targetEntity="Organizator")
      * @ORM\JoinColumn(name="organizator_id", referencedColumnName="id", nullable=true)
      * @var Organizator|null
@@ -60,6 +66,7 @@ class Post
     public function __construct(
         Thread $thread,
         string $content,
+        ?string $nickname,
         ?Organizator $organizator,
         ?Team $team,
         bool $hidden
@@ -72,6 +79,7 @@ class Post
         }
         $this->thread = $thread;
         $this->content = $content;
+        $this->nickname = $nickname;
         $this->organizator = $organizator;
         $this->team = $team;
         $this->hidden = $hidden;
@@ -89,6 +97,11 @@ class Post
     public function getContent(): string
     {
         return $this->content;
+    }
+
+    public function getNickname(): ?string
+    {
+        return $this->nickname;
     }
 
     public function isHidden(): bool

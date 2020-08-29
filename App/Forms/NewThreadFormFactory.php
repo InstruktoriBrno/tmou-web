@@ -21,7 +21,7 @@ class NewThreadFormFactory
         $this->factory = $factory;
         $this->findEventsPairsOpenedForDiscussionService = $findEventsPairsOpenedForDiscussionService;
     }
-    public function create(callable $onSuccess): Form
+    public function create(callable $onSuccess, bool $isOrg): Form
     {
         $form = $this->factory->create();
         $form->addText('title', 'Název')
@@ -31,6 +31,10 @@ class NewThreadFormFactory
             ->setPrompt('Mimo ročníky');
         $form->addTextArea('content', 'První příspěvek', 40, 10)
             ->setRequired('Vyplňte, prosím, obsah prvního příspěvku');
+        if (!$isOrg) {
+            $form->addText('nickname', 'Přezdívka')
+                ->setOption('description', 'Volitelná. Objeví se vedle názvu týmu a bude uložena v rámci tohoto přihlášení.');
+        }
         $form->addPrimarySubmit('create', 'Vytvořit');
         $form->onSuccess[] = function (BaseForm $form, $values) use ($onSuccess): void {
             $onSuccess($form, $values);

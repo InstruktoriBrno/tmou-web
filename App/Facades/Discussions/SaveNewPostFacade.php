@@ -7,6 +7,7 @@ use InstruktoriBrno\TMOU\Enums\UserRole;
 use InstruktoriBrno\TMOU\Model\Post;
 use InstruktoriBrno\TMOU\Model\Thread;
 use InstruktoriBrno\TMOU\Services\Organizators\FindOrganizatorByIdService;
+use InstruktoriBrno\TMOU\Services\System\RememberedNicknameService;
 use InstruktoriBrno\TMOU\Services\Teams\FindTeamService;
 use Nette\Security\User;
 use Nette\Utils\ArrayHash;
@@ -22,14 +23,19 @@ class SaveNewPostFacade
     /** @var FindTeamService */
     private $findTeamService;
 
+    /** @var RememberedNicknameService */
+    private $rememberedNicknameService;
+
     public function __construct(
         EntityManagerInterface $entityManager,
         FindOrganizatorByIdService $findOrganizatorByIdService,
-        FindTeamService $findTeamService
+        FindTeamService $findTeamService,
+        RememberedNicknameService $rememberedNicknameService
     ) {
         $this->entityManager = $entityManager;
         $this->findOrganizatorByIdService = $findOrganizatorByIdService;
         $this->findTeamService = $findTeamService;
+        $this->rememberedNicknameService = $rememberedNicknameService;
     }
 
     /**
@@ -62,12 +68,18 @@ class SaveNewPostFacade
             throw new \InstruktoriBrno\TMOU\Facades\Discussions\Exceptions\EventIsLockedException;
         }
 
+        $nickname = isset($values->nickname) && $values->nickname ? $values->nickname : null;
+
         $thread->touchUpdatedAt(new DateTimeImmutable());
-        $post = new Post($thread, $values->content, $organizator, $team, false);
+        $post = new Post($thread, $values->content, $nickname, $organizator, $team, false);
 
         $this->entityManager->persist($thread);
         $this->entityManager->persist($post);
         $this->entityManager->flush();
+
+        if (isset($values->nickname)) {
+            $this->rememberedNicknameService->set($values->nickname);
+        }
 
         return $post;
     }

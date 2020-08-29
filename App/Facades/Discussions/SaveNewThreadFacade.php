@@ -8,6 +8,7 @@ use InstruktoriBrno\TMOU\Model\Post;
 use InstruktoriBrno\TMOU\Model\Thread;
 use InstruktoriBrno\TMOU\Services\Events\FindEventService;
 use InstruktoriBrno\TMOU\Services\Organizators\FindOrganizatorByIdService;
+use InstruktoriBrno\TMOU\Services\System\RememberedNicknameService;
 use InstruktoriBrno\TMOU\Services\Teams\FindTeamService;
 use Nette\Security\User;
 use Nette\Utils\ArrayHash;
@@ -26,16 +27,21 @@ class SaveNewThreadFacade
     /** @var FindTeamService */
     private $findTeamService;
 
+    /** @var RememberedNicknameService */
+    private $rememberedNicknameService;
+
     public function __construct(
         EntityManagerInterface $entityManager,
         FindEventService $findEventService,
         FindOrganizatorByIdService $findOrganizatorByIdService,
-        FindTeamService $findTeamService
+        FindTeamService $findTeamService,
+        RememberedNicknameService $rememberedNicknameService
     ) {
         $this->entityManager = $entityManager;
         $this->findEventService = $findEventService;
         $this->findOrganizatorByIdService = $findOrganizatorByIdService;
         $this->findTeamService = $findTeamService;
+        $this->rememberedNicknameService = $rememberedNicknameService;
     }
 
     /**
@@ -81,11 +87,17 @@ class SaveNewThreadFacade
             throw new \InstruktoriBrno\TMOU\Facades\Discussions\Exceptions\TitleIsTooLongException;
         }
 
-        $post = new Post($thread, $values->content, $organizator, $team, false);
+        $nickname = isset($values->nickname) && $values->nickname ? $values->nickname : null;
+
+        $post = new Post($thread, $values->content, $nickname, $organizator, $team, false);
 
         $this->entityManager->persist($thread);
         $this->entityManager->persist($post);
         $this->entityManager->flush();
+
+        if (isset($values->nickname)) {
+            $this->rememberedNicknameService->set($values->nickname);
+        }
 
         return $thread;
     }

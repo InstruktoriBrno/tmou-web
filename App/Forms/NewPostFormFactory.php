@@ -21,11 +21,15 @@ class NewPostFormFactory
         $this->factory = $factory;
         $this->findEventsPairsService = $findEventsPairsService;
     }
-    public function create(callable $onSuccess): Form
+    public function create(callable $onSuccess, bool $isOrg): Form
     {
         $form = $this->factory->create();
         $form->addTextArea('content', 'Příspěvek', 40, 10)
-            ->setRequired('Vyplňte, prosím, obsah prvního příspěvku');
+            ->setRequired('Vyplňte, prosím, obsah vašeho příspěvku');
+        if (!$isOrg) {
+            $form->addText('nickname', 'Přezdívka')
+                ->setOption('description', 'Volitelná. Objeví se vedle názvu týmu a bude uložena v rámci tohoto přihlášení.');
+        }
         $form->addPrimarySubmit('create', 'Vytvořit');
         $form->onSuccess[] = function (BaseForm $form, $values) use ($onSuccess): void {
             $onSuccess($form, $values);

@@ -828,8 +828,8 @@ class CreateTestDataFacade
     public function getFirstThread(Event $event, Team $team1): array
     {
         $thread = new Thread($event, 'První diskuze', null, $team1, false);
-        $post1 = new Post($thread, 'První příspěvek', null, $team1, false);
-        $post2 = new Post($thread, 'Druhý příspěvek', null, $team1, false);
+        $post1 = new Post($thread, 'První příspěvek', 'Josef', null, $team1, false);
+        $post2 = new Post($thread, 'Druhý příspěvek', null, null, $team1, false);
         return [$thread, $post1, $post2];
     }
 
@@ -842,8 +842,8 @@ class CreateTestDataFacade
     public function getSecondThread(Event $event, Team $team2, Team $team3): array
     {
         $thread = new Thread($event, 'Druhá diskuze', null, $team2, false);
-        $post1 = new Post($thread, 'První příspěvek', null, $team2, false);
-        $post2 = new Post($thread, 'Druhý příspěvek', null, $team3, false);
+        $post1 = new Post($thread, 'První příspěvek', 'Josef', null, $team2, false);
+        $post2 = new Post($thread, 'Druhý příspěvek', null, null, $team3, false);
         $post3 = new Post($thread, 'Můžete použít, **tučný** řez písma, *kurzívu* nebo ***obojí***.
 "Text odkazu":https://www.tmou.cz/ nebo jen URL https://www.tmou.cz
 
@@ -856,7 +856,7 @@ class CreateTestDataFacade
 > Toto jsou dlouhé citace odsazené jedním znakem >
 
 Krátké citace můžete udělat pomocí >>takto<<. Referenci na jiný příspěvek vložíte pořadového čísla: [1].
-Hodit se též může horní index^^takhle^^ nebo index^2, také spodní index__takhle__ nebo index_2.', null, $team3, false);
+Hodit se též může horní index^^takhle^^ nebo index^2, také spodní index__takhle__ nebo index_2.', null, null, $team3, false);
         return [$thread, $post1, $post2, $post3];
     }
 }
