@@ -42,6 +42,9 @@ class TeamsGrid extends Control
     /** @var callable */
     private $changeAsNotPaid;
 
+    /** @var callable */
+    private $changeAsPaidAndPlaying;
+
     public function __construct(
         int $eventNumber,
         IDataSource $dataSource,
@@ -51,7 +54,8 @@ class TeamsGrid extends Control
         callable $changeToNotQualified,
         callable $changeToRegistered,
         callable $changeAsPaid,
-        callable $changeAsNotPaid
+        callable $changeAsNotPaid,
+        callable $changeAsPaidAndPlaying
     ) {
         parent::__construct();
         $this->dataSource = $dataSource;
@@ -63,6 +67,7 @@ class TeamsGrid extends Control
         $this->changeToRegistered = $changeToRegistered;
         $this->changeAsPaid = $changeAsPaid;
         $this->changeAsNotPaid = $changeAsNotPaid;
+        $this->changeAsPaidAndPlaying = $changeAsPaidAndPlaying;
     }
 
     public function createComponentGrid(string $name): DataGrid
@@ -212,6 +217,11 @@ class TeamsGrid extends Control
         if ($this->user->isAllowed(Resource::ADMIN_TEAMS, Action::BATCH_PAYMENT_STATUS_CHANGE)) {
             $grid->addGroupAction('Nastavit jako zaplaceno')->onSelect[] = Closure::fromCallable($this->changeAsPaid)->bindTo($grid);
             $grid->addGroupAction('Nastavit jako nezaplaceno')->onSelect[] = Closure::fromCallable($this->changeAsNotPaid)->bindTo($grid);
+        }
+        if ($this->user->isAllowed(Resource::ADMIN_TEAMS, Action::BATCH_GAME_STATUS_CHANGE)
+            && $this->user->isAllowed(Resource::ADMIN_TEAMS, Action::BATCH_PAYMENT_STATUS_CHANGE)
+        ) {
+            $grid->addGroupAction('Nastavit jako zaplaceno & hrající')->onSelect[] = Closure::fromCallable($this->changeAsPaidAndPlaying)->bindTo($grid);
         }
 
         if ($this->user->isAllowed(Resource::ADMIN_TEAMS, Action::BATCH_MAIL)) {

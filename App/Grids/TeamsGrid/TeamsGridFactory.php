@@ -22,8 +22,20 @@ class TeamsGridFactory
         callable $changeToNotQualified,
         callable $changeToRegistered,
         callable $changeAsPaid,
-        callable $changeAsNotPaid
+        callable $changeAsNotPaid,
+        callable $changeAsPaidAndPlaying
     ): TeamsGrid {
-        return new TeamsGrid($eventNumber, $dataSource, $this->dataGridFactory, $changeToPlaying, $changeToQualified, $changeToNotQualified, $changeToRegistered, $changeAsPaid, $changeAsNotPaid);
+        return new TeamsGrid(
+            $eventNumber,
+            $dataSource,
+            $this->dataGridFactory,
+            $changeToPlaying,
+            $changeToQualified,
+            $changeToNotQualified,
+            $changeToRegistered,
+            $changeAsPaid,
+            $changeAsNotPaid,
+            $changeAsPaidAndPlaying
+        );
     }
 }

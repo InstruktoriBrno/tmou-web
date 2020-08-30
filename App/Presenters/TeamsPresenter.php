@@ -30,7 +30,9 @@ use Nette\Security\Identity;
 use Tracy\Debugger;
 use Tracy\ILogger;
 use Ublaboo\DataGrid\DataGrid;
+use function array_key_exists;
 use function assert;
+use function sprintf;
 
 final class TeamsPresenter extends BasePresenter
 {
@@ -340,6 +342,31 @@ final class TeamsPresenter extends BasePresenter
                 $presenter->redirect('this');
             }
         };
+        $changeAsPaidAndPlaying = function (array $ids) use ($presenter) {
+            if (!$presenter->user->isAllowed(Resource::ADMIN_TEAMS, Action::BATCH_PAYMENT_STATUS_CHANGE)
+                || !$presenter->user->isAllowed(Resource::ADMIN_TEAMS, Action::BATCH_GAME_STATUS_CHANGE)
+            ) {
+                $presenter->flashMessage('Nejste oprávněni provádět tuto operaci. Pokud věříte, že jde o chybu, kontaktujte správce.', Flash::DANGER);
+                $presenter->redrawControl('flashes');
+                return null;
+            }
+            $changed = ($presenter->changeTeamsGameStatusService)($ids, GameStatus::PLAYING());
+            $changed2 = ($presenter->changeTeamsPaymentStatusService)($ids, true);
+            if ($presenter->isAjax()) {
+                $presenter->flashMessage(sprintf('%d týmů bylo úspěšně změněno na hrající a %d týmů bylo úspěně změněno na zaplaceno.', $changed, $changed2), Flash::SUCCESS);
+                $presenter->redrawControl('flashes');
+                $form = $this->getComponent('filter');
+                /** @var mixed $values */
+                $values = $form->getValues(true);
+                $filter = array_key_exists('filter', $values) ? ($values['filter']) : [];
+                /** @var DataGrid $grid */
+                $grid = $this;
+                $grid->setFilter($filter);
+                $grid->reload();
+            } else {
+                $presenter->redirect('this');
+            }
+        };
         return $this->teamsGridFactory->create(
             $eventNumber,
             ($this->findTeamsOfEventForDataGridService)($event),
@@ -348,7 +375,8 @@ final class TeamsPresenter extends BasePresenter
             $changeToNotQualified,
             $changeToRegistered,
             $changeAsPaid,
-            $changeAsNotPaid
+            $changeAsNotPaid,
+            $changeAsPaidAndPlaying
         );
     }
 
