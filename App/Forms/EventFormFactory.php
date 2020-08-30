@@ -31,6 +31,10 @@ class EventFormFactory
             ->setHtmlAttribute('min', 1)
             ->setRequired('Vyplňte, prosím, číslo ročníku.')
             ->addRule(Form::MIN, 'Číslo ročníku musí být kladné.', 1);
+        $form->addUpload('logo', 'Logo')
+            ->setRequired(false)
+            ->addRule(Form::MIME_TYPE, 'Nahrávané logo musí být ve formátu PNG.', ['image/png'])
+            ->setOption('description', 'Volitelné. Dojde k uložení do cesty /storage/21/logo.png');
 
         $form->addGroup('Kvalifikace');
         $form->addCheckbox('hasQualification', 'Má kvalifikaci');

@@ -4,6 +4,9 @@ namespace InstruktoriBrno\TMOU\Facades\Events;
 use Doctrine\ORM\EntityManagerInterface;
 use InstruktoriBrno\TMOU\Model\Event;
 use InstruktoriBrno\TMOU\Services\Events\IsEventNumberUniqueService;
+use InstruktoriBrno\TMOU\Services\Files\CreateNewDirectoryInStorageDirectoryService;
+use InstruktoriBrno\TMOU\Services\Files\UploadToStorageDirectoryService;
+use Nette\Http\FileUpload;
 use Nette\Utils\ArrayHash;
 
 class SaveEventFacade
@@ -15,12 +18,21 @@ class SaveEventFacade
     /** @var IsEventNumberUniqueService */
     private $isEventNumberUniqueService;
 
+    /** @var UploadToStorageDirectoryService */
+    private $uploadToStorageDirectoryService;
+
+    private CreateNewDirectoryInStorageDirectoryService $createNewDirectoryInStorageDirectoryService;
+
     public function __construct(
         EntityManagerInterface $entityManager,
-        IsEventNumberUniqueService $eventNumberUniqueService
+        IsEventNumberUniqueService $eventNumberUniqueService,
+        UploadToStorageDirectoryService $uploadToStorageDirectoryService,
+        CreateNewDirectoryInStorageDirectoryService $createNewDirectoryInStorageDirectoryService
     ) {
         $this->entityManager = $entityManager;
         $this->isEventNumberUniqueService = $eventNumberUniqueService;
+        $this->uploadToStorageDirectoryService = $uploadToStorageDirectoryService;
+        $this->createNewDirectoryInStorageDirectoryService = $createNewDirectoryInStorageDirectoryService;
     }
 
     /**
@@ -92,5 +104,16 @@ class SaveEventFacade
         }
         $this->entityManager->persist($event);
         $this->entityManager->flush();
+
+        if ($values->logo && $values->logo instanceof FileUpload && $values->logo->isOk()) {
+            ($this->createNewDirectoryInStorageDirectoryService)((string) $event->getNumber(), null, true);
+            $renamedFile = new FileUpload([
+                'name' => 'logo.png',
+                'size' => $values->logo->getSize(),
+                'tmp_name' => $values->logo->getTemporaryFile(),
+                'error' => $values->logo->getError(),
+            ]);
+            ($this->uploadToStorageDirectoryService)([$renamedFile], true, (string) $event->getNumber());
+        }
     }
 }

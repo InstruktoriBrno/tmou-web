@@ -14,7 +14,7 @@ class CreateNewDirectoryInStorageDirectoryService
      * @param string $newDirectoryName
      * @param string|null $subdir
      */
-    public function __invoke(string $newDirectoryName, ?string $subdir): void
+    public function __invoke(string $newDirectoryName, ?string $subdir, bool $muteWhenExists = false): void
     {
         $storageDir = __DIR__ . '/../../../www/storage';
         $subpath = $storageDir . '/' . $subdir;
@@ -23,6 +23,9 @@ class CreateNewDirectoryInStorageDirectoryService
         }
         $newDirectoryPath = $subpath . '/' . $newDirectoryName;
         if (file_exists($newDirectoryPath)) {
+            if ($muteWhenExists) {
+                return;
+            }
             throw new \InstruktoriBrno\TMOU\Services\Files\Exceptions\NewDirectoryAlreadyExistsException("Directory {$subpath} already exists.");
         }
         try {
