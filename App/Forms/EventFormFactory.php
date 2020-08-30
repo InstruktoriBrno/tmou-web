@@ -22,12 +22,9 @@ class EventFormFactory
         $form = $this->factory->create();
 
         $form->addGroup('Obecné');
-        $form->addText('name', 'Název')
+        $form->addText('name', 'Název (Motto)')
             ->setRequired('Vyplňte, prosím, název ročníku.')
             ->addRule(Form::MAX_LENGTH, 'Název ročníku může být maximálně 255 znaků dlouhý.', 255);
-        $form->addText('motto', 'Motto')
-            ->setRequired(false)
-            ->addRule(Form::MAX_LENGTH, 'Motto ročníku může být maximálně 255 znaků dlouhý.', 255);
         $form->addText('number', 'Číslo (ročník)')
             ->setType('number')
             ->setHtmlAttribute('step', 1)

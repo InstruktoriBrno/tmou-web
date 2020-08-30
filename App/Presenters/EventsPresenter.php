@@ -118,11 +118,6 @@ final class EventsPresenter extends BasePresenter
                 $input = $form['name'];
                 $input->addError('Název ročníku je příliš dlouhý, maximum je 255 znaků.');
                 return;
-            } catch (\InstruktoriBrno\TMOU\Model\Exceptions\MottoTooLongException $e) {
-                /** @var TextInput $input */
-                $input = $form['motto'];
-                $input->addError('Motto ročníku je příliš dlouhé, maximum je 255 znaků.');
-                return;
             } catch (\InstruktoriBrno\TMOU\Model\Exceptions\InvalidEventNumberException $e) {
                 /** @var TextInput $input */
                 $input = $form['number'];

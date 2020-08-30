@@ -30,7 +30,7 @@ class EventMacroDataProvider
 
     public function getEventMotto(): string
     {
-        return $this->event !== null ? $this->event->getMotto() : '';
+        return ''; // back compatibility, removed as name is used instead of motto
     }
 
     public function getEventTotalTeamCount(): ?string

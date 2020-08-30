@@ -30,7 +30,6 @@ class FindEventForFormService
         return [
             'name' => $object->getName(),
             'number' => $object->getNumber(),
-            'motto' => $object->getMotto(),
             'hasQualification' => $object->hasQualification(),
             'qualificationStart' => $object->getQualificationStart(),
             'qualificationEnd' => $object->getQualificationEnd(),

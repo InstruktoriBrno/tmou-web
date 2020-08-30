@@ -33,12 +33,6 @@ class Event
     protected $number;
 
     /**
-     * @ORM\Column(type="string", length=255)
-     * @var string
-     */
-    protected $motto;
-
-    /**
      * @ORM\Column(type="boolean")
      * @var bool
      */
@@ -119,7 +113,6 @@ class Event
     public function __construct(
         string $name,
         int $number,
-        string $motto,
         bool $hasQualification,
         ?DateTimeImmutable $qualificationStart,
         ?DateTimeImmutable $qualificationEnd,
@@ -137,7 +130,6 @@ class Event
         static::validateDetails(
             $name,
             $number,
-            $motto,
             $hasQualification,
             $qualificationStart,
             $qualificationEnd,
@@ -155,7 +147,6 @@ class Event
 
         $this->name = $name;
         $this->number = $number;
-        $this->motto = $motto;
         $this->hasQualification = $hasQualification;
         $this->qualificationStart = $qualificationStart;
         $this->qualificationEnd = $qualificationEnd;
@@ -174,7 +165,6 @@ class Event
     public function updateDetails(
         string $name,
         int $number,
-        string $motto,
         bool $hasQualification,
         ?DateTimeImmutable $qualificationStart,
         ?DateTimeImmutable $qualificationEnd,
@@ -192,7 +182,6 @@ class Event
         static::validateDetails(
             $name,
             $number,
-            $motto,
             $hasQualification,
             $qualificationStart,
             $qualificationEnd,
@@ -210,7 +199,6 @@ class Event
 
         $this->name = $name;
         $this->number = $number;
-        $this->motto = $motto;
         $this->hasQualification = $hasQualification;
         $this->qualificationStart = $qualificationStart;
         $this->qualificationEnd = $qualificationEnd;
@@ -242,11 +230,6 @@ class Event
     public function getNumber(): int
     {
         return $this->number;
-    }
-
-    public function getMotto(): string
-    {
-        return $this->motto;
     }
 
     public function hasQualification(): bool
@@ -340,7 +323,6 @@ class Event
     public static function validateDetails(
         string $name,
         int $number,
-        string $motto,
         bool $hasQualification,
         ?DateTimeImmutable $qualificationStart,
         ?DateTimeImmutable $qualificationEnd,
@@ -357,9 +339,6 @@ class Event
     ): void {
         if (Strings::length($name) > 255) {
             throw new \InstruktoriBrno\TMOU\Model\Exceptions\NameTooLongException();
-        }
-        if (Strings::length($motto) > 255) {
-            throw new \InstruktoriBrno\TMOU\Model\Exceptions\MottoTooLongException();
         }
         if ($number < 1) {
             throw new \InstruktoriBrno\TMOU\Model\Exceptions\InvalidEventNumberException("Event number must be positive, {$number} given.");

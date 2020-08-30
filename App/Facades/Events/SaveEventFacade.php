@@ -28,7 +28,6 @@ class SaveEventFacade
      * @param Event|null $event
      *
      * @throws \InstruktoriBrno\TMOU\Model\Exceptions\NameTooLongException
-     * @throws \InstruktoriBrno\TMOU\Model\Exceptions\MottoTooLongException
      * @throws \InstruktoriBrno\TMOU\Model\Exceptions\InvalidEventNumberException
      * @throws \InstruktoriBrno\TMOU\Model\Exceptions\MissingQualificationIntervalException
      * @throws \InstruktoriBrno\TMOU\Model\Exceptions\ExcessQualificationIntervalException
@@ -55,7 +54,6 @@ class SaveEventFacade
             $event->updateDetails(
                 $values->name,
                 (int) $values->number,
-                $values->motto,
                 (bool) $values->hasQualification,
                 $values->qualificationStart,
                 $values->qualificationEnd,
@@ -74,7 +72,6 @@ class SaveEventFacade
             $event = new Event(
                 $values->name,
                 (int) $values->number,
-                $values->motto,
                 (bool) $values->hasQualification,
                 $values->qualificationStart,
                 $values->qualificationEnd,

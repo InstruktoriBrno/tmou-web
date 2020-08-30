@@ -109,13 +109,11 @@ class CreateTestDataFacade
         $values = ArrayHash::from(($this->findDefaultEventValuesForFormService)());
         $values->name = ((int) date('y')) + 2; // 21 was in 2019
         $values->number = ((int) date('y')) + 2; // 21 was in 2019
-        $values->motto = 'Máš IQ 150? To ti stačit nebude!';
         $values->paymentPairingCodePrefix = '1190160';
         $values->paymentPairingCodeSuffixLength = 3;
         $event = new Event(
             (string) $values->name,
             $values->number,
-            $values->motto,
             (bool) $values->hasQualification,
             $values->qualificationStart,
             $values->qualificationEnd,

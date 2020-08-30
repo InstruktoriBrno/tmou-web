@@ -36,9 +36,7 @@ class EventsGrid extends Control
 
         $grid->addColumnText('name', 'Název')
             ->setRenderer(function (Event $item): Html {
-                return Html::el('span')
-                    ->setAttribute('title', $item->getMotto())
-                    ->setText($item->getName());
+                return Html::el()->setText($item->getName());
             });
         $grid->addColumnNumber('number', 'Číslo')
             ->setFilterText();
