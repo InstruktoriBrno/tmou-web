@@ -153,7 +153,7 @@ final class TeamsPresenter extends BasePresenter
             $this->flashMessage('Log byl úspěšně vyprázdněn.', Flash::SUCCESS);
             $this->redirect('this', false);
         }
-        $content = file_get_contents($path);
+        $content = @file_get_contents($path);
         $this->template->lines = array_reverse(explode("\n", (string) $content));
     }
 
