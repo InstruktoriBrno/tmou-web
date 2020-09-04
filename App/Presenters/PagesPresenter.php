@@ -10,6 +10,7 @@ use InstruktoriBrno\TMOU\Enums\UserRole;
 use InstruktoriBrno\TMOU\Facades\Discussions\MarkThreadAsReadFacade;
 use InstruktoriBrno\TMOU\Facades\Discussions\SaveNewPostFacade;
 use InstruktoriBrno\TMOU\Facades\Discussions\SaveNewThreadFacade;
+use InstruktoriBrno\TMOU\Facades\Discussions\SaveThreadFacade;
 use InstruktoriBrno\TMOU\Facades\Discussions\ToggleHidePostFacade;
 use InstruktoriBrno\TMOU\Facades\Discussions\ToggleLockThreadFacade;
 use InstruktoriBrno\TMOU\Facades\Teams\ChangeTeamFacade;
@@ -20,6 +21,7 @@ use InstruktoriBrno\TMOU\Facades\Teams\RegisterTeamFacade;
 use InstruktoriBrno\TMOU\Facades\Teams\RequestPasswordResetFacade;
 use InstruktoriBrno\TMOU\Facades\Teams\SaveTeamReviewFacade;
 use InstruktoriBrno\TMOU\Facades\Teams\TeamLoginFacade;
+use InstruktoriBrno\TMOU\Forms\ChangeThreadFormFactory;
 use InstruktoriBrno\TMOU\Forms\NewPostFormFactory;
 use InstruktoriBrno\TMOU\Forms\NewThreadFormFactory;
 use InstruktoriBrno\TMOU\Forms\TeamForgottenPasswordFormFactory;
@@ -33,6 +35,7 @@ use InstruktoriBrno\TMOU\Model\Team;
 use InstruktoriBrno\TMOU\Services\Discussions\FindLastPostsForThreads;
 use InstruktoriBrno\TMOU\Services\Discussions\FindPostService;
 use InstruktoriBrno\TMOU\Services\Discussions\FindThreadAcknowledgementByThreadsAndUserService;
+use InstruktoriBrno\TMOU\Services\Discussions\FindThreadForFormService;
 use InstruktoriBrno\TMOU\Services\Discussions\FindThreadPostsService;
 use InstruktoriBrno\TMOU\Services\Discussions\FindThreadService;
 use InstruktoriBrno\TMOU\Services\Discussions\FindThreadsService;
@@ -133,6 +136,9 @@ final class PagesPresenter extends BasePresenter
     /** @var NewThreadFormFactory @inject */
     public $newThreadFormFactory;
 
+    /** @var ChangeThreadFormFactory @inject */
+    public $changeThreadFormFactory;
+
     /** @var NewPostFormFactory @inject */
     public $newPostFormFactory;
 
@@ -174,6 +180,12 @@ final class PagesPresenter extends BasePresenter
 
     /** @var RememberedNicknameService @inject */
     public $rememberedNicknameService;
+
+    /** @var FindThreadForFormService @inject */
+    public $findThreadForFormService;
+
+    /** @var SaveThreadFacade @inject */
+    public $saveThreadFacade;
 
     /** @var Event|null */
     private $event;
@@ -368,11 +380,16 @@ final class PagesPresenter extends BasePresenter
         $this->template->help = SmallTexyFilter::getSyntaxHelp();
         $this->template->currentPage = $page;
         $this->template->currentUserEntity = $this->getCurrentUserEntity();
+        $this->template->isOrg = $isOrg = $this->user->isInRole(UserRole::ORG);
+        $this->template->now = $now = $this->gameClockService->get();
 
         if ($thread !== null) {
             $threadEntity = ($this->findThreadService)($thread);
             if ($threadEntity === null) {
                 throw new \Nette\Application\BadRequestException("No such thread with ID ${thread}.");
+            }
+            if ($threadEntity->isHidden($now) && !$isOrg) {
+                throw new \Nette\Application\BadRequestException("Thread with ID ${thread} is hidden.", 403);
             }
             $this->template->thread = $threadEntity;
             $this->template->posts = ($this->findThreadPostsService)($threadEntity);
@@ -388,7 +405,7 @@ final class PagesPresenter extends BasePresenter
         } else {
             $page = max(0, $page);
             $this->template->threadsLimit = $threadsLimit = 50;
-            $this->template->threads = $threads = ($this->findThreadsService)($page, $threadsLimit);
+            $this->template->threads = $threads = ($this->findThreadsService)($page, $threadsLimit, $isOrg);
             $this->template->threadsLatestsPosts = ($this->findLastPostsForThreads)($threads);
             $this->template->acks = ($this->findThreadAcknowledgementByThreads)($threads, $this->user);
         }
@@ -694,6 +711,39 @@ final class PagesPresenter extends BasePresenter
             $defaults = array_merge($defaults, ['event' => $this->event->getId()]);
         }
         $form->setDefaults($defaults);
+        return $form;
+    }
+
+    public function createComponentChangeThreadForm(): Form
+    {
+        $threadId = $this->getParameter('thread');
+        if ($threadId === null || !Validators::isNumericInt($threadId)) {
+            throw new \Nette\Application\BadRequestException("Invalid thread ${threadId}.");
+        }
+        $form = $this->changeThreadFormFactory->create(function (Form $form, ArrayHash $values) use ($threadId): void {
+            if (!$this->user->isAllowed(Resource::DISCUSSION, Action::CHANGE_THREAD)) {
+                $this->flashMessage('Nejste oprávněni provádět tuto operaci. Pokud věříte, že jde o chybu, kontaktujte správce.', Flash::DANGER);
+                return;
+            }
+            try {
+                $thread = ($this->saveThreadFacade)($values, (int) $threadId);
+            } catch (\InstruktoriBrno\TMOU\Facades\Discussions\Exceptions\TitleIsTooLongException $e) {
+                $form->addError('Název vlákna může být maximálně 191 znaků dlouhý.');
+                return;
+            } catch (\InstruktoriBrno\TMOU\Facades\Discussions\Exceptions\EventIsClosedException $e) {
+                $this->flashMessage('Toto vlákno již nelze měnit, to lze pouze půl rok po skončení příslušného ročníku.', Flash::WARNING);
+                return;
+            } catch (\InstruktoriBrno\TMOU\Facades\Discussions\Exceptions\NoSuchEventException $e) {
+                $form->addError('Vybraný ročník neexistuje. Kontaktujte, prosím, správce.');
+                return;
+            } catch (\InstruktoriBrno\TMOU\Facades\Discussions\Exceptions\NoSuchThreadException $e) {
+                $form->addError('Vybrané vlákno neexistuje. Kontaktujte, prosím, správce.');
+                return;
+            }
+            $this->flashMessage('Vlákno bylo úspěšně upraveno.', Flash::SUCCESS);
+            $this->redirect('this', ['thread' => $thread->getId()]);
+        });
+        $form->setDefaults(($this->findThreadForFormService)((int) $threadId));
         return $form;
     }
 

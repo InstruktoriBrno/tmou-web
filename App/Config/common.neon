@@ -169,9 +169,12 @@ services:
     - InstruktoriBrno\TMOU\Facades\Files\ChangeStorageFileFacade
     - InstruktoriBrno\TMOU\Forms\NewPostFormFactory
     - InstruktoriBrno\TMOU\Forms\NewThreadFormFactory
+    - InstruktoriBrno\TMOU\Forms\ChangeThreadFormFactory
     - InstruktoriBrno\TMOU\Facades\Discussions\SaveNewThreadFacade
+    - InstruktoriBrno\TMOU\Facades\Discussions\SaveThreadFacade
     - InstruktoriBrno\TMOU\Services\Discussions\FindThreadsService
     - InstruktoriBrno\TMOU\Services\Discussions\FindThreadService
+    - InstruktoriBrno\TMOU\Services\Discussions\FindThreadForFormService
     - InstruktoriBrno\TMOU\Services\Discussions\FindThreadPostsService
     - InstruktoriBrno\TMOU\Facades\Discussions\SaveNewPostFacade
     - InstruktoriBrno\TMOU\Facades\Discussions\ToggleHidePostFacade

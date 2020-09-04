@@ -53,6 +53,12 @@ class Thread
     protected $locked;
 
     /**
+     * @ORM\Column(type="datetime_immutable", nullable=true)
+     * @var DateTimeImmutable|null
+     */
+    protected $revealAt;
+
+    /**
      * @ORM\Column(type="datetime_immutable", nullable=false)
      * @var DateTimeImmutable
      */
@@ -69,7 +75,8 @@ class Thread
         string $title,
         ?Organizator $organizator,
         ?Team $team,
-        bool $locked
+        bool $locked,
+        ?DateTimeImmutable $revealAt = null
     ) {
         if ($organizator === null && $team === null) {
             throw new \InstruktoriBrno\TMOU\Model\Exceptions\ThreadAuthorIsMissingException;
@@ -87,6 +94,7 @@ class Thread
         $this->team = $team;
         $this->locked = $locked;
         $this->createdAt = $this->updatedAt = new DateTimeImmutable();
+        $this->revealAt = $revealAt;
     }
 
     public function getId(): int
@@ -132,6 +140,11 @@ class Thread
         return $this->updatedAt;
     }
 
+    public function getRevealAt(): ?DateTimeImmutable
+    {
+        return $this->revealAt;
+    }
+
     public function touchUpdatedAt(DateTimeImmutable $now): void
     {
         $this->updatedAt = $now;
@@ -150,5 +163,33 @@ class Thread
     public function unlock(): void
     {
         $this->locked = false;
+    }
+
+    public function changeRevealAt(?DateTimeImmutable $revealAt): void
+    {
+        $this->revealAt = $revealAt;
+    }
+
+    public function isHidden(DateTimeImmutable $now): bool
+    {
+        return $this->revealAt !== null && $now < $this->revealAt;
+    }
+
+    /**
+     * @param string $title
+     *
+     * @throws \InstruktoriBrno\TMOU\Model\Exceptions\TitlelTooLongException
+     */
+    public function changeTitle(string $title): void
+    {
+        if (Strings::length($title) > 191) {
+            throw new \InstruktoriBrno\TMOU\Model\Exceptions\TitlelTooLongException;
+        }
+        $this->title = $title;
+    }
+
+    public function changeEvent(?Event $event): void
+    {
+        $this->event = $event;
     }
 }

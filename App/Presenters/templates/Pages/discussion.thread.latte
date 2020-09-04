@@ -7,6 +7,15 @@
     <div id="content">
         <h2>{$thread->getTitle()}</h2>
         <div><span class="badge badge-warning whitespace-pre" n:if="$thread->getEvent() instanceof \InstruktoriBrno\TMOU\Model\Event">TMOU {$thread->getEvent()->getNumber()}</span></div>
+        {if $isOrg}
+            <div>
+                {if $thread->isHidden($now)}
+                    <span class="badge badge-danger" title="{$thread->getRevealAt()->format('j. n. Y. H:i')}">Skryté do {$thread->getRevealAt()->format('j. n. Y. H:i')}</span>
+                {elseif $thread->getRevealAt() !== null}
+                    <span class="badge badge-default" title="{$thread->getRevealAt()->format('j. n. Y. H:i')}">Skryté do {$thread->getRevealAt()->format('j. n. Y. H:i')}</span>
+                {/if}
+            </div>
+        {/if}
         <p><a href="{plink Pages:discussion, page => $currentPage}"><i class="fas fa-arrow-left"></i> Zpět na seznam vláken</a></p>
         {if !isset($posts) || count($posts) === 0}
             <div class="alert alert-info">V současnosti neexistuje žádná příspěvky v tomto vlákně.</div>
@@ -88,6 +97,11 @@
                     <h2 id="new-post">Přidat příspěvek</h2>
                     {control newPostForm}
                     {$help}
+                    {if $isOrg}
+                        <h2 id="change-thread">Upravit vlákno</h2>
+                        {control changeThreadForm}
+                    {/}
+
                 {/if}
                 {if !$thread->isClosed()}
                     {include lockToggle}

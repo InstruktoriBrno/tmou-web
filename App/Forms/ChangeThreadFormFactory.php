@@ -6,7 +6,7 @@ use InstruktoriBrno\TMOU\Services\Events\FindEventsPairsOpenedForDiscussionServi
 use Nette\Application\UI\Form;
 use Nette\SmartObject;
 
-class NewThreadFormFactory
+class ChangeThreadFormFactory
 {
     use SmartObject;
 
@@ -21,7 +21,7 @@ class NewThreadFormFactory
         $this->factory = $factory;
         $this->findEventsPairsOpenedForDiscussionService = $findEventsPairsOpenedForDiscussionService;
     }
-    public function create(callable $onSuccess, bool $isOrg): Form
+    public function create(callable $onSuccess): Form
     {
         $form = $this->factory->create();
         $form->addText('title', 'Název')
@@ -29,17 +29,9 @@ class NewThreadFormFactory
             ->addRule(Form::MAX_LENGTH, 'Délka názvu může být maximálně 191 znaků.', 191);
         $form->addSelect('event', 'Ročník', ($this->findEventsPairsOpenedForDiscussionService)())
             ->setPrompt('Mimo ročníky');
-        $form->addTextArea('content', 'První příspěvek', 40, 10)
-            ->setRequired('Vyplňte, prosím, obsah prvního příspěvku');
-        if (!$isOrg) {
-            $form->addText('nickname', 'Přezdívka')
-                ->setOption('description', 'Volitelná. Objeví se vedle názvu týmu a bude uložena v rámci tohoto přihlášení.');
-        }
-        if ($isOrg) {
-            $form->addDateTimePicker('revealAt', 'Odhalit ve')
-                ->setOption('description', 'Volitelné. Datum a čas odhalení vlákna. Netýká se organizátorů.');
-        }
-        $form->addPrimarySubmit('create', 'Vytvořit');
+        $form->addDateTimePicker('revealAt', 'Odhalit ve')
+            ->setOption('description', 'Volitelné. Datum a čas odhalení vlákna. Netýká se organizátorů.');
+        $form->addPrimarySubmit('create', 'Uložit');
         $form->onSuccess[] = function (BaseForm $form, $values) use ($onSuccess): void {
             $onSuccess($form, $values);
         };

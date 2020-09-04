@@ -14,6 +14,13 @@
             <div>
                 <a class="thread-name" href="{plink this, thread => $thread->getId(), page => $currentPage}" title="{$thread->getTitle()}">{$thread->getTitle()|truncate: 40}</a>
                 <span class="badge badge-warning whitespace-pre" n:if="$thread->getEvent() instanceof \InstruktoriBrno\TMOU\Model\Event">TMOU {$thread->getEvent()->getNumber()}</span>
+                {if $isOrg}
+                    {if $thread->isHidden($now)}
+                        <span class="badge badge-danger" title="{$thread->getRevealAt()->format('j. n. Y. H:i')}">Skryté</span>
+                    {elseif $thread->getRevealAt() !== null}
+                        <span class="badge badge-default" title="{$thread->getRevealAt()->format('j. n. Y. H:i')}">Skryté</span>
+                    {/if}
+                {/if}
                 <span class="block min-w-full xl:float-right xl:inline-block xl:w-auto text-sm xl:min-w-0">
                     {var $lastPost = $threadsLatestsPosts[$thread->getId()] ?? null}
                     {var $lastPostTimestamp = $lastPost !== null ? $lastPost->getCreatedAt()->format('j. n. Y. H:i') : $thread->getUpdatedAt()->format('j. n. Y. H:i')}
