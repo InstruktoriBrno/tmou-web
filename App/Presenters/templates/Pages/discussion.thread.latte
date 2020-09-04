@@ -6,7 +6,7 @@
 
     <div id="content">
         <h2>{$thread->getTitle()}</h2>
-        <div><span class="badge badge-warning whitespace-pre" n:if="$thread->getEvent() instanceof \InstruktoriBrno\TMOU\Model\Event">TMOU {$thread->getEvent()->getNumber()}</span></div>
+        <div><span class="badge badge-warning whitespace-pre" style="filter: brightness({$control->computeGrayscale($thread->getEvent())}%)" n:if="$thread->getEvent() instanceof \InstruktoriBrno\TMOU\Model\Event">TMOU {$thread->getEvent()->getNumber()}</span></div>
         {if $isOrg}
             <div>
                 {if $thread->isHidden($now)}

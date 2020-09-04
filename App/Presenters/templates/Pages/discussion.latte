@@ -13,7 +13,7 @@
             {var $newForCurrentUser = $lastSeenDiscussionAt === null || $lastSeenDiscussionAt < $thread->getUpdatedAt()}
             <div>
                 <a class="thread-name" href="{plink this, thread => $thread->getId(), page => $currentPage}" title="{$thread->getTitle()}">{$thread->getTitle()|truncate: 40}</a>
-                <span class="badge badge-warning whitespace-pre" n:if="$thread->getEvent() instanceof \InstruktoriBrno\TMOU\Model\Event">TMOU {$thread->getEvent()->getNumber()}</span>
+                <span class="badge badge-warning whitespace-pre" style="filter: brightness({$control->computeGrayscale($thread->getEvent())}%)" n:if="$thread->getEvent() instanceof \InstruktoriBrno\TMOU\Model\Event">TMOU {$thread->getEvent()->getNumber()}</span>
                 {if $isOrg}
                     {if $thread->isHidden($now)}
                         <span class="badge badge-danger" title="{$thread->getRevealAt()->format('j. n. Y. H:i')}">Skryté</span>

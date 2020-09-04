@@ -826,4 +826,23 @@ final class PagesPresenter extends BasePresenter
             $this->redirect('this');
         }
     }
+
+    public function computeGrayscale(?Event $event): int
+    {
+        if ($event === null) {
+            return 100;
+        }
+        $nowYear = (int) $this->gameClockService->get()->format('Y');
+        $eventYear = (int) $event->getEventStart()->format('Y');
+        if ($nowYear === $eventYear) {
+            return 100;
+        }
+        if ($nowYear - 1 === $eventYear) {
+            return 90;
+        }
+        if ($nowYear - 2 === $eventYear) {
+            return 80;
+        }
+        return 70;
+    }
 }
