@@ -33,6 +33,17 @@
                         {var $organizatorName = $lastPost->getOrganizator() !== null ? 'Organizátoři (' . $lastPost->getOrganizator()->getGivenName() . ' ' . $lastPost->getOrganizator()->getFamilyName() . ')' : null}
                         <span class="post-team-name" title="{$teamName ?? $organizatorName}">{$teamName ?? $organizatorName}</span>&nbsp;
                     {/if}
+                    {var $postCount = $threadsCounts[$thread->getId()] ?? 0}
+                    <em class="badge badge-light">
+                        {$postCount}
+                        {if $postCount === 1}
+                            příspěvek
+                        {elseif $postCount >= 2 && $postCount <= 4}
+                            příspěvky
+                        {else}
+                            příspěvků
+                        {/if}
+                    </em>
                     {if $newForCurrentUser}
                         <b title="Poslední příspěvek" class="block md:inline-block whitespace-pre">{$lastPostTimestamp}</b>
                     {else}

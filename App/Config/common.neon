@@ -189,6 +189,7 @@ services:
     - InstruktoriBrno\TMOU\Services\Pages\FindPagesInEventService
     - InstruktoriBrno\TMOU\Facades\System\CopyEventContentFacade
     - InstruktoriBrno\TMOU\Services\Discussions\FindLastPostsForThreads
+    - InstruktoriBrno\TMOU\Services\Discussions\FindCountsForThreads
     - InstruktoriBrno\TMOU\Services\Discussions\FindThreadAcknowledgementByOrganizatorService
     - InstruktoriBrno\TMOU\Services\Discussions\FindThreadAcknowledgementByTeamService
     - InstruktoriBrno\TMOU\Services\Discussions\FindThreadAcknowledgementByThreadsAndUserService
