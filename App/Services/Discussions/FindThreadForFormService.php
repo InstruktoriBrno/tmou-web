@@ -3,7 +3,6 @@ namespace InstruktoriBrno\TMOU\Services\Discussions;
 
 use Doctrine\ORM\EntityManagerInterface;
 use InstruktoriBrno\TMOU\Model\Thread;
-use function assert;
 
 class FindThreadForFormService
 {
@@ -19,13 +18,15 @@ class FindThreadForFormService
      * Returns thread with given ID
      *
      * @param int $threadId
-     * @return array
+     * @return null|array{title: string, event: int|null, revealAt: \DateTimeImmutable|null}
      */
-    public function __invoke(int $threadId): array
+    public function __invoke(int $threadId): ?array
     {
-        /** @var Thread $object */
+        /** @var Thread|null $object */
         $object = $this->entityManager->getRepository(Thread::class)->find($threadId);
-        assert($object !== null);
+        if ($object === null) {
+            return null;
+        }
 
         return [
             'title' => $object->getTitle(),

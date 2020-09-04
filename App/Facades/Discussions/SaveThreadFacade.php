@@ -63,7 +63,6 @@ class SaveThreadFacade
             $thread->changeRevealAt($values->revealAt);
             $thread->changeTitle($values->title);
             $thread->changeEvent($event);
-
         } catch (\InstruktoriBrno\TMOU\Model\Exceptions\TitlelTooLongException $exception) {
             throw new \InstruktoriBrno\TMOU\Facades\Discussions\Exceptions\TitleIsTooLongException;
         }

@@ -1,7 +1,6 @@
 <?php declare(strict_types=1);
 namespace InstruktoriBrno\TMOU\Services\Discussions;
 
-use Doctrine\Common\Collections\Criteria;
 use Doctrine\ORM\EntityManagerInterface;
 use InstruktoriBrno\TMOU\Model\Thread;
 use InstruktoriBrno\TMOU\Services\System\GameClockService;
