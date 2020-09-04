@@ -40,6 +40,21 @@ body.on('click', '.insert-discussion-quote', function () {
     insertAtCursor2(input, textToInsert);
 });
 
+body.on('click', '.copy-link-to-clipboard', function () {
+    const link = this.getAttribute('data-content');
+    if (!link) {
+        return;
+    }
+    const el = document.createElement('textarea');
+    el.value = link;
+    document.body.appendChild(el);
+    el.select();
+    document.execCommand('copy');
+    document.body.removeChild(el);
+
+    alert('Odkaz byl zkopírován do schránky.');
+});
+
 $(function(){
     var focusablePost = $('.post-focus');
     if (!focusablePost.length) {

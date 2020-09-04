@@ -541,4 +541,12 @@ blockquote {
     @apply border-l-2 border-gray-400 ml-0 pl-4 bg-gray-100
 }
 
+/* This moves a.anchor to top to prevent content hidden under header in small layouts */
+a.anchor {
+    display: block;
+    position: relative;
+    top: -250px;
+    visibility: hidden;
+}
+
 /*! purgecss end ignore */

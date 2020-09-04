@@ -29,7 +29,8 @@
                     <a id="end"></a>
                 {/last}
                 {var $lastSeenDiscussionAt = isset($acks[$thread->getId()]) ? $acks[$thread->getId()]->getAt() : null}
-                <div id="post-{$iterator->getCounter()}" {if ($lastSeenDiscussionAt === null || $post->getCreatedAt() > $lastSeenDiscussionAt) && !$firstUnseenMarked}class="post-focus" {var $firstUnseenMarked = true}{/if}>
+                <a id="post-{$iterator->getCounter()}" class="anchor"></a>
+                <div {if ($lastSeenDiscussionAt === null || $post->getCreatedAt() > $lastSeenDiscussionAt) && !$firstUnseenMarked}class="post-focus" {var $firstUnseenMarked = true}{/if}>
                     {var $author = $post->getTeam() ?? $post->getOrganizator()}
                     {var $newForCurrentUser = $lastSeenDiscussionAt === null || $lastSeenDiscussionAt < $post->getCreatedAt()}
                     {var $teamName = $post->getTeam() !== null ? $post->getTeam()->getName() : null}
@@ -44,6 +45,7 @@
                         {if $user->isLoggedIn() && !$thread->isLocked()}
                             <a href="#new-post" class="insert-discussion-ref" data-id="{$iterator->getCounter()}">odkázat</a>
                             <a href="#new-post" class="insert-discussion-quote" data-content="{$post->getContent()}">citovat</a>
+                            <a href="#post-{$iterator->getCounter()}" class="copy-link-to-clipboard" data-content="{plink //this}#post-{$iterator->getCounter()}">odkaz</a>
                         {/if}
                         <span class="inline-block float-left sm:float-right">
                             {if $newForCurrentUser}
