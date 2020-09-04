@@ -252,6 +252,13 @@
             {if isset($hasFileManager) && $hasFileManager}
                 <script src="{$basePath}/assets/js/filemanager-opener.js?{$buildTime}"></script>
             {/if}
+            {if $presenter->isLinkCurrent('Pages:*')}
+                <script src="{$basePath}/assets/js/jquery.tableHeadFixer.js"></script>
+                <script>
+                    $("table.stick-1-left-columns").tableHeadFixer({'left' : 1});
+                    $("table.stick-2-left-columns").tableHeadFixer({'left' : 2});
+                </script>
+            {/if}
         {/block}
     </body>
 </html>

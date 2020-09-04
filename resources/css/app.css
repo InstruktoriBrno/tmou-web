@@ -549,4 +549,15 @@ a.anchor {
     visibility: hidden;
 }
 
+/* Force max height on table-responsive-scrollable to allow sticky header and hide all other thead to prevent empty space after the table */
+@media only screen and (max-height: 800px) {
+    .table-responsive-max-height,
+    .table-responsive-max-height {
+        max-height: calc(100vh - 180px);
+    }
+    .table-responsive-max-height thead:not(:first-of-type) {
+        display: none;
+    }
+}
+
 /*! purgecss end ignore */
