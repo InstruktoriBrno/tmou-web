@@ -121,7 +121,7 @@ final class EventsPresenter extends BasePresenter
             } catch (\InstruktoriBrno\TMOU\Model\Exceptions\InvalidEventNumberException $e) {
                 /** @var TextInput $input */
                 $input = $form['number'];
-                $input->addError('Číslo ročníku není číslo nebo není kladné.');
+                $input->addError('Číslo ročníku není číslo nebo je rovno 0, povoleny jsou kladné hodnoty pro běžné ročníky a záporné hodnoty pro ročníky alternativní.');
                 return;
             } catch (\InstruktoriBrno\TMOU\Model\Exceptions\MissingQualificationIntervalException $e) {
                 $form->addError('Termín kvalifikace je neúplný. Nastavte buď oba termíny, nebo žádný (pokud není známý).');

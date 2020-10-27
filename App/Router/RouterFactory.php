@@ -17,24 +17,24 @@ final class RouterFactory
         $router = new RouteList();
 
         // Discussions
-        $router[] = new Route('[<eventNumber \d+>/]page/discussion[/thread/<thread>]', 'Pages:discussion');
+        $router[] = new Route('[<eventNumber \-?\d+>/]page/discussion[/thread/<thread>]', 'Pages:discussion');
 
         // Pages (reserved and with slug)
-        $router[] = new Route('[<eventNumber \d+>/]page/<slug>', 'Pages:show');
-        $router[] = new Route('[<eventNumber \d+>/]page/<action>', 'Pages:show');
+        $router[] = new Route('[<eventNumber \-?\d+>/]page/<slug>', 'Pages:show');
+        $router[] = new Route('[<eventNumber \-?\d+>/]page/<action>', 'Pages:show');
 
         // Administration of events
         $router[] = new Route('admin/events/<action>', 'Events:default');
 
         // Administration of menu items
-        $router[] = new Route('admin/menu-items/[<eventNumber \d+>/]<action>', 'Menu:default');
+        $router[] = new Route('admin/menu-items/[<eventNumber \-?\d+>/]<action>', 'Menu:default');
 
         // Administration of pages
-        $router[] = new Route('admin/pages/[<eventNumber \d+>/][<action>]', 'AdminPages:default');
+        $router[] = new Route('admin/pages/[<eventNumber \-?\d+>/][<action>]', 'AdminPages:default');
 
         // Administration of pages
         $router[] = new Route('admin/teams/payments', 'Teams:payments');
-        $router[] = new Route('admin/teams/[<eventNumber \d+>/][<action>]', 'Teams:default');
+        $router[] = new Route('admin/teams/[<eventNumber \-?\d+>/][<action>]', 'Teams:default');
 
         // Administration of users (login, logout, organizators...)
         $router[] = new Route('admin/<action>', 'Admin:default');

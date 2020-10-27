@@ -28,9 +28,14 @@ class EventFormFactory
         $form->addText('number', 'Číslo (ročník)')
             ->setType('number')
             ->setHtmlAttribute('step', 1)
-            ->setHtmlAttribute('min', 1)
             ->setRequired('Vyplňte, prosím, číslo ročníku.')
-            ->addRule(Form::MIN, 'Číslo ročníku musí být kladné.', 1);
+            ->addRule(Form::NUMERIC, 'Číslo ročníku musí být přirozené číslo vyjma 0.');
+        $form->addText('sorting', 'Číslo pro řazení')
+            ->setRequired(false)
+            ->setHtmlAttribute('step', 0.01)
+            ->setType('number')
+            ->addRule(Form::FLOAT, 'Číslo ročníku pro řazení musí být buď prádzné, nebo reálné číslo.')
+            ->setOption('description', 'Reálné číslo pro řazení, pokud ponecháte prázdné bude nastaveno na číslo ročníku. Použivejte maximálně setiny.');
         $form->addUpload('logo', 'Logo')
             ->setRequired(false)
             ->addRule(Form::MIME_TYPE, 'Nahrávané logo musí být ve formátu PNG.', ['image/png'])

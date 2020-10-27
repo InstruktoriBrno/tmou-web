@@ -80,6 +80,7 @@ class SaveEventFacade
                 $values->amount === '' ? null : (int) $values->amount,
                 $values->paymentDeadline,
                 $values->selfreportedEntryFee,
+                $values->sorting ? (float) $values->sorting : null,
             );
         } else {
             $event = new Event(
@@ -99,6 +100,7 @@ class SaveEventFacade
                 $values->amount === '' ? null : (int) $values->amount,
                 $values->paymentDeadline,
                 $values->selfreportedEntryFee,
+                $values->sorting ? (float) $values->sorting : null,
             );
         }
         if (!($this->isEventNumberUniqueService)($event)) {

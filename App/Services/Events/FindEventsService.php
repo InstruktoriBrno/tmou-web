@@ -3,6 +3,7 @@ namespace InstruktoriBrno\TMOU\Services\Events;
 
 use Doctrine\ORM\EntityManagerInterface;
 use InstruktoriBrno\TMOU\Model\Event;
+use function array_column;
 
 class FindEventsService
 {
@@ -15,12 +16,18 @@ class FindEventsService
     }
 
     /**
-     * Returns all events sorted by number in descending manner
+     * Returns all events sorted by COALESCE(sorting, number) in descending manner
      *
      * @return Event[]
      */
     public function __invoke(): array
     {
-        return $this->entityManager->getRepository(Event::class)->findBy([], ['number' => 'DESC']);
+        $qb = $this->entityManager->createQueryBuilder();
+        $output = $qb->select('Event, COALESCE(Event.sorting, Event.number) as numberOrder')
+            ->from(Event::class, 'Event')
+            ->addOrderBy('numberOrder', 'DESC')
+            ->getQuery()
+            ->execute();
+        return array_column($output, 0);
     }
 }

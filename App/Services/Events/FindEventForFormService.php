@@ -44,6 +44,7 @@ class FindEventForFormService
             'amount' => $object->getAmount(),
             'paymentDeadline' => $object->getPaymentDeadline(),
             'selfreportedEntryFee' => $object->isSelfreportedEntryFeeEnabled(),
+            'sorting' => $object->getSorting(),
         ];
     }
 }

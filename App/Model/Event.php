@@ -33,6 +33,12 @@ class Event
     protected $number;
 
     /**
+     * @ORM\Column(type="float", nullable=true)
+     * @var float|null
+     */
+    protected $sorting;
+
+    /**
      * @ORM\Column(type="boolean")
      * @var bool
      */
@@ -132,7 +138,8 @@ class Event
         ?int $paymentPairingCodeSuffixLength,
         ?int $amount,
         ?DateTimeImmutable $paymentDeadline,
-        bool $selfreportedEntryFee = false
+        bool $selfreportedEntryFee = false,
+        ?float $sorting = null
     ) {
         static::validateDetails(
             $name,
@@ -151,6 +158,7 @@ class Event
             $amount,
             $paymentDeadline,
             $selfreportedEntryFee,
+            $sorting,
         );
 
         $this->name = $name;
@@ -169,6 +177,7 @@ class Event
         $this->amount = $amount;
         $this->paymentDeadline = $paymentDeadline;
         $this->selfreportedEntryFee = $selfreportedEntryFee;
+        $this->sorting = $sorting;
     }
 
     public function updateDetails(
@@ -187,7 +196,8 @@ class Event
         ?int $paymentPairingCodeSuffixLength,
         ?int $amount,
         ?DateTimeImmutable $paymentDeadline,
-        bool $selfreportedEntryFee = false
+        bool $selfreportedEntryFee = false,
+        ?float $sorting = null
     ): void {
         static::validateDetails(
             $name,
@@ -205,7 +215,8 @@ class Event
             $paymentPairingCodeSuffixLength,
             $amount,
             $paymentDeadline,
-            $selfreportedEntryFee
+            $selfreportedEntryFee,
+            $sorting
         );
 
         $this->name = $name;
@@ -224,6 +235,7 @@ class Event
         $this->amount = $amount;
         $this->paymentDeadline = $paymentDeadline;
         $this->selfreportedEntryFee = $selfreportedEntryFee;
+        $this->sorting = $sorting;
     }
 
     public function getId(): int
@@ -337,6 +349,11 @@ class Event
         return $this->selfreportedEntryFee;
     }
 
+    public function getSorting(): ?float
+    {
+        return $this->sorting;
+    }
+
     public static function validateDetails(
         string $name,
         int $number,
@@ -353,13 +370,14 @@ class Event
         ?int $paymentPairingCodeSuffixLength,
         ?int $amount,
         ?DateTimeImmutable $paymentDeadline,
-        bool $selfreportedEntryFee
+        bool $selfreportedEntryFee,
+        ?float $sorting
     ): void {
         if (Strings::length($name) > 255) {
             throw new \InstruktoriBrno\TMOU\Model\Exceptions\NameTooLongException();
         }
-        if ($number < 1) {
-            throw new \InstruktoriBrno\TMOU\Model\Exceptions\InvalidEventNumberException("Event number must be positive, {$number} given.");
+        if ($number === 0) {
+            throw new \InstruktoriBrno\TMOU\Model\Exceptions\InvalidEventNumberException("Event number must not be 0, {$number} given.");
         }
         if ($hasQualification && (($qualificationStart === null && $qualificationEnd !== null) || ($qualificationStart !== null && $qualificationEnd === null))) {
             throw new \InstruktoriBrno\TMOU\Model\Exceptions\MissingQualificationIntervalException();
