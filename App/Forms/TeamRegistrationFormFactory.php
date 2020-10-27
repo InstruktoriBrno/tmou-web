@@ -139,6 +139,11 @@ class TeamRegistrationFormFactory
         $form->onSuccess[] = function (BaseForm $form, $values) use ($onSuccess): void {
             $onSuccess($form, $values);
         };
+        $form->onError[] = function (BaseForm $form): void {
+            if (count($form->getOwnErrors()) === 0) {
+                $form->addError('Formulář obsahuje chyby, a proto nebyl uložen. Jednotlivé chyby naleznete u příslušných polí.');
+            }
+        };
         return $form;
     }
 }
