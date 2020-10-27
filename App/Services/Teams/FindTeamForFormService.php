@@ -44,6 +44,9 @@ class FindTeamForFormService
             'email' => $team->getEmail(),
             'phone' => $team->getPhone(),
             'members' => $members,
+            'selfreportedFeeOrganization' => $team->getSelfreportedFeeOrganization(),
+            'selfreportedFeeAmount' => $team->getSelfreportedFeeAmount(),
+            'selfreportedFeePublic' => $team->isSelfreportedFeePublic(),
         ];
     }
 }

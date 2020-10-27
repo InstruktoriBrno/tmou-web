@@ -3,6 +3,9 @@
         <p class="team-item">
             {var $teamAverageAge = $team->getMembersAverageAge()}
             <span class="team-name font-bold">{$team->getName()}</span> (číslo <b>{$team->getNumber()}</b>, členů {$team->getMembersCount()}{if $teamAverageAge}, průměrný věk {$teamAverageAge|number: 1, ',', ''} let{/if})<br>
+            {if $team->getEvent()->isSelfreportedEntryFeeEnabled() && $team->isSelfreportedFeePublic()}
+                <em>{$team->getSelfreportedFeeOrganization()} {$team->getSelfreportedFeeAmount()}&nbsp;Kč</em><br />
+            {/if}
             {foreach $team->getMembers() as $member}
                 {$member->getFullName()}{sep}, {/sep}
             {/foreach}

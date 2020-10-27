@@ -85,6 +85,12 @@ class EventFormFactory
             ->addConditionOn($amount, Form::FILLED)
                 ->addRule(Form::FILLED, 'Vyplňte, prosím, deadline párování plateb.');
 
+        $form->addGroup('Sebereportované startovné');
+        $form->addCheckbox('selfreportedEntryFee', 'Zapnuto')
+            ->setOption(
+                'description',
+                'Povolí v nastavení týmu pole pro sebereportované startovné, zapne automatické nastavení týmů do stavu zaplaceno a hrající pokud částka dosáhne výše uvedeného startovné.'
+            );
         $form->addPrimarySubmit('send', 'Uložit');
         $form->onSuccess[] = function (BaseForm $form, $values) use ($onSuccess): void {
             $onSuccess($form, $values);

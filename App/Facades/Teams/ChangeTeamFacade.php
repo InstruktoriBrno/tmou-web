@@ -2,6 +2,8 @@
 namespace InstruktoriBrno\TMOU\Facades\Teams;
 
 use Doctrine\ORM\EntityManagerInterface;
+use InstruktoriBrno\TMOU\Enums\GameStatus;
+use InstruktoriBrno\TMOU\Enums\PaymentStatus;
 use InstruktoriBrno\TMOU\Enums\UserRole;
 use InstruktoriBrno\TMOU\Model\TeamMember;
 use InstruktoriBrno\TMOU\Services\System\GameClockService;
@@ -52,6 +54,7 @@ class ChangeTeamFacade
      * @param ArrayHash $values
      * @param User $user
      * @param bool $isImpersonated
+     * @return bool|null true if selfreported fee was enought to set team as playing and paid, false if not, null when selreported fee is not enabled.
      *
      * @throws \InstruktoriBrno\TMOU\Model\Exceptions\NameTooLongException
      * @throws \InstruktoriBrno\TMOU\Model\Exceptions\PhraseTooLongException
@@ -66,7 +69,7 @@ class ChangeTeamFacade
      * @throws \InstruktoriBrno\TMOU\Facades\Teams\Exceptions\OutOfRegistrationIntervalException
      * @throws \InstruktoriBrno\TMOU\Facades\Teams\Exceptions\NoSuchTeamException
      */
-    public function __invoke(ArrayHash $values, User $user, bool $isImpersonated = false): void
+    public function __invoke(ArrayHash $values, User $user, bool $isImpersonated = false): ?bool
     {
         if (!$user->isInRole(UserRole::TEAM)) {
             throw new \InstruktoriBrno\TMOU\Exceptions\LogicException('Should not been called for non-team users.');
@@ -83,6 +86,11 @@ class ChangeTeamFacade
             $values->email = $team->getEmail();
             $values->phrase = $team->getPhrase();
             $values->phone = $team->getPhone();
+            if ($team->getEvent()->isSelfreportedEntryFeeEnabled()) {
+                $values->selfreportedFeeOrganization = $team->getSelfreportedFeeOrganization();
+                $values->selfreportedFeeAmount = $team->getSelfreportedFeeAmount();
+                $values->selfreportedFeePublic = $team->isSelfreportedFeePublic();
+            }
         }
 
         $membersToSave = [];
@@ -120,7 +128,10 @@ class ChangeTeamFacade
             $values->phrase,
             $values->phone,
             $this->gameClockService->get(),
-            $membersToSave
+            $membersToSave,
+            isset($values->selfreportedFeeOrganization) && $values->selfreportedFeeOrganization !== '' ? $values->selfreportedFeeOrganization : null,
+            isset($values->selfreportedFeeAmount) && $values->selfreportedFeeAmount ? $values->selfreportedFeeAmount : null,
+            isset($values->selfreportedFeePublic) && $values->selfreportedFeePublic ? $values->selfreportedFeePublic : null
         );
 
         if (!($this->isTeamNameInEventUniqueService)($team)) {
@@ -128,6 +139,23 @@ class ChangeTeamFacade
         }
         if (!($this->isTeamEmailInEventUniqueService)($team)) {
             throw new \InstruktoriBrno\TMOU\Facades\Teams\Exceptions\DuplicateEmailInEventException;
+        }
+
+        $output = null;
+        if (!$isAfterDeadline
+            && $team->getEvent()->isSelfreportedEntryFeeEnabled()
+            && isset($values->selfreportedFeeAmount)
+            && $values->selfreportedFeeAmount
+            && $team->getPaymentStatus()->equals(PaymentStatus::NOT_PAID())
+            && ($team->getGameStatus()->equals(GameStatus::REGISTERED()) || $team->getGameStatus()->equals(GameStatus::QUALIFIED()))
+        ) {
+            if ($values->selfreportedFeeAmount >= $team->getEvent()->getAmount()) {
+                $team->markAsPaid($this->gameClockService->get());
+                $team->changeTeamGameStatus(GameStatus::PLAYING());
+                $output = true;
+            } else {
+                $output = false;
+            }
         }
 
         $this->entityManager->persist($team);
@@ -140,5 +168,6 @@ class ChangeTeamFacade
         if ($isAfterDeadline) {
             throw new \InstruktoriBrno\TMOU\Facades\Teams\Exceptions\OutOfRegistrationIntervalException;
         }
+        return $output;
     }
 }

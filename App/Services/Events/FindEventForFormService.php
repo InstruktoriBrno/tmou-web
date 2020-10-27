@@ -43,6 +43,7 @@ class FindEventForFormService
             'paymentPairingCodeSuffixLength' => $object->getPaymentPairingCodeSuffixLength(),
             'amount' => $object->getAmount(),
             'paymentDeadline' => $object->getPaymentDeadline(),
+            'selfreportedEntryFee' => $object->isSelfreportedEntryFeeEnabled(),
         ];
     }
 }

@@ -504,8 +504,18 @@ final class PagesPresenter extends BasePresenter
                 return;
             }
             try {
-                ($this->changeTeamFacade)($values, $this->user, $this->isImpersonated());
-                $this->flashMessage('Údaje vašeho týmu byly úspěšně změněny.', Flash::SUCCESS);
+                $output = ($this->changeTeamFacade)($values, $this->user, $this->isImpersonated());
+                if ($output === true) {
+                    $this->flashMessage('Údaje vašeho týmu byly úspěšně změněny a stav vašeho týmu byl změněn jako zaplacený a hrající.', Flash::SUCCESS);
+                } elseif ($output === false) {
+                    $this->flashMessage(
+                        'Údaje vašeho týmu byly úspěšně změněny avšak zaplacená částka je nižší než minimální startovné a tak váš tým nebyl nastaven jako zaplacený a hrající.',
+                        Flash::WARNING
+                    );
+                } else {
+                    $this->flashMessage('Údaje vašeho týmu byly úspěšně změněny.', Flash::SUCCESS);
+                }
+
                 $this->redirect('Pages:settings', $event->getNumber());
             } catch (\InstruktoriBrno\TMOU\Model\Exceptions\NameTooLongException $exception) {
                 /** @var TextInput $input */
@@ -555,7 +565,8 @@ final class PagesPresenter extends BasePresenter
             }
         },
             false,
-            $event->getChangeDeadlineComputed() !== null && $event->getChangeDeadlineComputed() < $this->gameClockService->get());
+            $event->getChangeDeadlineComputed() !== null && $event->getChangeDeadlineComputed() < $this->gameClockService->get(),
+            $event->isSelfreportedEntryFeeEnabled());
         $data = ($this->findTeamForFormService)($this->user->getId());
         $form->setDefaults($data);
 

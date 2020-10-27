@@ -143,6 +143,24 @@ class Team
     protected $review;
 
     /**
+     * @ORM\Column(type="string", nullable=true)
+     * @var string|null
+     */
+    protected $selfreportedFeeOrganization;
+
+    /**
+     * @ORM\Column(type="integer", nullable=true)
+     * @var int|null
+     */
+    protected $selfreportedFeeAmount;
+
+    /**
+     * @ORM\Column(type="boolean", nullable=true)
+     * @var bool|null
+     */
+    protected $selfreportedFeePublic;
+
+    /**
      * Team constructor.
      * @param Event $event
      * @param int $number
@@ -203,6 +221,9 @@ class Team
      * @param string $phone
      * @param DateTimeImmutable $updatedAt
      * @param TeamMember[] $members
+     * @param string|null $selfreportedFeeOrganization
+     * @param int|null $selfreportedFeeAmount
+     * @param bool|null $selfreportedFeePublic
      *
      * @throws \InstruktoriBrno\TMOU\Model\Exceptions\NameTooLongException
      * @throws \InstruktoriBrno\TMOU\Model\Exceptions\PhraseTooLongException
@@ -221,7 +242,10 @@ class Team
         string $phrase,
         string $phone,
         DateTimeImmutable $updatedAt,
-        array $members
+        array $members,
+        ?string $selfreportedFeeOrganization,
+        ?int $selfreportedFeeAmount,
+        ?bool $selfreportedFeePublic
     ): void {
         $this->validateDetails($name, $phrase, $email, $password, $members, $newPassword);
 
@@ -233,6 +257,9 @@ class Team
         $this->phrase = $phrase;
         $this->phone = $phone;
         $this->lastUpdatedAt = $updatedAt;
+        $this->selfreportedFeeOrganization = $selfreportedFeeOrganization;
+        $this->selfreportedFeeAmount = $selfreportedFeeAmount;
+        $this->selfreportedFeePublic = $selfreportedFeePublic;
 
         // Add new
         $memberNumbers = [];
@@ -527,6 +554,21 @@ class Team
     public function getReview(): ?TeamReview
     {
         return $this->review;
+    }
+
+    public function getSelfreportedFeeOrganization(): ?string
+    {
+        return $this->selfreportedFeeOrganization;
+    }
+
+    public function getSelfreportedFeeAmount(): ?int
+    {
+        return $this->selfreportedFeeAmount;
+    }
+
+    public function isSelfreportedFeePublic(): ?bool
+    {
+        return $this->selfreportedFeePublic;
     }
 
     public function getShortcut(): string

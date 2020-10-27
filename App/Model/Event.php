@@ -110,6 +110,12 @@ class Event
      */
     protected $paymentDeadline;
 
+    /**
+     * @ORM\Column(type="boolean")
+     * @var bool
+     */
+    protected $selfreportedEntryFee;
+
     public function __construct(
         string $name,
         int $number,
@@ -125,7 +131,8 @@ class Event
         ?string $paymentPairingCodePrefix,
         ?int $paymentPairingCodeSuffixLength,
         ?int $amount,
-        ?DateTimeImmutable $paymentDeadline
+        ?DateTimeImmutable $paymentDeadline,
+        bool $selfreportedEntryFee = false
     ) {
         static::validateDetails(
             $name,
@@ -142,7 +149,8 @@ class Event
             $paymentPairingCodePrefix,
             $paymentPairingCodeSuffixLength,
             $amount,
-            $paymentDeadline
+            $paymentDeadline,
+            $selfreportedEntryFee,
         );
 
         $this->name = $name;
@@ -160,6 +168,7 @@ class Event
         $this->paymentPairingCodeSuffixLength = $paymentPairingCodeSuffixLength;
         $this->amount = $amount;
         $this->paymentDeadline = $paymentDeadline;
+        $this->selfreportedEntryFee = $selfreportedEntryFee;
     }
 
     public function updateDetails(
@@ -177,7 +186,8 @@ class Event
         ?string $paymentPairingCodePrefix,
         ?int $paymentPairingCodeSuffixLength,
         ?int $amount,
-        ?DateTimeImmutable $paymentDeadline
+        ?DateTimeImmutable $paymentDeadline,
+        bool $selfreportedEntryFee = false
     ): void {
         static::validateDetails(
             $name,
@@ -194,7 +204,8 @@ class Event
             $paymentPairingCodePrefix,
             $paymentPairingCodeSuffixLength,
             $amount,
-            $paymentDeadline
+            $paymentDeadline,
+            $selfreportedEntryFee
         );
 
         $this->name = $name;
@@ -212,6 +223,7 @@ class Event
         $this->paymentPairingCodeSuffixLength = $paymentPairingCodeSuffixLength;
         $this->amount = $amount;
         $this->paymentDeadline = $paymentDeadline;
+        $this->selfreportedEntryFee = $selfreportedEntryFee;
     }
 
     public function getId(): int
@@ -320,6 +332,11 @@ class Event
         return $this->paymentDeadline;
     }
 
+    public function isSelfreportedEntryFeeEnabled(): bool
+    {
+        return $this->selfreportedEntryFee;
+    }
+
     public static function validateDetails(
         string $name,
         int $number,
@@ -335,7 +352,8 @@ class Event
         ?string $paymentPairingCodePrefix,
         ?int $paymentPairingCodeSuffixLength,
         ?int $amount,
-        ?DateTimeImmutable $paymentDeadline
+        ?DateTimeImmutable $paymentDeadline,
+        bool $selfreportedEntryFee
     ): void {
         if (Strings::length($name) > 255) {
             throw new \InstruktoriBrno\TMOU\Model\Exceptions\NameTooLongException();

@@ -16,7 +16,7 @@ class TeamRegistrationFormFactory
     {
         $this->factory = $factory;
     }
-    public function create(callable $onSuccess, bool $registration, bool $isAfterDeadline): Form
+    public function create(callable $onSuccess, bool $registration, bool $isAfterDeadline, bool $showSelfreportedFee = false): Form
     {
         $form = $this->factory->create();
 
@@ -83,6 +83,31 @@ class TeamRegistrationFormFactory
             }
         }
 
+        if (!$registration && $showSelfreportedFee) {
+            $form->addGroup('Sebereportované startovné');
+            $feeOrganization = $form->addText('selfreportedFeeOrganization', 'Název organizace')
+                ->setRequired(false);
+            $feeAmount = $form->addText('selfreportedFeeAmount', 'Částka')
+                ->setRequired(false)
+                ->setOption('description', 'Prázdné, nebo částka v celých korunách.')
+                ->addRule(Form::INTEGER, 'Zaplacená částka musí být nezáporná částka v celých korunách.')
+                ->addRule(Form::MIN, 'Zaplacená částka musí být nezáporná částka v celých korunách.', 0);
+            $feeAmount->setOption('description', 'Pokud chcete být zařazeni mezi zaplacené a hrající hráče, pak musí být zaplacená částka vyšší než startovné.');
+            $feePublic = $form->addCheckbox('selfreportedFeePublic', 'Zveřejnit v seznamu týmů')
+                ->setRequired(false);
+
+            // Conditional validations
+            $feeOrganization
+                ->addConditionOn($feeAmount, Form::FILLED)
+                ->setRequired('V případě, že vyplníte zaplacenou částku musíte vyplnit i název organizace.');
+            $feeAmount
+                ->addConditionOn($feeOrganization, Form::FILLED)
+                ->setRequired('V případě, že vyplníte název organizace musíte vyplnit i zaplacenou částku.');
+            $feeOrganization
+                ->addConditionOn($feePublic, Form::FILLED)
+                ->setRequired('V případě, že souhlasíte se zveřejněním v seznamu týmů musíte vyplnit i název organizace a zaplacenou částku.');
+        }
+
         if (!$registration) {
             $form->addGroup('Potvrzení změn');
             $form->addPassword('oldPassword', 'Současné heslo')
@@ -92,16 +117,22 @@ class TeamRegistrationFormFactory
             $password->addRule(Form::EQUAL, 'Hesla se musí shodovat.', $password2);
             $password2->setRequired(false);
         }
+
+        if ($registration) {
+            $form->addInvisibleReCaptcha('recaptcha')
+                ->setRequired('Ověřte, prosím, že jste člověk.');
+        }
+
         if ($isAfterDeadline) {
             $name->setDisabled(true);
             $phrase->setDisabled(true);
             $phone->setDisabled(true);
             $teamEmail->setDisabled(true);
-        }
-
-        if ($registration) {
-            $form->addInvisibleReCaptcha('recaptcha')
-                ->setRequired('Ověřte, prosím, že jste člověk.');
+            if (isset($feeOrganization, $feeAmount, $feePublic)) {
+                $feeOrganization->setDisabled(true);
+                $feeAmount->setDisabled(true);
+                $feePublic->setDisabled(true);
+            }
         }
 
         $form->addPrimarySubmit('send', $registration ? 'Registrovat' : 'Uložit');

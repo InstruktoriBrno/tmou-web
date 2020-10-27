@@ -78,7 +78,8 @@ class SaveEventFacade
                 $values->paymentPairingCodePrefix === '' ? null : $values->paymentPairingCodePrefix,
                 $values->paymentPairingCodeSuffixLength === '' ? null : (int) $values->paymentPairingCodeSuffixLength,
                 $values->amount === '' ? null : (int) $values->amount,
-                $values->paymentDeadline
+                $values->paymentDeadline,
+                $values->selfreportedEntryFee,
             );
         } else {
             $event = new Event(
@@ -96,7 +97,8 @@ class SaveEventFacade
                 $values->paymentPairingCodePrefix === '' ? null : $values->paymentPairingCodePrefix,
                 $values->paymentPairingCodeSuffixLength === '' ? null : (int) $values->paymentPairingCodeSuffixLength,
                 $values->amount === '' ? null : (int) $values->amount,
-                $values->paymentDeadline
+                $values->paymentDeadline,
+                $values->selfreportedEntryFee,
             );
         }
         if (!($this->isEventNumberUniqueService)($event)) {
