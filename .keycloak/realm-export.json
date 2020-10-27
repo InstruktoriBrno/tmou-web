@@ -271,8 +271,8 @@
   },
   "groups" : [ {
     "id" : "8ee386f8-8fbd-43f7-9d65-f6ec1d325044",
-    "name" : "Organizátoři TMOU",
-    "path" : "/Organizátoři TMOU",
+    "name" : "akce_tmou-web",
+    "path" : "/akce_tmou-web",
     "attributes" : { },
     "realmRoles" : [ ],
     "clientRoles" : { },
@@ -373,7 +373,7 @@
       "account" : [ "manage-account", "view-profile" ]
     },
     "notBefore" : 0,
-    "groups" : [ "/Organizátoři TMOU" ]
+    "groups" : [ "/akce_tmou-web" ]
   }, {
     "id" : "d79791a8-110f-4886-b5da-3c9826e02696",
     "createdTimestamp" : 1555611928174,
@@ -402,7 +402,7 @@
       "account" : [ "manage-account", "view-profile" ]
     },
     "notBefore" : 0,
-    "groups" : [ "/Organizátoři TMOU" ]
+    "groups" : [ "/akce_tmou-web" ]
   }, {
     "id" : "1b309f99-8aec-4b43-bfa3-f0949cdc4537",
     "createdTimestamp" : 1555611928180,
@@ -431,7 +431,7 @@
       "account" : [ "manage-account", "view-profile" ]
     },
     "notBefore" : 0,
-    "groups" : [ "/Organizátoři TMOU" ]
+    "groups" : [ "/akce_tmou-web" ]
   } ],
   "scopeMappings" : [ {
     "clientScope" : "offline_access",
@@ -596,7 +596,7 @@
     "enabled" : true,
     "clientAuthenticatorType" : "client-secret",
     "secret" : "e7307d96-71e4-4c7a-a626-0bc2ac4eef66",
-    "redirectUris" : [ "https://tmou.test/*" ],
+    "redirectUris" : [ "https://www.tmou.test/*", "https://tmou.test/*" ],
     "webOrigins" : [ "https://tmou.test" ],
     "notBefore" : 0,
     "bearerOnly" : false,
