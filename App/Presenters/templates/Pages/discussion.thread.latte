@@ -40,14 +40,14 @@
                     {var $organizatorName = $post->getOrganizator() !== null ? 'Organizátoři (' . $post->getOrganizator()->getGivenName() . ' ' . $post->getOrganizator()->getFamilyName() . ')' : null}
                     <div class="float-left mr-4 inline-block avatar rounded-full text-center align-middle text-2xl text-white" style="background: {$author->getShortcutColor()|noEscape}" title="{$teamName ?? $organizatorName}">{$author->getShortcut()}</div>
                     <div class="post-header">
-                        <b>{$teamName ?? $organizatorName}</b>
+                        <b class="block sm:inline-block">{$teamName ?? $organizatorName}</b>
                         #{$iterator->getCounter()}
                         {if $user->isLoggedIn() && !$thread->isLocked()}
                             <a href="#new-post" class="insert-discussion-ref" data-id="{$iterator->getCounter()}">odkázat</a>
                             <a href="#new-post" class="insert-discussion-quote" data-content="{$post->getContent()}">citovat</a>
                             <a href="#post-{$iterator->getCounter()}" class="copy-link-to-clipboard" data-content="{plink //this}#post-{$iterator->getCounter()}">odkaz</a>
                         {/if}
-                        <span class="inline-block float-left sm:float-right">
+                        <span class="inline-block float-left sm:float-right mr-2 sm:mr-0">
                             {if $newForCurrentUser}
                                 <b>{$post->getCreatedAt()|date: 'j. n. Y H:i'}</b>
                             {else}
@@ -64,6 +64,7 @@
                                 &nbsp;
                             </span>
                         {/if}
+                        <div class="post-header-clearer"></div>
                     </div>
                     <div class="post-content">
                         <div style="clear:right"></div>

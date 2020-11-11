@@ -524,6 +524,12 @@ table.log-output td.attention {
     font-size: 85%;
 }
 
+.post-header-clearer {
+    padding-left: 80px;
+    width: 100%;
+    float: right;
+}
+
 .post-header {
     padding-left: 80px;
 }
