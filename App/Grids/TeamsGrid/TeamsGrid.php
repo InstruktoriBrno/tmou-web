@@ -202,7 +202,7 @@ class TeamsGrid extends Control
             ->setDefaultHide(true);
 
 
-        $grid->addExportCsv('CSV export', 'tmou-teams');
+        $grid->addExportCsv('CSV export*', 'tmou-teams');
 
         if ($this->user->isAllowed(Resource::ADMIN_TEAMS, Action::BATCH_GAME_STATUS_CHANGE)) {
             $grid->addToolbarButton('Teams:batchGameStatusChange', 'Hromadná změna stavu', ['eventNumber' => $this->eventNumber])

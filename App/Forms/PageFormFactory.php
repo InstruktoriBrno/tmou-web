@@ -75,7 +75,8 @@ class PageFormFactory
             ->setAttribute('data-target', $contentElementId);
         $form->addTextArea('content', Html::el()->addText('Obsah')->addHtml('&nbsp;')->addHtml($insertMedia), 50, 20)
             ->setRequired('Vyplňte, prosím, obsah stránky')
-            ->setHtmlId($contentElementId);
+            ->setHtmlId($contentElementId)
+            ->setOption('description', 'Pokud vkládáte přímo HTML, ověřte, že neobsahuje XSS, takový obsah již není dále kontrolován.');
 
         $form->addCheckbox('caching_safe', 'Kešovat')
             ->setOption('description', 'Zaškrtněte pouze pokud stránka nepoužívá žádné týmová ani ročníková makra (keš je sdílená mezi týmy) a

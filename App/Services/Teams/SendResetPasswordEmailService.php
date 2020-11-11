@@ -9,6 +9,7 @@ use Nette\Mail\IMailer;
 use Nette\Mail\Message;
 use Tracy\Debugger;
 use Tracy\ILogger;
+use function htmlspecialchars;
 
 class SendResetPasswordEmailService
 {
@@ -45,8 +46,19 @@ class SendResetPasswordEmailService
         $message->setSubject($subject = sprintf('[TMOU %s] Žádost o nové heslo týmu %s', $team->getEvent()->getNumber(), $team->getName()));
         $content = sprintf(
             "Zdravíme,<br>někdo požádal u týmu %s v %s. ročníku TMOU o nové heslo.<br><br>
-            Pro nastavení nového hesla přejděte na stránku <a href=\"%s\">%s</a> a zadejte kromě e-mailu též kód <b>%s</b>. 
+            Pro nastavení nového hesla přejděte na stránku <a href=\"%s\">%s</a> a zadejte kromě e-mailu též kód <b>%s</b>.
             Tento kód je platný do %s, poté bude potřeba žádost opakovat.<br><br>-- Vaši organizátoři",
+            htmlspecialchars(htmlspecialchars($team->getName())),
+            $team->getEvent()->getNumber(),
+            $this->linkGenerator->link('Pages:resetPassword', [$team->getEvent()->getNumber()]),
+            $this->linkGenerator->link('Pages:resetPassword', [$team->getEvent()->getNumber()]),
+            $token->getToken(),
+            $token->getExpiration()->format('j. n. Y H:i:s')
+        );
+        $contentPlain = sprintf(
+            "Zdravíme,\nněkdo požádal u týmu %s v %s. ročníku TMOU o nové heslo.\n\n
+            Pro nastavení nového hesla přejděte na stránku %s<%s> a zadejte kromě e-mailu též kód %s.
+            Tento kód je platný do %s, poté bude potřeba žádost opakovat.\n\n-- Vaši organizátoři",
             $team->getName(),
             $team->getEvent()->getNumber(),
             $this->linkGenerator->link('Pages:resetPassword', [$team->getEvent()->getNumber()]),
@@ -58,6 +70,7 @@ class SendResetPasswordEmailService
         $template = $this->templateFactory->createTemplate();
         $template->setFile(__DIR__ . '/Templates/resetPasswordEmail.latte');
         $template->setParameters(['content' => $content, 'subject' => $subject]);
+        $message->setBody($contentPlain);
         $message->setHtmlBody($template->renderToString());
 
         try {

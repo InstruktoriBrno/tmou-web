@@ -7,6 +7,7 @@ use Nette\Mail\IMailer;
 use Nette\Mail\Message;
 use Tracy\Debugger;
 use Tracy\ILogger;
+use function htmlspecialchars;
 
 class SendRegistrationEmailService
 {
@@ -40,7 +41,7 @@ class SendRegistrationEmailService
 
         $template = $this->templateFactory->createTemplate();
         $template->setFile(__DIR__ . '/Templates/registrationEmail.latte');
-        $content = sprintf("Váš tým %s\nbyl úspěšně zaregistrován do %s. ročníku TMOU.\n\n-- Vaši organizátoři", $team->getName(), $team->getEvent()->getNumber());
+        $content = sprintf("Váš tým %s\nbyl úspěšně zaregistrován do %s. ročníku TMOU.\n\n-- Vaši organizátoři", htmlspecialchars($team->getName()), $team->getEvent()->getNumber());
         $template->setParameters(['content' => $content, 'subject' => $subject]);
 
         $message->setHtmlBody($template->renderToString());
