@@ -396,6 +396,7 @@ legend {
 
 .parallax {
     perspective: 1px;
+    -moz-perspective: inherit; /* Hotfix by degradation: https://github.com/InstruktoriBrno/tmou-web/issues/102 */
     height: 100vh;
     overflow-x: hidden;
     overflow-y: auto;
@@ -445,6 +446,7 @@ legend {
 }
 .parallax-layer-back {
     transform: translateZ(-2px) translateY(-40vh) scale(3);
+    -moz-transform: inherit; /* Hotfix by degradation: https://github.com/InstruktoriBrno/tmou-web/issues/102 */
 }
 
 .collapse {
