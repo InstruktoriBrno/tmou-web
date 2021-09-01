@@ -21,7 +21,7 @@ class FindLatestEventService
      */
     public function __invoke(): ?Event
     {
-        $objects = $this->entityManager->getRepository(Event::class)->findBy([], ['number' => 'DESC'], 1);
+        $objects = $this->entityManager->getRepository(Event::class)->findBy([], ['sorting' => 'DESC', 'number' => 'DESC'], 1);
         if (count($objects) === 0) {
             return null;
         }

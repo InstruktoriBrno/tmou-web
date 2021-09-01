@@ -33,8 +33,8 @@ class Event
     protected $number;
 
     /**
-     * @ORM\Column(type="float", nullable=true)
-     * @var float|null
+     * @ORM\Column(type="float", nullable=false)
+     * @var float
      */
     protected $sorting;
 
@@ -139,7 +139,7 @@ class Event
         ?int $amount,
         ?DateTimeImmutable $paymentDeadline,
         bool $selfreportedEntryFee = false,
-        ?float $sorting = null
+        float $sorting = 0
     ) {
         static::validateDetails(
             $name,
@@ -197,7 +197,7 @@ class Event
         ?int $amount,
         ?DateTimeImmutable $paymentDeadline,
         bool $selfreportedEntryFee = false,
-        ?float $sorting = null
+        float $sorting = 0
     ): void {
         static::validateDetails(
             $name,
@@ -349,7 +349,7 @@ class Event
         return $this->selfreportedEntryFee;
     }
 
-    public function getSorting(): ?float
+    public function getSorting(): float
     {
         return $this->sorting;
     }

@@ -80,7 +80,7 @@ class SaveEventFacade
                 $values->amount === '' ? null : (int) $values->amount,
                 $values->paymentDeadline,
                 $values->selfreportedEntryFee,
-                $values->sorting ? (float) $values->sorting : null,
+                $values->sorting ? (float) $values->sorting : (float) $values->number,
             );
         } else {
             $event = new Event(
