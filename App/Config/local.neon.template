@@ -3,7 +3,7 @@ parameters:
          url: http://tmou.test # Address where the instance will be accessed
     keycloak:
         authServerUrl: https://tmou.test:9990/auth
-        realm: Instruktoři Brno
+        realm: InstruktoriBrno
         clientId: tmou-web-local
         clientSecret: e7307d96-71e4-4c7a-a626-0bc2ac4eef66
         redirectUri: https://tmou.test/admin/login/

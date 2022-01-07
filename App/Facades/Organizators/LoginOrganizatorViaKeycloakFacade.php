@@ -100,9 +100,7 @@ class LoginOrganizatorViaKeycloakFacade
 
             $rawData = $user->toArray();
             $uuid = Uuid::fromString($rawData['sub']);
-            if (! $uuid instanceof Uuid) {
-                throw new \InstruktoriBrno\TMOU\Facades\Organizators\Exceptions\UnexpectedKeycloakKeyException;
-            }
+
             $userEntity = ($this->findOrganizatorByKeycloakKeyService)($uuid);
             $existedBefore = false;
             if ($userEntity === null) {
@@ -177,7 +175,7 @@ class LoginOrganizatorViaKeycloakFacade
         $roles = array_filter($roles);
         if (count($roles) > 0) {
             $item = reset($roles);
-            if ($item === false) {
+            if ($item === false) { // @phpstan-ignore-line
                 return null;
             }
             return $item;

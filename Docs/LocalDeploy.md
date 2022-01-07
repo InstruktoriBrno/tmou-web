@@ -106,5 +106,10 @@ protože neobsahuje secret tokeny, ani uživatele, viz [dokumentace](https://acc
    ```bash
    docker cp <CONTAINER_ID>:/opt/jboss/keycloak/realm-export.json .keycloak/realm-export.json
    ```
-6. Z daného souboru odstraňte konfiguraci pro realm `master` a namísto pole ponechte jen objekt realmu `Instruktoři Brno`.
-7. Otestujte novou konfiguraci.
+7. Z daného souboru odstraňte konfiguraci pro realm `master` a namísto pole ponechte jen objekt realmu `Instruktoři Brno`.
+8. Otestujte novou konfiguraci.
+
+## Docker & ARM architektura
+
+V případě využívání počítače s ARM architekturou (například Macbook s M1 procesorem) může být problém s Keycloak kontejnerem, v takovém případě je
+potřeba v `docker-compose.yaml` změnit `image` u `keycloak` kontejneru na vhodný ekvivalentní obraz, například `alemairebe/keycloak`. Lze je vyhledat pomocí Docker Hubu.

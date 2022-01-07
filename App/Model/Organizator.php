@@ -7,7 +7,7 @@ use InstruktoriBrno\TMOU\Enums\OrganizatorRole;
 use InstruktoriBrno\TMOU\Enums\UserRole;
 use Nette\Security\Identity;
 use Nette\Utils\Validators;
-use Ramsey\Uuid\Uuid;
+use Ramsey\Uuid\UuidInterface;
 
 /**
  * @ORM\Entity
@@ -49,7 +49,7 @@ class Organizator
 
     /**
      * @ORM\Column(type="uuid_binary", unique=true)
-     * @var Uuid
+     * @var UuidInterface
      */
     protected $keycloakKey;
 
@@ -70,7 +70,7 @@ class Organizator
         string $familyName,
         string $username,
         string $email,
-        Uuid $keycloakKey,
+        UuidInterface $keycloakKey,
         ?OrganizatorRole $role
     ) {
         if (!Validators::isEmail($email)) {
@@ -113,7 +113,7 @@ class Organizator
         return $this->email;
     }
 
-    public function getKeycloakKey(): Uuid
+    public function getKeycloakKey(): UuidInterface
     {
         return $this->keycloakKey;
     }

@@ -4,7 +4,7 @@ namespace InstruktoriBrno\TMOU\Services\Organizators;
 use Doctrine\Common\Persistence\ObjectRepository; // phpcs:ignore
 use Doctrine\ORM\EntityManagerInterface;
 use InstruktoriBrno\TMOU\Model\Organizator;
-use Ramsey\Uuid\Uuid;
+use Ramsey\Uuid\UuidInterface;
 
 class FindOrganizatorByKeycloakKeyService
 {
@@ -16,7 +16,7 @@ class FindOrganizatorByKeycloakKeyService
         $this->organizatorsRepository = $entityManager->getRepository(Organizator::class);
     }
 
-    public function __invoke(Uuid $key): ?Organizator
+    public function __invoke(UuidInterface $key): ?Organizator
     {
         return $this->organizatorsRepository->findOneBy([
             'keycloakKey' => $key,
