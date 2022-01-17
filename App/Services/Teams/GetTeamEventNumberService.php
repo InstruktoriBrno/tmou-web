@@ -12,7 +12,7 @@ class GetTeamEventNumberService
     /** @var EntityManagerInterface */
     private $entityManager;
 
-    /** @var ObjectRepository<Team>|EntityRepository */
+    /** @var ObjectRepository<Team>|EntityRepository<Team> */
     private $teamRepository;
 
     public function __construct(EntityManagerInterface $entityManager)

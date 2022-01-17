@@ -41,7 +41,7 @@ class Helpers
         $output = DateTimeImmutable::createFromFormat($format, $time, $timeZone);
         $errors = DateTimeImmutable::getLastErrors();
 
-        if ($output === false || $errors['warning_count'] > 0 || $errors['error_count'] > 0) {
+        if ($output === false || ($errors !== false && ($errors['warning_count'] ?? 0) > 0) || ($errors !== false && ($errors['error_count'] ?? 0) > 0)) {
             throw new \InstruktoriBrno\TMOU\Exceptions\InvalidDateTimeFormatException("Date ${time} doesn't match ${format}.");
         }
         return $output;

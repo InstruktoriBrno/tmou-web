@@ -6,5 +6,4 @@ includes:
 
 parameters:
 	ignoreErrors:
-	    - '#Nette\\Application\\Routers\\RouteList does not accept Nette\\Application\\Routers\\Route.#' # Not using Nette 3.x yet, sniffs do not work properly on Nette 2.4.
 	    - '#Unreachable statement - code above always terminates.#' # Some returns improves readability especially when exceptions are thrown from called method above (such as $presenter->redirect).

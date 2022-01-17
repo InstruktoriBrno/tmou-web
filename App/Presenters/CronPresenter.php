@@ -39,12 +39,16 @@ final class CronPresenter extends BasePresenter
             $this->terminate();
         }
         $start = DateTimeImmutable::createFromFormat('Y-m-d', $start);
-        if (!$start instanceof DateTimeImmutable || (DateTimeImmutable::getLastErrors()['warning_count'] + DateTimeImmutable::getLastErrors()['error_count']) > 0) {
+        $lastErrors = DateTimeImmutable::getLastErrors();
+        $issuesCount = $lastErrors !== false ? ($lastErrors['warning_count'] ?? 0) + ($lastErrors['error_count'] ?? 0) : 0;
+        if (!$start instanceof DateTimeImmutable || $issuesCount > 0) {
             $this->sendResponse(new TextResponse('start expected in format Y-m-d, i.e. 2019-12-28'));
             $this->terminate();
         }
         $end = DateTimeImmutable::createFromFormat('Y-m-d', $end);
-        if (!$end instanceof DateTimeImmutable || (DateTimeImmutable::getLastErrors()['warning_count'] + DateTimeImmutable::getLastErrors()['error_count']) > 0) {
+        $lastErrors = DateTimeImmutable::getLastErrors();
+        $issuesCount = $lastErrors !== false ? ($lastErrors['warning_count'] ?? 0) + ($lastErrors['error_count'] ?? 0) : 0;
+        if (!$end instanceof DateTimeImmutable || $issuesCount > 0) {
             $this->sendResponse(new TextResponse('end expected in format Y-m-d, i.e. 2019-12-28'));
             $this->terminate();
         }
