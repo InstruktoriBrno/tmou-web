@@ -3,6 +3,7 @@ namespace InstruktoriBrno\TMOU\Model;
 
 use DateTimeImmutable;
 use Doctrine\ORM\Mapping as ORM;
+use InstruktoriBrno\TMOU\Enums\GameStatus;
 use Nette\Utils\Strings;
 use Nette\Utils\Validators;
 
@@ -122,6 +123,12 @@ class Event
      */
     protected $selfreportedEntryFee;
 
+    /**
+     * @ORM\Column(type="game_status", nullable=false)
+     * @var GameStatus
+     */
+    protected $afterRegistrationTeamGameStatus;
+
     public function __construct(
         string $name,
         int $number,
@@ -138,6 +145,7 @@ class Event
         ?int $paymentPairingCodeSuffixLength,
         ?int $amount,
         ?DateTimeImmutable $paymentDeadline,
+        GameStatus $afterRegistrationTeamGameStatus,
         bool $selfreportedEntryFee = false,
         float $sorting = 0
     ) {
@@ -157,6 +165,7 @@ class Event
             $paymentPairingCodeSuffixLength,
             $amount,
             $paymentDeadline,
+            $afterRegistrationTeamGameStatus,
             $selfreportedEntryFee,
             $sorting,
         );
@@ -177,6 +186,7 @@ class Event
         $this->amount = $amount;
         $this->paymentDeadline = $paymentDeadline;
         $this->selfreportedEntryFee = $selfreportedEntryFee;
+        $this->afterRegistrationTeamGameStatus = $afterRegistrationTeamGameStatus;
         $this->sorting = $sorting;
     }
 
@@ -196,6 +206,7 @@ class Event
         ?int $paymentPairingCodeSuffixLength,
         ?int $amount,
         ?DateTimeImmutable $paymentDeadline,
+        GameStatus $afterRegistrationTeamGameStatus,
         bool $selfreportedEntryFee = false,
         float $sorting = 0
     ): void {
@@ -215,6 +226,7 @@ class Event
             $paymentPairingCodeSuffixLength,
             $amount,
             $paymentDeadline,
+            $afterRegistrationTeamGameStatus,
             $selfreportedEntryFee,
             $sorting
         );
@@ -234,6 +246,7 @@ class Event
         $this->paymentPairingCodeSuffixLength = $paymentPairingCodeSuffixLength;
         $this->amount = $amount;
         $this->paymentDeadline = $paymentDeadline;
+        $this->afterRegistrationTeamGameStatus = $afterRegistrationTeamGameStatus;
         $this->selfreportedEntryFee = $selfreportedEntryFee;
         $this->sorting = $sorting;
     }
@@ -354,6 +367,11 @@ class Event
         return $this->sorting;
     }
 
+    public function getAfterRegistrationTeamGameStatus(): GameStatus
+    {
+        return $this->afterRegistrationTeamGameStatus;
+    }
+
     public static function validateDetails(
         string $name,
         int $number,
@@ -370,6 +388,7 @@ class Event
         ?int $paymentPairingCodeSuffixLength,
         ?int $amount,
         ?DateTimeImmutable $paymentDeadline,
+        GameStatus $afterRegistrationTeamGameStatus,
         bool $selfreportedEntryFee,
         ?float $sorting
     ): void {

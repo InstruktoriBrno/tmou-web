@@ -2,6 +2,7 @@
 namespace InstruktoriBrno\TMOU\Facades\Teams;
 
 use Doctrine\ORM\EntityManagerInterface;
+use InstruktoriBrno\TMOU\Enums\GameStatus;
 use InstruktoriBrno\TMOU\Model\Event;
 use InstruktoriBrno\TMOU\Model\Team;
 use InstruktoriBrno\TMOU\Model\TeamMember;
@@ -100,6 +101,9 @@ class RegisterTeamFacade
             $this->gameClockService->get(), // Ignored, should not happen, otherwise fail completely as it is runtime exception
             $members
         );
+        if (!$event->getAfterRegistrationTeamGameStatus()->equals(GameStatus::REGISTERED())) {
+            $team->changeTeamGameStatus($event->getAfterRegistrationTeamGameStatus());
+        }
 
         if (!($this->isTeamNameInEventUniqueService)($team)) {
             throw new \InstruktoriBrno\TMOU\Facades\Teams\Exceptions\DuplicateNameInEventException;

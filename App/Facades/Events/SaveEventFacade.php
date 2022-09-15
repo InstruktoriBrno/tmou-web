@@ -2,6 +2,7 @@
 namespace InstruktoriBrno\TMOU\Facades\Events;
 
 use Doctrine\ORM\EntityManagerInterface;
+use InstruktoriBrno\TMOU\Enums\GameStatus;
 use InstruktoriBrno\TMOU\Model\Event;
 use InstruktoriBrno\TMOU\Services\Events\IsEventNumberUniqueService;
 use InstruktoriBrno\TMOU\Services\Files\CreateNewDirectoryInStorageDirectoryService;
@@ -79,6 +80,7 @@ class SaveEventFacade
                 $values->paymentPairingCodeSuffixLength === '' ? null : (int) $values->paymentPairingCodeSuffixLength,
                 $values->amount === '' ? null : (int) $values->amount,
                 $values->paymentDeadline,
+                GameStatus::fromScalar($values->afterRegistrationTeamGameStatus),
                 $values->selfreportedEntryFee,
                 $values->sorting ? (float) $values->sorting : (float) $values->number,
             );
@@ -99,6 +101,7 @@ class SaveEventFacade
                 $values->paymentPairingCodeSuffixLength === '' ? null : (int) $values->paymentPairingCodeSuffixLength,
                 $values->amount === '' ? null : (int) $values->amount,
                 $values->paymentDeadline,
+                GameStatus::fromScalar($values->afterRegistrationTeamGameStatus),
                 $values->selfreportedEntryFee,
                 $values->sorting ? (float) $values->sorting : null,
             );
