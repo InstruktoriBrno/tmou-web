@@ -68,5 +68,10 @@
 			"type": "vcs",
 			"url": "https://github.com/colq2/oauth2-keycloak"
 		}
-	]
+	],
+	"config": {
+		"allow-plugins": {
+			"dealerdirect/phpcodesniffer-composer-installer": true
+		}
+	}
 }
