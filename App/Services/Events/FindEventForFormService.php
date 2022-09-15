@@ -43,6 +43,7 @@ class FindEventForFormService
             'paymentPairingCodeSuffixLength' => $object->getPaymentPairingCodeSuffixLength(),
             'amount' => $object->getAmount(),
             'paymentDeadline' => $object->getPaymentDeadline(),
+            'afterRegistrationTeamGameStatus' => $object->getAfterRegistrationTeamGameStatus()->toScalar(),
             'selfreportedEntryFee' => $object->isSelfreportedEntryFeeEnabled(),
             'sorting' => $object->getSorting(),
         ];

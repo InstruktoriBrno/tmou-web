@@ -2,6 +2,7 @@
 namespace InstruktoriBrno\TMOU\Services\Events;
 
 use DateTimeImmutable;
+use InstruktoriBrno\TMOU\Enums\GameStatus;
 
 class FindDefaultEventValuesForFormService
 {
@@ -33,6 +34,7 @@ class FindDefaultEventValuesForFormService
             'totalTeamCount' => 250,
             'amount' => 800,
             'paymentDeadline' => (new DateTimeImmutable('last day of October')),
+            'afterRegistrationTeamGameStatus' => GameStatus::REGISTERED()->toScalar(),
         ];
     }
 }

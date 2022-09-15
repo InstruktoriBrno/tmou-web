@@ -126,7 +126,8 @@ class CreateTestDataFacade
             $values->paymentPairingCodePrefix,
             $values->paymentPairingCodeSuffixLength,
             $values->amount,
-            $values->paymentDeadline
+            $values->paymentDeadline,
+            GameStatus::REGISTERED(),
         );
         return $event;
     }

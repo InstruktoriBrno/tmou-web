@@ -2,6 +2,7 @@
 namespace InstruktoriBrno\TMOU\Forms;
 
 use InstruktoriBrno\TMOU\Application\UI\BaseForm;
+use InstruktoriBrno\TMOU\Enums\GameStatus;
 use Nette\Application\UI\Form;
 use Nette\Forms\Controls\TextInput;
 use Nette\SmartObject;
@@ -41,6 +42,14 @@ class EventFormFactory
             ->addRule(Form::MIME_TYPE, 'Nahrávané logo musí být ve formátu PNG.', ['image/png'])
             ->setOption('description', 'Volitelné. Dojde k uložení do cesty /storage/21/logo.png');
 
+        $form->addGroup('Registrace');
+        $form->addSelect('afterRegistrationTeamGameStatus', 'Výchozí stav po registraci', [
+            GameStatus::REGISTERED()->toScalar() => 'Registrovaný',
+            GameStatus::QUALIFIED()->toScalar() => 'Kvalifikovaný',
+            GameStatus::NOT_QUALIFIED()->toScalar() => 'Nekvalifikovaný',
+            GameStatus::PLAYING()->toScalar() => 'Hrající',
+        ])
+            ->setOption('description', 'Určuje jaký výchozí stav budou mít týmy ihned po registraci');
         $form->addGroup('Kvalifikace');
         $form->addCheckbox('hasQualification', 'Má kvalifikaci');
         $form->addDateTimePicker('qualificationStart', 'Začátek')
