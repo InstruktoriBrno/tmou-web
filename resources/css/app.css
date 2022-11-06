@@ -452,16 +452,11 @@ legend {
 .collapse {
     margin-top: 1rem;
     margin-bottom: 2rem;
-    display: block;
-    max-height: 0;
-    overflow: hidden;
-    transition: max-height .5s cubic-bezier(0, 1, 0, 1);
+    display: none;
 }
 
 .collapse.show {
-    max-height: 99em;
-    transition: max-height .5s ease-in-out;
-    overflow: visible;
+    display: block;
 }
 
 a.collapse-toggle {
