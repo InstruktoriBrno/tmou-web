@@ -2,13 +2,13 @@
   "name": "tmou-web",
   "version": "1.0.0",
   "description": "",
-  "dependencies": {},
   "devDependencies": {
-    "tailwindcss": "^1.1.2",
     "@fullhuman/postcss-purgecss": "^1.2.0",
     "cssnano": "^5.1.14",
+    "postcss": "^8.4.19",
     "postcss-cli": "^10.1.0",
-    "purgecss": "^1.4.0"
+    "purgecss": "^1.4.0",
+    "tailwindcss": "^1.1.2"
   },
   "scripts": {
     "compile-css": "postcss resources/css/app.css -o www/assets/css/app.css"
