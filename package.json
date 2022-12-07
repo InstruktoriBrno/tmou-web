@@ -10,7 +10,6 @@
     "purgecss": "^1.4.0",
     "tailwindcss": "^1.1.2"
   },
-  },
   "scripts": {
     "compile-css": "postcss resources/css/app.css -o www/assets/css/app.css"
   },
