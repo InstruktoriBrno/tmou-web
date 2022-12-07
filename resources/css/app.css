@@ -459,7 +459,7 @@ legend {
 }
 
 .collapse.show {
-    max-height: 99em;
+    max-height: 99999em;
     transition: max-height .5s ease-in-out;
     overflow: visible;
 }
