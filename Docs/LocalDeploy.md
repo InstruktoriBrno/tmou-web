@@ -8,10 +8,12 @@ Nezbytné předpoklady jsou:
 
 - Základní programátorské IT vzdělání, bez toho se nemá smysl do tohoto pouštět.
 - Funkční Docker a Docker Compose (příkazy `docker` a `docker-compose` na PATH).
+- Nainstalovaný tool `loopbind` via `composer global require kiwicom/loopbind`.
 - Doména `tmou.test` nasměrovaná na IP adresu na které budou tunelovány Docker kontejnery (via `/etc/hosts`).
   Na Linuxu to bude typicky `127.0.0.1` nebo `127.0.x.x` pokud používáte více Docker kompozic.
   Na OS X to bude buď stejné jako na Linuxu (může být pomalé), nebo třeba `192.168.99.x` pokud používáte Docker Machine s VirtualBoxem.
   Tuto IP taktéž nastavte do souboru `.env` do proměnné `IP` (bez toho se kompozice nespustí).
+  Pokud používáte OS X nebo Linux využijte výše uvedený nástroj a zavolejte v kořenové složce projektu příkaz `loopbind apply`.
   Dále v tomto souboru nastavte `PROJECT_DIR` na cestu k projektu, `.` postačí pro většinu použití (jen na OS X při použití NFS je potřeba absolutní cesta začínající `/System/Volumes/Data/`).
 - Pro spuštění Tracy ve vývojovém režimu potřebujete buď přidat adresu do `Booting.php`, nebo spouštět docker kompozici s ENV proměnou `TRACY_DEBUG_ENABLE` nastavenou na `1` (mělo by být nastaveno jako výchozí).
 
