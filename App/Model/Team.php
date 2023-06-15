@@ -161,6 +161,19 @@ class Team
     protected $selfreportedFeePublic;
 
     /**
+     * @ORM\ManyToOne(targetEntity="Level")
+     * @ORM\JoinColumn(name="current_level_id", referencedColumnName="id", nullable=false)
+     * @var Level|null
+     */
+    protected ?Level $currentLevel;
+
+    /**
+     * @ORM\Column(type="datetime_immutable", nullable=true)
+     * @var DateTimeImmutable|null
+     */
+    protected ?DateTimeImmutable $lastWrongAnswerAt;
+
+    /**
      * Team constructor.
      * @param Event $event
      * @param int $number
@@ -605,5 +618,18 @@ class Team
         ;
         $lightness = 40;
         return "hsl($color, $intensity%, $lightness%);";
+    }
+
+    public function changeLevel(Level $level): void
+    {
+        if ($this->currentLevel !== null && $level->getLevelNumber() <= $this->currentLevel->getLevelNumber()) {
+            throw new \InstruktoriBrno\TMOU\Model\Exceptions\InvalidLevelChangeException;
+        }
+        $this->currentLevel = $level;
+    }
+
+    public function touchLastWrongAnswerAt(DateTimeImmutable $at): void
+    {
+        $this->lastWrongAnswerAt = $at;
     }
 }

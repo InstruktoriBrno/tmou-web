@@ -129,6 +129,30 @@ class Event
      */
     protected $afterRegistrationTeamGameStatus;
 
+    /**
+     * @ORM\Column(type="integer", nullable=true)
+     * @var int|null
+     */
+    protected ?int $qualificationMaxAttempts = null;
+
+    /**
+    * @ORM\Column(type="boolean")
+     * @var bool
+     */
+    protected bool $qualificationShowAttemptsCount = false;
+
+    /**
+     * @ORM\Column(type="integer", nullable=true)
+     * @var int|null
+     */
+    protected ?int $qualificationWrongAttemptPenalisation = null;
+
+    /**
+     * @ORM\Column(type="boolean")
+     * @var bool
+     */
+    protected bool $qualificationShowWrongAttemptsCount = false;
+
     public function __construct(
         string $name,
         int $number,
@@ -468,5 +492,71 @@ class Event
     public function isPeriodForTeamReviews(DateTimeImmutable $now): bool
     {
         return $now > $this->eventEnd;
+    }
+
+    private function validateQualificationDetails(
+        ?int $qualificationMaxAttempts,
+        bool $qualificationShowAttemptsCount,
+        ?int $qualificationWrongAttemptPenalisation,
+        bool $qualificationShowWrongAttemptsCount
+    ): void {
+        if ($qualificationMaxAttempts !== null && $qualificationMaxAttempts < 1) {
+            throw new \InstruktoriBrno\TMOU\Model\Exceptions\InvalidQualificationMaxAttemptsException();
+        }
+        if ($qualificationWrongAttemptPenalisation !== null && $qualificationWrongAttemptPenalisation < 0) {
+            throw new \InstruktoriBrno\TMOU\Model\Exceptions\InvalidQualificationWrongAttemptPenalisationException();
+        }
+
+    }
+
+    /**
+     * Update qualification details of this event
+     *
+     * @param int|null $qualificationMaxAttempts Number of wrong + correct answers per team
+     * @param bool $qualificationShowAttemptsCount Whether to show number of attempts to team
+     * @param int|null $qualificationWrongAttemptPenalisation Number of seconds to penalise for answer
+     * @param bool $qualificationShowWrongAttemptsCount Whether to show number of possible wrong attempts to team
+     * @return void
+     */
+    public function updateQualificationDetails(
+        ?int $qualificationMaxAttempts,
+        bool $qualificationShowAttemptsCount,
+        ?int $qualificationWrongAttemptPenalisation,
+        bool $qualificationShowWrongAttemptsCount
+    ): void {
+        $this->validateQualificationDetails(
+            $qualificationMaxAttempts,
+            $qualificationShowAttemptsCount,
+            $qualificationWrongAttemptPenalisation,
+            $qualificationShowWrongAttemptsCount
+        );
+        $this->qualificationMaxAttempts = $qualificationMaxAttempts;
+        $this->qualificationShowAttemptsCount = $qualificationShowAttemptsCount;
+        $this->qualificationWrongAttemptPenalisation = $qualificationWrongAttemptPenalisation;
+        $this->qualificationShowWrongAttemptsCount = $qualificationShowWrongAttemptsCount;
+    }
+
+    public function getQualificationMaxAttempts(): ?int
+    {
+        return $this->qualificationMaxAttempts;
+    }
+
+    public function shouldShowQualificationAttemptsCount(): bool
+    {
+        return $this->qualificationShowAttemptsCount;
+    }
+
+    /**
+     * Returns time in seconds to penalise for wrong answer or null when no such penalty should be applied
+     * @return int|null
+     */
+    public function getQualificationWrongAttemptPenalisation(): ?int
+    {
+        return $this->qualificationWrongAttemptPenalisation;
+    }
+
+    public function shouldShowQualificationWrongAttemptCount(): bool
+    {
+        return $this->qualificationShowWrongAttemptsCount;
     }
 }
