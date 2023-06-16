@@ -30,7 +30,7 @@
 		"league/csv": "^9.2",
 		"ublaboo/datagrid": "^5.7",
 		"league/oauth2-client": "^2.4",
-		"stevenmaguire/oauth2-keycloak": "dev-master",
+		"stevenmaguire/oauth2-keycloak": "4.0",
 		"ramsey/uuid-doctrine": "^1.5",
 		"grifart/enum": "^0.2.0",
 		"texy/texy": "^3.0",
@@ -63,12 +63,6 @@
 		}
 	},
 	"minimum-stability": "stable",
-	"repositories": [
-		{
-			"type": "vcs",
-			"url": "https://github.com/colq2/oauth2-keycloak"
-		}
-	],
 	"config": {
 		"allow-plugins": {
 			"dealerdirect/phpcodesniffer-composer-installer": true

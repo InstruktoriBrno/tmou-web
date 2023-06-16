@@ -1,12 +1,13 @@
 parameters:
     canonical:
-         url: http://tmou.test
+         url: http://www.tmou.test
     keycloak:
         authServerUrl:
         realm:
         clientId:
         clientSecret:
         redirectUri:
+        version: # at least 20.0.2
     mail:
         noReply:
         replyTo:

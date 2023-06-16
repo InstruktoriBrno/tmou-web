@@ -30,7 +30,7 @@ Nezbytné předpoklady jsou:
 8. Nyní můžete vše používat:
    - TMOU Web: http://tmou.test a https://tmou.test (primární vývoj probíhá skrze HTTPS, kvůli přihlašování)
    - Adminer: http://tmou.test:8080
-   - Keycloak: https://tmou.test:9990
+   - Keycloak: https://tmou.test:9990 (musí být s HTTPS, jinak nefunguje)
 9. Pro ukončení kompozice `docker-compose stop` nebo CTRL-C pokud je spuštěna na popředí.
    Opětovné volání `docker-compose up` spustí předchozí stav.  
    Úplné smazání kontejnerů lze provést pomocí `docker-compose down`.  
@@ -99,14 +99,14 @@ protože neobsahuje secret tokeny, ani uživatele, viz [dokumentace](https://acc
 2. Připojte se na administrační rozhraní, viz výše.
 3. Proveďte požadované změny.
 4. Přihlašte se do příslušného Docker kontejneru `docker-compose exec keycloak bash`.
-5. a z adresáře `/opt/jboss/keycloak` spusťte následující příkaz:
+5. a z adresáře `/opt/keycloak/bin` spusťte následující příkaz:
 
     ```bash
-    bin/standalone.sh -Dkeycloak.migration.action=export -Dkeycloak.migration.provider=singleFile -Dkeycloak.migration.file=realm-export.json -Djboss.http.port=8888 -Djboss.https.port=9999 -Djboss.management.http.port=7777
+    kc.sh export  --file /tmp/realm-export.json
     ```
 6. Po úspěšném doběhnutí (a ukončení pomocí CTRL-C) zkopírujte obsah souboru `realm-export.json` do `.keycloak/realm-export.json`.
    ```bash
-   docker cp <CONTAINER_ID>:/opt/jboss/keycloak/realm-export.json .keycloak/realm-export.json
+   docker cp <CONTAINER_ID>:/tmp/realm-export.json .keycloak/realm-export.json
    ```
 7. Z daného souboru odstraňte konfiguraci pro realm `master` a namísto pole ponechte jen objekt realmu `Instruktoři Brno`.
 8. Otestujte novou konfiguraci.

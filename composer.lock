@@ -4,7 +4,7 @@
         "Read more about it at https://getcomposer.org/doc/01-basic-usage.md#installing-dependencies",
         "This file is @generated automatically"
     ],
-    "content-hash": "b56c3a4d119cc5e62d42cde9fc256d6c",
+    "content-hash": "95beb5fc6fc0cf6fda48e896113ac2ae",
     "packages": [
         {
             "name": "brick/math",
@@ -5474,30 +5474,28 @@
         },
         {
             "name": "stevenmaguire/oauth2-keycloak",
-            "version": "dev-master",
+            "version": "4.0.0",
             "source": {
                 "type": "git",
-                "url": "https://github.com/colq2/oauth2-keycloak.git",
-                "reference": "253af4ceeda861ea730b6ea8f407a818d2a6e7ce"
+                "url": "https://github.com/stevenmaguire/oauth2-keycloak.git",
+                "reference": "05ead6bb6bcd2b6f96dfae87c769dcd3e5f6129d"
             },
             "dist": {
                 "type": "zip",
-                "url": "https://api.github.com/repos/colq2/oauth2-keycloak/zipball/253af4ceeda861ea730b6ea8f407a818d2a6e7ce",
-                "reference": "253af4ceeda861ea730b6ea8f407a818d2a6e7ce",
+                "url": "https://api.github.com/repos/stevenmaguire/oauth2-keycloak/zipball/05ead6bb6bcd2b6f96dfae87c769dcd3e5f6129d",
+                "reference": "05ead6bb6bcd2b6f96dfae87c769dcd3e5f6129d",
                 "shasum": ""
             },
             "require": {
-                "ext-json": "*",
-                "firebase/php-jwt": "^5.0",
+                "firebase/php-jwt": "^4.0 || ^5.0 || ^6.0",
                 "league/oauth2-client": "^2.0",
-                "php": "^7.1"
+                "php": "~7.2 || ~8.0"
             },
             "require-dev": {
-                "mockery/mockery": "~1.2",
-                "phpunit/phpunit": "~7.5",
-                "squizlabs/php_codesniffer": "~3.4"
+                "mockery/mockery": "~1.5.0",
+                "phpunit/phpunit": "~9.6.4",
+                "squizlabs/php_codesniffer": "~3.7.0"
             },
-            "default-branch": true,
             "type": "library",
             "extra": {
                 "branch-alias": {
@@ -5509,11 +5507,7 @@
                     "Stevenmaguire\\OAuth2\\Client\\": "src/"
                 }
             },
-            "autoload-dev": {
-                "psr-4": {
-                    "Stevenmaguire\\OAuth2\\Client\\Test\\": "test/src/"
-                }
-            },
+            "notification-url": "https://packagist.org/downloads/",
             "license": [
                 "MIT"
             ],
@@ -5534,9 +5528,10 @@
                 "oauth2"
             ],
             "support": {
-                "source": "https://github.com/colq2/oauth2-keycloak/tree/master"
+                "issues": "https://github.com/stevenmaguire/oauth2-keycloak/issues",
+                "source": "https://github.com/stevenmaguire/oauth2-keycloak/tree/4.0.0"
             },
-            "time": "2020-07-23T09:00:40+00:00"
+            "time": "2023-03-14T09:43:47+00:00"
         },
         {
             "name": "symfony/console",
@@ -7643,8 +7638,7 @@
     "minimum-stability": "stable",
     "stability-flags": {
         "roave/security-advisories": 20,
-        "nextras/forms": 20,
-        "stevenmaguire/oauth2-keycloak": 20
+        "nextras/forms": 20
     },
     "prefer-stable": false,
     "prefer-lowest": false,
