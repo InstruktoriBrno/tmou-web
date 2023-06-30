@@ -38,10 +38,10 @@
 
     <xsd:complexType name="LevelType">
         <xsd:sequence>
-            <xsd:element name="link" type="xsd:anyURI"/>
+            <xsd:element name="link" type="xsd:anyURI" minOccurs="0"/>
             <xsd:element name="backup-link" type="xsd:anyURI" minOccurs="0"/>
-            <xsd:element name="codes-needed" type="xsd:positiveInteger"/>
-            <xsd:element name="puzzles" type="tns:PuzzlesType"/>
+            <xsd:element name="codes-needed" type="xsd:positiveInteger" minOccurs="0"/>
+            <xsd:element name="puzzles" type="tns:PuzzlesType" minOccurs="0"/>
         </xsd:sequence>
         <xsd:attribute name="index" type="xsd:positiveInteger" use="required"/>
     </xsd:complexType>

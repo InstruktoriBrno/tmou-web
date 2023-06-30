@@ -146,6 +146,13 @@ class EventsGrid extends Control
                 ->setClass('btn btn-xs btn-default');
         }
 
+        if ($this->user->isAllowed(Resource::ADMIN_EVENTS, Action::EDIT)) {
+            $grid->addAction('qualification', '', 'Events:qualification', ['eventId' => 'id'])
+                ->setIcon('award')
+                ->addAttributes(['title' => 'Kvalifikace ročníku'])
+                ->setClass('btn btn-xs btn-default');
+        }
+
         if ($this->user->isAllowed(Resource::ADMIN_EVENTS, Action::DELETE)) {
             $grid->addAction('delete', '', 'Events:delete', ['eventId' => 'id'])
                 ->setIcon('trash')

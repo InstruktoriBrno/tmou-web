@@ -1,0 +1,55 @@
+{block content}
+    <div id="banner">
+        <h1 n:block=title>Kvalifikace {$event->getNumber()}. ročníku ({$event->getName()})</h1>
+    </div>
+
+    <div id="content">
+        <h2>Obsah kvalifikace</h2>
+        {if count($levels) === 0}
+            <div class="alert-info alert">
+                <p>Nejsou definovány žádné úrovně.</p>
+            </div>
+        {else}
+            {foreach $levels as $level}
+                {continueIf $level->isLast()}
+                <h3>Úroveň {$level->getLevelNumber()}</h3>
+                {var $levelPuzzles = $puzzles[$level->getId()] ?? []}
+                {continueIf count($levelPuzzles) === 0}
+                <table class="table-auto mt-2">
+                    <tr>
+                        <th class="border p-1">Název</th>
+                        <th class="border p-1">Správná řešení</th>
+                    </tr>
+                    {foreach $levelPuzzles as $puzzle}
+                        <tr>
+                            <td class="border p-1">{$puzzle->getName()}</td>
+                            <td class="border p-1">
+                                {foreach $puzzle->getPasswords() as $password}
+                                    <code class="p-0 inline-block mb-0">{$password->getCode()}</code>{sep}<br>{/sep}
+                                {/foreach}
+                            </td>
+                        </tr>
+                    {/foreach}
+                </table>
+            {/foreach}
+        {/if}
+
+        <h2>Import kvalifikace</h2>
+        <div class="alert-warning alert">
+            <ul>
+                <li>Kvalifikace (existuje-li) k tomuto ročníku bude smazána!</li>
+                <li>Dosažené úrovně týmů budou smazány!</li>
+                <li>Nikdy nepoužívejte během hry!</li>
+            </ul>
+        </div>
+
+        <br>
+
+        {control importQualificationForm}
+
+        <br>
+
+
+        <a href="{plink Events:}"><i class="fas fa-arrow-left"></i> Seznam ročníků</a>
+    </div>
+{/block}

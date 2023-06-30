@@ -186,6 +186,7 @@ services:
     - InstruktoriBrno\TMOU\Commands\CreateTestDataCommand
     - InstruktoriBrno\TMOU\Facades\System\CreateTestDataFacade
     - InstruktoriBrno\TMOU\Forms\CopyEventContentFormFactory
+    - InstruktoriBrno\TMOU\Forms\ImportQualificationFormFactory
     - InstruktoriBrno\TMOU\Services\MenuItems\FindMenuItemsInEventService
     - InstruktoriBrno\TMOU\Services\Pages\FindPagesInEventService
     - InstruktoriBrno\TMOU\Facades\System\CopyEventContentFacade
@@ -195,6 +196,12 @@ services:
     - InstruktoriBrno\TMOU\Services\Discussions\FindThreadAcknowledgementByTeamService
     - InstruktoriBrno\TMOU\Services\Discussions\FindThreadAcknowledgementByThreadsAndUserService
     - InstruktoriBrno\TMOU\Services\System\RememberedNicknameService
+    - InstruktoriBrno\TMOU\Facades\Qualification\ImportQualificationFacade
+    - InstruktoriBrno\TMOU\Services\Qualification\ParseAndValidateQualificationService
+    - InstruktoriBrno\TMOU\Services\Qualification\FindLevelsService
+    - InstruktoriBrno\TMOU\Services\Qualification\DeleteOldQualificationService
+    - InstruktoriBrno\TMOU\Services\Qualification\CreateQualificationService
+    - InstruktoriBrno\TMOU\Services\Qualification\FindPuzzlesOfEventService
 
 extensions:
     nextras.form: Nextras\Forms\Bridges\NetteDI\FormsExtension

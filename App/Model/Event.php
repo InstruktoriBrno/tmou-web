@@ -506,7 +506,6 @@ class Event
         if ($qualificationWrongAttemptPenalisation !== null && $qualificationWrongAttemptPenalisation < 0) {
             throw new \InstruktoriBrno\TMOU\Model\Exceptions\InvalidQualificationWrongAttemptPenalisationException();
         }
-
     }
 
     /**

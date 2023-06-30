@@ -31,29 +31,29 @@ class Level
     protected int $levelNumber;
 
     /**
-     * @ORM\Column(type="text")
-     * @var string
+     * @ORM\Column(type="text", nullable=true)
+     * @var string|null
      */
-    protected string $link;
+    protected ?string $link;
 
     /**
      * @ORM\Column(type="text", nullable=true)
-     * @var string
+     * @var string|null
      */
-    protected string $backupLink;
+    protected ?string $backupLink;
 
     /**
-     * @ORM\Column(type="integer", nullable=false)
-     * @var int
+     * @ORM\Column(type="integer", nullable=true)
+     * @var int|null
      */
-    protected int $neededCorrectAnswers;
+    protected ?int $neededCorrectAnswers;
 
     public function __construct(
         Event $event,
         int $levelNumber,
-        string $link,
-        string $backupLink,
-        int $neededCorrectAnswers
+        ?string $link,
+        ?string $backupLink,
+        ?int $neededCorrectAnswers
     ) {
         $this->event = $event;
         $this->levelNumber = $levelNumber;
@@ -64,7 +64,7 @@ class Level
 
     public function getId(): int
     {
-        if ($this->id === null) {
+        if (!isset($this->id)) {
             throw new \InstruktoriBrno\TMOU\Model\Exceptions\IDNotYetAssignedException;
         }
         return $this->id;
@@ -93,5 +93,10 @@ class Level
     public function getNeededCorrectAnswers(): int
     {
         return $this->neededCorrectAnswers;
+    }
+
+    public function isLast(): bool
+    {
+        return $this->link === null || $this->neededCorrectAnswers === null;
     }
 }

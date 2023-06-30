@@ -40,7 +40,7 @@ class Password
 
     public function getId(): int
     {
-        if ($this->id === null) {
+        if (!isset($this->id)) {
             throw new \InstruktoriBrno\TMOU\Model\Exceptions\IDNotYetAssignedException;
         }
         return $this->id;
