@@ -5,6 +5,15 @@
 
     <div id="content">
         <h2>Obsah kvalifikace</h2>
+        <p>
+            Maximální počet odpovědí: {$event->getQualificationMaxAttempts()} &mdash; {if $event->shouldShowQualificationAttemptsCount()}zobrazováno týmům{else}Nezobrazováno týmům{/if}.
+        </p>
+
+        <p>
+            Časová penalizace po špatné odpovědi:
+            {if $event->getQualificationWrongAttemptPenalisation() === null}ne{else}{$event->getQualificationWrongAttemptPenalisation()} sekund{/if}
+            &mdash; {if $event->shouldShowQualificationNextAttemptTime()}zobrazováno týmům{else}Nezobrazováno týmům{/if}.
+        </p>
         {if count($levels) === 0}
             <div class="alert-info alert">
                 <p>Nejsou definovány žádné úrovně.</p>
@@ -14,6 +23,14 @@
                 {continueIf $level->isLast()}
                 <h3>Úroveň {$level->getLevelNumber()}</h3>
                 {var $levelPuzzles = $puzzles[$level->getId()] ?? []}
+                <p>Zadání:</p>
+                <ul>
+                    <li><a href="{$level->getLink()|absoluteLink}">{$level->getLink()}</a></li>
+                    <li n:if="$level->getBackupLink() !== null"><a href="{$level->getBackupLink()|absoluteLink}">{$level->getBackupLink()}</a></li>
+                </ul>
+                <p>
+                    Potřebných správných řešení: {$level->getNeededCorrectAnswers()}<br>
+                </p>
                 {continueIf count($levelPuzzles) === 0}
                 <table class="table-auto mt-2">
                     <tr>
