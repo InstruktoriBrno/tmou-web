@@ -2,6 +2,7 @@
 namespace InstruktoriBrno\TMOU\Model;
 
 use Doctrine\ORM\Mapping as ORM;
+use Nette\Utils\Strings;
 
 /**
  * @ORM\Entity
@@ -54,5 +55,23 @@ class Password
     public function getCode(): string
     {
         return $this->code;
+    }
+
+    /**
+     * Returns whether the given asnwer matches the password
+     * (case-insensitive, in ASCII, trimmed))
+     * @param string $answer
+     * @return bool
+     */
+    public function match(string $answer): bool
+    {
+        $answer = Strings::trim($answer);
+        $answer = Strings::toAscii($answer);
+        $answer = Strings::upper($answer);
+
+        $code = Strings::trim($this->code);
+        $code = Strings::toAscii($code);
+        $code = Strings::upper($code);
+        return $answer === $code;
     }
 }

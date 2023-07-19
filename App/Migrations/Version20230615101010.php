@@ -17,7 +17,7 @@ final class Version20230615101010 extends AbstractMigration
         $this->addSql('ALTER TABLE event ADD COLUMN qualification_max_attempts INT NULL');
         $this->addSql('ALTER TABLE event ADD COLUMN qualification_show_attempts_count TINYINT(1) NOT NULL DEFAULT FALSE');
         $this->addSql('ALTER TABLE event ADD COLUMN qualification_wrong_attempt_penalisation INT NULL');
-        $this->addSql('ALTER TABLE event ADD COLUMN qualification_show_wrong_attempts_count TINYINT(1) NOT NULL DEFAULT FALSE');
+        $this->addSql('ALTER TABLE event ADD COLUMN qualification_show_next_attempt_time TINYINT(1) NOT NULL DEFAULT FALSE');
 
         // Add levels table
         $this->addSql(<<<EOD
@@ -93,7 +93,7 @@ EOD);
         $this->addSql('DROP TABLE puzzle');
         $this->addSql('DROP TABLE level');
 
-        $this->addSql('ALTER TABLE event DROP COLUMN qualification_show_wrong_attempts_count;');
+        $this->addSql('ALTER TABLE event DROP COLUMN qualification_show_next_attempt_time;');
         $this->addSql('ALTER TABLE event DROP COLUMN qualification_wrong_attempt_penalisation;');
         $this->addSql('ALTER TABLE event DROP COLUMN qualification_show_attempts_count;');
         $this->addSql('ALTER TABLE event DROP COLUMN qualification_max_attempts;');

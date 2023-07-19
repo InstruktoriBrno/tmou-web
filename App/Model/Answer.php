@@ -61,14 +61,15 @@ class Answer
         Team $team,
         string $code,
         bool $correct,
-        bool $isLeveling
+        bool $isLeveling,
+        DateTimeImmutable $answeredAt
     ) {
         $this->puzzle = $puzzle;
         $this->team = $team;
         $this->code = $code;
         $this->correct = $correct;
         $this->isLeveling = $isLeveling;
-        $this->answeredAt = new DateTimeImmutable();
+        $this->answeredAt = $answeredAt;
     }
 
     public function getId(): int

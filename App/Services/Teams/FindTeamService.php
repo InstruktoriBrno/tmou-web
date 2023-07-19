@@ -18,11 +18,12 @@ class FindTeamService
      * Returns given team with current id or null when no such exists
      *
      * @param int $id
+     * @param int|null $lockMode
      *
      * @return Team|null
      */
-    public function __invoke(int $id): ?Team
+    public function __invoke(int $id, ?int $lockMode = null): ?Team
     {
-        return $this->entityManager->getRepository(Team::class)->find($id);
+        return $this->entityManager->getRepository(Team::class)->find($id, $lockMode);
     }
 }

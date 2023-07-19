@@ -87,6 +87,7 @@ services:
             - injectGameClock
             - injectTeamMacroDataProvider
             - injectEventMacroDataProvider
+            - injectBasePath(@Nette\Http\IRequest::getUrl()::getHostUrl())
     - InstruktoriBrno\TMOU\Services\System\GameClockService
     - InstruktoriBrno\TMOU\Services\System\RealClockService
     - InstruktoriBrno\TMOU\Services\Teams\TeamMacroDataProvider
@@ -187,6 +188,7 @@ services:
     - InstruktoriBrno\TMOU\Facades\System\CreateTestDataFacade
     - InstruktoriBrno\TMOU\Forms\CopyEventContentFormFactory
     - InstruktoriBrno\TMOU\Forms\ImportQualificationFormFactory
+    - InstruktoriBrno\TMOU\Forms\QualificationAnswerFormFactory
     - InstruktoriBrno\TMOU\Services\MenuItems\FindMenuItemsInEventService
     - InstruktoriBrno\TMOU\Services\Pages\FindPagesInEventService
     - InstruktoriBrno\TMOU\Facades\System\CopyEventContentFacade
@@ -197,11 +199,18 @@ services:
     - InstruktoriBrno\TMOU\Services\Discussions\FindThreadAcknowledgementByThreadsAndUserService
     - InstruktoriBrno\TMOU\Services\System\RememberedNicknameService
     - InstruktoriBrno\TMOU\Facades\Qualification\ImportQualificationFacade
+    - InstruktoriBrno\TMOU\Facades\Qualification\AnswerPuzzleFacade
     - InstruktoriBrno\TMOU\Services\Qualification\ParseAndValidateQualificationService
     - InstruktoriBrno\TMOU\Services\Qualification\FindLevelsService
     - InstruktoriBrno\TMOU\Services\Qualification\DeleteOldQualificationService
     - InstruktoriBrno\TMOU\Services\Qualification\CreateQualificationService
     - InstruktoriBrno\TMOU\Services\Qualification\FindPuzzlesOfEventService
+    - InstruktoriBrno\TMOU\Services\Qualification\FindPuzzlesOfEventPairsService
+    - InstruktoriBrno\TMOU\Services\Qualification\FindPuzzleService
+    - InstruktoriBrno\TMOU\Services\Qualification\FindTeamAnswersCountService
+    - InstruktoriBrno\TMOU\Services\Qualification\FindTeamAnswersService
+    - InstruktoriBrno\TMOU\Services\Qualification\FindTeamAnswersFromLevelService
+
 
 extensions:
     nextras.form: Nextras\Forms\Bridges\NetteDI\FormsExtension

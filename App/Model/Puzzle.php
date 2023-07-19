@@ -80,4 +80,21 @@ class Puzzle
     {
         return $this->passwords->toArray();
     }
+
+    /**
+     * Checks whether the given answer match any of the passwords of this puzzle
+     * (case-insensitive, trimmed, in ASCII only)
+     *
+     * @param string $answer
+     * @return bool
+     */
+    public function isAnswerCorrect(string $answer): bool
+    {
+        foreach ($this->passwords as $password) {
+            if ($password->match($answer)) {
+                return true;
+            }
+        }
+        return false;
+    }
 }

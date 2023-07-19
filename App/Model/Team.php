@@ -632,4 +632,43 @@ class Team
     {
         $this->lastWrongAnswerAt = $at;
     }
+
+    /**
+     * Returns if the team can answer given puzzle (ignores qualification interval)
+     *
+     * @param Puzzle $puzzle
+     * @param Level $firstLevel
+     * @return bool
+     */
+    public function canAnswerPuzzle(Puzzle $puzzle, Level $firstLevel): bool
+    {
+        $currentLevel = $this->currentLevel;
+        if ($currentLevel === null) {
+            $currentLevel = $firstLevel;
+        }
+        if ($puzzle->getLevel()->getLevelNumber() === $currentLevel->getLevelNumber()) {
+            return true;
+        }
+        return false;
+    }
+
+    public function hasSolvedQualification(): bool
+    {
+        return $this->currentLevel !== null && $this->currentLevel->isLast();
+    }
+
+    public function getCurrentLevel(): ?Level
+    {
+        return $this->currentLevel;
+    }
+
+    public function setCurrentLevel(Level $level): void
+    {
+        $this->currentLevel = $level;
+    }
+
+    public function getLastWrongAnswerAt(): ?DateTimeImmutable
+    {
+        return $this->lastWrongAnswerAt;
+    }
 }

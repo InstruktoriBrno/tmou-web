@@ -34,6 +34,8 @@ class Authorizator implements IAuthorizator
 
         $this->acl->addResource(Resource::DISCUSSION);
 
+        $this->acl->addResource(Resource::QUALIFICATION);
+
         // Guest
         $this->acl->deny(UserRole::GUEST);
 
@@ -51,6 +53,7 @@ class Authorizator implements IAuthorizator
         $this->acl->allow(UserRole::TEAM, Resource::DISCUSSION, Action::NEW_POST);
         $this->acl->allow(UserRole::TEAM, Resource::DISCUSSION, Action::NEW_THREAD);
         $this->acl->allow(UserRole::TEAM, Resource::DISCUSSION, Action::MARK_THREAD_AS_READ);
+        $this->acl->allow(UserRole::TEAM, Resource::QUALIFICATION, Action::PLAY);
 
         // Org
         $this->acl->allow(UserRole::ORG, Resource::ADMIN_COMMON);
@@ -65,6 +68,7 @@ class Authorizator implements IAuthorizator
         $this->acl->deny(UserRole::ORG, Resource::TEAM_COMMON, Action::REGISTER);
         $this->acl->deny(UserRole::ORG, Resource::TEAM_COMMON, Action::FORGOTTEN_PASSWORD);
         $this->acl->deny(UserRole::ORG, Resource::TEAM_COMMON, Action::RESET_PASSWORD);
+        $this->acl->deny(UserRole::ORG, Resource::QUALIFICATION);
     }
 
     /**

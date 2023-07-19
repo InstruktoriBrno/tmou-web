@@ -151,7 +151,7 @@ class Event
      * @ORM\Column(type="boolean")
      * @var bool
      */
-    protected bool $qualificationShowWrongAttemptsCount = false;
+    protected bool $qualificationShowNextAttemptTime = false;
 
     public function __construct(
         string $name,
@@ -498,7 +498,7 @@ class Event
         ?int $qualificationMaxAttempts,
         bool $qualificationShowAttemptsCount,
         ?int $qualificationWrongAttemptPenalisation,
-        bool $qualificationShowWrongAttemptsCount
+        bool $qualificationShowNextAttemptTime
     ): void {
         if ($qualificationMaxAttempts !== null && $qualificationMaxAttempts < 1) {
             throw new \InstruktoriBrno\TMOU\Model\Exceptions\InvalidQualificationMaxAttemptsException();
@@ -514,25 +514,25 @@ class Event
      * @param int|null $qualificationMaxAttempts Number of wrong + correct answers per team
      * @param bool $qualificationShowAttemptsCount Whether to show number of attempts to team
      * @param int|null $qualificationWrongAttemptPenalisation Number of seconds to penalise for answer
-     * @param bool $qualificationShowWrongAttemptsCount Whether to show number of possible wrong attempts to team
+     * @param bool $qualificationShowNextAttemptTime Whether to show next attempt time to team
      * @return void
      */
     public function updateQualificationDetails(
         ?int $qualificationMaxAttempts,
         bool $qualificationShowAttemptsCount,
         ?int $qualificationWrongAttemptPenalisation,
-        bool $qualificationShowWrongAttemptsCount
+        bool $qualificationShowNextAttemptTime
     ): void {
         $this->validateQualificationDetails(
             $qualificationMaxAttempts,
             $qualificationShowAttemptsCount,
             $qualificationWrongAttemptPenalisation,
-            $qualificationShowWrongAttemptsCount
+            $qualificationShowNextAttemptTime
         );
         $this->qualificationMaxAttempts = $qualificationMaxAttempts;
         $this->qualificationShowAttemptsCount = $qualificationShowAttemptsCount;
         $this->qualificationWrongAttemptPenalisation = $qualificationWrongAttemptPenalisation;
-        $this->qualificationShowWrongAttemptsCount = $qualificationShowWrongAttemptsCount;
+        $this->qualificationShowNextAttemptTime = $qualificationShowNextAttemptTime;
     }
 
     public function getQualificationMaxAttempts(): ?int
@@ -554,8 +554,8 @@ class Event
         return $this->qualificationWrongAttemptPenalisation;
     }
 
-    public function shouldShowQualificationWrongAttemptCount(): bool
+    public function shouldShowQualificationNextAttemptTime(): bool
     {
-        return $this->qualificationShowWrongAttemptsCount;
+        return $this->qualificationShowNextAttemptTime;
     }
 }

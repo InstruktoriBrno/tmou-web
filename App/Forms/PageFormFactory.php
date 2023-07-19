@@ -41,6 +41,7 @@ class PageFormFactory
                 ReservedSLUG::QUALIFICATION_RESULTS()->toScalar() . '", "' .
                 ReservedSLUG::QUALIFICATION_ANSWERS()->toScalar() . '", "' .
                 ReservedSLUG::QUALIFICATION_STATISTICS()->toScalar() . '", "' .
+                ReservedSLUG::QUALIFICATION_SYSTEM()->toScalar() . '", "' .
                 ReservedSLUG::GAME_STATISTICS()->toScalar() . '", "' .
                 ReservedSLUG::GAME_FLOW()->toScalar() . '".');
         $form->addCheckbox('default', 'Výchozí')
@@ -76,7 +77,9 @@ class PageFormFactory
         $form->addTextArea('content', Html::el()->addText('Obsah')->addHtml('&nbsp;')->addHtml($insertMedia), 50, 20)
             ->setRequired('Vyplňte, prosím, obsah stránky')
             ->setHtmlId($contentElementId)
-            ->setOption('description', 'Pokud vkládáte přímo HTML, ověřte, že neobsahuje XSS, takový obsah již není dále kontrolován.');
+            ->setOption('description', 'Pokud vkládáte přímo HTML, ověřte, že neobsahuje XSS, takový obsah již není dále kontrolován. '
+                . 'Pokud použijete hodnotu "' . ReservedSLUG::QUALIFICATION_SYSTEM()->toScalar() . '", bude obsah ignorován.');
+
 
         $form->addCheckbox('caching_safe', 'Kešovat')
             ->setOption('description', 'Zaškrtněte pouze pokud stránka nepoužívá žádné týmová ani ročníková makra (keš je sdílená mezi týmy) a

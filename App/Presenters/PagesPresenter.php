@@ -13,6 +13,7 @@ use InstruktoriBrno\TMOU\Facades\Discussions\SaveNewThreadFacade;
 use InstruktoriBrno\TMOU\Facades\Discussions\SaveThreadFacade;
 use InstruktoriBrno\TMOU\Facades\Discussions\ToggleHidePostFacade;
 use InstruktoriBrno\TMOU\Facades\Discussions\ToggleLockThreadFacade;
+use InstruktoriBrno\TMOU\Facades\Qualification\AnswerPuzzleFacade;
 use InstruktoriBrno\TMOU\Facades\Teams\ChangeTeamFacade;
 use InstruktoriBrno\TMOU\Facades\Teams\ConsumePasswordResetFacade;
 use InstruktoriBrno\TMOU\Facades\Teams\CreateSSOSession;
@@ -24,6 +25,7 @@ use InstruktoriBrno\TMOU\Facades\Teams\TeamLoginFacade;
 use InstruktoriBrno\TMOU\Forms\ChangeThreadFormFactory;
 use InstruktoriBrno\TMOU\Forms\NewPostFormFactory;
 use InstruktoriBrno\TMOU\Forms\NewThreadFormFactory;
+use InstruktoriBrno\TMOU\Forms\QualificationAnswerFormFactory;
 use InstruktoriBrno\TMOU\Forms\TeamForgottenPasswordFormFactory;
 use InstruktoriBrno\TMOU\Forms\TeamLoginFormFactory;
 use InstruktoriBrno\TMOU\Forms\TeamRegistrationFormFactory;
@@ -45,6 +47,8 @@ use InstruktoriBrno\TMOU\Services\Events\FindEventByNumberService;
 use InstruktoriBrno\TMOU\Services\Events\FindEventTeamReviewsService;
 use InstruktoriBrno\TMOU\Services\Organizators\FindOrganizatorByIdService;
 use InstruktoriBrno\TMOU\Services\Pages\FindPageInEventService;
+use InstruktoriBrno\TMOU\Services\Qualification\FindLevelsService;
+use InstruktoriBrno\TMOU\Services\Qualification\FindTeamAnswersService;
 use InstruktoriBrno\TMOU\Services\System\IsSLUGReservedService;
 use InstruktoriBrno\TMOU\Services\System\RememberedNicknameService;
 use InstruktoriBrno\TMOU\Services\Teams\FindTeamForFormService;
@@ -58,10 +62,15 @@ use Nette\Application\UI\Form;
 use Nette\Forms\Controls\TextInput;
 use Nette\Security\Identity;
 use Nette\Utils\ArrayHash;
+use Nette\Utils\Strings;
 use Nette\Utils\Validators;
 use Tracy\Debugger;
 use Tracy\ILogger;
+use function array_key_last;
 use function array_merge;
+use function array_reverse;
+use function array_unshift;
+use function assert;
 
 final class PagesPresenter extends BasePresenter
 {
@@ -190,6 +199,18 @@ final class PagesPresenter extends BasePresenter
 
     /** @var SaveThreadFacade @inject */
     public $saveThreadFacade;
+
+    /** @var FindLevelsService @inject */
+    public FindLevelsService $findLevelsService;
+
+    /** @var QualificationAnswerFormFactory @inject */
+    public QualificationAnswerFormFactory $qualificationAnswerFormFactory;
+
+    /** @var AnswerPuzzleFacade @inject */
+    public AnswerPuzzleFacade $answerPuzzleFacade;
+
+    /** @var FindTeamAnswersService @inject */
+    public FindTeamAnswersService $findTeamAnswersService;
 
     /** @var Event|null */
     private $event;
@@ -414,6 +435,27 @@ final class PagesPresenter extends BasePresenter
             $this->template->threadsLatestsPosts = ($this->findLastPostsForThreads)($threads);
             $this->template->acks = ($this->findThreadAcknowledgementByThreads)($threads, $this->user);
         }
+    }
+
+    /** @privilege(InstruktoriBrno\TMOU\Enums\Resource::QUALIFICATION,InstruktoriBrno\TMOU\Enums\Action::PLAY) */
+    public function actionQualificationSystem(?int $eventNumber): void
+    {
+        if ($eventNumber !== null) {
+            $this->populateEventFromURL($eventNumber);
+        }
+        $user = $this->getCurrentUserEntity();
+
+        if (!$user instanceof Team) {
+            throw new \Nette\Application\BadRequestException("Qualification is accessible only for teams.");
+        }
+        if ($user->getEvent()->getId() !== $this->event->getId()) {
+            throw new \Nette\Application\BadRequestException("Qualification is accessible only for teams in associated event.");
+        }
+        $this->template->event = $this->event;
+        $this->template->team = $user;
+        $this->template->levels = $levels = ($this->findLevelsService)($this->event);
+        $this->template->answers = array_reverse(($this->findTeamAnswersService)($user));
+        $this->template->lastLevel = count($levels) > 1 ? $levels[array_key_last($levels)] : null;
     }
 
     /**
@@ -855,5 +897,77 @@ final class PagesPresenter extends BasePresenter
             return 80;
         }
         return 70;
+    }
+
+    public function createComponentQualificationAnswerForm(): Form
+    {
+        $this->populateEventFromURL();
+        $event = $this->event;
+        assert($event !== null);
+
+        $user = $this->getCurrentUserEntity();
+
+        if (!$user instanceof Team) {
+            throw new \Nette\Application\BadRequestException("Qualification is accessible only for teams.");
+        }
+        if ($user->getEvent()->getId() !== $this->event->getId()) {
+            throw new \Nette\Application\BadRequestException("Qualification is accessible only for teams in associated event.");
+        }
+
+        $form = $this->qualificationAnswerFormFactory->create(function (Form $form, ArrayHash $values) use ($user, $event): void {
+            if (!$this->user->isAllowed(Resource::QUALIFICATION, Action::PLAY)) {
+                $this->flashMessage('Nejste oprávněni provádět tuto operaci. Pokud věříte, že jde o chybu, kontaktujte správce.', Flash::DANGER);
+                return;
+            }
+            try {
+                $answer = ($this->answerPuzzleFacade)($event, $user, $values->puzzle, $values->answer);
+            } catch (\InstruktoriBrno\TMOU\Facades\Qualification\Exceptions\NoSuchPuzzleException $e) {
+                $this->flashMessage('Vybraná šifra neexistuje.', Flash::WARNING);
+                return;
+            } catch (\InstruktoriBrno\TMOU\Facades\Qualification\Exceptions\CannotAnswerPuzzleException $e) {
+                $this->flashMessage('Na vybranou šifru nemůže váš tým nyní odpovídat.', Flash::WARNING);
+                return;
+            } catch (\InstruktoriBrno\TMOU\Facades\Qualification\Exceptions\OutsideQualificationException $e) {
+                $this->flashMessage('Kvalifikace nyní neprobíhá.', Flash::WARNING);
+                return;
+            } catch (\InstruktoriBrno\TMOU\Facades\Qualification\Exceptions\MaxQualificationAnswersCountReachedException $e) {
+                $this->flashMessage('Dosáhli jste maximálního počtu odpovědí v kvalifikaci. Další odpovědi už nejsou možné.', Flash::DANGER);
+                return;
+            } catch (\InstruktoriBrno\TMOU\Facades\Qualification\Exceptions\TooManyWrongAnswersRecentlyException $e) {
+                $this->flashMessage('Od poslední špatné odpovědi neuplynula časová penalizace. Další odpověď možná až ' . $e->getWaitUntil()->format('j. n. Y H:i:s') . '.', Flash::WARNING);
+                return;
+            } catch (\InstruktoriBrno\TMOU\Facades\Qualification\Exceptions\AlreadyCorrectlyAnsweredException $e) {
+                $this->flashMessage('Tuto šifru jste již vyřešili.', Flash::WARNING);
+                return;
+            } catch (\Doctrine\DBAL\Exception\LockWaitTimeoutException $e) {
+                $this->flashMessage('Došlo k souběhu odpovědí vašeho týmu, zkuste to znovu.', Flash::WARNING);
+                return;
+            }
+            if (!$answer->isCorrect()) {
+                $this->flashMessage($answer->getPuzzle()->getName(). ': heslo '. $this->formatCode($answer->getCode()) . ' není správné.', Flash::DANGER);
+                array_unshift($this->template->answers, $answer);
+                return;
+            } else {
+                $this->flashMessage($answer->getPuzzle()->getName(). ': heslo ' . $this->formatCode($answer->getCode()) . ' je správné!', Flash::SUCCESS);
+            }
+            if ($answer->isLeveling()) {
+                if (isset($this->template->lastLevel) && $this->template->lastLevel !== null && $this->template->lastLevel->getLevelNumber() === ($answer->getPuzzle()->getLevel()->getLevelNumber() + 1)) {
+                    $this->flashMessage('Dokončili jste kvalifikaci.', Flash::WARNING);
+                } else {
+                    $this->flashMessage('Postupujete na ' . ($answer->getPuzzle()->getLevel()->getLevelNumber() + 1) . '. úroveň.', Flash::WARNING);
+                }
+            }
+
+            $this->redirect('this');
+        }, $event, $user);
+        return $form;
+    }
+
+    private function formatCode(string $value): string
+    {
+        $value = Strings::trim($value);
+        $value = Strings::upper($value);
+        $value = Strings::toAscii($value);
+        return $value;
     }
 }

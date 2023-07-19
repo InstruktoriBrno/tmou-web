@@ -21,6 +21,8 @@ use Grifart\Enum\Enum;
  *
  * @method Resource DISCUSSION()
  *
+ * @method Resource QUALIFICATION()
+ *
  */
 final class Resource extends Enum
 {
@@ -40,4 +42,6 @@ final class Resource extends Enum
     public const TEAM_COMMON = 'team_common';
 
     public const DISCUSSION = 'discussion';
+
+    public const QUALIFICATION = 'qualification';
 }
