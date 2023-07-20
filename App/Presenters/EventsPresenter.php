@@ -6,10 +6,12 @@ use InstruktoriBrno\TMOU\Enums\Flash;
 use InstruktoriBrno\TMOU\Enums\Resource;
 use InstruktoriBrno\TMOU\Facades\Events\DeleteEventFacade;
 use InstruktoriBrno\TMOU\Facades\Events\SaveEventFacade;
+use InstruktoriBrno\TMOU\Facades\Qualification\DeleteQualificationProgressFacade;
 use InstruktoriBrno\TMOU\Facades\Qualification\ImportQualificationFacade;
 use InstruktoriBrno\TMOU\Facades\System\CopyEventContentFacade;
 use InstruktoriBrno\TMOU\Forms\ConfirmFormFactory;
 use InstruktoriBrno\TMOU\Forms\CopyEventContentFormFactory;
+use InstruktoriBrno\TMOU\Forms\DeleteQualificationProgressFormFactory;
 use InstruktoriBrno\TMOU\Forms\EventFormFactory;
 use InstruktoriBrno\TMOU\Forms\ImportQualificationFormFactory;
 use InstruktoriBrno\TMOU\Grids\EventsGrid\EventsGrid;
@@ -73,6 +75,12 @@ final class EventsPresenter extends BasePresenter
 
     /** @var FindPuzzlesOfEventService @inject */
     public FindPuzzlesOfEventService $findPuzzlesOfEventService;
+
+    /** @var DeleteQualificationProgressFormFactory @inject */
+    public DeleteQualificationProgressFormFactory $deleteQualificationProgressFormFactory;
+
+    /** @var DeleteQualificationProgressFacade @inject */
+    public DeleteQualificationProgressFacade $deleteQualificationProgressFacade;
 
     /** @privilege(InstruktoriBrno\TMOU\Enums\Resource::ADMIN_EVENTS,InstruktoriBrno\TMOU\Enums\Action::VIEW,InstruktoriBrno\TMOU\Enums\PrivilegeEnforceMethod::TRIGGER_ADMIN_LOGIN) */
     public function actionDefault(): void
@@ -313,5 +321,34 @@ final class EventsPresenter extends BasePresenter
         },
         '/assets/schemas/qualification.example.xml',
         '/assets/schemas/qualification.xsd');
+    }
+
+    public function createComponentDeleteQualificationProgressForm(): Form
+    {
+        $eventId = $this->getParameter('eventId') !== null ? (int) $this->getParameter('eventId') : null;
+        $event = $eventId !== null ? ($this->findEventService)($eventId) : null;
+        if ($event === null) {
+            throw new \Nette\Application\BadRequestException('Event not found');
+        }
+        return $this->deleteQualificationProgressFormFactory->create(function (Form $form, $values) use ($event): void {
+            if (!$this->user->isAllowed(Resource::ADMIN_EVENTS, Action::EDIT)) {
+                $form->addError('Nejste oprávněni provádět tuto operaci. Pokud věříte, že jde o chybu, kontaktujte správce.');
+                return;
+            }
+
+            try {
+                ($this->deleteQualificationProgressFacade)($event, $values->scope);
+            } catch (\InstruktoriBrno\TMOU\Facades\Qualification\Exceptions\NoSuchTeamInEventException $exception) {
+                $form->addError('Vybraný tým neexistuje v daném ročníku, opakujte akci a v případě selhání kontaktujte správce.');
+                return;
+            }
+            if ($values->scope === null) {
+                $this->flashMessage('Průběh kvalifikace všech týmů v ročníku Y byl smazán.', Flash::SUCCESS);
+            } else {
+                $this->flashMessage('Průběh kvalifikace týmu X byl smazán.', Flash::SUCCESS);
+            }
+
+            $this->redirect('this');
+        }, $event);
     }
 }

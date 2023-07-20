@@ -100,6 +100,7 @@ services:
     - InstruktoriBrno\TMOU\Facades\Teams\RegisterTeamFacade
     - InstruktoriBrno\TMOU\Services\Teams\SendRegistrationEmailService(%mail.noReply%, %mail.replyTo%)
     - InstruktoriBrno\TMOU\Services\Teams\FindTeamsInEventService
+    - InstruktoriBrno\TMOU\Services\Teams\FindTeamPairsFromEventService
     - InstruktoriBrno\TMOU\Grids\TeamsGrid\TeamsGridFactory
     - InstruktoriBrno\TMOU\Services\Teams\FindTeamsOfEventForDataGridService
     - InstruktoriBrno\TMOU\Services\Teams\FindTeamService
@@ -116,6 +117,7 @@ services:
     - InstruktoriBrno\TMOU\Services\Teams\SendResetPasswordEmailService(%mail.noReply%, %mail.replyTo%)
     - InstruktoriBrno\TMOU\Facades\Teams\RequestPasswordResetFacade
     - InstruktoriBrno\TMOU\Forms\TeamResetPasswordFormFactory
+    - InstruktoriBrno\TMOU\Forms\DeleteQualificationProgressFormFactory
     - InstruktoriBrno\TMOU\Facades\Teams\ConsumePasswordResetFacade
     - InstruktoriBrno\TMOU\Services\Teams\FindTeamForFormService
     - InstruktoriBrno\TMOU\Facades\Teams\ChangeTeamFacade
@@ -200,6 +202,7 @@ services:
     - InstruktoriBrno\TMOU\Services\System\RememberedNicknameService
     - InstruktoriBrno\TMOU\Facades\Qualification\ImportQualificationFacade
     - InstruktoriBrno\TMOU\Facades\Qualification\AnswerPuzzleFacade
+    - InstruktoriBrno\TMOU\Facades\Qualification\DeleteQualificationProgressFacade
     - InstruktoriBrno\TMOU\Services\Qualification\ParseAndValidateQualificationService
     - InstruktoriBrno\TMOU\Services\Qualification\FindLevelsService
     - InstruktoriBrno\TMOU\Services\Qualification\DeleteOldQualificationService

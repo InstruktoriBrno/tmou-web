@@ -671,4 +671,10 @@ class Team
     {
         return $this->lastWrongAnswerAt;
     }
+
+    public function resetQualification(): void
+    {
+        $this->lastWrongAnswerAt = null;
+        $this->currentLevel = null;
+    }
 }
