@@ -16,7 +16,7 @@ class AbsoluteLinkFilter
     public function __invoke(string $value): LatteHtml
     {
         // if given value is not link starting http or https then append local address
-        if (strpos($value, 'http://') !== 0 || strpos($value, 'https://') !== 0) {
+        if (strpos($value, 'http://') !== 0 && strpos($value, 'https://') !== 0) {
             if (strpos($value, '/') !== 0) {
                 $value = '/' . $value;
             }
