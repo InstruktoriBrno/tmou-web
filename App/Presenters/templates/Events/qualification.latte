@@ -51,6 +51,10 @@
             {/foreach}
         {/if}
 
+        <br>
+        <hr>
+        <br>
+
         <h2>Import kvalifikace</h2>
         <div class="alert-warning alert">
             <ul>
@@ -60,10 +64,44 @@
             </ul>
         </div>
 
-        <br>
-
         {control importQualificationForm}
 
+        <br>
+        <hr>
+        <br>
+
+        <h2>Nastavení kvalifikovaných týmů</h2>
+
+        <div class="alert-warning alert">
+                <ul>
+                    <li>Provádějte až po skončení kvalifikace!</li>
+                    <li>Provádějte až po poslední ruční aktualizaci výsledkovky!</li>
+                    <li>Operace není vratná!</li>
+                    <li>Stav na kvalifikovaný/nekvalifikovaný bude změnen jen u registrovaných týmů, již kvalifikované a již hrající týmy nebudou jakkoliv upraveny!</li>
+                </ul>
+        </div>
+
+        <p>
+                <a class="btn btn-primary button" href="{link qualifyTeams!, $event->getId()}">Nastavit kvalifikované týmy</a>
+        </p>
+
+        <br>
+        <hr>
+        <br>
+
+        <h2>Ruční aktualizace výsledkovky</h2>
+        <div class="alert-warning alert">
+                <ul>
+                    <li>Provede vynucenou aktualizaci celé výsledkovky tohoto ročníku!</li>
+                    <li>Neprovádějte příliš často, výpočet výsledkovky je výkonnostně náročný!</li>
+                </ul>
+        </div>
+        <p>
+            <a class="btn btn-primary button" href="{link updateEventQualification!, $event->getId()}">Aktualizovat výsledkovku nyní</a>
+        </p>
+
+        <br>
+        <hr>
         <br>
 
         <h2>Smazání průběhu kvalifikace</h2>

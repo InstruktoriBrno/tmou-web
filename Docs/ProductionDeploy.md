@@ -71,6 +71,14 @@ Taktéž je potřeba změnit `Access Type` na confidential. V `Mappers` je potř
 
 Uživatelům, kteří mají mít přístup do TMOU webu je potřeba přidat zařazení do skupiny `Organizátoři TMOU` nebo `tmou_org` (přesná shoda).
 
+## Automatizovaná aktualizace výsledků kvalifikace
+
+Systém obsahuje kešovaný výpočet výsledků kvalifikace, což umožňuje ho případně během hry zobrazovat hráčům, aniž by to zatěžovalo databázi. Tento výpočet je potřeba spouštět pravidelně, ideálně každých 5 minut. Pro jednoduchost je připraven skript `bin/console  update-qualification-scoreboards`, který je potřeba spouštět pravidelně.
+
+```
+* * * * * /path/to/project/bin/console update-qualification-scoreboards >/dev/null 2>&1
+```
+
 ## Automatické párování plateb
 
 Systém obsahuje automatizované párování plateb, tomu je potřeba zajistit automatizované spouštění, nejlépe via CRON:

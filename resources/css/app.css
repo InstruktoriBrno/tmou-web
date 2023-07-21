@@ -549,6 +549,20 @@ blockquote {
     @apply border-l-2 border-gray-400 ml-0 pl-4 bg-gray-100
 }
 
+.bottomed-th {
+    vertical-align: bottom !important;
+}
+
+.rotate-th-270 {
+    writing-mode: vertical-lr; /* Rotate text vertically from left to right */
+    transform: rotate(180deg); /* Optional: Rotate text by 180 degrees to make it upright */
+    white-space: nowrap; /* Optional: Prevent text wrapping */
+}
+
+.qualification-border {
+    border-top: 10px solid black !important;
+}
+
 /* This moves a.anchor to top to prevent content hidden under header in small layouts */
 a.anchor {
     display: block;

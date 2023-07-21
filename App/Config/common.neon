@@ -88,6 +88,9 @@ services:
             - injectTeamMacroDataProvider
             - injectEventMacroDataProvider
             - injectBasePath(@Nette\Http\IRequest::getUrl()::getHostUrl())
+            - injectEventQualificationResultsControlFactory
+            - injectContainer
+            - injectEventQualificationPuzzlesStatisticsFactory
     - InstruktoriBrno\TMOU\Services\System\GameClockService
     - InstruktoriBrno\TMOU\Services\System\RealClockService
     - InstruktoriBrno\TMOU\Services\Teams\TeamMacroDataProvider
@@ -127,6 +130,7 @@ services:
     - InstruktoriBrno\TMOU\Facades\Teams\MaintainSSOSession(%sso.cookieName%, %sso.jwtCookieName%, %sso.cookieDomain%, %sso.expiration%)
     - InstruktoriBrno\TMOU\Facades\Teams\InvalidateSSOSession(%sso.cookieName%, %sso.jwtCookieName%, %sso.cookieDomain%)
     - InstruktoriBrno\TMOU\Commands\CleanSSOSessionsCommand
+    - InstruktoriBrno\TMOU\Commands\UpdateQualificationScoreboardsCommand
     - InstruktoriBrno\TMOU\Facades\Teams\CleanSSOSessions
     - InstruktoriBrno\TMOU\Services\Teams\ExportTeamMembersForNewsletterService
     - InstruktoriBrno\TMOU\Services\Teams\ExportAllTeamsService
@@ -203,6 +207,8 @@ services:
     - InstruktoriBrno\TMOU\Facades\Qualification\ImportQualificationFacade
     - InstruktoriBrno\TMOU\Facades\Qualification\AnswerPuzzleFacade
     - InstruktoriBrno\TMOU\Facades\Qualification\DeleteQualificationProgressFacade
+    - InstruktoriBrno\TMOU\Facades\Qualification\UpdateScoreboardsFacade
+    - InstruktoriBrno\TMOU\Facades\Qualification\QualifyTeamsByQualificationFacade
     - InstruktoriBrno\TMOU\Services\Qualification\ParseAndValidateQualificationService
     - InstruktoriBrno\TMOU\Services\Qualification\FindLevelsService
     - InstruktoriBrno\TMOU\Services\Qualification\DeleteOldQualificationService
@@ -213,6 +219,13 @@ services:
     - InstruktoriBrno\TMOU\Services\Qualification\FindTeamAnswersCountService
     - InstruktoriBrno\TMOU\Services\Qualification\FindTeamAnswersService
     - InstruktoriBrno\TMOU\Services\Qualification\FindTeamAnswersFromLevelService
+    - InstruktoriBrno\TMOU\Services\Qualification\FindEventsWithNewAnswersService
+    - InstruktoriBrno\TMOU\Services\Qualification\UpdateEventQualificationScoreboardService
+    - InstruktoriBrno\TMOU\Services\Qualification\FindResultsService
+    - InstruktoriBrno\TMOU\Services\Qualification\FindTeamResultsByLevelsService
+    - InstruktoriBrno\TMOU\Services\Qualification\FindPuzzleStatisticsService
+    - InstruktoriBrno\TMOU\Components\EventQualificationResultsControl\EventQualificationResultsControlFactory
+    - InstruktoriBrno\TMOU\Components\EventQualificationPuzzlesStatisticsControl\EventQualificationPuzzlesStatisticsControlFactory
 
 
 extensions:

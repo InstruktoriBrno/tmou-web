@@ -8,6 +8,8 @@ use InstruktoriBrno\TMOU\Facades\Events\DeleteEventFacade;
 use InstruktoriBrno\TMOU\Facades\Events\SaveEventFacade;
 use InstruktoriBrno\TMOU\Facades\Qualification\DeleteQualificationProgressFacade;
 use InstruktoriBrno\TMOU\Facades\Qualification\ImportQualificationFacade;
+use InstruktoriBrno\TMOU\Facades\Qualification\QualifyTeamsByQualificationFacade;
+use InstruktoriBrno\TMOU\Facades\Qualification\UpdateScoreboardsFacade;
 use InstruktoriBrno\TMOU\Facades\System\CopyEventContentFacade;
 use InstruktoriBrno\TMOU\Forms\ConfirmFormFactory;
 use InstruktoriBrno\TMOU\Forms\CopyEventContentFormFactory;
@@ -81,6 +83,12 @@ final class EventsPresenter extends BasePresenter
 
     /** @var DeleteQualificationProgressFacade @inject */
     public DeleteQualificationProgressFacade $deleteQualificationProgressFacade;
+
+    /** @var UpdateScoreboardsFacade @inject */
+    public UpdateScoreboardsFacade $updateScoreboardsFacade;
+
+    /** @var QualifyTeamsByQualificationFacade @inject */
+    public QualifyTeamsByQualificationFacade $qualifyTeamsByQualificationFacade;
 
     /** @privilege(InstruktoriBrno\TMOU\Enums\Resource::ADMIN_EVENTS,InstruktoriBrno\TMOU\Enums\Action::VIEW,InstruktoriBrno\TMOU\Enums\PrivilegeEnforceMethod::TRIGGER_ADMIN_LOGIN) */
     public function actionDefault(): void
@@ -350,5 +358,29 @@ final class EventsPresenter extends BasePresenter
 
             $this->redirect('this');
         }, $event);
+    }
+
+    /** @privilege(InstruktoriBrno\TMOU\Enums\Resource::ADMIN_EVENTS,InstruktoriBrno\TMOU\Enums\Action::EDIT,InstruktoriBrno\TMOU\Enums\PrivilegeEnforceMethod::TRIGGER_ADMIN_LOGIN) */
+    public function handleUpdateEventQualification(int $eventId): void
+    {
+        $event =  ($this->findEventService)($eventId);
+        if ($event === null) {
+            throw new \Nette\Application\BadRequestException('Event not found');
+        }
+        ($this->updateScoreboardsFacade)($event);
+        $this->flashMessage('Aktualizace proběhla úspěšně.', Flash::SUCCESS);
+        $this->redirect('this');
+    }
+
+    /** @privilege(InstruktoriBrno\TMOU\Enums\Resource::ADMIN_EVENTS,InstruktoriBrno\TMOU\Enums\Action::EDIT,InstruktoriBrno\TMOU\Enums\PrivilegeEnforceMethod::TRIGGER_ADMIN_LOGIN) */
+    public function handleQualifyTeams(int $eventId): void
+    {
+        $event =  ($this->findEventService)($eventId);
+        if ($event === null) {
+            throw new \Nette\Application\BadRequestException('Event not found');
+        }
+        [$qualified, $notQualified, $intact] = ($this->qualifyTeamsByQualificationFacade)($event);
+        $this->flashMessage("Aktualizace proběhla úspěšně, kvalifikováno: {$qualified}, nekvalifikováno: {$notQualified}, zachován předchozí stav: {$intact}.", Flash::SUCCESS);
+        $this->redirect('this');
     }
 }
