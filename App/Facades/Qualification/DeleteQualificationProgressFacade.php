@@ -5,6 +5,7 @@ use Doctrine\ORM\EntityManagerInterface;
 use InstruktoriBrno\TMOU\Model\Event;
 use InstruktoriBrno\TMOU\Model\Team;
 use InstruktoriBrno\TMOU\Services\Qualification\FindTeamAnswersService;
+use InstruktoriBrno\TMOU\Services\Qualification\UpdateEventQualificationScoreboardService;
 use InstruktoriBrno\TMOU\Services\Teams\FindTeamPairsFromEventService;
 use InstruktoriBrno\TMOU\Services\Teams\FindTeamService;
 
@@ -18,16 +19,20 @@ class DeleteQualificationProgressFacade
 
     private FindTeamPairsFromEventService $findTeamPairsFromEventService;
 
+    private UpdateEventQualificationScoreboardService $updateEventQualificationScoreboardService;
+
     public function __construct(
         EntityManagerInterface $entityManager,
         FindTeamService $findTeamService,
         FindTeamAnswersService $findTeamAnswersService,
-        FindTeamPairsFromEventService $findTeamPairsFromEventService
+        FindTeamPairsFromEventService $findTeamPairsFromEventService,
+        UpdateEventQualificationScoreboardService $updateEventQualificationScoreboardService
     ) {
         $this->entityManager = $entityManager;
         $this->findTeamService = $findTeamService;
         $this->findTeamAnswersService = $findTeamAnswersService;
         $this->findTeamPairsFromEventService = $findTeamPairsFromEventService;
+        $this->updateEventQualificationScoreboardService = $updateEventQualificationScoreboardService;
     }
 
     /**
@@ -49,6 +54,10 @@ class DeleteQualificationProgressFacade
 
         if ($team !== null) {
             $this->resetTeam($team);
+            $this->entityManager->transactional(function () use ($team): void {
+                ($this->updateEventQualificationScoreboardService)($team->getEvent());
+            });
+            return;
         }
         $allEventTeams = ($this->findTeamPairsFromEventService)($event);
         foreach ($allEventTeams as $id => $name) {
@@ -58,6 +67,9 @@ class DeleteQualificationProgressFacade
             }
             $this->resetTeam($team);
         }
+        $this->entityManager->transactional(function () use ($team): void {
+            ($this->updateEventQualificationScoreboardService)($team->getEvent());
+        });
     }
 
     private function resetTeam(Team $team): void

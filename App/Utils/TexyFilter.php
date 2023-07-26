@@ -488,11 +488,11 @@ TMOU:component:event_qualification_statistics: (nezveřejňujte během hry, neke
      */
     private function preprocessComponents(string $value): string
     {
-        $regex = '#TMOU:component:event_qualification_results|TMOU:component:event_qualification_statistics:#miuUs';
+        $regex = '#TMOU:component:event_qualification_results:|TMOU:component:event_qualification_statistics:#miuUs';
         $output = preg_replace_callback(
             $regex,
             function ($matches): string {
-                if ($matches[0] === 'TMOU:component:event_qualification_results') {
+                if ($matches[0] === 'TMOU:component:event_qualification_results:') {
                     return $this->renderQualificationResults($this->eventMacroDataProvider->getEvent());
                 }
                 if ($matches[0] === 'TMOU:component:event_qualification_statistics:') {

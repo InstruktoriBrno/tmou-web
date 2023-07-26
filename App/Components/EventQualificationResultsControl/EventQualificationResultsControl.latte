@@ -6,16 +6,28 @@
             <thead>
                 {capture $header}
                     <tr>
-                        <th class="bg-yellow-tmou rotate-th-270" rowspan="2">Pořadí</th>
+                        <th class="bg-yellow-tmou bottomed-th" rowspan="2">
+                            <span class="rotate-th-270 inline-block">
+                                Pořadí
+                            </span>
+                        </th>
                         <th class="bg-yellow-tmou bottomed-th" rowspan="2">Název týmu</th>
-                        <th class="bg-yellow-tmou rotate-th-270" rowspan="2">Kvalifikován</th>
+                        <th class="bg-yellow-tmou bottomed-th" rowspan="2">
+                            <span class="rotate-th-270 inline-block">
+                                Kvalifikován
+                            </span>
+                        </th>
                         {foreach $levels as $level}
                             {continueIf $level->isLast()}
                             <th class="bg-yellow-tmou" colspan="{count($puzzles[$level->getId()] ?? [])}">
                                 {$level->getLevelNumber()}.
                             </th>
                         {/foreach}
-                        <th class="bg-yellow-tmou rotate-th-270" rowspan="2">Poslední odpověď</th>
+                        <th class="bg-yellow-tmou bottomed-th" rowspan="2">
+                            <span class="rotate-th-270 inline-block">
+                                Poslední odpověď
+                            </span>
+                        </th>
                     </tr>
                     <tr>
                         {foreach $levels as $level}
