@@ -397,6 +397,7 @@ final class TeamsPresenter extends BasePresenter
                 try {
                     ($this->deleteTeamFacade)($teamId);
                 } catch (\InstruktoriBrno\TMOU\Facades\Teams\Exceptions\TeamDeleteFailedException $exception) {
+                    Debugger::log($exception);
                     $form->addError('Tým se nepodařilo smazat.');
                     return;
                 }

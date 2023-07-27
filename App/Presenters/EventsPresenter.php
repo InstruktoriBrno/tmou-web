@@ -29,6 +29,7 @@ use Nette\Forms\Controls\SubmitButton;
 use Nette\Forms\Controls\TextInput;
 use Nette\Utils\ArrayHash;
 use Nette\Utils\Html;
+use Tracy\Debugger;
 use function implode;
 
 final class EventsPresenter extends BasePresenter
@@ -270,6 +271,7 @@ final class EventsPresenter extends BasePresenter
                 try {
                     ($this->deleteEventFacade)((int) $this->getParameter('eventId'));
                 } catch (\InstruktoriBrno\TMOU\Facades\Events\Exceptions\EventDeleteFailedException $exception) {
+                    Debugger::log($exception);
                     $form->addError('Ročník se nepodařilo smazat.');
                     return;
                 }
