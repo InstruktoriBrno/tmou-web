@@ -45,6 +45,7 @@
                 {$header}
             </thead>
             {foreach $teams as $team}
+                {var $latestAnswerAt = isset($team['latest_answer_at']) ? new \DateTimeImmutable($team['latest_answer_at']) : null}
                 {if $iterator->counter0 % 50 === 0 && $iterator->counter0 !== 0}
                     {$header}
                 {/if}
@@ -61,9 +62,15 @@
                     <td class="{$class}">{if $team['qualified']}Ano{else}Ne{/if}</td>
                     {foreach $levels as $level}
                         {foreach $puzzles[$level->getId()] ?? [] as $puzzle}
-                            {var $teamAnswer = $answersByLevelAndTeam[$team['team_id']][$level->getId()][$puzzle->getId()] ?? null}
+                            {var $teamAnswer = $answersByLevelAndTeam[$team['team_id']][$level->getId()][$puzzle->getId()] ?? null};
                             {if $teamAnswer !== null}
-                                <td class="text-center bg-success-tmou {$class}" title="{$teamAnswer['answered_at']|date:'H:i:s'} - {$teamAnswer['answer_id']}">✓</td>
+                                {var $answeredAt = $teamAnswer['answered_at']}
+                                {* Hide answers after results computation as it would make the results inconsitent *}
+                                {if $latestAnswerAt === null || ($answeredAt !== null && $latestAnswerAt !== null && $answeredAt > $latestAnswerAt)}
+                                    <td class="text-center bg-fail-tmou {$class}">✗</td>
+                                {else}
+                                    <td class="text-center bg-success-tmou {$class}" title="{$teamAnswer['answered_at']|date:'H:i:s'} - {$teamAnswer['answer_id']}">✓</td>
+                                {/if}
                             {else}
                                 <td class="text-center bg-fail-tmou {$class}">✗</td>
                             {/if}
