@@ -80,7 +80,10 @@ class EventFormFactory
             ->setHtmlAttribute('autocomplete', 'off');
 
         $form->addGroup('Placení');
-        $form->addText('paymentPairingCodePrefix', 'Prefix VS');
+        $form->addText('paymentPairingCodePrefix', 'Prefix VS')
+            ->setRequired(false)
+            ->addRule(Form::PATTERN, 'Prefix VS musí být číslo a nesmí začínat nulami.', '^([1-9][0-9]+)$')
+            ->setOption('description', 'Nesmí začínat nulami.');
         $form->addText('paymentPairingCodeSuffixLength', 'Délka sufixu VS')
             ->setOption('description', 'Na kolik míst bude formátováno číslo týmu.');
         $form->addText('amount', 'Startovné')
