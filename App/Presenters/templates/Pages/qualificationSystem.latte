@@ -1,0 +1,109 @@
+{block content}
+    <div id="banner">
+        <h1 n:block=title>Kvalifikace</h1>
+    </div>
+
+    <div id="content">
+        {var $teamSolvedQualification = $team->hasSolvedQualification()}
+        {var $isBeforeQualification = $event->getQualificationStart() !== null && $event->getQualificationStart() > $currentTime}
+        {var $isAfterQualification = $event->getQualificationEnd() !== null && $event->getQualificationEnd() < $currentTime}
+        {var $isQualification = $event->getQualificationStart() !== null && $event->getQualificationStart() < $currentTime && $event->getQualificationEnd() !== null && $event->getQualificationEnd() > $currentTime}
+
+        {if $teamSolvedQualification}
+            <div class="alert alert-success">
+                Gratulujeme k úspěšnému vyřešení kvalifikace.
+                {if $isAfterQualification}
+                    Podívejte se na <a href="{plink Pages:show, \InstruktoriBrno\TMOU\Enums\ReservedSLUG::QUALIFICATION_RESULTS, $event->getNumber()}">výsledky kvalifikace</a>.
+                {/if}
+            </div>
+        {else}
+            {if $isBeforeQualification}
+                <div class="alert alert-info">Kvalifikace ještě nezačala.</div>
+            {elseif $isAfterQualification}
+                <div class="alert alert-info">
+                    Kvalifikace již skončila. Podívejte se na
+                    <a href="{plink Pages:show, \InstruktoriBrno\TMOU\Enums\ReservedSLUG::QUALIFICATION_RESULTS, $event->getNumber()}">výsledky kvalifikace</a>.
+                </div>
+            {elseif $isQualification}
+                <h2>Šifry</h2>
+                {var $currentLevel = $team->getCurrentLevel()}
+                {if $currentLevel === null}
+                    {foreach $levels as $level}
+                        {if $iterator->counter === 1}
+                            {var $currentLevel = $level}
+                        {/if}
+                    {/foreach}
+                {/if}
+                <p>Zadání:</p>
+                <ul>
+                    <li><a href="{$currentLevel->getLink()|absoluteLink}">{$currentLevel->getLink()}</a></li>
+                    <li n:if="$currentLevel->getBackupLink() !== null"><a href="{$currentLevel->getBackupLink()|absoluteLink}">{$currentLevel->getBackupLink()}</a></li>
+                </ul>
+                <h2>Odevzdávání</h2>
+                {control qualificationAnswerForm}
+            {else}
+                <div class="alert alert-error">Špatně nastavený kvalifikační systém</div>
+            {/if}
+        {/if}
+
+        <h2>Akce týmu</h2>
+
+        {if $event->shouldShowQualificationAttemptsCount()}
+            <p>
+                Počet odevzdání: {count($answers)}/{$event->getQualificationMaxAttempts()}
+            </p>
+        {/if}
+
+        {if $event->shouldShowQualificationNextAttemptTime() && $event->getQualificationWrongAttemptPenalisation() !== null}
+            <p>
+                {if $team->getLastWrongAnswerAt() === null}
+                    Další odevzdání možné: okamžitě
+                {else}
+                    {var $nextAnswerPossible = $team->getLastWrongAnswerAt()->modify('+ ' . $event->getQualificationWrongAttemptPenalisation() . ' seconds')}
+                    {if $nextAnswerPossible < $currentTime}
+                        Další odevzdání možné: okamžitě
+                    {else}
+                        Další odevzdání možné: od {$nextAnswerPossible|date:"H:i:s"}
+                    {/if}
+                {/if}
+            </p>
+        {/if}
+
+        {if count($answers) === 0}
+            <div class="alert alert-info">
+                Žádné evidované akce.
+            </div>
+        {else}
+            <table class="table-auto mt-2">
+                <tr>
+                    <th class="border p-1">Čas</th>
+                    <th class="border p-1">Akce</th>
+                </tr>
+                {foreach $answers as $answer}
+                    {if $answer->isLeveling()}
+                        <tr class="bg-yellow-tmou">
+                            <td class="border p-1">{$answer->getAnsweredAt()|date:"H:i:s"}</td>
+                            <td class="border p-1">
+                                {if $lastLevel !== null && $lastLevel->getLevelNumber() === $answer->getPuzzle()->getLevel()->getLevelNumber() + 1}
+                                    Dokončili jste kvalifikaci.
+                                {else}
+                                    Postupujete na {$answer->getPuzzle()->getLevel()->getLevelNumber() + 1}. úroveň.
+                                {/if}
+                            </td>
+                        </tr>
+                    {/if}
+                    <tr class="{if $answer->isCorrect()}bg-success-tmou{else}bg-fail-tmou{/if}">
+                        <td class="border p-1">{$answer->getAnsweredAt()|date:"H:i:s"}</td>
+                        <td class="border p-1">
+                            {if $answer->isCorrect()}
+                                {$answer->getPuzzle()->getName()}: heslo {$answer->getCode()|trim|upper|ascii} je správné.
+                            {else}
+                                {$answer->getPuzzle()->getName()}: heslo {$answer->getCode()|trim|upper|ascii} je nesprávné.
+                            {/if}
+                        </td>
+                    </tr>
+                {/foreach}
+            </table>
+        {/if}
+    </div>
+{/block}

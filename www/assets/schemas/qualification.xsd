@@ -1,0 +1,63 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<xsd:schema xmlns:xsd="http://www.w3.org/2001/XMLSchema"
+            targetNamespace="http://www.tmou.cz/assets/schemas/qualification"
+            xmlns:tns="http://www.tmou.cz/assets/schemas/qualification"
+            elementFormDefault="qualified">
+
+    <xsd:element name="qualification" type="tns:QualificationType"/>
+
+    <xsd:complexType name="QualificationType">
+        <xsd:sequence>
+            <xsd:element name="max-number-of-answers" type="tns:MaxNumberOfAnswersType"/>
+            <xsd:element name="seconds-penalization-after-incorrect-answer" type="tns:SecondsPenalizationType"/>
+            <xsd:element name="levels" type="tns:LevelsType"/>
+        </xsd:sequence>
+    </xsd:complexType>
+
+    <xsd:complexType name="MaxNumberOfAnswersType">
+        <xsd:simpleContent>
+            <xsd:extension base="xsd:positiveInteger">
+                <xsd:attribute name="show" type="xsd:boolean" use="required"/>
+            </xsd:extension>
+        </xsd:simpleContent>
+    </xsd:complexType>
+
+    <xsd:complexType name="SecondsPenalizationType">
+        <xsd:simpleContent>
+            <xsd:extension base="xsd:nonNegativeInteger">
+                <xsd:attribute name="show" type="xsd:boolean" use="required"/>
+            </xsd:extension>
+        </xsd:simpleContent>
+    </xsd:complexType>
+
+    <xsd:complexType name="LevelsType">
+        <xsd:sequence>
+            <xsd:element name="level" type="tns:LevelType" minOccurs="1" maxOccurs="unbounded"/>
+        </xsd:sequence>
+    </xsd:complexType>
+
+    <xsd:complexType name="LevelType">
+        <xsd:sequence>
+            <xsd:element name="link" type="xsd:anyURI" minOccurs="0"/>
+            <xsd:element name="backup-link" type="xsd:anyURI" minOccurs="0"/>
+            <xsd:element name="codes-needed" type="xsd:positiveInteger" minOccurs="0"/>
+            <xsd:element name="puzzles" type="tns:PuzzlesType" minOccurs="0"/>
+        </xsd:sequence>
+        <xsd:attribute name="index" type="xsd:positiveInteger" use="required"/>
+    </xsd:complexType>
+
+    <xsd:complexType name="PuzzlesType">
+        <xsd:sequence>
+            <xsd:element name="puzzle" type="tns:PuzzleType" minOccurs="1" maxOccurs="unbounded"/>
+        </xsd:sequence>
+    </xsd:complexType>
+
+    <xsd:complexType name="PuzzleType">
+        <xsd:sequence>
+            <xsd:element name="password" type="xsd:string" minOccurs="1" maxOccurs="unbounded"/>
+        </xsd:sequence>
+        <xsd:attribute name="name" type="xsd:string" use="required"/>
+    </xsd:complexType>
+
+</xsd:schema>
+

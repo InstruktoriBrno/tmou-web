@@ -1,0 +1,94 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!-- TMOU Qualification structure -->
+<qualificatiou xmlns="http://www.tmou.cz/assets/schemas/qualification"
+               xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+               xsi:schemaLocation="http://www.tmou.cz/assets/schemas/qualification http://www.tmou.cz/assets/schemas/qualification.xsd"
+>
+    <!-- Max number of answer that team can submit, no matter if correct or wrong -->
+    <!-- The show flag specifies whether the limit and its current usage will be shown to players -->
+    <max-number-of-answers show="true">20</max-number-of-answers>
+    <!-- Number of seconds which will be issued as penalty after wrong answer, zero means no penalty -->
+    <!-- The show flag specifies whether the limit and its current usage will be shown to players -->
+    <secondss-penalization-after-incorrect-answer show="true">10</secondss-penalization-after-incorrect-answer>
+    <!-- All levels, have to be in order, no gaps in indexes, starting from one, ending with one empty level -->
+    <levels>
+        <level index="1">
+            <!-- Relative or absolute link for level -->
+            <link>storage/24/kvalifikace/level-01.pdf</link>
+            <!-- Optional relative or absolute link for level -->
+            <backup-link>storage/24/kvalifikace/level-01.pdf</backup-link>
+            <!-- Number of codes after which next level will be unlocked -->
+            <codes-needed>3</codes-needed>
+            <puzzles>
+                <!-- Name of puzzle, will be shown to players -->
+                <puzzle name="11. Zkratky">
+                    <!-- Passwords for puzzle, will be checked case-insensitively and in plain ASCII -->
+                    <password>ZENA</password>
+                    <password>ULICE</password>
+                </puzzle>
+                <puzzle name="12. Prodlužky">
+                    <password>RUZE</password>
+                </puzzle>
+                <puzzle name="13. Rozšiřovačky">
+                    <password>PISEN</password>
+                </puzzle>
+                <puzzle name="14. Zužovačky">
+                    <password>KOST</password>
+                </puzzle>
+            </puzzles>
+        </level>
+        <level index="2">
+            <link>http://external.storage.com/some/address.pdf</link>
+            <backup-link>http://external.storage.com/some/address.pdf</backup-link>
+            <codes-needed>2</codes-needed>
+            <puzzles>
+                <puzzle name="21. Písmena">
+                    <password>KULIK</password>
+                </puzzle>
+                <puzzle name="22. Obrázky">
+                    <password>DULIK</password>
+                </puzzle>
+                <puzzle name="23. Čísla">
+                    <password>BUBIK</password>
+                </puzzle>
+            </puzzles>
+        </level>
+        <level index="3">
+            <link>storage/24/kvalifikace/level-03.pdf</link>
+            <backup-link>storage/24/kvalifikace/level-03.pdf</backup-link>
+            <codes-needed>1</codes-needed>
+            <puzzles>
+                <puzzle name="31. Domino">
+                    <password>CASTOR</password>
+                </puzzle>
+                <puzzle name="32. Nezlob se">
+                    <password>POLLUX</password>
+                    <password>POLUX</password>
+                </puzzle>
+            </puzzles>
+        </level>
+        <level index="4">
+            <link>storage/24/kvalifikace/level-04.pdf</link>
+            <backup-link>storage/24/kvalifikace/level-04.pdf</backup-link>
+            <codes-needed>1</codes-needed>
+            <puzzles>
+                <puzzle name="41. Kompas">
+                    <password>SLUNCE</password>
+                </puzzle>
+            </puzzles>
+        </level>
+        <level index="5">
+            <link>storage/24/kvalifikace/level-05.pdf</link>
+            <backup-link>storage/24/kvalifikace/level-05.pdf</backup-link>
+            <codes-needed>1</codes-needed>
+            <puzzles>
+                <puzzle name="51. Změť čar">
+                    <password>SATAN</password>
+                </puzzle>
+            </puzzles>
+        </level>
+        <!-- Empty level, will be shown after last level is unlocked and is needed due to implementation logic -->
+        <level index="6">
+        </level>
+    </levels>
+</qualificatiou>

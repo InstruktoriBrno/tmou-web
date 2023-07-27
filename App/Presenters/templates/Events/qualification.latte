@@ -1,0 +1,114 @@
+{block content}
+    <div id="banner">
+        <h1 n:block=title>Kvalifikace {$event->getNumber()}. ročníku ({$event->getName()})</h1>
+    </div>
+
+    <div id="content">
+        <h2>Obsah kvalifikace</h2>
+        <p>
+            Maximální počet odpovědí: {$event->getQualificationMaxAttempts()} &mdash; {if $event->shouldShowQualificationAttemptsCount()}zobrazováno týmům{else}Nezobrazováno týmům{/if}.
+        </p>
+
+        <p>
+            Časová penalizace po špatné odpovědi:
+            {if $event->getQualificationWrongAttemptPenalisation() === null}ne{else}{$event->getQualificationWrongAttemptPenalisation()} sekund{/if}
+            &mdash; {if $event->shouldShowQualificationNextAttemptTime()}zobrazováno týmům{else}Nezobrazováno týmům{/if}.
+        </p>
+        {if count($levels) === 0}
+            <div class="alert-info alert">
+                <p>Nejsou definovány žádné úrovně.</p>
+            </div>
+        {else}
+            {foreach $levels as $level}
+                {continueIf $level->isLast()}
+                <h3>Úroveň {$level->getLevelNumber()}</h3>
+                {var $levelPuzzles = $puzzles[$level->getId()] ?? []}
+                <p>Zadání:</p>
+                <ul>
+                    <li><a href="{$level->getLink()|absoluteLink}">{$level->getLink()}</a></li>
+                    <li n:if="$level->getBackupLink() !== null"><a href="{$level->getBackupLink()|absoluteLink}">{$level->getBackupLink()}</a></li>
+                </ul>
+                <p>
+                    Potřebných správných řešení: {$level->getNeededCorrectAnswers()}<br>
+                </p>
+                {continueIf count($levelPuzzles) === 0}
+                <table class="table-auto mt-2">
+                    <tr>
+                        <th class="border p-1">Název</th>
+                        <th class="border p-1">Správná řešení</th>
+                    </tr>
+                    {foreach $levelPuzzles as $puzzle}
+                        <tr>
+                            <td class="border p-1">{$puzzle->getName()}</td>
+                            <td class="border p-1">
+                                {foreach $puzzle->getPasswords() as $password}
+                                    <code class="p-0 inline-block mb-0">{$password->getCode()}</code>{sep}<br>{/sep}
+                                {/foreach}
+                            </td>
+                        </tr>
+                    {/foreach}
+                </table>
+            {/foreach}
+        {/if}
+
+        <br>
+        <hr>
+        <br>
+
+        <h2>Import kvalifikace</h2>
+        <div class="alert-warning alert">
+            <ul>
+                <li>Kvalifikace (existuje-li) k tomuto ročníku bude smazána!</li>
+                <li>Dosažené úrovně týmů budou smazány!</li>
+                <li>Nikdy nepoužívejte během hry!</li>
+            </ul>
+        </div>
+
+        {control importQualificationForm}
+
+        <br>
+        <hr>
+        <br>
+
+        <h2>Nastavení kvalifikovaných týmů</h2>
+
+        <div class="alert-warning alert">
+                <ul>
+                    <li>Provádějte až po skončení kvalifikace!</li>
+                    <li>Provádějte až po poslední ruční aktualizaci výsledkovky!</li>
+                    <li>Operace není vratná!</li>
+                    <li>Stav na kvalifikovaný/nekvalifikovaný bude změnen jen u registrovaných týmů, již kvalifikované a již hrající týmy nebudou jakkoliv upraveny!</li>
+                </ul>
+        </div>
+
+        <p>
+                <a class="btn btn-primary button" href="{link qualifyTeams!, $event->getId()}">Nastavit kvalifikované týmy</a>
+        </p>
+
+        <br>
+        <hr>
+        <br>
+
+        <h2>Ruční aktualizace výsledkovky</h2>
+        <div class="alert-warning alert">
+                <ul>
+                    <li>Provede vynucenou aktualizaci celé výsledkovky tohoto ročníku!</li>
+                    <li>Neprovádějte příliš často, výpočet výsledkovky je výkonnostně náročný!</li>
+                </ul>
+        </div>
+        <p>
+            <a class="btn btn-primary button" href="{link updateEventQualification!, $event->getId()}">Aktualizovat výsledkovku nyní</a>
+        </p>
+
+        <br>
+        <hr>
+        <br>
+
+        <h2>Smazání průběhu kvalifikace</h2>
+
+        {control deleteQualificationProgressForm}
+
+
+        <a href="{plink Events:}"><i class="fas fa-arrow-left"></i> Seznam ročníků</a>
+    </div>
+{/block}

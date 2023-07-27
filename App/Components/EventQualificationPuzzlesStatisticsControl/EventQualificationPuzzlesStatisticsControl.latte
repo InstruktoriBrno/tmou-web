@@ -1,0 +1,24 @@
+{if count($statistics) === 0}
+    <div class="alert alert-info">Statistiky šifer nejsou k dispozici.</div>
+{else}
+    <div class="table-responsive datagrid">
+        <table class="datagrid datagrid-grid w-full">
+            <thead>
+            <tr>
+                <th class="bg-yellow-tmou" rowspan="2">Šifra</th>
+                <th class="bg-yellow-tmou" rowspan="2">Vyluštilo</th>
+                <th class="bg-yellow-tmou" rowspan="2">Nejrychlejší čas</th>
+                <th class="bg-yellow-tmou" rowspan="2">Nejrychlejší tým</th>
+            </tr>
+        </thead>
+            {foreach $statistics as $puzzle}
+                <tr>
+                    <td>{$puzzle['puzzle_name']}</td>
+                    <td>{$puzzle['solved_team_count']}</td>
+                    <td>{$puzzle['fastest_answer_time']}</td>
+                    <td class="text-center">{$puzzle['fastest_team_name']}</td>
+                </tr>
+            {/foreach}
+        </table>
+    </div>
+{/if}

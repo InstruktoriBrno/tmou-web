@@ -1,6 +1,10 @@
 <?php declare(strict_types=1);
 namespace InstruktoriBrno\TMOU\Utils;
 
+use InstruktoriBrno\TMOU\Components\EventQualificationPuzzlesStatisticsControl\EventQualificationPuzzlesStatisticsControlFactory;
+use InstruktoriBrno\TMOU\Components\EventQualificationResultsControl\EventQualificationResultsControlFactory;
+use InstruktoriBrno\TMOU\Model\Event;
+use InstruktoriBrno\TMOU\Presenters\PagesPresenter;
 use Nette\Utils\Random;
 use function in_array;
 use InstruktoriBrno\TMOU\Services\Events\EventMacroDataProvider;
@@ -9,6 +13,7 @@ use InstruktoriBrno\TMOU\Services\Teams\TeamMacroDataProvider;
 use Latte\Runtime\Html as LatteHtml;
 use Nette\Utils\Html;
 use Nette\Utils\Strings;
+use function ob_start;
 use function preg_replace_callback;
 use Texy\LineParser;
 use Texy\Texy;
@@ -28,11 +33,26 @@ class TexyFilter
     /** @var EventMacroDataProvider */
     private $eventMacroDataProvider;
 
-    public function __construct(GameClockService $gameClockService, TeamMacroDataProvider $teamMacroDataProvider, EventMacroDataProvider $eventMacroDataProvider)
-    {
+    private EventQualificationResultsControlFactory $eventQualificationResultsControlFactory;
+
+    private PagesPresenter $pagesPresenter;
+
+    private EventQualificationPuzzlesStatisticsControlFactory $eventQualificationPuzzlesStatisticsControlFactory;
+
+    public function __construct(
+        GameClockService $gameClockService,
+        TeamMacroDataProvider $teamMacroDataProvider,
+        EventMacroDataProvider $eventMacroDataProvider,
+        EventQualificationResultsControlFactory $eventQualificationResultsControlFactory,
+        PagesPresenter $pagesPresenter,
+        EventQualificationPuzzlesStatisticsControlFactory $eventQualificationPuzzlesStatisticsControlFactory
+    ) {
         $this->gameClockService = $gameClockService;
         $this->teamMacroDataProvider = $teamMacroDataProvider;
         $this->eventMacroDataProvider = $eventMacroDataProvider;
+        $this->eventQualificationResultsControlFactory = $eventQualificationResultsControlFactory;
+        $this->pagesPresenter = $pagesPresenter;
+        $this->eventQualificationPuzzlesStatisticsControlFactory = $eventQualificationPuzzlesStatisticsControlFactory;
     }
 
     public static function getSyntaxHelp(): Html
@@ -168,6 +188,11 @@ TMOU:event_game_start_time:
 TMOU:event_game_end_time:
 TMOU:event_registration_deadline:
 TMOU:event_team_changes_deadline:
+
+Následující makra slouží k zobrazování statistik kvalifikace, pokud je kvalifikace zapnutá. Pokud není, makra se odstraní.
+
+TMOU:component:event_qualification_results: (nekešujte dokud kvalifikace neskončí a výsledky nejsou finální)
+TMOU:component:event_qualification_statistics: (nezveřejňujte během hry, nekešujte dokud kvalifikace neskončí a výsledky nejsou finální)
 
 '
             )
@@ -456,8 +481,52 @@ TMOU:event_team_changes_deadline:
         return $output ?? '';
     }
 
+    /**
+     * Preprocess components
+     * @param string $value
+     * @return string
+     */
+    private function preprocessComponents(string $value): string
+    {
+        $regex = '#TMOU:component:event_qualification_results:|TMOU:component:event_qualification_statistics:#miuUs';
+        $output = preg_replace_callback(
+            $regex,
+            function ($matches): string {
+                if ($matches[0] === 'TMOU:component:event_qualification_results:') {
+                    return $this->renderQualificationResults($this->eventMacroDataProvider->getEvent());
+                }
+                if ($matches[0] === 'TMOU:component:event_qualification_statistics:') {
+                    return $this->renderQualificationStatistics($this->eventMacroDataProvider->getEvent());
+                }
+                return '';
+            },
+            $value
+        );
+        return $output ?? '';
+    }
+
+    private function renderQualificationResults(Event $event): string
+    {
+        $component = $this->eventQualificationResultsControlFactory->create();
+        $this->pagesPresenter->addComponent($component, 'qualificationResults');
+        ob_start(function (): void {
+        });
+        $component->renderForEvent($event);
+        return (string) ob_get_clean();
+    }
+
+    private function renderQualificationStatistics(Event $event): string
+    {
+        $component = $this->eventQualificationPuzzlesStatisticsControlFactory->create();
+        $this->pagesPresenter->addComponent($component, 'qualificationStatistics');
+        ob_start(function (): void {
+        });
+        $component->renderForEvent($event);
+        return (string) ob_get_clean();
+    }
+
     public function __invoke(string $value): LatteHtml
     {
-        return new LatteHtml($this->getTexy()->process($this->preprocessHiddenBlocks($this->preprocessRevealBlocks($this->preprocessRevealTeamsBlocks($value)))));
+        return new LatteHtml($this->getTexy()->process($this->preprocessComponents($this->preprocessHiddenBlocks($this->preprocessRevealBlocks($this->preprocessRevealTeamsBlocks($value))))));
     }
 }

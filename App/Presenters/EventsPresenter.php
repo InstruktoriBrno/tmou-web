@@ -6,20 +6,31 @@ use InstruktoriBrno\TMOU\Enums\Flash;
 use InstruktoriBrno\TMOU\Enums\Resource;
 use InstruktoriBrno\TMOU\Facades\Events\DeleteEventFacade;
 use InstruktoriBrno\TMOU\Facades\Events\SaveEventFacade;
+use InstruktoriBrno\TMOU\Facades\Qualification\DeleteQualificationProgressFacade;
+use InstruktoriBrno\TMOU\Facades\Qualification\ImportQualificationFacade;
+use InstruktoriBrno\TMOU\Facades\Qualification\QualifyTeamsByQualificationFacade;
+use InstruktoriBrno\TMOU\Facades\Qualification\UpdateScoreboardsFacade;
 use InstruktoriBrno\TMOU\Facades\System\CopyEventContentFacade;
 use InstruktoriBrno\TMOU\Forms\ConfirmFormFactory;
 use InstruktoriBrno\TMOU\Forms\CopyEventContentFormFactory;
+use InstruktoriBrno\TMOU\Forms\DeleteQualificationProgressFormFactory;
 use InstruktoriBrno\TMOU\Forms\EventFormFactory;
+use InstruktoriBrno\TMOU\Forms\ImportQualificationFormFactory;
 use InstruktoriBrno\TMOU\Grids\EventsGrid\EventsGrid;
 use InstruktoriBrno\TMOU\Grids\EventsGrid\EventsGridFactory;
 use InstruktoriBrno\TMOU\Services\Events\FindDefaultEventValuesForFormService;
 use InstruktoriBrno\TMOU\Services\Events\FindEventForFormService;
 use InstruktoriBrno\TMOU\Services\Events\FindEventService;
 use InstruktoriBrno\TMOU\Services\Events\FindEventsForDataGridService;
+use InstruktoriBrno\TMOU\Services\Qualification\FindLevelsService;
+use InstruktoriBrno\TMOU\Services\Qualification\FindPuzzlesOfEventService;
 use Nette\Application\UI\Form;
 use Nette\Forms\Controls\SubmitButton;
 use Nette\Forms\Controls\TextInput;
 use Nette\Utils\ArrayHash;
+use Nette\Utils\Html;
+use Tracy\Debugger;
+use function implode;
 
 final class EventsPresenter extends BasePresenter
 {
@@ -56,6 +67,30 @@ final class EventsPresenter extends BasePresenter
     /** @var CopyEventContentFacade @inject */
     public $copyEventContentFacade;
 
+    /** @var ImportQualificationFormFactory @inject */
+    public ImportQualificationFormFactory $importQualificationFormFactory;
+
+    /** @var ImportQualificationFacade @inject */
+    public ImportQualificationFacade $importQualificationFacade;
+
+    /** @var FindLevelsService @inject */
+    public FindLevelsService $findLevelsService;
+
+    /** @var FindPuzzlesOfEventService @inject */
+    public FindPuzzlesOfEventService $findPuzzlesOfEventService;
+
+    /** @var DeleteQualificationProgressFormFactory @inject */
+    public DeleteQualificationProgressFormFactory $deleteQualificationProgressFormFactory;
+
+    /** @var DeleteQualificationProgressFacade @inject */
+    public DeleteQualificationProgressFacade $deleteQualificationProgressFacade;
+
+    /** @var UpdateScoreboardsFacade @inject */
+    public UpdateScoreboardsFacade $updateScoreboardsFacade;
+
+    /** @var QualifyTeamsByQualificationFacade @inject */
+    public QualifyTeamsByQualificationFacade $qualifyTeamsByQualificationFacade;
+
     /** @privilege(InstruktoriBrno\TMOU\Enums\Resource::ADMIN_EVENTS,InstruktoriBrno\TMOU\Enums\Action::VIEW,InstruktoriBrno\TMOU\Enums\PrivilegeEnforceMethod::TRIGGER_ADMIN_LOGIN) */
     public function actionDefault(): void
     {
@@ -89,6 +124,18 @@ final class EventsPresenter extends BasePresenter
             throw new \Nette\Application\BadRequestException("No such event [{$eventId}].");
         }
         $this->template->event = $event;
+    }
+
+    /** @privilege(InstruktoriBrno\TMOU\Enums\Resource::ADMIN_EVENTS,InstruktoriBrno\TMOU\Enums\Action::EDIT,InstruktoriBrno\TMOU\Enums\PrivilegeEnforceMethod::TRIGGER_ADMIN_LOGIN) */
+    public function actionQualification(int $eventId): void
+    {
+        $event = ($this->findEventService)($eventId);
+        if ($event === null) {
+            throw new \Nette\Application\BadRequestException("No such event [{$eventId}].");
+        }
+        $this->template->event = $event;
+        $this->template->levels = ($this->findLevelsService)($event);
+        $this->template->puzzles = ($this->findPuzzlesOfEventService)($event);
     }
 
     public function createComponentEventsGrid(): EventsGrid
@@ -224,6 +271,7 @@ final class EventsPresenter extends BasePresenter
                 try {
                     ($this->deleteEventFacade)((int) $this->getParameter('eventId'));
                 } catch (\InstruktoriBrno\TMOU\Facades\Events\Exceptions\EventDeleteFailedException $exception) {
+                    Debugger::log($exception);
                     $form->addError('Ročník se nepodařilo smazat.');
                     return;
                 }
@@ -258,5 +306,83 @@ final class EventsPresenter extends BasePresenter
             $this->flashMessage('Stránky a položky menu vybraného ročníku byly úspěšně zkopírovány.', Flash::SUCCESS);
             $this->redirect('Events:');
         });
+    }
+
+    public function createComponentImportQualificationForm(): Form
+    {
+        $eventId = $this->getParameter('eventId') !== null ? (int) $this->getParameter('eventId') : null;
+        return $this->importQualificationFormFactory->create(function (Form $form, $values) use ($eventId): void {
+            if (!$this->user->isAllowed(Resource::ADMIN_EVENTS, Action::EDIT)) {
+                $form->addError('Nejste oprávněni provádět tuto operaci. Pokud věříte, že jde o chybu, kontaktujte správce.');
+                return;
+            }
+
+            try {
+                ($this->importQualificationFacade)($eventId, $values->specification);
+            } catch (\InstruktoriBrno\TMOU\Facades\Qualification\Exceptions\InvalidXmlSchemaException $exception) {
+                $form->addError(Html::el()->setHtml("XML dokument obsahuje následující chyby:<br><br>" . implode("<br><br>", $exception->getErrors())));
+                return;
+            } catch (\InstruktoriBrno\TMOU\Facades\System\Exceptions\NoSuchEventException $exception) {
+                $form->addError('Daný ročník neexistuje, opakujte akci a v případě selhání kontaktujte správce.');
+                return;
+            }
+            $this->flashMessage('Kvalifikace byla importována', Flash::SUCCESS);
+            $this->redirect('this');
+        },
+        '/assets/schemas/qualification.example.xml',
+        '/assets/schemas/qualification.xsd');
+    }
+
+    public function createComponentDeleteQualificationProgressForm(): Form
+    {
+        $eventId = $this->getParameter('eventId') !== null ? (int) $this->getParameter('eventId') : null;
+        $event = $eventId !== null ? ($this->findEventService)($eventId) : null;
+        if ($event === null) {
+            throw new \Nette\Application\BadRequestException('Event not found');
+        }
+        return $this->deleteQualificationProgressFormFactory->create(function (Form $form, $values) use ($event): void {
+            if (!$this->user->isAllowed(Resource::ADMIN_EVENTS, Action::EDIT)) {
+                $form->addError('Nejste oprávněni provádět tuto operaci. Pokud věříte, že jde o chybu, kontaktujte správce.');
+                return;
+            }
+
+            try {
+                ($this->deleteQualificationProgressFacade)($event, $values->scope);
+            } catch (\InstruktoriBrno\TMOU\Facades\Qualification\Exceptions\NoSuchTeamInEventException $exception) {
+                $form->addError('Vybraný tým neexistuje v daném ročníku, opakujte akci a v případě selhání kontaktujte správce.');
+                return;
+            }
+            if ($values->scope === null) {
+                $this->flashMessage('Průběh kvalifikace všech týmů v ročníku Y byl smazán.', Flash::SUCCESS);
+            } else {
+                $this->flashMessage('Průběh kvalifikace týmu X byl smazán.', Flash::SUCCESS);
+            }
+
+            $this->redirect('this');
+        }, $event);
+    }
+
+    /** @privilege(InstruktoriBrno\TMOU\Enums\Resource::ADMIN_EVENTS,InstruktoriBrno\TMOU\Enums\Action::EDIT,InstruktoriBrno\TMOU\Enums\PrivilegeEnforceMethod::TRIGGER_ADMIN_LOGIN) */
+    public function handleUpdateEventQualification(int $eventId): void
+    {
+        $event =  ($this->findEventService)($eventId);
+        if ($event === null) {
+            throw new \Nette\Application\BadRequestException('Event not found');
+        }
+        ($this->updateScoreboardsFacade)($event);
+        $this->flashMessage('Aktualizace proběhla úspěšně.', Flash::SUCCESS);
+        $this->redirect('this');
+    }
+
+    /** @privilege(InstruktoriBrno\TMOU\Enums\Resource::ADMIN_EVENTS,InstruktoriBrno\TMOU\Enums\Action::EDIT,InstruktoriBrno\TMOU\Enums\PrivilegeEnforceMethod::TRIGGER_ADMIN_LOGIN) */
+    public function handleQualifyTeams(int $eventId): void
+    {
+        $event =  ($this->findEventService)($eventId);
+        if ($event === null) {
+            throw new \Nette\Application\BadRequestException('Event not found');
+        }
+        [$qualified, $notQualified, $intact] = ($this->qualifyTeamsByQualificationFacade)($event);
+        $this->flashMessage("Aktualizace proběhla úspěšně, kvalifikováno: {$qualified}, nekvalifikováno: {$notQualified}, zachován předchozí stav: {$intact}.", Flash::SUCCESS);
+        $this->redirect('this');
     }
 }

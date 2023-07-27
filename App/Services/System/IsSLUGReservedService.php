@@ -17,6 +17,9 @@ class IsSLUGReservedService
         try {
             $enum = ReservedSLUG::fromScalar($slug);
             if ($enum->isCreationAllowed()) {
+                if ($enum->isCreationAllowedButContentIsAutomated()) {
+                    return true;
+                }
                 return false;
             }
             return true;

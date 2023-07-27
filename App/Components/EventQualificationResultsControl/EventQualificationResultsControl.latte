@@ -1,0 +1,84 @@
+{if count($teams) === 0}
+    <div class="alert alert-info">Výsledky nejsou k dispozici.</div>
+{else}
+    <div class="table-responsive datagrid">
+        <table class="datagrid datagrid-grid w-full">
+            <thead>
+                {capture $header}
+                    <tr>
+                        <th class="bg-yellow-tmou bottomed-th" rowspan="2">
+                            <span class="rotate-th-270 inline-block">
+                                Pořadí
+                            </span>
+                        </th>
+                        <th class="bg-yellow-tmou bottomed-th" rowspan="2">Název týmu</th>
+                        <th class="bg-yellow-tmou bottomed-th" rowspan="2">
+                            <span class="rotate-th-270 inline-block">
+                                Kvalifikován
+                            </span>
+                        </th>
+                        {foreach $levels as $level}
+                            {continueIf $level->isLast()}
+                            <th class="bg-yellow-tmou" colspan="{count($puzzles[$level->getId()] ?? [])}">
+                                {$level->getLevelNumber()}.
+                            </th>
+                        {/foreach}
+                        <th class="bg-yellow-tmou bottomed-th" rowspan="2">
+                            <span class="rotate-th-270 inline-block">
+                                Poslední odpověď
+                            </span>
+                        </th>
+                    </tr>
+                    <tr>
+                        {foreach $levels as $level}
+                            {continueIf $level->isLast()}
+                            {foreach $puzzles[$level->getId()] ?? [] as $puzzle}
+                                <th class="bg-yellow-tmou bottomed-th">
+                                    <span class="rotate-th-270 inline-block">
+                                        {$puzzle->getName()}
+                                    </span>
+                                </th>
+                            {/foreach}
+                        {/foreach}
+                    </tr>
+                {/capture}
+                {$header}
+            </thead>
+            {foreach $teams as $team}
+                {var $latestAnswerAt = isset($team['latest_answer_at']) ? new \DateTimeImmutable($team['latest_answer_at']) : null}
+                {if $iterator->counter0 % 50 === 0 && $iterator->counter0 !== 0}
+                    {$header}
+                {/if}
+                {var $class = ''}
+                {ifchanged $team['qualified']}
+                    {first}
+                    {else}
+                        {var $class = 'qualification-border'}
+                    {/first}
+                {/ifchanged}
+                <tr>
+                    <td class="{$class}">{$team['position']}</td>
+                    <td class="{$class}">{$team['team_name']}</td>
+                    <td class="{$class}">{if $team['qualified']}Ano{else}Ne{/if}</td>
+                    {foreach $levels as $level}
+                        {foreach $puzzles[$level->getId()] ?? [] as $puzzle}
+                            {var $teamAnswer = $answersByLevelAndTeam[$team['team_id']][$level->getId()][$puzzle->getId()] ?? null};
+                            {if $teamAnswer !== null}
+                                {var $answeredAt = $teamAnswer['answered_at']}
+                                {* Hide answers after results computation as it would make the results inconsitent *}
+                                {if $latestAnswerAt === null || ($answeredAt !== null && $latestAnswerAt !== null && $answeredAt > $latestAnswerAt)}
+                                    <td class="text-center bg-fail-tmou {$class}">✗</td>
+                                {else}
+                                    <td class="text-center bg-success-tmou {$class}" title="{$teamAnswer['answered_at']|date:'H:i:s'} - {$teamAnswer['answer_id']}">✓</td>
+                                {/if}
+                            {else}
+                                <td class="text-center bg-fail-tmou {$class}">✗</td>
+                            {/if}
+                        {/foreach}
+                    {/foreach}
+                    <td class="text-right {$class}" title="{$team['latest_answer_at']|date:'H:i:s'}">{$team['latest_answer_at']|date:'H:i'}</td>
+                </tr>
+            {/foreach}
+        </table>
+    </div>
+{/if}

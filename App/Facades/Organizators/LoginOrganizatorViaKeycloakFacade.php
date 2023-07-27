@@ -73,7 +73,7 @@ class LoginOrganizatorViaKeycloakFacade
 
         // Check if we have a code, if not, we start the authentication request
         if ($code === null) {
-            $authUrl = $this->keycloak->getAuthorizationUrl(['scope' => 'openid']);
+            $authUrl = $this->keycloak->getAuthorizationUrl();
             $this->sessionSection->offsetSet('state', $this->keycloak->getState()); // Store value for CSRF validation
             $this->response->redirect($authUrl);
             exit();

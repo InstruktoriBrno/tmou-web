@@ -24,15 +24,13 @@ RUN pecl install xdebug-2.9.6 \
     && echo "xdebug.remote_host=docker.for.mac.localhost" >> /usr/local/etc/php/conf.d/docker-php-ext-xdebug.ini
 
 # Install self-signed SSL certificate and enable SSL in Apache, also move document root and setup proxy to Keycloack
-COPY .keycloak/keycloak.conf /etc/apache2/sites-available/
 RUN mkdir -p /etc/ssl/localcerts \
     && openssl req -new -x509 -days 365 -nodes -out /etc/ssl/localcerts/apache.pem -keyout /etc/ssl/localcerts/apache.key -subj "/C=CZ/O=Instruktoři Brno, z. s./OU=TMOU/CN=tmou.test" \
     && chmod 600 /etc/ssl/localcerts/apache* \
     && sed -i "s#/etc/ssl/certs/ssl-cert-snakeoil.pem#/etc/ssl/localcerts/apache.pem#g" /etc/apache2/sites-available/default-ssl.conf \
     && sed -i "s#/etc/ssl/private/ssl-cert-snakeoil.key#/etc/ssl/localcerts/apache.key#g" /etc/apache2/sites-available/default-ssl.conf \
     && a2enmod ssl rewrite proxy proxy_http headers && a2ensite default-ssl \
-    && echo "Listen 9990" >> /etc/apache2/ports.conf \
-    && a2ensite keycloak
+    && echo "Listen 9990" >> /etc/apache2/ports.conf
 
 # Install Composer
 # If this line fails when building Docker container, please check the checksum on https://getcomposer.org/download/

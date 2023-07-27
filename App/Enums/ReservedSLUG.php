@@ -9,6 +9,7 @@ use Grifart\Enum\Enum;
  * @method static ReservedSLUG QUALIFICATION_RESULTS()
  * @method static ReservedSLUG QUALIFICATION_STATISTICS()
  * @method static ReservedSLUG QUALIFICATION_ANSWERS()
+ * @method static ReservedSLUG QUALIFICATION_SYSTEM()
  *
  * @method static ReservedSLUG REGISTRATION()
  * @method static ReservedSLUG LOGIN()
@@ -39,6 +40,7 @@ final class ReservedSLUG extends Enum
     public const QUALIFICATION_RESULTS = 'qualification-results'; // this can be added manually as this page is optional
     public const QUALIFICATION_STATISTICS = 'qualification-statistics'; // this can be added manually as this page is optional
     public const QUALIFICATION_ANSWERS = 'qualification-answers'; // this can be added manually as this page is optional
+    public const QUALIFICATION_SYSTEM = 'qualification-system'; // this can be added manually as this page is optional
 
     public const REGISTRATION = 'registration';
     public const LOGIN = 'login';
@@ -67,8 +69,14 @@ final class ReservedSLUG extends Enum
             || $this->equals(self::QUALIFICATION_RESULTS())
             || $this->equals(self::QUALIFICATION_ANSWERS())
             || $this->equals(self::QUALIFICATION_STATISTICS())
+            || $this->equals(self::QUALIFICATION_SYSTEM())
             || $this->equals(self::GAME_STATISTICS())
             || $this->equals(self::GAME_FLOW());
+    }
+
+    public function isCreationAllowedButContentIsAutomated(): bool
+    {
+        return $this->equals(self::QUALIFICATION_SYSTEM());
     }
 
     public function canBeLinkedWithoutEvent(): bool
@@ -85,6 +93,7 @@ final class ReservedSLUG extends Enum
             self::QUALIFICATION_RESULTS => 'Výsledky kvalifikace',
             self::QUALIFICATION_STATISTICS => 'Statistika kvalifikace',
             self::QUALIFICATION_ANSWERS => 'Odpovědi kvalifikace',
+            self::QUALIFICATION_SYSTEM => 'Kvalifikační systém',
             self::REGISTRATION => 'Registrace',
             self::LOGIN => 'Přihlášení',
             self::LOGOUT => 'Odhlášení',

@@ -13,6 +13,11 @@ class EventMacroDataProvider
     {
         $this->event = $event;
     }
+
+    public function getEvent(): ?Event
+    {
+        return $this->event;
+    }
     public function getEventId(): string
     {
         return $this->event !== null ? (string) $this->event->getId() : '';

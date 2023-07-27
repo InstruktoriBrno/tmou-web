@@ -2,7 +2,7 @@ version: '3.3'
 
 services:
     db:
-        image: mariadb:10.1
+        image: mariadb:10.3
         restart: always
         user: mysql
         volumes:
@@ -45,16 +45,20 @@ services:
                 aliases:
                     - tmou.test
     keycloak:
-        image: jboss/keycloak:12.0.4
-        #image: alemairebe/keycloak:12.0.4
+        image: keycloak/keycloak:21.1.0
+        #platform: linux/amd64
         ports:
-            - ${IP}:9990:8443
+           - ${IP}:9990:8443
         volumes:
-            - ${PROJECT_DIR}/.keycloak/realm-export.json:/tmp/realm-export.json
+            - ${PROJECT_DIR}/.keycloak/realm-data:/opt/keycloak/data/import
+            - ${PROJECT_DIR}/.keycloak/certs:/opt/keycloak/conf/certs
+        entrypoint: /opt/keycloak/bin/kc.sh start --import-realm --log-level=DEBUG --hostname-strict=false --hostname-url=https://tmou.test:9990 --proxy=edge
         environment:
             KEYCLOAK_IMPORT: /tmp/realm-export.json
-            KEYCLOAK_USER: admin
-            KEYCLOAK_PASSWORD: admin
+            KEYCLOAK_ADMIN: admin
+            KEYCLOAK_ADMIN_PASSWORD: admin
+            KC_HTTPS_CERTIFICATE_FILE: /opt/keycloak/conf/certs/server.crt.pem
+            KC_HTTPS_CERTIFICATE_KEY_FILE: /opt/keycloak/conf/certs/server.key.pem
         networks:
             - network
 
