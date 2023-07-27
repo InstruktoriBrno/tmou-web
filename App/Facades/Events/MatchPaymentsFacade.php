@@ -129,7 +129,7 @@ class MatchPaymentsFacade
                     || $transaction->column14->value !== 'CZK') {
                     continue;
                 }
-                $vs = $transaction->column5->value;
+                $vs = ltrim($transaction->column5->value, '0'); // some banks add leading zeros :-((
                 $amount = $transaction->column1->value;
                 if (Strings::startsWith($vs, $event->getPaymentPairingCodePrefix())) {
                     $number = Strings::substring($vs, Strings::length($event->getPaymentPairingCodePrefix()));
