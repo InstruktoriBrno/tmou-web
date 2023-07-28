@@ -56,7 +56,7 @@
                     <!-- Container -->
                     <div class="container flex flex-wrap mx-auto px-2 pb-1 lg:pt-5">
                         <!-- Navigation -->
-                        <nav class="z-10 w-full no:bg-yellow-tmou lg:bg-transparent lg:w-1/5 lg:pr-4 text-xl text-gray-800 leading-normal lg:rounded-sm sticky lg:static inset-0 border-b-4 no:border-black lg:border-none">
+                        <nav class="z-10 w-full no:bg-yellow-tmou lg:bg-transparent lg:w-1/5 lg:pr-4 text-xl text-gray-800 leading-normal lg:rounded-sm sticky lg:static inset-0 border-b-4 no:border-black lg:border-none" id="navigation">
                             <div class="sticky lg:static inset-0 lg:mt-0 lg:block lg:pt-5">
                             <div class="lg:static inset-0 lg:mt-0 lg:block lg:pt-5">
                                 <!-- TMOU header -->
@@ -175,6 +175,7 @@
                                 </div>
                             {/if}
                             <!-- /Main content -->
+                            <div class="text-right text-white"><a class="toggle-fullscreen cursor-pointer" data-alternative-label="Skrýt obsah na plnou šířku <i class='fas fa-compress-arrows-alt'></i>">Zobrazit obsah na plnou šířku <i class="fas fa-expand-arrows-alt"></i></a></div>
                         </div>
                     </div>
                     <!--/container-->
@@ -224,6 +225,7 @@
             <script src="{$basePath}/assets/js/menu-dropdown.js?{$buildTime}"></script>
             <script src="{$basePath}/assets/js/collapse.js?{$buildTime}"></script>
             <script src="{$basePath}/assets/js/util.js?{$buildTime}"></script>
+            <script src="{$basePath}/assets/js/fullscreen.js?{$buildTime}"></script>
             {ifCurrent Pages:discussion}
                 <script src="{$basePath}/assets/js/discussion.js?{$buildTime}"></script>
             {/ifCurrent}
