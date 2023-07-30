@@ -2,6 +2,7 @@
 namespace InstruktoriBrno\TMOU\Utils;
 
 use Firebase\JWT\JWT as FirebaseJWT;
+use Firebase\JWT\Key;
 
 /**
  * Simple wrapper above our configuration and firebase/jwt-php library
@@ -9,11 +10,9 @@ use Firebase\JWT\JWT as FirebaseJWT;
 class JWT
 {
 
-    /** @var string */
-    private $secretKey;
+    private string $secretKey;
 
-    /** @var string */
-    private $algorithm;
+    private string $algorithm;
 
     public function __construct(string $secretKey, string $algorithm)
     {
@@ -36,6 +35,6 @@ class JWT
      */
     public function decode(string $token)
     {
-        return FirebaseJWT::decode($token, $this->secretKey, [$this->algorithm]);
+        return FirebaseJWT::decode($token, new Key($this->secretKey, $this->algorithm));
     }
 }
