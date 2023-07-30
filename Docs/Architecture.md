@@ -121,7 +121,7 @@ Protože formuláře a datagrid původně počítaly se stylováním Boostrapu, 
 
 ## Single Sign On (SSO)
 
-Systémy pro kvalifikaci a hru nejsou na rozhodnutí týmu součástí webové prezentace a jsou jako samostatné projekty.
+Systémy pro kvalifikaci a hru nemusí být na rozhodnutí týmu součástí webové prezentace a mohou to být samostatné projekty.
 Z toho plyne potřeba jednotného jednoduchého přihlášení, které je realizováno na TMOU skrze SSO cookie s náhodně generovaným tokenem.
 Cookie je vystavována v režimu `Strict`, `HTTP only` a `SameSite=Strict` režimu a to pro doménu dle konfigurace (viz klíč `sso.cookieDomain`, který by měl být vždy přepsán).
 
