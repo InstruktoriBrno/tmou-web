@@ -73,7 +73,6 @@ use function array_merge;
 use function array_reverse;
 use function array_unshift;
 use function assert;
-use function in_array;
 
 final class PagesPresenter extends BasePresenter
 {
