@@ -44,6 +44,7 @@ use InstruktoriBrno\TMOU\Services\Discussions\FindThreadService;
 use InstruktoriBrno\TMOU\Services\Discussions\FindThreadsService;
 use InstruktoriBrno\TMOU\Services\Events\EventMacroDataProvider;
 use InstruktoriBrno\TMOU\Services\Events\FindEventByNumberService;
+use InstruktoriBrno\TMOU\Services\Events\FindEventsPairsOpenedForDiscussionService;
 use InstruktoriBrno\TMOU\Services\Events\FindEventTeamReviewsService;
 use InstruktoriBrno\TMOU\Services\Organizators\FindOrganizatorByIdService;
 use InstruktoriBrno\TMOU\Services\Pages\FindPageInEventService;
@@ -66,11 +67,13 @@ use Nette\Utils\Strings;
 use Nette\Utils\Validators;
 use Tracy\Debugger;
 use Tracy\ILogger;
+use function array_key_exists;
 use function array_key_last;
 use function array_merge;
 use function array_reverse;
 use function array_unshift;
 use function assert;
+use function in_array;
 
 final class PagesPresenter extends BasePresenter
 {
@@ -211,6 +214,9 @@ final class PagesPresenter extends BasePresenter
 
     /** @var FindTeamAnswersService @inject */
     public FindTeamAnswersService $findTeamAnswersService;
+
+    /** @var FindEventsPairsOpenedForDiscussionService @inject */
+    public FindEventsPairsOpenedForDiscussionService $findEventsPairsOpenedForDiscussionService;
 
     /** @var Event|null */
     private $event;
@@ -407,6 +413,10 @@ final class PagesPresenter extends BasePresenter
         $this->template->currentUserEntity = $this->getCurrentUserEntity();
         $this->template->isOrg = $isOrg = $this->user->isInRole(UserRole::ORG);
         $this->template->now = $now = $this->gameClockService->get();
+        $openedEvents = ($this->findEventsPairsOpenedForDiscussionService)();
+        if ($this->event !== null && !array_key_exists($this->event->getId(), $openedEvents)) {
+            $this->template->noMoreThreadsInThisEvent = true;
+        }
 
         if ($thread !== null) {
             $threadEntity = ($this->findThreadService)($thread);
@@ -766,7 +776,10 @@ final class PagesPresenter extends BasePresenter
         }, $this->user->isInRole(UserRole::ORG));
         $defaults = ['nickname' => $this->rememberedNicknameService->get()];
         if ($this->event !== null) {
-            $defaults = array_merge($defaults, ['event' => $this->event->getId()]);
+            $openedEvents = ($this->findEventsPairsOpenedForDiscussionService)();
+            if (array_key_exists($this->event->getId(), $openedEvents)) {
+                $defaults = array_merge($defaults, ['event' => $this->event->getId()]);
+            }
         }
         $form->setDefaults($defaults);
         return $form;

@@ -16,7 +16,8 @@
                 {/if}
             </div>
         {/if}
-        <p><a href="{plink Pages:discussion, page => $currentPage}"><i class="fas fa-arrow-left"></i> Zpět na seznam vláken</a></p>
+        {var $eventNumber = $thread->getEvent() !== null ? $thread->getEvent()->getNumber() : null}
+        <p><a href="{plink Pages:discussion, page => $currentPage, eventNumber => $eventNumber}"><i class="fas fa-arrow-left"></i> Zpět na seznam vláken</a></p>
         {if !isset($posts) || count($posts) === 0}
             <div class="alert alert-info">V současnosti neexistuje žádná příspěvky v tomto vlákně.</div>
         {else}
@@ -84,7 +85,7 @@
           {/if}
         </div>
         <div>
-            <a href="{plink Pages:discussion, page => $currentPage}"><i class="fas fa-arrow-left"></i> Zpět na seznam vláken</a>
+            <a href="{plink Pages:discussion, page => $currentPage, eventNumber => $eventNumber}"><i class="fas fa-arrow-left"></i> Zpět na seznam vláken</a>
         </div>
         <div n:snippet="form">
             {if $user->isLoggedIn()}
@@ -110,7 +111,8 @@
                     {include lockToggle}
                 {/if}
                 <div>
-                    <a href="{plink Pages:discussion, page => $currentPage}"><i class="fas fa-arrow-left"></i> Zpět na seznam vláken</a>
+                    {var $eventNumber = $thread->getEvent() !== null ? $thread->getEvent()->getNumber() : null}
+                    <a href="{plink Pages:discussion, page => $currentPage, eventNumber => $eventNumber}"><i class="fas fa-arrow-left"></i> Zpět na seznam vláken</a>
                 </div>
             {/if}
         </div>

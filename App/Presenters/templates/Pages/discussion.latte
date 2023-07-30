@@ -63,6 +63,9 @@
     <div id="content">
         {if $user->isLoggedIn()}
             <h2>Založit nové vlákno</h2>
+            {if isset($noMoreThreadsInThisEvent) && $noMoreThreadsInThisEvent}
+                <div class="alert alert-warning">Zakládání vláken pro tento ročník již není povoleno. Můžete přidat příspěvek k aktuálnímu ročníku nebo mimo ročníky</div>
+            {/if}
             {control newThreadForm}
             {$help}
         {/if}
