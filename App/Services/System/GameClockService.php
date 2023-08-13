@@ -49,6 +49,15 @@ class GameClockService
     }
 
     /**
+     * Returns true if game time is overridden, false otherwise
+     * @return bool
+     */
+    public function isOverridden(): bool
+    {
+        return $this->interval !== null;
+    }
+
+    /**
      * Sets game time from given datetime which should be considered as new now.
      *
      * @param DateTimeImmutable $nowCurrent

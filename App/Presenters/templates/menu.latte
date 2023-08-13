@@ -135,7 +135,7 @@
             </li>
         </ul>
     {/if}
-    <div class="bg-yellow-tmou lg:rounded-sm p-4 my-4 text-base pl-8" n:if="isset($gameClockChange) && $gameClockChange">
+    <div class="bg-yellow-tmou lg:rounded-sm p-4 my-4 text-base pl-8" n:if="(isset($gameClockChange) && $gameClockChange) || (isset($isTimeOverridden) && $isTimeOverridden)">
         <div class="game-clock" n:ifset="$currentTime">
             <span class="font-bold text-lg">Herní čas</span><br>
             <span id="time" class="text-lg" data-time="{$currentTime|date: 'U.u'}">{$currentTime|date: 'j. n. Y G:i:s'}</span>

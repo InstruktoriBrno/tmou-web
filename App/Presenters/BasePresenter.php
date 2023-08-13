@@ -55,6 +55,7 @@ abstract class BasePresenter extends Presenter
         }
 
         $this->template->currentTime = $this->gameClockService->get();
+        $this->template->isTimeOverridden = $this->gameClockService->isOverridden();
         if ($this->user->isAllowed(Resource::ADMIN_COMMON, Action::CHANGE_GAME_CLOCK) || $this->isImpersonated()) {
             $this->template->gameClockChange = true;
             $this->template->hasDatetimepicker = true;
