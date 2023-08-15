@@ -142,6 +142,7 @@ services:
     - InstruktoriBrno\TMOU\Forms\TeamBatchGameStatusChangeFormFactory
     - InstruktoriBrno\TMOU\Facades\Teams\BatchGameStatusChangeFacade
     - InstruktoriBrno\TMOU\Services\Teams\ChangeTeamsGameStatusService
+    - InstruktoriBrno\TMOU\Services\Teams\ChangeTeamsCanChangeGameTimeService
     - InstruktoriBrno\TMOU\Facades\Events\MatchPaymentsFacade(%fio.apiURL%, %fio.token%, %fio.notificationEmail%)
     - InstruktoriBrno\TMOU\Services\Teams\FindTeamByEventNumberService
     - InstruktoriBrno\TMOU\Services\Events\FindEventsWithMatchablePaymentsService

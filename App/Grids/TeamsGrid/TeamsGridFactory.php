@@ -23,7 +23,9 @@ class TeamsGridFactory
         callable $changeToRegistered,
         callable $changeAsPaid,
         callable $changeAsNotPaid,
-        callable $changeAsPaidAndPlaying
+        callable $changeAsPaidAndPlaying,
+        callable $allowGameClockChange,
+        callable $disableGameClockChange
     ): TeamsGrid {
         return new TeamsGrid(
             $eventNumber,
@@ -35,7 +37,9 @@ class TeamsGridFactory
             $changeToRegistered,
             $changeAsPaid,
             $changeAsNotPaid,
-            $changeAsPaidAndPlaying
+            $changeAsPaidAndPlaying,
+            $allowGameClockChange,
+            $disableGameClockChange
         );
     }
 }

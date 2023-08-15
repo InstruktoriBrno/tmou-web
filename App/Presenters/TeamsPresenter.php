@@ -15,6 +15,7 @@ use InstruktoriBrno\TMOU\Forms\TeamBatchMailingFormFactory;
 use InstruktoriBrno\TMOU\Grids\TeamsGrid\TeamsGrid;
 use InstruktoriBrno\TMOU\Grids\TeamsGrid\TeamsGridFactory;
 use InstruktoriBrno\TMOU\Services\Events\FindEventByNumberService;
+use InstruktoriBrno\TMOU\Services\Teams\ChangeTeamsCanChangeGameTimeService;
 use InstruktoriBrno\TMOU\Services\Teams\ChangeTeamsGameStatusService;
 use InstruktoriBrno\TMOU\Services\Teams\ChangeTeamsPaymentStatusService;
 use InstruktoriBrno\TMOU\Services\Teams\ExportAllTeamsService;
@@ -83,6 +84,9 @@ final class TeamsPresenter extends BasePresenter
 
     /** @var ChangeTeamsPaymentStatusService @inject */
     public $changeTeamsPaymentStatusService;
+
+    /** @var ChangeTeamsCanChangeGameTimeService @inject */
+    public ChangeTeamsCanChangeGameTimeService $changeTeamsCanChangeGameTimeService;
 
     /** @privilege(InstruktoriBrno\TMOU\Enums\Resource::ADMIN_TEAMS,InstruktoriBrno\TMOU\Enums\Action::VIEW,InstruktoriBrno\TMOU\Enums\PrivilegeEnforceMethod::TRIGGER_ADMIN_LOGIN) */
     public function actionDefault(int $eventNumber): void
@@ -367,6 +371,55 @@ final class TeamsPresenter extends BasePresenter
                 $presenter->redirect('this');
             }
         };
+        $allowGameClockChange = function (array $ids) use ($presenter) {
+            if (!$presenter->user->isAllowed(Resource::ADMIN_TEAMS, Action::DELEGATE_CHANGE_GAME_CLOCK)
+                || !$presenter->user->isAllowed(Resource::ADMIN_TEAMS, Action::DELEGATE_CHANGE_GAME_CLOCK)
+            ) {
+                $presenter->flashMessage('Nejste oprávněni provádět tuto operaci. Pokud věříte, že jde o chybu, kontaktujte správce.', Flash::DANGER);
+                $presenter->redrawControl('flashes');
+                return null;
+            }
+            $changed = ($presenter->changeTeamsCanChangeGameTimeService)($ids, true);
+            if ($presenter->isAjax()) {
+                $presenter->flashMessage(sprintf('%d týmů bylo úspěšně změněno.', $changed), Flash::SUCCESS);
+                $presenter->redrawControl('flashes');
+                $form = $this->getComponent('filter');
+                /** @var mixed $values */
+                $values = $form->getValues(true);
+                $filter = array_key_exists('filter', $values) ? ($values['filter']) : [];
+                /** @var DataGrid $grid */
+                $grid = $this;
+                $grid->setFilter($filter);
+                $grid->reload();
+            } else {
+                $presenter->redirect('this');
+            }
+        };
+
+        $disableGameClockChange = function (array $ids) use ($presenter) {
+            if (!$presenter->user->isAllowed(Resource::ADMIN_TEAMS, Action::DELEGATE_CHANGE_GAME_CLOCK)
+                || !$presenter->user->isAllowed(Resource::ADMIN_TEAMS, Action::DELEGATE_CHANGE_GAME_CLOCK)
+            ) {
+                $presenter->flashMessage('Nejste oprávněni provádět tuto operaci. Pokud věříte, že jde o chybu, kontaktujte správce.', Flash::DANGER);
+                $presenter->redrawControl('flashes');
+                return null;
+            }
+            $changed = ($presenter->changeTeamsCanChangeGameTimeService)($ids, false);
+            if ($presenter->isAjax()) {
+                $presenter->flashMessage(sprintf('%d týmů bylo úspěšně změněno.', $changed), Flash::SUCCESS);
+                $presenter->redrawControl('flashes');
+                $form = $this->getComponent('filter');
+                /** @var mixed $values */
+                $values = $form->getValues(true);
+                $filter = array_key_exists('filter', $values) ? ($values['filter']) : [];
+                /** @var DataGrid $grid */
+                $grid = $this;
+                $grid->setFilter($filter);
+                $grid->reload();
+            } else {
+                $presenter->redirect('this');
+            }
+        };
         return $this->teamsGridFactory->create(
             $eventNumber,
             ($this->findTeamsOfEventForDataGridService)($event),
@@ -376,7 +429,9 @@ final class TeamsPresenter extends BasePresenter
             $changeToRegistered,
             $changeAsPaid,
             $changeAsNotPaid,
-            $changeAsPaidAndPlaying
+            $changeAsPaidAndPlaying,
+            $allowGameClockChange,
+            $disableGameClockChange,
         );
     }
 

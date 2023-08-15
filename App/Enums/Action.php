@@ -41,6 +41,8 @@ final class Action extends Enum
     // Specific actions for simulating game clock
     public const CHANGE_GAME_CLOCK = 'change_game_clock';
 
+    public const DELEGATE_CHANGE_GAME_CLOCK = 'delegate_change_game_clock';
+
     // Specific actions for qualification
     public const PLAY = 'play';
 }

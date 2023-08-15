@@ -7,6 +7,7 @@ use InstruktoriBrno\TMOU\Model\Event;
 use InstruktoriBrno\TMOU\Model\Page;
 use InstruktoriBrno\TMOU\Services\Events\FindEventsService;
 use InstruktoriBrno\TMOU\Services\MenuItems\FindMenuItemsForDisplayService;
+use InstruktoriBrno\TMOU\Services\Teams\FindTeamService;
 use Nette\Security\Identity;
 use function count;
 use InstruktoriBrno\TMOU\Enums\Action;
@@ -41,6 +42,9 @@ abstract class BasePresenter extends Presenter
     /** @var FindMenuItemsForDisplayService @inject */
     public $findMenuItemsForDisplay;
 
+    /** @var FindTeamService @inject */
+    public FindTeamService $findTeamServiceBase;
+
     /** @var int */
     public $buildTime;
 
@@ -54,9 +58,15 @@ abstract class BasePresenter extends Presenter
             $this->template->hasFileManager = true;
         }
 
+        $teamThatCanChangeGameTime = false;
+        if ($this->user->isInRole(UserRole::TEAM)) {
+            $team = ($this->findTeamServiceBase)($this->user->getId());
+            $teamThatCanChangeGameTime = $team !== null && $team->canChangeGameTime();
+        }
+
         $this->template->currentTime = $this->gameClockService->get();
         $this->template->isTimeOverridden = $this->gameClockService->isOverridden();
-        if ($this->user->isAllowed(Resource::ADMIN_COMMON, Action::CHANGE_GAME_CLOCK) || $this->isImpersonated()) {
+        if ($this->user->isAllowed(Resource::ADMIN_COMMON, Action::CHANGE_GAME_CLOCK) || $this->isImpersonated() || $teamThatCanChangeGameTime) {
             $this->template->gameClockChange = true;
             $this->template->hasDatetimepicker = true;
         }
@@ -159,7 +169,12 @@ abstract class BasePresenter extends Presenter
     public function createComponentGameClock(): Form
     {
         return $this->gameClockFormFactory->create(function (Form $form, ArrayHash $values): void {
-            if (!$this->user->isAllowed(Resource::ADMIN_COMMON, Action::CHANGE_GAME_CLOCK) && !$this->isImpersonated()) {
+            $teamThatCanChangeGameTime = false;
+            if ($this->user->isInRole(UserRole::TEAM)) {
+                $team = ($this->findTeamServiceBase)($this->user->getId());
+                $teamThatCanChangeGameTime = $team !== null && $team->canChangeGameTime();
+            }
+            if (!$this->user->isAllowed(Resource::ADMIN_COMMON, Action::CHANGE_GAME_CLOCK) && !$this->isImpersonated() && !$teamThatCanChangeGameTime) {
                 $form->addError('Nejste oprávněni provádět tuto operaci. Pokud věříte, že jde o chybu, kontaktujte správce.');
                 return;
             }

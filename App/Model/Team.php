@@ -174,6 +174,12 @@ class Team
     protected ?DateTimeImmutable $lastWrongAnswerAt;
 
     /**
+     * @ORM\Column(type="boolean", nullable=false)
+     * @var bool
+     */
+    protected bool $canChangeGameTime = false;
+
+    /**
      * Team constructor.
      * @param Event $event
      * @param int $number
@@ -676,5 +682,15 @@ class Team
     {
         $this->lastWrongAnswerAt = null;
         $this->currentLevel = null;
+    }
+
+    public function setCanChangeGameTime(bool $state): void
+    {
+        $this->canChangeGameTime = $state;
+    }
+
+    public function canChangeGameTime(): bool
+    {
+        return $this->canChangeGameTime;
     }
 }

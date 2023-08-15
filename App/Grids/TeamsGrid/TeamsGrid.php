@@ -45,6 +45,12 @@ class TeamsGrid extends Control
     /** @var callable */
     private $changeAsPaidAndPlaying;
 
+    /** @var callable */
+    private $allowGameClockChange;
+
+    /** @var callable */
+    private $disableGameClockChange;
+
     public function __construct(
         int $eventNumber,
         IDataSource $dataSource,
@@ -55,7 +61,9 @@ class TeamsGrid extends Control
         callable $changeToRegistered,
         callable $changeAsPaid,
         callable $changeAsNotPaid,
-        callable $changeAsPaidAndPlaying
+        callable $changeAsPaidAndPlaying,
+        callable $allowGameClockChange,
+        callable $disableGameClockChange
     ) {
         parent::__construct();
         $this->dataSource = $dataSource;
@@ -68,6 +76,8 @@ class TeamsGrid extends Control
         $this->changeAsPaid = $changeAsPaid;
         $this->changeAsNotPaid = $changeAsNotPaid;
         $this->changeAsPaidAndPlaying = $changeAsPaidAndPlaying;
+        $this->allowGameClockChange = $allowGameClockChange;
+        $this->disableGameClockChange = $disableGameClockChange;
     }
 
     public function createComponentGrid(string $name): DataGrid
@@ -131,6 +141,15 @@ class TeamsGrid extends Control
             ->setDefaultHide(true);
 
         $grid->addColumnText('name', 'Jméno')
+            ->setRenderer(function (Team $team): Html {
+                $output = Html::el();
+                $output->addText($team->getName());
+                if ($team->canChangeGameTime()) {
+                    $output->addHtml('&nbsp;');
+                    $output->addHtml(Html::el('span class="fa fa-hourglass-half"')->setAttribute('title', 'Tým může měnit herní čas.'));
+                }
+                return $output;
+            })
             ->setSortable()
             ->setFilterText();
 
@@ -222,6 +241,10 @@ class TeamsGrid extends Control
             && $this->user->isAllowed(Resource::ADMIN_TEAMS, Action::BATCH_PAYMENT_STATUS_CHANGE)
         ) {
             $grid->addGroupAction('Nastavit jako zaplaceno & hrající')->onSelect[] = Closure::fromCallable($this->changeAsPaidAndPlaying)->bindTo($grid);
+        }
+        if ($this->user->isAllowed(Resource::ADMIN_TEAMS, Action::DELEGATE_CHANGE_GAME_CLOCK)) {
+            $grid->addGroupAction('Povolit změnu herního času')->onSelect[] = Closure::fromCallable($this->allowGameClockChange)->bindTo($grid);
+            $grid->addGroupAction('Zakázat změnu herního času')->onSelect[] = Closure::fromCallable($this->disableGameClockChange)->bindTo($grid);
         }
 
         if ($this->user->isAllowed(Resource::ADMIN_TEAMS, Action::BATCH_MAIL)) {
