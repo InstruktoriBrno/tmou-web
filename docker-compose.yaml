@@ -45,14 +45,14 @@ services:
                 aliases:
                     - tmou.test
     keycloak:
-        image: keycloak/keycloak:21.1.0
+        image: keycloak/keycloak:22.0.1
         #platform: linux/amd64
         ports:
            - ${IP}:9990:8443
         volumes:
             - ${PROJECT_DIR}/.keycloak/realm-data:/opt/keycloak/data/import
             - ${PROJECT_DIR}/.keycloak/certs:/opt/keycloak/conf/certs
-        entrypoint: /opt/keycloak/bin/kc.sh start --import-realm --log-level=DEBUG --hostname-strict=false --hostname-url=https://tmou.test:9990 --proxy=edge
+        entrypoint: /opt/keycloak/bin/kc.sh start --import-realm --log-level=DEBUG --hostname-strict=false --hostname-url=https://tmou.test:9990 --proxy=edge --spi-login-protocol-openid-connect-legacy-logout-redirect-uri=true
         environment:
             KEYCLOAK_IMPORT: /tmp/realm-export.json
             KEYCLOAK_ADMIN: admin
