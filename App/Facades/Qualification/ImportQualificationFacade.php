@@ -55,6 +55,7 @@ class ImportQualificationFacade
         // Drop previous qualification and all related data
         ($this->deleteOldQualificationService)($event);
         $this->entityManager->flush(); // needed due to constrains checks
+        $this->entityManager->clear();
 
         // Import new qualification via service
         ($this->createQualificationService)($nodes, $event);

@@ -26,7 +26,7 @@
                 <p>Zadání:</p>
                 <ul>
                     <li><a href="{$level->getLink()|absoluteLink}">{$level->getLink()}</a></li>
-                    <li n:if="$level->getBackupLink() !== null"><a href="{$level->getBackupLink()|absoluteLink}">{$level->getBackupLink()}</a></li>
+                    <li n:if="trim($level->getBackupLink()) !== ''"><a href="{$level->getBackupLink()|absoluteLink}">{$level->getBackupLink()}</a></li>
                 </ul>
                 <p>
                     Potřebných správných řešení: {$level->getNeededCorrectAnswers()}<br>

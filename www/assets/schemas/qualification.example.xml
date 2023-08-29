@@ -15,7 +15,7 @@
         <level index="1">
             <!-- Relative or absolute link for level -->
             <link>storage/24/kvalifikace/level-01.pdf</link>
-            <!-- Optional relative or absolute link for level -->
+            <!-- Optional (leave empty, do not omit!) relative or absolute backup link for level -->
             <backup-link>storage/24/kvalifikace/level-01.pdf</backup-link>
             <!-- Number of codes after which next level will be unlocked -->
             <codes-needed>3</codes-needed>

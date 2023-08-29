@@ -8,14 +8,18 @@ use InstruktoriBrno\TMOU\Model\Event;
 use InstruktoriBrno\TMOU\Model\Level;
 use InstruktoriBrno\TMOU\Model\Password;
 use InstruktoriBrno\TMOU\Model\Puzzle;
+use InstruktoriBrno\TMOU\Services\Events\FindEventService;
 
 class CreateQualificationService
 {
     private EntityManagerInterface $entityManager;
 
-    public function __construct(EntityManagerInterface $entityManager)
+    private FindEventService $findEventService;
+
+    public function __construct(EntityManagerInterface $entityManager, FindEventService $findEventService)
     {
         $this->entityManager = $entityManager;
+        $this->findEventService = $findEventService;
     }
 
     /**
@@ -25,6 +29,7 @@ class CreateQualificationService
      */
     public function __invoke(array $qualificationNodes, Event $event): void
     {
+        $event = ($this->findEventService)($event->getId());
         [
             'maxNumberOfAnswers' => $maxNumberOfAnswers,
             'secondsPenalizationAfterIncorrectAnswer' => $secondsPenalizationAfterIncorrectAnswer,
@@ -67,6 +72,7 @@ class CreateQualificationService
                 $backupLink->nodeValue,
                 (int) $codesNeeded->nodeValue,
             );
+            $objectToPersist[] = $levelEntity;
             foreach ($puzzles as $puzzle) {
                 $puzzleEntity = new Puzzle($levelEntity, $puzzle->getAttribute('name'));
                 $passwords = $puzzle->getElementsByTagName('password');
@@ -79,7 +85,6 @@ class CreateQualificationService
                 $puzzleEntity->setPasswords($passwordsArray);
                 $objectToPersist[] = $puzzleEntity;
             }
-            $objectToPersist[] = $levelEntity;
         }
 
         foreach ($objectToPersist as $object) {
