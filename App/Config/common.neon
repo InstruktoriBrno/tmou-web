@@ -188,6 +188,7 @@ services:
     - InstruktoriBrno\TMOU\Facades\Discussions\SaveNewPostFacade
     - InstruktoriBrno\TMOU\Facades\Discussions\ToggleHidePostFacade
     - InstruktoriBrno\TMOU\Facades\Discussions\ToggleLockThreadFacade
+    - InstruktoriBrno\TMOU\Facades\Discussions\DeleteLockThreadFacade
     - InstruktoriBrno\TMOU\Services\Discussions\FindPostService
     - InstruktoriBrno\TMOU\Facades\Discussions\MarkThreadAsReadFacade
     - InstruktoriBrno\TMOU\Services\Events\FindEventsPairsOpenedForDiscussionService

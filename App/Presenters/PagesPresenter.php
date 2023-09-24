@@ -7,6 +7,7 @@ use InstruktoriBrno\TMOU\Enums\LoginContinueToIntents;
 use InstruktoriBrno\TMOU\Enums\ReservedSLUG;
 use InstruktoriBrno\TMOU\Enums\Resource;
 use InstruktoriBrno\TMOU\Enums\UserRole;
+use InstruktoriBrno\TMOU\Facades\Discussions\DeleteLockThreadFacade;
 use InstruktoriBrno\TMOU\Facades\Discussions\MarkThreadAsReadFacade;
 use InstruktoriBrno\TMOU\Facades\Discussions\SaveNewPostFacade;
 use InstruktoriBrno\TMOU\Facades\Discussions\SaveNewThreadFacade;
@@ -174,6 +175,9 @@ final class PagesPresenter extends BasePresenter
 
     /** @var ToggleLockThreadFacade @inject */
     public $toggleLockThreadFacade;
+
+    /** @var DeleteLockThreadFacade @inject */
+    public DeleteLockThreadFacade $deleteLockThreadFacade;
 
     /** @var FindPostService @inject */
     public $findPostService;
@@ -890,6 +894,18 @@ final class PagesPresenter extends BasePresenter
             }
             $this->redirect('this');
         }
+    }
+
+    /** @privilege(InstruktoriBrno\TMOU\Enums\Resource::DISCUSSION,InstruktoriBrno\TMOU\Enums\Action::DELETE_THREAD) */
+    public function handleDeleteThread(int $threadId): void
+    {
+        $thread = ($this->findThreadService)($threadId);
+        if ($thread === null) {
+            throw new \Nette\Application\BadRequestException("No such thread with ID ${threadId}.");
+        }
+        ($this->deleteLockThreadFacade)($thread);
+        $this->flashMessage('Vlákno bylo úspěšně smazáno.', Flash::SUCCESS);
+        $this->redirect('discussion');
     }
 
     public function computeGrayscale(?Event $event): int

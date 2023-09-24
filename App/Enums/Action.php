@@ -32,6 +32,8 @@ final class Action extends Enum
     public const NEW_THREAD = 'new_thread';
     public const CHANGE_THREAD = 'change_thread';
     public const LOCK_THREAD = 'lock_thread';
+
+    public const DELETE_THREAD = 'delete_thread';
     public const HIDE_POST = 'hide_post';
     public const MARK_THREAD_AS_READ = 'mark_thread_as_read';
 

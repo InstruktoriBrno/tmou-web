@@ -128,6 +128,7 @@
                 <a class="ajax btn btn-primary" href="{plink lockThread!, $thread->getId()}" title="odemknout pro vkládání dalších příspěvků">Uzamknout</a>
             {/if}
             &nbsp;
+            <a class="ajax btn btn-danger delete-thread" href="{plink deleteThread!, $thread->getId()}" title="smazat celé vlákno" data-confirm="Opravdu chcete nevratně smazat toto vlákno?">Smazat</a>
         </span>
     {/if}
 {/define}
