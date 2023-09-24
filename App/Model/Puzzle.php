@@ -20,7 +20,7 @@ class Puzzle
     protected int $id;
 
     /**
-     * @ORM\ManyToOne(targetEntity="Level", cascade={})
+     * @ORM\ManyToOne(targetEntity="Level", cascade={}, fetch="EAGER")
      * @ORM\JoinColumn(name="level_id", referencedColumnName="id", nullable=false)
      * @var Level
      */

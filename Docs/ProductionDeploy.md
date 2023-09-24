@@ -24,7 +24,7 @@ Nezbytné předpoklady jsou:
 5. Vytvořte lokální konfiguraci `App/Config/local.neon`, viz `local.neon.template`,
    zde nastavte údaje pro přístup k databázi, recaptchu, adresu na které web poběží, maily...
 6. Smažte obsah adresáře `temp/cache`.
-7. Spusťe databázové migrace pro zajištění aktuálnosti databáze: `php bin/console migrations:migrate`
+7. Spusťe databázové migrace pro zajištění aktuálnosti databáze: `php bin/console migrations:migrate` a DB proxy objektů pro líné načítání z databáze `php bin/console orm:generate-proxies` (a případně `php bin/console orm:clear-cache:metadata`).
 9. Nakonfigurujte Apache tak, aby používal správnou verzi PHP a `DocumentRoot` směřoval do složky `www`.
 10. Přistupte skrze prohlížeč na nakonfigurovanou doménu a otestujte základní funkčnost webu.
 11. Ověřte, že citlivé soubory nejsou dostupné zvenčí, obzvláště soubor `App/Config/local.neon`.

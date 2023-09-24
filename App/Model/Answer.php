@@ -19,7 +19,7 @@ class Answer
     protected int $id;
 
     /**
-     * @ORM\ManyToOne(targetEntity="Puzzle")
+     * @ORM\ManyToOne(targetEntity="Puzzle", fetch="EAGER")
      * @ORM\JoinColumn(name="puzzle_id", referencedColumnName="id", nullable=false)
      * @var Puzzle
      */
