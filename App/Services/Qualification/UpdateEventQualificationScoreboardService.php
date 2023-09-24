@@ -47,7 +47,7 @@ SELECT
     FALSE,
     ROW_NUMBER() OVER (PARTITION BY total_answer_count > 0 ORDER BY max_reached_level DESC, total_answer_count DESC, latest_answer_at ASC, latest_answer_id ASC, result.team_registered_at ASC) <= ?
   ) AS qualified,
-  IF(has_any_correct_answer = TRUE, result.max_reached_level, NULL) AS max_reached_level,
+  result.max_reached_level,
   result.total_answer_count,
   max(answer.answered_at) AS latest_answer_at,
   max(answer.id) AS latest_answer_id,
@@ -58,9 +58,8 @@ FROM
       team.event_id,
       team.id AS team_id,
       team.registered_at AS team_registered_at,
-      MAX(level.level_number) AS max_reached_level,
-      SUM(CASE WHEN answer.correct THEN 1 ELSE 0 END) AS total_answer_count, -- possible as answer -> puzzle -> level is 1:1:1 !!!
-      MAX(answer.correct) AS has_any_correct_answer
+      MAX(CASE WHEN answer.correct THEN level.level_number ELSE NULL END) AS max_reached_level,
+      SUM(CASE WHEN answer.correct THEN 1 ELSE 0 END) AS total_answer_count -- possible as answer -> puzzle -> level is 1:1:1 !!!
     FROM team
     LEFT JOIN answer ON team.id = answer.team_id
     LEFT JOIN puzzle ON puzzle.id = answer.puzzle_id
