@@ -103,7 +103,7 @@ class SaveEventFacade
                 $values->paymentDeadline,
                 GameStatus::fromScalar($values->afterRegistrationTeamGameStatus),
                 $values->selfreportedEntryFee,
-                $values->sorting ? (float) $values->sorting : null,
+                $values->sorting ? (float) $values->sorting : (float) $values->number,
             );
         }
         if (!($this->isEventNumberUniqueService)($event)) {
