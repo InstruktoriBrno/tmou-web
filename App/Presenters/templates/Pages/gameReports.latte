@@ -12,13 +12,14 @@
         </ul>
 
         <h2 id="reportaze">Odkazy na reportáže</h2>
+        <ul>
         {foreach $teamsWithReviews as $team}
             {continueIf $team->getReview() === null}
             {var $review = $team->getReview()}
             {continueIf $review->getLink() === null || !\Nette\Utils\Validators::isUrl($review->getLink())}
-            <p>{$team->getName()}: <a href="{$review->getLink()}">{$review->getLink()}</a></p>
+            <li><a href="{$review->getLink()}">{$team->getName()}</a></li>
         {/foreach}
-
+        </ul>
         <h2 id="libilo">Co se líbilo</h2>
         {foreach $teamsWithReviews as $team}
             {continueIf $team->getReview() === null}
