@@ -3,49 +3,29 @@ namespace InstruktoriBrno\TMOU\Model;
 
 use Doctrine\ORM\Mapping as ORM;
 
-/**
- * @ORM\Entity
- * @ORM\Table(name="level")
- */
+#[ORM\Entity]
+#[ORM\Table(name: "level")]
 class Level
 {
-    /**
-     * @ORM\Id
-     * @ORM\Column(type="integer")
-     * @ORM\GeneratedValue
-     * @var integer
-     */
+    #[ORM\Id]
+    #[ORM\Column(type: "integer")]
+    #[ORM\GeneratedValue]
     protected int $id;
 
-    /**
-     * @ORM\ManyToOne(targetEntity="Event")
-     * @ORM\JoinColumn(name="event_id", referencedColumnName="id", nullable=false)
-     * @var Event
-     */
+    #[ORM\ManyToOne(targetEntity: Event::class)]
+    #[ORM\JoinColumn(name: "event_id", referencedColumnName: "id", nullable: false)]
     protected Event $event;
 
-    /**
-     * @ORM\Column(type="integer")
-     * @var int
-     */
+    #[ORM\Column(type: "integer")]
     protected int $levelNumber;
 
-    /**
-     * @ORM\Column(type="text", nullable=true)
-     * @var string|null
-     */
+    #[ORM\Column(type: "text", nullable: true)]
     protected ?string $link;
 
-    /**
-     * @ORM\Column(type="text", nullable=true)
-     * @var string|null
-     */
+    #[ORM\Column(type: "text", nullable: true)]
     protected ?string $backupLink;
 
-    /**
-     * @ORM\Column(type="integer", nullable=true)
-     * @var int|null
-     */
+    #[ORM\Column(type: "integer", nullable: true)]
     protected ?int $neededCorrectAnswers;
 
     public function __construct(

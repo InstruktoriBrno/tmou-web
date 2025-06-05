@@ -4,12 +4,11 @@ namespace InstruktoriBrno\TMOU\Services\Teams;
 use Doctrine\ORM\EntityManagerInterface;
 use InstruktoriBrno\TMOU\Model\Event;
 use InstruktoriBrno\TMOU\Model\TeamMember;
-use Ublaboo\Responses\CSVResponse;
+use Contributte\Application\Response\CSVResponse;
 
 class ExportTeamMembersForNewsletterService
 {
-    /** @var EntityManagerInterface */
-    private $entityManager;
+    private EntityManagerInterface $entityManager;
 
     public function __construct(EntityManagerInterface $entityManager)
     {

@@ -7,8 +7,7 @@ use InstruktoriBrno\TMOU\Model\Team;
 
 class TeamMacroDataProvider
 {
-    /** @var Team|null */
-    private $team;
+    private ?Team $team;
 
     public function setTeam(?Team $team): void
     {
@@ -17,7 +16,7 @@ class TeamMacroDataProvider
 
     public function getTeamName(): string
     {
-        if ($this->team === null) {
+        if (!isset($this->team)) {
             return '';
         }
         return $this->team->getName();
@@ -25,7 +24,7 @@ class TeamMacroDataProvider
 
     public function getTeamPhrase(): string
     {
-        if ($this->team === null) {
+        if (!isset($this->team)) {
             return '';
         }
         return $this->team->getPhrase();
@@ -33,7 +32,7 @@ class TeamMacroDataProvider
 
     public function getTeamId(): string
     {
-        if ($this->team === null) {
+        if (!isset($this->team)) {
             return '';
         }
         return (string) $this->team->getId();
@@ -41,7 +40,7 @@ class TeamMacroDataProvider
 
     public function getTeamNumber(): string
     {
-        if ($this->team === null) {
+        if (!isset($this->team)) {
             return '';
         }
         return (string) $this->team->getNumber();
@@ -49,7 +48,7 @@ class TeamMacroDataProvider
 
     public function getTeamVariableSymbol(): string
     {
-        if ($this->team === null) {
+        if (!isset($this->team)) {
             return '';
         }
         $code = $this->team->getPaymentPairingCode();
@@ -61,7 +60,7 @@ class TeamMacroDataProvider
 
     public function getTeamStateRaw(): string
     {
-        if ($this->team === null) {
+        if (!isset($this->team)) {
             return '';
         }
         return (string) $this->team->getGameStatus()->toScalar();
@@ -69,7 +68,7 @@ class TeamMacroDataProvider
 
     public function getTeamState(): string
     {
-        if ($this->team === null) {
+        if (!isset($this->team)) {
             return '';
         }
         $state = $this->team->getGameStatus();
@@ -90,7 +89,7 @@ class TeamMacroDataProvider
 
     public function getPaymentState(): string
     {
-        if ($this->team === null) {
+        if (!isset($this->team)) {
             return '';
         }
         $state = $this->team->getPaymentStatus();

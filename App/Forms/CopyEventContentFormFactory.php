@@ -9,11 +9,9 @@ class CopyEventContentFormFactory
 {
     use SmartObject;
 
-    /** @var FormFactory */
-    private $factory;
+    private FormFactory $factory;
 
-    /** @var FindEventsPairsService */
-    private $findEventsPairsService;
+    private FindEventsPairsService $findEventsPairsService;
 
     public function __construct(FindEventsPairsService $findEventsPairsService, FormFactory $factory)
     {

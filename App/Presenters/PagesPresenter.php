@@ -74,151 +74,153 @@ use function array_merge;
 use function array_reverse;
 use function array_unshift;
 use function assert;
+use function is_int;
+use Nette\DI\Attributes\Inject;
 
 final class PagesPresenter extends BasePresenter
 {
-    /** @var FindEventByNumberService @inject */
-    public $findEventServiceByNumber;
+    #[Inject]
+    public FindEventByNumberService $findEventServiceByNumber;
 
-    /** @var FindPageInEventService @inject */
-    public $findPageInEventService;
+    #[Inject]
+    public FindPageInEventService $findPageInEventService;
 
-    /** @var EventMacroDataProvider @inject */
-    public $eventMacroDataProvider;
+    #[Inject]
+    public EventMacroDataProvider $eventMacroDataProvider;
 
-    /** @var TeamMacroDataProvider @inject */
-    public $teamMacroDataProvider;
+    #[Inject]
+    public TeamMacroDataProvider $teamMacroDataProvider;
 
-    /** @var TeamRegistrationFormFactory @inject */
-    public $teamRegistrationFormFactory;
+    #[Inject]
+    public TeamRegistrationFormFactory $teamRegistrationFormFactory;
 
-    /** @var RegisterTeamFacade @inject */
-    public $registerTeamFacade;
+    #[Inject]
+    public RegisterTeamFacade $registerTeamFacade;
 
-    /** @var FindTeamsInEventService @inject */
-    public $findTeamsInEventService;
+    #[Inject]
+    public FindTeamsInEventService $findTeamsInEventService;
 
-    /** @var TeamLoginFormFactory @inject */
-    public $teamLoginFormFactory;
+    #[Inject]
+    public TeamLoginFormFactory $teamLoginFormFactory;
 
-    /** @var TeamLoginFacade @inject */
-    public $teamLoginFacade;
+    #[Inject]
+    public TeamLoginFacade $teamLoginFacade;
 
-    /** @var TeamForgottenPasswordFormFactory @inject */
-    public $teamForgottenPasswordFormFactory;
+    #[Inject]
+    public TeamForgottenPasswordFormFactory $teamForgottenPasswordFormFactory;
 
-    /** @var RequestPasswordResetFacade @inject */
-    public $requestPasswordResetFacade;
+    #[Inject]
+    public RequestPasswordResetFacade $requestPasswordResetFacade;
 
-    /** @var TeamResetPasswordFormFactory @inject */
-    public $teamResetPasswordFormFactory;
+    #[Inject]
+    public TeamResetPasswordFormFactory $teamResetPasswordFormFactory;
 
-    /** @var ConsumePasswordResetFacade @inject */
-    public $consumePasswordResetFacade;
+    #[Inject]
+    public ConsumePasswordResetFacade $consumePasswordResetFacade;
 
-    /** @var FindTeamForFormService @inject */
-    public $findTeamForFormService;
+    #[Inject]
+    public FindTeamForFormService $findTeamForFormService;
 
-    /** @var ChangeTeamFacade @inject */
-    public $changeTeamFacade;
+    #[Inject]
+    public ChangeTeamFacade $changeTeamFacade;
 
-    /** @var IsSLUGReservedService @inject */
-    public $isSLUGReservedService;
+    #[Inject]
+    public IsSLUGReservedService $isSLUGReservedService;
 
-    /** @var FindTeamService @inject */
-    public $findTeamService;
+    #[Inject]
+    public FindTeamService $findTeamService;
 
-    /** @var CreateSSOSession @inject */
-    public $createSSOSession;
+    #[Inject]
+    public CreateSSOSession $createSSOSession;
 
-    /** @var InvalidateSSOSession @inject */
-    public $invalidateSSOSession;
+    #[Inject]
+    public InvalidateSSOSession $invalidateSSOSession;
 
-    /** @var TeamReviewFormFactory @inject */
-    public $teamReviewFormFactory;
+    #[Inject]
+    public TeamReviewFormFactory $teamReviewFormFactory;
 
-    /** @var SaveTeamReviewFacade @inject */
-    public $saveTeamReviewFacade;
+    #[Inject]
+    public SaveTeamReviewFacade $saveTeamReviewFacade;
 
-    /** @var FindTeamReviewForFormService @inject */
-    public $findTeamReviewForFormService;
+    #[Inject]
+    public FindTeamReviewForFormService $findTeamReviewForFormService;
 
-    /** @var FindEventTeamReviewsService @inject */
-    public $findEventTeamReviewsService;
+    #[Inject]
+    public FindEventTeamReviewsService $findEventTeamReviewsService;
 
-    /** @var NewThreadFormFactory @inject */
-    public $newThreadFormFactory;
+    #[Inject]
+    public NewThreadFormFactory $newThreadFormFactory;
 
-    /** @var ChangeThreadFormFactory @inject */
-    public $changeThreadFormFactory;
+    #[Inject]
+    public ChangeThreadFormFactory $changeThreadFormFactory;
 
-    /** @var NewPostFormFactory @inject */
-    public $newPostFormFactory;
+    #[Inject]
+    public NewPostFormFactory $newPostFormFactory;
 
-    /** @var SaveNewThreadFacade @inject */
-    public $saveNewThreadFacade;
+    #[Inject]
+    public SaveNewThreadFacade $saveNewThreadFacade;
 
-    /** @var FindThreadsService @inject */
-    public $findThreadsService;
+    #[Inject]
+    public FindThreadsService $findThreadsService;
 
-    /** @var FindThreadService @inject */
-    public $findThreadService;
+    #[Inject]
+    public FindThreadService $findThreadService;
 
-    /** @var FindThreadPostsService @inject */
-    public $findThreadPostsService;
+    #[Inject]
+    public FindThreadPostsService $findThreadPostsService;
 
-    /** @var SaveNewPostFacade @inject */
-    public $saveNewPostFacade;
+    #[Inject]
+    public SaveNewPostFacade $saveNewPostFacade;
 
-    /** @var ToggleHidePostFacade @inject */
-    public $toggleHidePostFacade;
+    #[Inject]
+    public ToggleHidePostFacade $toggleHidePostFacade;
 
-    /** @var ToggleLockThreadFacade @inject */
-    public $toggleLockThreadFacade;
+    #[Inject]
+    public ToggleLockThreadFacade $toggleLockThreadFacade;
 
-    /** @var DeleteLockThreadFacade @inject */
+    #[Inject]
     public DeleteLockThreadFacade $deleteLockThreadFacade;
 
-    /** @var FindPostService @inject */
-    public $findPostService;
+    #[Inject]
+    public FindPostService $findPostService;
 
-    /** @var FindOrganizatorByIdService @inject */
-    public $findOrganizatorService;
+    #[Inject]
+    public FindOrganizatorByIdService $findOrganizatorService;
 
-    /** @var MarkThreadAsReadFacade @inject */
-    public $markThreadAsReadFacade;
+    #[Inject]
+    public MarkThreadAsReadFacade $markThreadAsReadFacade;
 
-    /** @var FindLastPostsForThreads @inject */
-    public $findLastPostsForThreads;
+    #[Inject]
+    public FindLastPostsForThreads $findLastPostsForThreads;
 
-    /** @var FindCountsForThreads @inject */
-    public $findCountsForThreads;
+    #[Inject]
+    public FindCountsForThreads $findCountsForThreads;
 
-    /** @var FindThreadAcknowledgementByThreadsAndUserService @inject */
-    public $findThreadAcknowledgementByThreads;
+    #[Inject]
+    public FindThreadAcknowledgementByThreadsAndUserService $findThreadAcknowledgementByThreads;
 
-    /** @var RememberedNicknameService @inject */
-    public $rememberedNicknameService;
+    #[Inject]
+    public RememberedNicknameService $rememberedNicknameService;
 
-    /** @var FindThreadForFormService @inject */
-    public $findThreadForFormService;
+    #[Inject]
+    public FindThreadForFormService $findThreadForFormService;
 
-    /** @var SaveThreadFacade @inject */
-    public $saveThreadFacade;
+    #[Inject]
+    public SaveThreadFacade $saveThreadFacade;
 
-    /** @var FindLevelsService @inject */
+    #[Inject]
     public FindLevelsService $findLevelsService;
 
-    /** @var QualificationAnswerFormFactory @inject */
+    #[Inject]
     public QualificationAnswerFormFactory $qualificationAnswerFormFactory;
 
-    /** @var AnswerPuzzleFacade @inject */
+    #[Inject]
     public AnswerPuzzleFacade $answerPuzzleFacade;
 
-    /** @var FindTeamAnswersService @inject */
+    #[Inject]
     public FindTeamAnswersService $findTeamAnswersService;
 
-    /** @var FindEventsPairsOpenedForDiscussionService @inject */
+    #[Inject]
     public FindEventsPairsOpenedForDiscussionService $findEventsPairsOpenedForDiscussionService;
 
     /** @var Event|null */
@@ -233,7 +235,7 @@ final class PagesPresenter extends BasePresenter
             $this->event = ($this->findEventServiceByNumber)($eventNumber);
         }
         if ($this->event === null) {
-            throw new \Nette\Application\BadRequestException("No such event with number [${eventNumber}].");
+            throw new \Nette\Application\BadRequestException("No such event with number [{$eventNumber}].");
         }
     }
 
@@ -263,10 +265,10 @@ final class PagesPresenter extends BasePresenter
         }
         $page = ($this->findPageInEventService)($slug, $eventNumber);
         if ($page === null) {
-            throw new \Nette\Application\BadRequestException("No such page with SLUG [${slug}] within event with number [${eventNumber}].");
+            throw new \Nette\Application\BadRequestException("No such page with SLUG [{$slug}] within event with number [{$eventNumber}].");
         }
         if (!$page->isRevealed($this->gameClockService->get()) && !$this->user->isAllowed(Resource::ADMIN_PAGES, Action::VIEW)) {
-            throw new \Nette\Application\ForbiddenRequestException("Page with SLUG [${slug}] within event with number [${eventNumber}] was not yet revealed.");
+            throw new \Nette\Application\ForbiddenRequestException("Page with SLUG [{$slug}] within event with number [{$eventNumber}] was not yet revealed.");
         }
         if ($page->isCachingSafe()) {
             $this->eventMacroDataProvider->setEvent($page->getEvent()); // Needed due to page link creation
@@ -274,6 +276,9 @@ final class PagesPresenter extends BasePresenter
         } elseif ($page->getEvent() !== null) {
             $this->eventMacroDataProvider->setEvent($page->getEvent());
             if ($this->user->isLoggedIn() && $this->user->isInRole(UserRole::TEAM)) {
+                if (!is_int($this->user->getId())) {
+                    throw new \Nette\Application\BadRequestException("Invalid user ID.");
+                }
                 $team = ($this->findTeamService)($this->user->getId());
                 if ($team !== null && $team->getEvent()->getId() === $page->getEvent()->getId()) {
                     $this->teamMacroDataProvider->setTeam($team);
@@ -389,6 +394,9 @@ final class PagesPresenter extends BasePresenter
         $this->enforceMatchingEvent($eventNumber);
         $this->populateEventFromURL($eventNumber);
         if ($this->user->isLoggedIn() && $this->user->isInRole(UserRole::TEAM)) {
+            if (!is_int($this->user->getId())) {
+                throw new \Nette\Application\BadRequestException("Invalid user ID.");
+            }
             $team = ($this->findTeamService)($this->user->getId());
             $this->template->canFillTeamReview = $team !== null && $team->canFillTeamReview();
         }
@@ -424,10 +432,10 @@ final class PagesPresenter extends BasePresenter
         if ($thread !== null) {
             $threadEntity = ($this->findThreadService)($thread);
             if ($threadEntity === null) {
-                throw new \Nette\Application\BadRequestException("No such thread with ID ${thread}.");
+                throw new \Nette\Application\BadRequestException("No such thread with ID {$thread}.");
             }
             if ($threadEntity->isHidden($now) && !$isOrg) {
-                throw new \Nette\Application\BadRequestException("Thread with ID ${thread} is hidden.", 403);
+                throw new \Nette\Application\BadRequestException("Thread with ID {$thread} is hidden.", 403);
             }
             $this->template->thread = $threadEntity;
             $this->template->posts = ($this->findThreadPostsService)($threadEntity);
@@ -477,9 +485,15 @@ final class PagesPresenter extends BasePresenter
     private function getCurrentUserEntity()
     {
         if ($this->user->isLoggedIn() && $this->user->isInRole(UserRole::ORG)) {
+            if (!is_int($this->user->getId())) {
+                throw new \Nette\Application\BadRequestException("Invalid user ID.");
+            }
             return ($this->findOrganizatorService)($this->user->getId());
         }
         if ($this->user->isLoggedIn() && $this->user->isInRole(UserRole::TEAM)) {
+            if (!is_int($this->user->getId())) {
+                throw new \Nette\Application\BadRequestException("Invalid user ID.");
+            }
             return ($this->findTeamService)($this->user->getId());
         }
         return null;
@@ -622,6 +636,9 @@ final class PagesPresenter extends BasePresenter
             false,
             $event->getChangeDeadlineComputed() !== null && $event->getChangeDeadlineComputed() < $this->gameClockService->get(),
             $event->isSelfreportedEntryFeeEnabled());
+        if (!is_int($this->user->getId())) {
+            throw new \InstruktoriBrno\TMOU\Exceptions\LogicException("Invalid user ID.");
+        }
         $data = ($this->findTeamForFormService)($this->user->getId());
         $form->setDefaults($data);
 
@@ -733,6 +750,9 @@ final class PagesPresenter extends BasePresenter
         $this->populateEventFromURL();
         $event = $this->event;
         assert($event !== null);
+        if (!is_int($this->user->getId())) {
+            throw new \InstruktoriBrno\TMOU\Exceptions\LogicException("Invalid user ID.");
+        }
         $team = ($this->findTeamService)($this->user->getId());
         assert($team !== null);
         $form = $this->teamReviewFormFactory->create(function (Form $form, ArrayHash $values) use ($team): void {
@@ -792,7 +812,7 @@ final class PagesPresenter extends BasePresenter
     {
         $threadId = $this->getParameter('thread');
         if ($threadId === null || !Validators::isNumericInt($threadId)) {
-            throw new \Nette\Application\BadRequestException("Invalid thread ${threadId}.");
+            throw new \Nette\Application\BadRequestException("Invalid thread {$threadId}.");
         }
         $form = $this->changeThreadFormFactory->create(function (Form $form, ArrayHash $values) use ($threadId): void {
             if (!$this->user->isAllowed(Resource::DISCUSSION, Action::CHANGE_THREAD)) {
@@ -825,11 +845,11 @@ final class PagesPresenter extends BasePresenter
     {
         $thread = $this->getParameter('thread');
         if ($thread === null || !Validators::isNumericInt($thread)) {
-            throw new \Nette\Application\BadRequestException("Invalid thread ${thread}.");
+            throw new \Nette\Application\BadRequestException("Invalid thread {$thread}.");
         }
         $threadEntity = ($this->findThreadService)((int) $thread);
         if ($threadEntity === null) {
-            throw new \Nette\Application\BadRequestException("No such thread with ID ${thread}.");
+            throw new \Nette\Application\BadRequestException("No such thread with ID {$thread}.");
         }
         $form = $this->newPostFormFactory->create(function (Form $form, ArrayHash $values) use ($threadEntity): void {
             if (!$this->user->isAllowed(Resource::DISCUSSION, Action::NEW_POST)) {
@@ -861,7 +881,7 @@ final class PagesPresenter extends BasePresenter
     {
         $post = ($this->findPostService)($postId);
         if ($post === null) {
-            throw new \Nette\Application\BadRequestException("No such post with ID ${postId}.");
+            throw new \Nette\Application\BadRequestException("No such post with ID {$postId}.");
         }
         ($this->toggleHidePostFacade)($post);
         if ($this->isAjax()) {
@@ -881,7 +901,7 @@ final class PagesPresenter extends BasePresenter
     {
         $thread = ($this->findThreadService)($threadId);
         if ($thread === null) {
-            throw new \Nette\Application\BadRequestException("No such thread with ID ${threadId}.");
+            throw new \Nette\Application\BadRequestException("No such thread with ID {$threadId}.");
         }
         ($this->toggleLockThreadFacade)($thread);
         if ($this->isAjax()) {
@@ -901,7 +921,7 @@ final class PagesPresenter extends BasePresenter
     {
         $thread = ($this->findThreadService)($threadId);
         if ($thread === null) {
-            throw new \Nette\Application\BadRequestException("No such thread with ID ${threadId}.");
+            throw new \Nette\Application\BadRequestException("No such thread with ID {$threadId}.");
         }
         ($this->deleteLockThreadFacade)($thread);
         $this->flashMessage('Vlákno bylo úspěšně smazáno.', Flash::SUCCESS);

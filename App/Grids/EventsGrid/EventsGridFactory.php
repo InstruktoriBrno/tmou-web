@@ -6,8 +6,7 @@ use Ublaboo\DataGrid\DataSource\IDataSource;
 
 class EventsGridFactory
 {
-    /** @var DataGridFactory */
-    private $dataGridFactory;
+    private DataGridFactory $dataGridFactory;
 
     public function __construct(DataGridFactory $dataGridFactory)
     {

@@ -2,7 +2,7 @@
 namespace InstruktoriBrno\TMOU\Forms;
 
 use InstruktoriBrno\TMOU\Application\UI\BaseForm;
-use Nextras\Forms\Rendering\Bs4FormRenderer;
+use Nextras\FormsRendering\Renderers\Bs4FormRenderer;
 
 class FormFactory
 {

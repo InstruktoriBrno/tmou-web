@@ -5,5 +5,9 @@ includes:
     - vendor/phpstan/phpstan-doctrine/extension.neon
 
 parameters:
-	ignoreErrors:
-	    - '#Unreachable statement - code above always terminates.#' # Some returns improves readability especially when exceptions are thrown from called method above (such as $presenter->redirect).
+    ignoreErrors:
+        - '#Unreachable statement - code above always terminates.#' # Some returns improves readability especially when exceptions are thrown from called method above (such as $presenter->redirect).
+        - '#Constant InstruktoriBrno\\TMOU\\Enums\\[a-zA-Z0-9\\_]+::[A-Z_]+ is unused.#'
+        - '#Anonymous function uses \$this assigned to variable \$presenter\. Use \$this directly in the function body\.#'
+
+

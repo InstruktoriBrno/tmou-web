@@ -2,6 +2,7 @@
 namespace InstruktoriBrno\TMOU\Services\Qualification;
 
 use Doctrine\ORM\EntityManagerInterface;
+use DOMElement;
 use DOMNode;
 use DOMNodeList;
 use InstruktoriBrno\TMOU\Model\Event;
@@ -25,7 +26,7 @@ class CreateQualificationService
     /**
      * Hydrate qualification objects from given XML nodes
      *
-     * @param array{maxNumberOfAnswers: DOMNode, secondsPenalizationAfterIncorrectAnswer: DOMNode, levels: DOMNodeList<DOMNode>} $qualificationNodes
+     * @param array{maxNumberOfAnswers: DOMNode, secondsPenalizationAfterIncorrectAnswer: DOMNode, levels: DOMNodeList<DOMElement>} $qualificationNodes
      */
     public function __invoke(array $qualificationNodes, Event $event): void
     {

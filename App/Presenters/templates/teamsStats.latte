@@ -1,7 +1,7 @@
 {var $members = 0}
 {var $values = []}
 {foreach $teams as $team}
-    {var $members += $team->getMembersCount()}
+    {do $members += $team->getMembersCount()}
     {foreach $team->getMembers() as $member }
         {continueIf $member->getAge() === null}
         {var $values[] = $member->getAge()}

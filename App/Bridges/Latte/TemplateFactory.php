@@ -16,14 +16,11 @@ use Nette\DI\Container;
 
 class TemplateFactory extends \Nette\Bridges\ApplicationLatte\TemplateFactory
 {
-    /** @var GameClockService */
-    private $gameClockService;
+    private GameClockService $gameClockService;
 
-    /** @var TeamMacroDataProvider */
-    private $teamMacroDataProvider;
+    private TeamMacroDataProvider $teamMacroDataProvider;
 
-    /** @var EventMacroDataProvider */
-    private $eventMacroDataProvider;
+    private EventMacroDataProvider $eventMacroDataProvider;
 
     private EventQualificationResultsControlFactory $eventQualificationResultsControlFactory;
 
@@ -67,9 +64,15 @@ class TemplateFactory extends \Nette\Bridges\ApplicationLatte\TemplateFactory
         $this->container = $container;
     }
 
-    public function createTemplate(UI\Control $control = null)
+    public function createTemplate(?UI\Control $control = null, ?string $class = null): UI\Template
     {
-        $pagesPresenter = $this->container->getByType(PagesPresenter::class);
+        /** @var string[]|false $pagesPresenterServices */
+        $pagesPresenterServices = $this->container->findByType(PagesPresenter::class);
+        if (!is_array($pagesPresenterServices) || count($pagesPresenterServices) !== 1) {
+            throw new \RuntimeException("There must be exactly one instance of " . PagesPresenter::class . " in container.");
+        }
+        /** @var PagesPresenter $pagesPresenter */
+        $pagesPresenter = $this->container->getByName(reset($pagesPresenterServices));
         $template = parent::createTemplate($control);
         $template->addFilter('texy', new TexyFilter(
             $this->gameClockService,

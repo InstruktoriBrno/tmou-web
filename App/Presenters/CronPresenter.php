@@ -4,14 +4,14 @@ namespace InstruktoriBrno\TMOU\Presenters;
 use DateTimeImmutable;
 use InstruktoriBrno\TMOU\Facades\Events\MatchPaymentsFacade;
 use Nette\Application\Responses\TextResponse;
+use Nette\DI\Attributes\Inject;
 
 final class CronPresenter extends BasePresenter
 {
-    /** @var string */
-    private $apiKey;
+    private string $apiKey;
 
-    /** @var MatchPaymentsFacade @inject */
-    public $matchPaymentsFacade;
+    #[Inject]
+    public MatchPaymentsFacade $matchPaymentsFacade;
 
     public function setApiKey(string $key): void
     {
@@ -40,14 +40,14 @@ final class CronPresenter extends BasePresenter
         }
         $start = DateTimeImmutable::createFromFormat('Y-m-d', $start);
         $lastErrors = DateTimeImmutable::getLastErrors();
-        $issuesCount = $lastErrors !== false ? ($lastErrors['warning_count'] ?? 0) + ($lastErrors['error_count'] ?? 0) : 0;
+        $issuesCount = $lastErrors !== false ? ($lastErrors['warning_count']) + ($lastErrors['error_count']) : 0;
         if (!$start instanceof DateTimeImmutable || $issuesCount > 0) {
             $this->sendResponse(new TextResponse('start expected in format Y-m-d, i.e. 2019-12-28'));
             $this->terminate();
         }
         $end = DateTimeImmutable::createFromFormat('Y-m-d', $end);
         $lastErrors = DateTimeImmutable::getLastErrors();
-        $issuesCount = $lastErrors !== false ? ($lastErrors['warning_count'] ?? 0) + ($lastErrors['error_count'] ?? 0) : 0;
+        $issuesCount = $lastErrors !== false ? ($lastErrors['warning_count']) + ($lastErrors['error_count']) : 0;
         if (!$end instanceof DateTimeImmutable || $issuesCount > 0) {
             $this->sendResponse(new TextResponse('end expected in format Y-m-d, i.e. 2019-12-28'));
             $this->terminate();

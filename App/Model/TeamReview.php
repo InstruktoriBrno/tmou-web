@@ -3,43 +3,26 @@ namespace InstruktoriBrno\TMOU\Model;
 
 use Doctrine\ORM\Mapping as ORM;
 
-/**
- * @ORM\Entity
- * @ORM\Table(name="team_review")
- */
+#[ORM\Entity]
+#[ORM\Table(name: "team_review")]
 class TeamReview
 {
-    /**
-     * @ORM\Id
-     * @ORM\Column(type="integer")
-     * @ORM\GeneratedValue
-     * @var integer
-     */
-    protected $id;
+    #[ORM\Id]
+    #[ORM\Column(type: "integer")]
+    #[ORM\GeneratedValue]
+    protected int $id;
 
-    /**
-     * @ORM\Column(type="text", nullable=false)
-     * @var string
-     */
-    protected $positives;
+    #[ORM\Column(type: "text", nullable: false)]
+    protected string $positives;
 
-    /**
-     * @ORM\Column(type="text", nullable=false)
-     * @var string
-     */
-    protected $negatives;
+    #[ORM\Column(type: "text", nullable: false)]
+    protected string $negatives;
 
-    /**
-     * @ORM\Column(type="text", nullable=false)
-     * @var string
-     */
-    protected $others;
+    #[ORM\Column(type: "text", nullable: false)]
+    protected string $others;
 
-    /**
-     * @ORM\Column(type="text", nullable=false)
-     * @var string
-     */
-    protected $link;
+    #[ORM\Column(type: "text", nullable: false)]
+    protected string $link;
 
     /**
      * TeamReview constructor.

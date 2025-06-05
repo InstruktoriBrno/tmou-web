@@ -4,56 +4,33 @@ namespace InstruktoriBrno\TMOU\Model;
 use DateTimeImmutable;
 use Doctrine\ORM\Mapping as ORM;
 
-/**
- * @ORM\Entity
- * @ORM\Table(name="answer")
- */
+#[ORM\Entity]
+#[ORM\Table(name: "answer")]
 class Answer
 {
-    /**
-     * @ORM\Id
-     * @ORM\Column(type="integer")
-     * @ORM\GeneratedValue
-     * @var integer
-     */
+    #[ORM\Id]
+    #[ORM\Column(type: "integer")]
+    #[ORM\GeneratedValue]
     protected int $id;
 
-    /**
-     * @ORM\ManyToOne(targetEntity="Puzzle", fetch="EAGER")
-     * @ORM\JoinColumn(name="puzzle_id", referencedColumnName="id", nullable=false)
-     * @var Puzzle
-     */
+    #[ORM\ManyToOne(targetEntity: Puzzle::class, fetch: "EAGER")]
+    #[ORM\JoinColumn(name: "puzzle_id", referencedColumnName: "id", nullable: false)]
     protected Puzzle $puzzle;
 
-    /**
-     * @ORM\ManyToOne(targetEntity="Team")
-     * @ORM\JoinColumn(name="team_id", referencedColumnName="id")
-     * @var Team
-     */
+    #[ORM\ManyToOne(targetEntity: Team::class)]
+    #[ORM\JoinColumn(name: "team_id", referencedColumnName: "id")]
     protected Team $team;
 
-    /**
-     * @ORM\Column(type="text")
-     * @var string
-     */
+    #[ORM\Column(type: "text")]
     protected string $code;
 
-    /**
-     * @ORM\Column(type="boolean")
-     * @var bool
-     */
+    #[ORM\Column(type: "boolean")]
     protected bool $correct;
 
-    /**
-     * @ORM\Column(type="boolean")
-     * @var bool
-     */
+    #[ORM\Column(type: "boolean")]
     protected bool $isLeveling;
 
-    /**
-     * @ORM\Column(type="datetime_immutable", nullable=false)
-     * @var DateTimeImmutable
-     */
+    #[ORM\Column(type: "datetime_immutable", nullable: false)]
     protected DateTimeImmutable $answeredAt;
 
     public function __construct(

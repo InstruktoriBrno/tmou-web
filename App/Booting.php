@@ -1,9 +1,11 @@
 <?php declare(strict_types=1);
 namespace App;
 
+use InstruktoriBrno\TMOU\Utils\PasswordsSingleton;
 use Nette\DI\Compiler;
+use Nette\PhpGenerator\ClassType;
 use function getenv;
-use Nette\Configurator;
+use Nette\Bootstrap\Configurator;
 
 class Booting
 {
@@ -26,10 +28,22 @@ class Booting
         $configurator->addConfig(__DIR__ . '/Config/common.neon');
         $configurator->addConfig(__DIR__ . '/Config/local.neon');
 
+        // Add build time to the container
         $configurator->onCompile[] = function (Configurator $sender, Compiler $compiler): void {
             $compiler->addConfig(['parameters' => [
                 'buildTime' => time(),
             ]]);
+        };
+
+        // Ensure PasswordsSingleton is always instantiated
+        $configurator->onCompile[] = function (Configurator $sender, Compiler $compiler): void {
+            $compiler->addExtension('passwordsInit', new class extends \Nette\DI\CompilerExtension {
+                public function afterCompile(ClassType $class): void
+                {
+                    $initialize = $class->getMethod('initialize');
+                    $initialize->addBody('$this->getByType(?);', [PasswordsSingleton::class]);
+                }
+            });
         };
 
         return $configurator;

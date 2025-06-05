@@ -9,8 +9,7 @@ class TeamLoginFormFactory
 {
     use SmartObject;
 
-    /** @var FormFactory */
-    private $factory;
+    private FormFactory $factory;
 
     public function __construct(FormFactory $factory)
     {

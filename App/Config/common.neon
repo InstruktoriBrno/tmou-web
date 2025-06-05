@@ -36,9 +36,12 @@ recaptcha:
 
 application:
     errorPresenter: Error
-    mapping:
-        *: InstruktoriBrno\TMOU\*Module\Presenters\*Presenter
+    mapping: InstruktoriBrno\TMOU\Presenters\*Presenter
 
+di:
+	export:
+		parameters: no
+		tags: no
 
 session:
     expiration: 14 days
@@ -228,26 +231,33 @@ services:
     - InstruktoriBrno\TMOU\Services\Qualification\FindPuzzleStatisticsService
     - InstruktoriBrno\TMOU\Components\EventQualificationResultsControl\EventQualificationResultsControlFactory
     - InstruktoriBrno\TMOU\Components\EventQualificationPuzzlesStatisticsControl\EventQualificationPuzzlesStatisticsControlFactory
+    passwordsSingleton:
+        create: InstruktoriBrno\TMOU\Utils\PasswordsSingleton
+        lazy: false
 
+latte:
+    extensions:
+        - Nextras\FormsRendering\LatteTags\Bs3\Bs3FormsExtension
 
 extensions:
-    nextras.form: Nextras\Forms\Bridges\NetteDI\FormsExtension
     console: Contributte\Console\DI\ConsoleExtension(%consoleMode%)
-    dbal: Nettrine\DBAL\DI\DbalExtension
-    orm: Nettrine\ORM\DI\OrmExtension
-    orm.annotations: Nettrine\ORM\DI\OrmAnnotationsExtension
-    orm.console: Nettrine\ORM\DI\OrmConsoleExtension
-    orm.cache: Nettrine\ORM\DI\OrmCacheExtension
-    migrations: Nettrine\Migrations\DI\MigrationsExtension
     recaptcha: Contributte\ReCaptcha\DI\ReCaptchaExtension
 
-migrations:
+    # Common
+    nettrine.migrations: Nettrine\Migrations\DI\MigrationsExtension
+
+    # DBAL
+    nettrine.dbal: Nettrine\DBAL\DI\DbalExtension
+
+    # ORM
+    nettrine.orm: Nettrine\ORM\DI\OrmExtension
+
+nettrine.migrations:
     table: doctrine_migrations
     column: version
     directory: %appDir%/../App/Migrations
     namespace: InstruktoriBrno\TMOU\Migrations
     versionsOrganization: null # null, year, year_and_month
-    customTemplate: null # path to custom template
 
 decorator:
     InstruktoriBrno\TMOU\Presenters\BasePresenter:
@@ -259,45 +269,48 @@ decorator:
     InstruktoriBrno\TMOU\Presenters\CronPresenter:
         setup:
             - setApiKey(%cron.key%)
-dbal:
-    debug: true
-    connection:
-        wrapperClass: InstruktoriBrno\TMOU\Utils\TunedConnection
-        host: db
-        user: tmou
-        password: password
-        dbname: tmou
-        persistent: false
-        charset: utf8mb4
-        types:
-            uuid_binary:
-                class: Ramsey\Uuid\Doctrine\UuidBinaryType
-                commented: uuid_binary
-            organizator_role:
-                class: InstruktoriBrno\TMOU\Model\DoctrineTypes\OrganizatorRoleDoctrineType
-                commented: organizator_role
-            game_status:
-                class: InstruktoriBrno\TMOU\Model\DoctrineTypes\GameStatusType
-                commented: game_status
-            payment_status:
-                class: InstruktoriBrno\TMOU\Model\DoctrineTypes\PaymentStatusType
-                commented: payment_status
-        typesMapping:
-            uuid_binary: binary
+nettrine.dbal:
+    types:
+        uuid_binary: Ramsey\Uuid\Doctrine\UuidBinaryType
+        organizator_role: InstruktoriBrno\TMOU\Model\DoctrineTypes\OrganizatorRoleDoctrineType
+        game_status: InstruktoriBrno\TMOU\Model\DoctrineTypes\GameStatusType
+        payment_status: InstruktoriBrno\TMOU\Model\DoctrineTypes\PaymentStatusType
+    typesMapping:
+        uuid_binary: binary
+        organizator_role: organizator_role
+        game_status: game_status
+        payment_status: payment_status
+    debug:
+        panel: true
+        sourcePaths: [%appDir%]
+    connections:
+        default:
+            wrapperClass: InstruktoriBrno\TMOU\Utils\TunedConnection
+            driver: pdo_mysql
+            host: db
+            user: tmou
+            password: password
+            dbname: tmou
+#            persistent: false
+            charset: utf8mb4
 
-orm.cache:
-    defaultDriver: filesystem
-
-orm.annotations:
-    paths:
-        - %appDir%/Model
-    excludePaths: []
-    ignore: []
-    defaultCache: filesystem
+nettrine.orm:
+    managers:
+        default:
+            connection: default
+            mapping:
+                App:
+                    directories: [%appDir%/Model]
+                    namespace: InstruktoriBrno\TMOU\Model
+            defaultCache: Contributte\Psr6\CachePool(
+                Nette\Caching\Cache(
+                  Nette\Caching\Storages\FileStorage(%tempDir%/cache)
+                  doctrine/dbal
+                )
+              )
 
 console:
     name: TMOU web
     catchExceptions: true
     autoExit: true
-    lazy: true
     url: %canonical.url%

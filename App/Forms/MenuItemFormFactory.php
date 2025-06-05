@@ -12,14 +12,11 @@ class MenuItemFormFactory
 {
     use SmartObject;
 
-    /** @var FormFactory */
-    private $factory;
+    private FormFactory $factory;
 
-    /** @var FindEventsPairsService */
-    private $findEventsPairsService;
+    private FindEventsPairsService $findEventsPairsService;
 
-    /** @var FindPagesPairsService */
-    private $findPagesPairsService;
+    private FindPagesPairsService $findPagesPairsService;
 
     public function __construct(FindEventsPairsService $findEventsPairsService, FindPagesPairsService $findPagesPairsService, FormFactory $factory)
     {

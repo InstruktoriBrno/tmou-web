@@ -6,8 +6,7 @@ use InstruktoriBrno\TMOU\Model\Page;
 
 class DeletePageService
 {
-    /** @var EntityManagerInterface */
-    private $entityManager;
+    private EntityManagerInterface $entityManager;
 
     public function __construct(
         EntityManagerInterface $entityManager
@@ -27,7 +26,7 @@ class DeletePageService
         $tableName = $this->entityManager->getClassMetadata(Page::class)->getTableName();
         try {
             $this->entityManager->getConnection()->delete($tableName, ['id' => $pageId]);
-        } catch (\Doctrine\DBAL\Exception\InvalidArgumentException | \Doctrine\DBAL\DBALException $e) {
+        } catch (\Doctrine\DBAL\Exception\InvalidArgumentException | \Doctrine\DBAL\Exception $e) {
             throw new \InstruktoriBrno\TMOU\Services\Pages\Exceptions\PageDeleteFailedException($e->getMessage(), $e->getCode(), $e);
         }
     }

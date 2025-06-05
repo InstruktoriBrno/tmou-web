@@ -6,8 +6,7 @@ use InstruktoriBrno\TMOU\Model\MenuItem;
 
 class DeleteMenuItemService
 {
-    /** @var EntityManagerInterface */
-    private $entityManager;
+    private EntityManagerInterface $entityManager;
 
     public function __construct(
         EntityManagerInterface $entityManager
@@ -27,7 +26,7 @@ class DeleteMenuItemService
         $tableName = $this->entityManager->getClassMetadata(MenuItem::class)->getTableName();
         try {
             $this->entityManager->getConnection()->delete($tableName, ['id' => $menuItemId]);
-        } catch (\Doctrine\DBAL\Exception\InvalidArgumentException | \Doctrine\DBAL\DBALException $e) {
+        } catch (\Doctrine\DBAL\Exception\InvalidArgumentException | \Doctrine\DBAL\Exception $e) {
             throw new \InstruktoriBrno\TMOU\Services\MenuItems\Exceptions\MenuItemDeleteFailedException($e->getMessage(), $e->getCode(), $e);
         }
     }

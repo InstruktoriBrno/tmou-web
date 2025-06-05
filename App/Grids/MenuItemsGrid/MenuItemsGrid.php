@@ -13,18 +13,14 @@ use function assert;
 
 class MenuItemsGrid extends Control
 {
-    /** @var IDataSource */
-    private $dataSource;
+    private IDataSource $dataSource;
 
-    /** @var DataGridFactory */
-    private $dataGridFactory;
-
-    /** @var int|null */
-    private $eventNumber;
+    private DataGridFactory $dataGridFactory;
+    
+    private ?int $eventNumber;
 
     public function __construct(IDataSource $dataSource, ?int $eventNumber, DataGridFactory $dataGridFactory)
     {
-        parent::__construct();
         $this->dataSource = $dataSource;
         $this->dataGridFactory = $dataGridFactory;
         $this->eventNumber = $eventNumber;
@@ -47,7 +43,7 @@ class MenuItemsGrid extends Control
 
         $grid->addColumnText('targetPage', 'Cíl')
             ->setRenderer(function (MenuItem $item): ?Html {
-                assert($this->getPresenter() !== null);
+                assert($this->getPresenter() !== null); // @phpstan-ignore-line
                 if ($item->getTargetPage() !== null) {
                     $eventNumber = $item->getTargetPage()->getEvent() !== null ? $item->getTargetPage()->getEvent()->getNumber() : null;
                     return Html::el('a')

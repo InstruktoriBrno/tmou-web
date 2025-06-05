@@ -6,8 +6,7 @@ use InstruktoriBrno\TMOU\Model\Event;
 
 class EventMacroDataProvider
 {
-    /** @var Event|null */
-    private $event;
+    private ?Event $event;
 
     public function setEvent(?Event $event): void
     {

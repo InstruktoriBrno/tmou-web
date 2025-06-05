@@ -6,11 +6,8 @@ use Doctrine\ORM\EntityManagerInterface;
 
 class ChangeTeamsPaymentStatusService
 {
-    /** @var EntityManagerInterface */
-    private $entityManager;
-
-    /** @var FindTeamService */
-    private $findTeamService;
+    private EntityManagerInterface $entityManager;
+    private FindTeamService $findTeamService;
 
     public function __construct(EntityManagerInterface $entityManager, FindTeamService $findTeamService)
     {

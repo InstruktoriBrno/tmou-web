@@ -10,7 +10,7 @@ final class RouterFactory
     use StaticClass;
 
     /**
-     * @return RouteList<Route>
+     * @return RouteList
      */
     public static function createRouter(): RouteList
     {

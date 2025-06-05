@@ -1,5 +1,6 @@
 # IDE related stuff
 .idea
+.history
 
 # Configuration with sensitive credentials
 app/config/local.neon

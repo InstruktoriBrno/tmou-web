@@ -8,11 +8,9 @@ use Nette\Security\User;
 
 class TransformBackFromImpersonatedIdentity
 {
-    /** @var User */
-    private $user;
+    private User $user;
 
-    /** @var FindOrganizatorByIdService */
-    private $findOrganizatorByIdService;
+    private FindOrganizatorByIdService $findOrganizatorByIdService;
 
     public function __construct(User $user, FindOrganizatorByIdService $findOrganizatorByIdService)
     {
@@ -29,7 +27,7 @@ class TransformBackFromImpersonatedIdentity
     public function __invoke(Identity $identity)
     {
         if (!$this->user->isLoggedIn()
-            || !$this->user->isInRole(UserRole::TEAM()->toScalar())
+            || !$this->user->isInRole((string) UserRole::TEAM()->toScalar())
             || !isset($identity->getData()['impersonated'], $identity->getData()['impersonatedFrom'])
             || $identity->getData()['impersonated'] !== true
         ) {

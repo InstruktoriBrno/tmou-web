@@ -10,7 +10,7 @@ class DataGridFactory
 {
     use SmartObject;
 
-    public function create(IContainer $parent = null, string $name = null): DataGrid
+    public function create(?IContainer $parent = null, ?string $name = null): DataGrid
     {
         $grid = new DataGrid($parent, $name);
         $grid->setTranslator(
@@ -46,7 +46,7 @@ class DataGridFactory
         );
         $grid->setRememberState(false);
         $grid->setRefreshUrl(false);
-        DataGrid::$icon_prefix = 'fa fa-';
+        DataGrid::$iconPrefix = 'fa fa-';
 
         return $grid;
     }

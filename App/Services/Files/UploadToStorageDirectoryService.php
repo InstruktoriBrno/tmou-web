@@ -2,7 +2,6 @@
 namespace InstruktoriBrno\TMOU\Services\Files;
 
 use Nette\Http\FileUpload;
-use Nette\Utils\Strings;
 use function file_exists;
 use function realpath;
 
@@ -20,8 +19,8 @@ class UploadToStorageDirectoryService
     {
         $storageDir = __DIR__ . '/../../../www/storage';
         $subpath = $storageDir . '/' . $subdir;
-        if (!Strings::startsWith(realpath($subpath), realpath($storageDir))) {
-            throw new \InstruktoriBrno\TMOU\Services\Files\Exceptions\InvalidStorageSubdirException("Subdir ${subdir} (${subpath} is outside storage dir.");
+        if (realpath($subpath) === false || realpath($storageDir) === false || !str_starts_with(realpath($subpath), realpath($storageDir))) {
+            throw new \InstruktoriBrno\TMOU\Services\Files\Exceptions\InvalidStorageSubdirException("Subdir {$subdir} ({$subpath} is outside storage dir.");
         }
         $stored = 0;
         $skipped = 0;

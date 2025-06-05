@@ -13,18 +13,14 @@ use Ublaboo\DataGrid\DataSource\IDataSource;
 
 class PagesGrid extends Control
 {
-    /** @var IDataSource */
-    private $dataSource;
+    private IDataSource $dataSource;
 
-    /** @var DataGridFactory */
-    private $dataGridFactory;
+    private DataGridFactory $dataGridFactory;
 
-    /** @var int|null */
-    private $eventNumber;
+    private ?int $eventNumber;
 
     public function __construct(IDataSource $dataSource, ?int $eventNumber, DataGridFactory $dataGridFactory)
     {
-        parent::__construct();
         $this->dataSource = $dataSource;
         $this->dataGridFactory = $dataGridFactory;
         $this->eventNumber = $eventNumber;

@@ -12,20 +12,15 @@ use Nette\Utils\ArrayHash;
 class SavePageFacade
 {
 
-    /** @var EntityManagerInterface */
-    private $entityManager;
+    private EntityManagerInterface $entityManager;
 
-    /** @var IsPageSLUGInEventUniqueService */
-    private $isPageSLUGInEventUniqueService;
+    private IsPageSLUGInEventUniqueService $isPageSLUGInEventUniqueService;
 
-    /** @var FindEventService */
-    private $findEventService;
+    private FindEventService $findEventService;
 
-    /** @var IsPageSLUGReservedService */
-    private $isPageSLUGReservedService;
+    private IsPageSLUGReservedService $isPageSLUGReservedService;
 
-    /** @var IsDefaultPageInEventUniqueService */
-    private $isDefaultPageInEventUniqueService;
+    private IsDefaultPageInEventUniqueService $isDefaultPageInEventUniqueService;
 
     public function __construct(
         EntityManagerInterface $entityManager,

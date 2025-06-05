@@ -8,8 +8,7 @@ use InstruktoriBrno\TMOU\Model\Thread;
 
 class FindLastPostsForThreads
 {
-    /** @var EntityManagerInterface */
-    private $entityManager;
+    private EntityManagerInterface $entityManager;
 
     public function __construct(EntityManagerInterface $entityManager)
     {
@@ -18,7 +17,6 @@ class FindLastPostsForThreads
 
     /**
      * Returns latest post for each of given threads
-     *
      * @param Thread[] $threads
      * @return Post[]
      */

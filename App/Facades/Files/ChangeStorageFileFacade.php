@@ -6,8 +6,7 @@ use Nette\Utils\ArrayHash;
 
 class ChangeStorageFileFacade
 {
-    /** @var ChangeFileFromStorageDirectoryService */
-    private $changeFileFromStorageDirectoryService;
+    private ChangeFileFromStorageDirectoryService $changeFileFromStorageDirectoryService;
 
     public function __construct(
         ChangeFileFromStorageDirectoryService $changeFileFromStorageDirectoryService

@@ -7,150 +7,79 @@ use InstruktoriBrno\TMOU\Enums\GameStatus;
 use Nette\Utils\Strings;
 use Nette\Utils\Validators;
 
-/**
- * @ORM\Entity
- * @ORM\Table(name="event")
- */
+#[ORM\Entity]
+#[ORM\Table(name: "event")]
 class Event
 {
-    /**
-     * @ORM\Id
-     * @ORM\Column(type="integer")
-     * @ORM\GeneratedValue
-     * @var integer
-     */
-    protected $id;
+    #[ORM\Id]
+    #[ORM\Column(type: "integer")]
+    #[ORM\GeneratedValue]
+    protected int $id;
 
-    /**
-     * @ORM\Column(type="string", length=255)
-     * @var string
-     */
-    protected $name;
+    #[ORM\Column(type: "string", length: 255)]
+    protected string $name;
 
-    /**
-     * @ORM\Column(type="integer", unique=true)
-     * @var int
-     */
-    protected $number;
+    #[ORM\Column(type: "integer", unique: true)]
+    protected int $number;
 
-    /**
-     * @ORM\Column(type="float", nullable=false)
-     * @var float
-     */
-    protected $sorting;
+    #[ORM\Column(type: "float", nullable: false)]
+    protected float $sorting;
 
-    /**
-     * @ORM\Column(type="boolean")
-     * @var bool
-     */
-    protected $hasQualification;
+    #[ORM\Column(type: "boolean")]
+    protected bool $hasQualification;
 
-    /**
-     * @ORM\Column(type="datetime_immutable", nullable=true)
-     * @var DateTimeImmutable|null
-     */
-    protected $qualificationStart;
+    #[ORM\Column(type: "datetime_immutable", nullable: true)]
+    protected ?DateTimeImmutable $qualificationStart;
 
-    /**
-     * @ORM\Column(type="datetime_immutable", nullable=true)
-     * @var DateTimeImmutable|null
-     */
-    protected $qualificationEnd;
+    #[ORM\Column(type: "datetime_immutable", nullable: true)]
+    protected ?DateTimeImmutable $qualificationEnd;
 
-    /**
-     * @ORM\Column(type="integer", nullable=true)
-     * @var int|null
-     */
-    protected $qualifiedTeamCount;
+    #[ORM\Column(type: "integer", nullable: true)]
+    protected ?int $qualifiedTeamCount;
 
-    /**
-     * @ORM\Column(type="datetime_immutable", nullable=true)
-     * @var DateTimeImmutable|null
-     */
-    protected $registrationDeadline;
+    #[ORM\Column(type: "datetime_immutable", nullable: true)]
+    protected ?DateTimeImmutable $registrationDeadline;
 
-    /**
-     * @ORM\Column(type="datetime_immutable", nullable=true)
-     * @var DateTimeImmutable|null
-     */
-    protected $changeDeadline;
+    #[ORM\Column(type: "datetime_immutable", nullable: true)]
+    protected ?DateTimeImmutable $changeDeadline;
 
-    /**
-     * @ORM\Column(type="datetime_immutable", nullable=true)
-     * @var DateTimeImmutable|null
-     */
-    protected $eventStart;
+    #[ORM\Column(type: "datetime_immutable", nullable: true)]
+    protected ?DateTimeImmutable $eventStart;
 
-    /**
-     * @ORM\Column(type="datetime_immutable", nullable=true)
-     * @var DateTimeImmutable|null
-     */
-    protected $eventEnd;
+    #[ORM\Column(type: "datetime_immutable", nullable: true)]
+    protected ?DateTimeImmutable $eventEnd;
 
-    /**
-     * @ORM\Column(type="integer", nullable=true)
-     * @var int|null
-     */
-    protected $totalTeamCount;
+    #[ORM\Column(type: "integer", nullable: true)]
+    protected ?int $totalTeamCount;
 
-    /**
-     * @ORM\Column(type="string", nullable=true)
-     * @var string|null
-     */
-    protected $paymentPairingCodePrefix;
+    #[ORM\Column(type: "string", nullable: true)]
+    protected ?string $paymentPairingCodePrefix;
 
-    /**
-     * @ORM\Column(type="integer", nullable=true)
-     * @var int|null
-     */
-    protected $paymentPairingCodeSuffixLength;
+    #[ORM\Column(type: "integer", nullable: true)]
+    protected ?int $paymentPairingCodeSuffixLength;
 
-    /**
-     * @ORM\Column(type="integer", nullable=true)
-     * @var int|null
-     */
-    protected $amount;
+    #[ORM\Column(type: "integer", nullable: true)]
+    protected ?int $amount;
 
-    /**
-     * @ORM\Column(type="datetime_immutable", nullable=true)
-     * @var DateTimeImmutable|null
-     */
-    protected $paymentDeadline;
+    #[ORM\Column(type: "datetime_immutable", nullable: true)]
+    protected ?DateTimeImmutable $paymentDeadline;
 
-    /**
-     * @ORM\Column(type="boolean")
-     * @var bool
-     */
-    protected $selfreportedEntryFee;
+    #[ORM\Column(type: "boolean")]
+    protected bool $selfreportedEntryFee;
 
-    /**
-     * @ORM\Column(type="game_status", nullable=false)
-     * @var GameStatus
-     */
-    protected $afterRegistrationTeamGameStatus;
+    #[ORM\Column(type: "game_status", nullable: false)]
+    protected GameStatus $afterRegistrationTeamGameStatus;
 
-    /**
-     * @ORM\Column(type="integer", nullable=true)
-     * @var int|null
-     */
+    #[ORM\Column(type: "integer", nullable: true)]
     protected ?int $qualificationMaxAttempts = null;
 
-    /**
-    * @ORM\Column(type="boolean")
-     * @var bool
-     */
+    #[ORM\Column(type: "boolean")]
     protected bool $qualificationShowAttemptsCount = false;
 
-    /**
-     * @ORM\Column(type="integer", nullable=true)
-     * @var int|null
-     */
+    #[ORM\Column(type: "integer", nullable: true)]
     protected ?int $qualificationWrongAttemptPenalisation = null;
 
-    /**
-     * @ORM\Column(type="boolean")
-     * @var bool
-     */
+    #[ORM\Column(type: "boolean")]
     protected bool $qualificationShowNextAttemptTime = false;
 
     public function __construct(
@@ -277,7 +206,7 @@ class Event
 
     public function getId(): int
     {
-        if ($this->id === null) {
+        if (!isset($this->id)) {
             throw new \InstruktoriBrno\TMOU\Model\Exceptions\IDNotYetAssignedException;
         }
         return $this->id;

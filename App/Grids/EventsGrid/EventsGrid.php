@@ -13,15 +13,12 @@ use Ublaboo\DataGrid\DataSource\IDataSource;
 
 class EventsGrid extends Control
 {
-    /** @var IDataSource */
-    private $dataSource;
+    private IDataSource $dataSource;
 
-    /** @var DataGridFactory */
-    private $dataGridFactory;
+    private DataGridFactory $dataGridFactory;
 
     public function __construct(IDataSource $dataSource, DataGridFactory $dataGridFactory)
     {
-        parent::__construct();
         $this->dataSource = $dataSource;
         $this->dataGridFactory = $dataGridFactory;
     }

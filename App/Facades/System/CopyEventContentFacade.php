@@ -2,38 +2,28 @@
 namespace InstruktoriBrno\TMOU\Facades\System;
 
 use Doctrine\ORM\EntityManagerInterface;
-use InstruktoriBrno\TMOU\Services\Events\FindDefaultEventValuesForFormService;
 use InstruktoriBrno\TMOU\Services\Events\FindEventService;
 use InstruktoriBrno\TMOU\Services\MenuItems\FindMenuItemsInEventService;
 use InstruktoriBrno\TMOU\Services\Pages\FindPagesInEventService;
 
 class CopyEventContentFacade
 {
-    /** @var EntityManagerInterface */
-    private $entityManager;
+    private EntityManagerInterface $entityManager;
 
-    /** @var FindDefaultEventValuesForFormService */
-    private $findDefaultEventValuesForFormService;
+    private FindEventService $findEventService;
 
-    /** @var FindEventService */
-    private $findEventService;
+    private FindPagesInEventService $findPagesInEventService;
 
-    /** @var FindPagesInEventService */
-    private $findPagesInEventService;
-
-    /** @var FindMenuItemsInEventService */
-    private $findMenuItemsInEventService;
+    private FindMenuItemsInEventService $findMenuItemsInEventService;
 
     public function __construct(
         EntityManagerInterface $entityManager,
-        FindDefaultEventValuesForFormService $findDefaultEventValuesForFormService,
         FindEventService $findEventService,
         FindPagesInEventService $findPagesInEventService,
         FindMenuItemsInEventService $findMenuItemsInEventService
     ) {
 
         $this->entityManager = $entityManager;
-        $this->findDefaultEventValuesForFormService = $findDefaultEventValuesForFormService;
         $this->findEventService = $findEventService;
         $this->findPagesInEventService = $findPagesInEventService;
         $this->findMenuItemsInEventService = $findMenuItemsInEventService;

@@ -7,8 +7,7 @@ use Nette\Security\User;
 
 class TransformToImpersonatedIdentity
 {
-    /** @var User */
-    private $user;
+    private User $user;
 
     public function __construct(User $user)
     {

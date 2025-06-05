@@ -8,8 +8,7 @@ use InstruktoriBrno\TMOU\Model\TeamReview;
 
 class FindEventTeamReviewsService
 {
-    /** @var EntityManagerInterface */
-    private $entityManager;
+    private EntityManagerInterface $entityManager;
 
     public function __construct(EntityManagerInterface $entityManager)
     {

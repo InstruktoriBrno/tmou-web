@@ -6,8 +6,7 @@ use InstruktoriBrno\TMOU\Services\Events\FindEventByNumberService;
 class FindDefaultPageValuesForFormService
 {
 
-    /** @var FindEventByNumberService */
-    private $findEventByNumberService;
+    private FindEventByNumberService $findEventByNumberService;
 
     public function __construct(FindEventByNumberService $findEventByNumberService)
     {

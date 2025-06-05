@@ -9,8 +9,7 @@ class Control extends NetteControl
 {
     use Template;
 
-    /** @var User */
-    protected $user;
+    protected User $user;
 
     /**
      * @param mixed $obj

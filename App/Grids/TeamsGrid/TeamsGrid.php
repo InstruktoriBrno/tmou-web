@@ -15,40 +15,37 @@ use \Closure;
 
 class TeamsGrid extends Control
 {
-    /** @var IDataSource */
-    private $dataSource;
+    private IDataSource $dataSource;
 
-    /** @var DataGridFactory */
-    private $dataGridFactory;
+    private DataGridFactory $dataGridFactory;
 
-    /** @var int */
-    private $eventNumber;
+    private int $eventNumber;
 
-    /** @var callable */
+    /** @var callable(array<int>): void */
     private $changeToPlaying;
 
-    /** @var callable */
+    /** @var callable(array<int>): void */
     private $changeToQualified;
 
-    /** @var callable */
+    /** @var callable(array<int>): void */
     private $changeToNotQualified;
 
-    /** @var callable */
+    /** @var callable(array<int>): void */
     private $changeToRegistered;
 
-    /** @var callable */
+    /** @var callable(array<int>): void */
     private $changeAsPaid;
 
-    /** @var callable */
+    /** @var callable(array<int>): void */
     private $changeAsNotPaid;
 
-    /** @var callable */
+    /** @var callable(array<int>): void */
     private $changeAsPaidAndPlaying;
 
-    /** @var callable */
+    /** @var callable(array<int>): void */
     private $allowGameClockChange;
 
-    /** @var callable */
+    /** @var callable(array<int>): void */
     private $disableGameClockChange;
 
     public function __construct(
@@ -65,7 +62,6 @@ class TeamsGrid extends Control
         callable $allowGameClockChange,
         callable $disableGameClockChange
     ) {
-        parent::__construct();
         $this->dataSource = $dataSource;
         $this->dataGridFactory = $dataGridFactory;
         $this->eventNumber = $eventNumber;

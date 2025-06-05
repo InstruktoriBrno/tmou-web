@@ -10,11 +10,9 @@ use Nette\Utils\ArrayHash;
 class SaveTeamReviewFacade
 {
 
-    /** @var EntityManagerInterface */
-    private $entityManager;
+    private EntityManagerInterface $entityManager;
 
-    /** @var GameClockService */
-    private $gameClockService;
+    private GameClockService $gameClockService;
 
     public function __construct(
         EntityManagerInterface $entityManager,

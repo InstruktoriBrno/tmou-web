@@ -20,11 +20,9 @@ use function date;
 class CreateTestDataFacade
 {
 
-    /** @var EntityManagerInterface */
-    private $entityManager;
+    private EntityManagerInterface $entityManager;
 
-    /** @var FindDefaultEventValuesForFormService */
-    private $findDefaultEventValuesForFormService;
+    private FindDefaultEventValuesForFormService $findDefaultEventValuesForFormService;
 
     public function __construct(
         EntityManagerInterface $entityManager,

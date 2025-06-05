@@ -1,7 +1,6 @@
 <?php declare(strict_types=1);
 namespace InstruktoriBrno\TMOU\Utils;
 
-use Doctrine\Common\EventManager;
 use Doctrine\DBAL\Configuration;
 use Doctrine\DBAL\Connection;
 use Doctrine\DBAL\Driver;
@@ -13,10 +12,14 @@ class TunedConnection extends Connection
 {
     private const CACHE_FILE_TTL = 3600; // in seconds
 
-    /** @var string */
-    private $cacheFilePath = __DIR__ . '/../../temp/cache/MYSQL_VERSION';
+    private string $cacheFilePath = __DIR__ . '/../../temp/cache/MYSQL_VERSION';
 
-    public function __construct(array $params, Driver $driver, ?Configuration $config = null, ?EventManager $eventManager = null)
+    /**
+     * @param array<string, mixed> $params
+     * @param Driver $driver
+     * @param Configuration|null $config
+     */
+    public function __construct(array $params, Driver $driver, ?Configuration $config = null)
     {
         if (!isset($params['serverVersion'])) {
             $version = $this->getVersionFromCache();
@@ -24,7 +27,7 @@ class TunedConnection extends Connection
                 $params['serverVersion'] = $version;
             }
         }
-        parent::__construct($params, $driver, $config, $eventManager);
+        parent::__construct($params, $driver, $config);
     }
 
     private function getVersionFromCache(): ?string
@@ -42,7 +45,7 @@ class TunedConnection extends Connection
     public function __destruct()
     {
         if (!isset($this->getParams()['serverVersion'])) {
-            /** @var Driver\Mysqli\MysqliConnection|null $conn */
+            /** @var Driver\Mysqli\Connection|null $conn */
             $conn = $this->_conn;
             if ($conn !== null) {
                 $version = $conn->getServerVersion();

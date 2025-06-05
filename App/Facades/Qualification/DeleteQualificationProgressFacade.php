@@ -54,7 +54,7 @@ class DeleteQualificationProgressFacade
 
         if ($team !== null) {
             $this->resetTeam($team);
-            $this->entityManager->transactional(function () use ($team): void {
+            $this->entityManager->wrapInTransaction(function () use ($team): void {
                 ($this->updateEventQualificationScoreboardService)($team->getEvent());
             });
             return;
@@ -67,7 +67,7 @@ class DeleteQualificationProgressFacade
             }
             $this->resetTeam($team);
         }
-        $this->entityManager->transactional(function () use ($team): void {
+        $this->entityManager->wrapInTransaction(function () use ($team): void {
             ($this->updateEventQualificationScoreboardService)($team->getEvent());
         });
     }

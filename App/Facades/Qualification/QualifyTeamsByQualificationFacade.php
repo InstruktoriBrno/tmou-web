@@ -48,7 +48,7 @@ class QualifyTeamsByQualificationFacade
                 throw new \InstruktoriBrno\TMOU\Exceptions\LogicException('Team not found, but exists in results.');
             }
             if ($teamEntity->getGameStatus()->equals(GameStatus::REGISTERED())) {
-                if ($team['qualified']) {
+                if ($team['qualified'] === true || $team['qualified'] === 1 || $team['qualified'] === '1') {
                     $teamEntity->changeTeamGameStatus(GameStatus::QUALIFIED());
                     $qualified++;
                 } else {

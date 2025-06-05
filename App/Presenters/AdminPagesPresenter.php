@@ -17,41 +17,42 @@ use InstruktoriBrno\TMOU\Services\Pages\FindPageService;
 use InstruktoriBrno\TMOU\Services\Pages\FindPagesForDataGridService;
 use InstruktoriBrno\TMOU\Utils\TexyFilter;
 use Nette\Application\UI\Form;
+use Nette\DI\Attributes\Inject;
 use Nette\Forms\Controls\SubmitButton;
 use Nette\Forms\Controls\TextInput;
 use Nette\Utils\ArrayHash;
 
 final class AdminPagesPresenter extends BasePresenter
 {
-    /** @var PagesGridFactory @inject */
-    public $pagesGridFactory;
+    #[Inject]
+    public PagesGridFactory $pagesGridFactory;
 
-    /** @var FindPagesForDataGridService @inject */
-    public $findPagesForDataGridService;
+    #[Inject]
+    public FindPagesForDataGridService $findPagesForDataGridService;
 
-    /** @var FindEventByNumberService @inject */
-    public $findEventServiceByNumber;
+    #[Inject]
+    public FindEventByNumberService $findEventServiceByNumber;
 
-    /** @var FindPageService @inject */
-    public $findPageService;
+    #[Inject]
+    public FindPageService $findPageService;
 
-    /** @var PageFormFactory @inject */
-    public $pageFormFactory;
+    #[Inject]
+    public PageFormFactory $pageFormFactory;
 
-    /** @var SavePageFacade @inject */
-    public $savePageFacade;
+    #[Inject]
+    public SavePageFacade $savePageFacade;
 
-    /** @var FindPageForFormService @inject */
-    public $findPageForFormService;
+    #[Inject]
+    public FindPageForFormService $findPageForFormService;
 
-    /** @var FindDefaultPageValuesForFormService @inject */
-    public $findDefaultPageValuesForFormService;
+    #[Inject]
+    public FindDefaultPageValuesForFormService $findDefaultPageValuesForFormService;
 
-    /** @var ConfirmFormFactory @inject */
-    public $confirmFormFactory;
+    #[Inject]
+    public ConfirmFormFactory $confirmFormFactory;
 
-    /** @var DeletePageFacade @inject */
-    public $deletePageFacade;
+    #[Inject]
+    public DeletePageFacade $deletePageFacade;
 
     /** @privilege(InstruktoriBrno\TMOU\Enums\Resource::ADMIN_PAGES,InstruktoriBrno\TMOU\Enums\Action::VIEW,InstruktoriBrno\TMOU\Enums\PrivilegeEnforceMethod::TRIGGER_ADMIN_LOGIN) */
     public function actionDefault(?int $eventNumber): void
@@ -167,7 +168,7 @@ final class AdminPagesPresenter extends BasePresenter
             try {
                 $values = ($this->findDefaultPageValuesForFormService)($eventNumber);
             } catch (\InstruktoriBrno\TMOU\Services\Pages\Exceptions\NoSuchEventException $e) {
-                throw new \Nette\Application\BadRequestException("No such event with number [${eventNumber}].");
+                throw new \Nette\Application\BadRequestException("No such event with number [{$eventNumber}].");
             }
         }
         $form->setDefaults($values);

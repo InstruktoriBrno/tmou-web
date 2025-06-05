@@ -5,70 +5,41 @@ use DateTimeImmutable;
 use Doctrine\ORM\Mapping as ORM;
 use Nette\Utils\Strings;
 
-/**
- * @ORM\Entity
- * @ORM\Table(name="thread")
- */
+#[ORM\Entity]
+#[ORM\Table(name: "thread")]
 class Thread
 {
-    /**
-     * @ORM\Id
-     * @ORM\Column(type="integer")
-     * @ORM\GeneratedValue
-     * @var integer
-     */
-    protected $id;
+    #[ORM\Id]
+    #[ORM\Column(type: "integer")]
+    #[ORM\GeneratedValue]
+    protected int $id;
 
-    /**
-     * @ORM\ManyToOne(targetEntity="Event", fetch="EAGER")
-     * @ORM\JoinColumn(name="event_id", referencedColumnName="id", nullable=true)
-     * @var Event|null
-     */
-    protected $event;
+    #[ORM\ManyToOne(targetEntity: Event::class, fetch: "EAGER")]
+    #[ORM\JoinColumn(name: "event_id", referencedColumnName: "id", nullable: true)]
+    protected ?Event $event;
 
-    /**
-     * @ORM\Column(type="text", length=191)
-     * @var string
-     */
-    protected $title;
+    #[ORM\Column(type: "text", length: 191)]
+    protected string $title;
 
-    /**
-     * @ORM\ManyToOne(targetEntity="Organizator")
-     * @ORM\JoinColumn(name="organizator_id", referencedColumnName="id", nullable=true)
-     * @var Organizator|null
-     */
-    protected $organizator;
+    #[ORM\ManyToOne(targetEntity: Organizator::class)]
+    #[ORM\JoinColumn(name: "organizator_id", referencedColumnName: "id", nullable: true)]
+    protected ?Organizator $organizator;
 
-    /**
-     * @ORM\ManyToOne(targetEntity="Team")
-     * @ORM\JoinColumn(name="team_id", referencedColumnName="id", nullable=true)
-     * @var Team|null
-     */
-    protected $team;
+    #[ORM\ManyToOne(targetEntity: Team::class)]
+    #[ORM\JoinColumn(name: "team_id", referencedColumnName: "id", nullable: true)]
+    protected ?Team $team;
 
-    /**
-     * @ORM\Column(type="boolean")
-     * @var bool
-     */
-    protected $locked;
+    #[ORM\Column(type: "boolean")]
+    protected bool $locked;
 
-    /**
-     * @ORM\Column(type="datetime_immutable", nullable=true)
-     * @var DateTimeImmutable|null
-     */
-    protected $revealAt;
+    #[ORM\Column(type: "datetime_immutable", nullable: true)]
+    protected ?DateTimeImmutable $revealAt;
 
-    /**
-     * @ORM\Column(type="datetime_immutable", nullable=false)
-     * @var DateTimeImmutable
-     */
-    protected $createdAt;
+    #[ORM\Column(type: "datetime_immutable", nullable: false)]
+    protected DateTimeImmutable $createdAt;
 
-    /**
-     * @ORM\Column(type="datetime_immutable", nullable=false)
-     * @var DateTimeImmutable
-     */
-    protected $updatedAt;
+    #[ORM\Column(type: "datetime_immutable", nullable: false)]
+    protected DateTimeImmutable $updatedAt;
 
     public function __construct(
         ?Event $event,
@@ -99,7 +70,7 @@ class Thread
 
     public function getId(): int
     {
-        if ($this->id === null) {
+        if (!isset($this->id)) {
             throw new \InstruktoriBrno\TMOU\Model\Exceptions\IDNotYetAssignedException;
         }
         return $this->id;

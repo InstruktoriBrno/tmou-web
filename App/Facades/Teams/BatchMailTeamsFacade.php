@@ -10,6 +10,7 @@ use InstruktoriBrno\TMOU\Services\System\MailgunSenderService;
 use InstruktoriBrno\TMOU\Services\Teams\FindTeamService;
 use InstruktoriBrno\TMOU\Services\Teams\FindTeamsForMailingInEventService;
 use InstruktoriBrno\TMOU\Services\Teams\TeamMacroDataProvider;
+use Nette\Bridges\ApplicationLatte\DefaultTemplate;
 use Nette\Mail\Message;
 use Nette\Utils\ArrayHash;
 use Tracy\Debugger;
@@ -19,26 +20,19 @@ class BatchMailTeamsFacade
 {
     private const PREVIEW_LIMIT = 10;
 
-    /** @var FindTeamsForMailingInEventService */
-    private $findTeamsForMailingInEventService;
+    private FindTeamsForMailingInEventService $findTeamsForMailingInEventService;
 
-    /** @var FindTeamService */
-    private $findTeamService;
+    private FindTeamService $findTeamService;
 
-    /** @var EventMacroDataProvider */
-    private $eventMacroDataProvider;
+    private EventMacroDataProvider $eventMacroDataProvider;
 
-    /** @var TeamMacroDataProvider */
-    private $teamMacroDataProvider;
+    private TeamMacroDataProvider $teamMacroDataProvider;
 
-    /** @var string */
-    private $emailFrom;
+    private string $emailFrom;
 
-    /** @var TemplateFactory */
-    private $templateFactory;
+    private TemplateFactory $templateFactory;
 
-    /** @var MailgunSenderService */
-    private $mailgunSenderService;
+    private MailgunSenderService $mailgunSenderService;
 
     public function __construct(
         string $emailFrom,
@@ -92,8 +86,8 @@ class BatchMailTeamsFacade
         }
 
         // Sort teams by their alphabetical name, to make sending deterministic
-        uasort($batch, function (Team $team1, Team $team2): int {
-            return $team1->getName() <=> $team2->getName();
+        uasort($batch, function (?Team $team1, ?Team $team2): int {
+            return $team1?->getName() <=> $team2?->getName();
         });
 
         // Send the batch
@@ -118,6 +112,9 @@ class BatchMailTeamsFacade
             $message->addTo($team->getEmail());
 
             $template = $this->templateFactory->createTemplate();
+            if (!$template instanceof DefaultTemplate) {
+                throw new \InstruktoriBrno\TMOU\Exceptions\LogicException('Template is not a DefaultTemplate from Latte.');
+            }
             $template->setFile(__DIR__ . '/Templates/batchEmail.latte');
             $template->setParameters(['content' => $content, 'subject' => $subject]);
             $message->setHtmlBody($template->renderToString());

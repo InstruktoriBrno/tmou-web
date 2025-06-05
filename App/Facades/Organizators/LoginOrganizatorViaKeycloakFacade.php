@@ -19,29 +19,21 @@ class LoginOrganizatorViaKeycloakFacade
 {
     private const KEYCLOAK = 'keycloak';
 
-    /** @var User */
-    private $user;
+    private User $user;
 
-    /** @var Request */
-    private $request;
+    private Request $request;
 
-    /** @var Keycloak */
-    private $keycloak;
+    private Keycloak $keycloak;
 
-    /** @var SessionSection */
-    private $sessionSection;
+    private SessionSection $sessionSection;
 
-    /** @var FindOrganizatorByKeycloakKeyService */
-    private $findOrganizatorByKeycloakKeyService;
+    private FindOrganizatorByKeycloakKeyService $findOrganizatorByKeycloakKeyService;
 
-    /** @var Response */
-    private $response;
+    private Response $response;
 
-    /** @var EntityManagerInterface */
-    private $entityManager;
+    private EntityManagerInterface $entityManager;
 
-    /** @var LinkGenerator */
-    private $linkGenerator;
+    private LinkGenerator $linkGenerator;
 
     public function __construct(
         User $user,
@@ -57,7 +49,7 @@ class LoginOrganizatorViaKeycloakFacade
         $this->response = $response;
         $this->request = $request;
         $this->keycloak = $keycloak;
-        $this->sessionSection = $session->getSection(static::KEYCLOAK);
+        $this->sessionSection = $session->getSection(self::KEYCLOAK);
         $this->findOrganizatorByKeycloakKeyService = $findOrganizatorByKeycloakKeyService;
         $this->entityManager = $entityManager;
         $this->linkGenerator = $linkGenerator;

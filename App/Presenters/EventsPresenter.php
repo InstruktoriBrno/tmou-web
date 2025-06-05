@@ -25,6 +25,7 @@ use InstruktoriBrno\TMOU\Services\Events\FindEventsForDataGridService;
 use InstruktoriBrno\TMOU\Services\Qualification\FindLevelsService;
 use InstruktoriBrno\TMOU\Services\Qualification\FindPuzzlesOfEventService;
 use Nette\Application\UI\Form;
+use Nette\DI\Attributes\Inject;
 use Nette\Forms\Controls\SubmitButton;
 use Nette\Forms\Controls\TextInput;
 use Nette\Utils\ArrayHash;
@@ -34,61 +35,61 @@ use function implode;
 
 final class EventsPresenter extends BasePresenter
 {
-    /** @var EventsGridFactory @inject */
-    public $eventsGridFactory;
+    #[Inject]
+    public EventsGridFactory $eventsGridFactory;
 
-    /** @var FindEventsForDataGridService @inject */
-    public $findEventsForDataGrid;
+    #[Inject]
+    public FindEventsForDataGridService $findEventsForDataGrid;
 
-    /** @var EventFormFactory @inject */
-    public $eventFormFactory;
+    #[Inject]
+    public EventFormFactory $eventFormFactory;
 
-    /** @var FindEventService @inject */
-    public $findEventService;
+    #[Inject]
+    public FindEventService $findEventService;
 
-    /** @var SaveEventFacade @inject */
-    public $saveEventFacade;
+    #[Inject]
+    public SaveEventFacade $saveEventFacade;
 
-    /** @var FindEventForFormService @inject */
-    public $findEventForFormService;
+    #[Inject]
+    public FindEventForFormService $findEventForFormService;
 
-    /** @var FindDefaultEventValuesForFormService @inject */
-    public $findDefaultEventValuesForFormService;
+    #[Inject]
+    public FindDefaultEventValuesForFormService $findDefaultEventValuesForFormService;
 
-    /** @var ConfirmFormFactory @inject */
-    public $confirmFormFactory;
+    #[Inject]
+    public ConfirmFormFactory $confirmFormFactory;
 
-    /** @var DeleteEventFacade @inject */
-    public $deleteEventFacade;
+    #[Inject]
+    public DeleteEventFacade $deleteEventFacade;
 
-    /** @var CopyEventContentFormFactory @inject */
-    public $copyEventContentFormFactory;
+    #[Inject]
+    public CopyEventContentFormFactory $copyEventContentFormFactory;
 
-    /** @var CopyEventContentFacade @inject */
-    public $copyEventContentFacade;
+    #[Inject]
+    public CopyEventContentFacade $copyEventContentFacade;
 
-    /** @var ImportQualificationFormFactory @inject */
+    #[Inject]
     public ImportQualificationFormFactory $importQualificationFormFactory;
 
-    /** @var ImportQualificationFacade @inject */
+    #[Inject]
     public ImportQualificationFacade $importQualificationFacade;
 
-    /** @var FindLevelsService @inject */
+    #[Inject]
     public FindLevelsService $findLevelsService;
 
-    /** @var FindPuzzlesOfEventService @inject */
+    #[Inject]
     public FindPuzzlesOfEventService $findPuzzlesOfEventService;
 
-    /** @var DeleteQualificationProgressFormFactory @inject */
+    #[Inject]
     public DeleteQualificationProgressFormFactory $deleteQualificationProgressFormFactory;
 
-    /** @var DeleteQualificationProgressFacade @inject */
+    #[Inject]
     public DeleteQualificationProgressFacade $deleteQualificationProgressFacade;
 
-    /** @var UpdateScoreboardsFacade @inject */
+    #[Inject]
     public UpdateScoreboardsFacade $updateScoreboardsFacade;
 
-    /** @var QualifyTeamsByQualificationFacade @inject */
+    #[Inject]
     public QualifyTeamsByQualificationFacade $qualifyTeamsByQualificationFacade;
 
     /** @privilege(InstruktoriBrno\TMOU\Enums\Resource::ADMIN_EVENTS,InstruktoriBrno\TMOU\Enums\Action::VIEW,InstruktoriBrno\TMOU\Enums\PrivilegeEnforceMethod::TRIGGER_ADMIN_LOGIN) */

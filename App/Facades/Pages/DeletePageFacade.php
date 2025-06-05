@@ -5,8 +5,7 @@ use InstruktoriBrno\TMOU\Services\Pages\DeletePageService;
 
 class DeletePageFacade
 {
-    /** @var DeletePageService */
-    private $deleteEventService;
+    private DeletePageService $deleteEventService;
 
     public function __construct(
         DeletePageService $deleteEventService

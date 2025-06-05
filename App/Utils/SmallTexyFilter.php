@@ -13,8 +13,7 @@ use function implode;
 
 class SmallTexyFilter
 {
-    /** @var Texy */
-    private $texy;
+    private ?Texy $texy = null;
 
     public static function getSyntaxHelp(): Html
     {
@@ -108,12 +107,12 @@ Hodit se též může horní index^^takhle^^ nebo index^2, také spodní index__
                     $rels = [$el->attrs['rel'] ?? null];
                     $rels[] = 'noopener';
                     $rels[] = 'noreferrer';
-                    $el->attrs['rel'] = implode(' ', array_unique($rels));
+                    $el->attrs['rel'] = implode(' ', array_unique($rels)); // @phpstan-ignore-line
                     return $el;
                 }
                 return $parser->proceed();
             });
-            $this->texy->addHandler('phrase', function (HandlerInvocation $parser, $phrase, $content, Modifier $modifier, Link $link = null) {
+            $this->texy->addHandler('phrase', function (HandlerInvocation $parser, $phrase, $content, Modifier $modifier, ?Link $link = null) {
                 if ($link instanceof Link) {
                     $el = $parser->getTexy()->linkModule->solve(null, $link, $content);
                     if (!$el instanceof HtmlElement) {
@@ -122,7 +121,7 @@ Hodit se též může horní index^^takhle^^ nebo index^2, také spodní index__
                     $rels = [$el->attrs['rel'] ?? null];
                     $rels[] = 'noopener';
                     $rels[] = 'noreferrer';
-                    $el->attrs['rel'] = implode(' ', array_unique($rels));
+                    $el->attrs['rel'] = implode(' ', array_unique($rels)); // @phpstan-ignore-line
                     return $el;
                 }
                 return $parser->proceed();

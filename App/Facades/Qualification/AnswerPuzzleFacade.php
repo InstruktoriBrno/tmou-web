@@ -74,7 +74,7 @@ class AnswerPuzzleFacade
         $levels = $this->findLevelsService->__invoke($event);
         $firstLevel = $levels[0] ?? null;
 
-        $answerEntity = $this->entityManager->transactional(function () use ($levels, $firstLevel, $now, $event, $answer, $puzzle, $team): Answer {
+        $answerEntity = $this->entityManager->wrapInTransaction(function () use ($levels, $firstLevel, $now, $event, $answer, $puzzle, $team): Answer {
             // Prevent waiting on lock
             $this->entityManager->getConnection()->executeStatement('SET SESSION innodb_lock_wait_timeout = 0');
             // Reload the team to get latest data and lock it so no other answer evaluation can happen in parallel

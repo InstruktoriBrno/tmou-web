@@ -13,11 +13,9 @@ class TeamBatchMailingFormFactory
 {
     use SmartObject;
 
-    /** @var FormFactory */
-    private $factory;
+    private FormFactory $factory;
 
-    /** @var FindTeamsPairsInEventService */
-    private $findTeamsPairsInEventService;
+    private FindTeamsPairsInEventService $findTeamsPairsInEventService;
 
     public function __construct(FormFactory $factory, FindTeamsPairsInEventService $findTeamsPairsInEventService)
     {
@@ -68,7 +66,7 @@ class TeamBatchMailingFormFactory
             PaymentStatus::PAID()->toScalar() => 'Zaplaceno',
         ], 2);
         $form->addSubmit('filter', 'Filtrovat')
-            ->setValidationScope(false);
+            ->setValidationScope(null);
         $form->addMultiSelect('teams', 'Týmy', $this->getTeams($event, $gameStates, $paymentStates), 20);
         $form->addText('subject', 'Předmět')
             ->setRequired('Vyplňte, prosím, předmět e-mailu.');

@@ -4,13 +4,12 @@ namespace InstruktoriBrno\TMOU\Facades\Teams;
 use DateTimeImmutable;
 use Doctrine\ORM\EntityManagerInterface;
 use InstruktoriBrno\TMOU\Model\TeamSSOSession;
-use Nette\Application\IResponse;
+use Nette\Application\Response;
 use Nette\Application\Responses\JsonResponse;
 
 class IsSSOValid
 {
-    /** @var EntityManagerInterface */
-    private $entityManager;
+    private EntityManagerInterface $entityManager;
 
     public function __construct(EntityManagerInterface $entityManager)
     {
@@ -20,10 +19,10 @@ class IsSSOValid
     /**
      * @param string $token
      * @param string|null $jwt
-     * @return IResponse
+     * @return Response
      * @throws \Exception
      */
-    public function __invoke(string $token, ?string $jwt): IResponse
+    public function __invoke(string $token, ?string $jwt): Response
     {
         /** @var TeamSSOSession|null $session */
         $session = $this->entityManager->getRepository(TeamSSOSession::class)->findOneBy(['token' => $token]);

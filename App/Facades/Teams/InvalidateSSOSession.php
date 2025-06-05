@@ -10,23 +10,17 @@ use Nette\Http\Response;
 class InvalidateSSOSession
 {
 
-    /** @var Request */
-    private $request;
+    private Request $request;
 
-    /** @var EntityManagerInterface */
-    private $entityManager;
+    private EntityManagerInterface $entityManager;
 
-    /** @var Response */
-    private $response;
+    private Response $response;
 
-    /** @var string */
-    private $cookieName;
+    private string $cookieName;
 
-    /** @var string */
-    private $cookieDomain;
+    private string $cookieDomain;
 
-    /** @var string */
-    private $jwtCookieName;
+    private string $jwtCookieName;
 
     public function __construct(string $cookieName, string $jwtCookieName, string $cookieDomain, Request $request, Response $response, EntityManagerInterface $entityManager)
     {

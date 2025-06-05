@@ -8,175 +8,102 @@ use Doctrine\ORM\Mapping as ORM;
 use InstruktoriBrno\TMOU\Enums\GameStatus;
 use InstruktoriBrno\TMOU\Enums\PaymentStatus;
 use InstruktoriBrno\TMOU\Enums\UserRole;
+use InstruktoriBrno\TMOU\Utils\PasswordsSingleton;
 use InstruktoriBrno\TMOU\VO\PasswordResetTokenVO;
 use Nette\Security\Identity;
-use Nette\Security\Passwords;
 use Nette\Utils\Random;
 use Nette\Utils\Strings;
 use function hexdec;
 use function is_array;
 use function sha1;
 
-/**
- * @ORM\Entity
- * @ORM\Table(
- *     name="team",
- *     uniqueConstraints={
- *          @ORM\UniqueConstraint(name="unique_number_in_event_idx", columns={"event_id", "number"}),
- *          @ORM\UniqueConstraint(name="unique_name_in_event_idx", columns={"event_id", "name"}),
- *          @ORM\UniqueConstraint(name="unique_email_in_event_idx", columns={"event_id", "email"})
- *     }
- * )
- */
+#[ORM\Entity]
+#[ORM\Table(
+    name: "team",
+    uniqueConstraints: [
+        new ORM\UniqueConstraint(name: "unique_number_in_event_idx", columns: ["event_id", "number"]),
+        new ORM\UniqueConstraint(name: "unique_name_in_event_idx", columns: ["event_id", "name"]),
+        new ORM\UniqueConstraint(name: "unique_email_in_event_idx", columns: ["event_id", "email"]),
+    ]
+)]
 class Team
 {
-    /**
-     * @ORM\Id
-     * @ORM\Column(type="integer")
-     * @ORM\GeneratedValue
-     * @var integer
-     */
-    protected $id;
+    #[ORM\Id]
+    #[ORM\Column(type: "integer")]
+    #[ORM\GeneratedValue]
+    protected int $id;
 
-    /**
-     * @ORM\ManyToOne(targetEntity="Event")
-     * @ORM\JoinColumn(name="event_id", referencedColumnName="id", nullable=false)
-     * @var Event
-     */
-    protected $event;
+    #[ORM\ManyToOne(targetEntity: Event::class)]
+    #[ORM\JoinColumn(name: "event_id", referencedColumnName: "id", nullable: false)]
+    protected Event $event;
 
-    /**
-     * @ORM\Column(type="integer")
-     * @var int
-     */
-    protected $number;
+    #[ORM\Column(type: "integer")]
+    protected int $number;
 
-    /**
-     * @ORM\Column(type="string", length=255)
-     * @var string
-     */
-    protected $name;
+    #[ORM\Column(type: "string", length: 255)]
+    protected string $name;
 
-    /**
-     * @ORM\Column(type="string", length=255)
-     * @var string
-     */
-    protected $email;
+    #[ORM\Column(type: "string", length: 255)]
+    protected string $email;
 
-    /**
-     * @ORM\Column(type="string")
-     * @var string
-     */
-    protected $passwordHash;
+    #[ORM\Column(type: "string")]
+    protected string $passwordHash;
 
-    /**
-     * @ORM\Column(type="string", nullable=true)
-     * @var string|null
-     */
-    protected $passwordResetToken;
+    #[ORM\Column(type: "string", nullable: true)]
+    protected ?string $passwordResetToken;
 
-    /**
-     * @ORM\Column(type="datetime_immutable", nullable=true)
-     * @var DateTimeImmutable|null
-     */
-    protected $passwordResetTokenExpiresAt;
+    #[ORM\Column(type: "datetime_immutable", nullable: true)]
+    protected ?DateTimeImmutable $passwordResetTokenExpiresAt;
 
-    /**
-     * @ORM\Column(type="string")
-     * @var string
-     */
-    protected $phrase;
+    #[ORM\Column(type: "string")]
+    protected string $phrase;
 
-    /**
-     * @ORM\Column(type="string")
-     * @var string
-     */
-    protected $phone;
+    #[ORM\Column(type: "string")]
+    protected string $phone;
 
-    /**
-     * @ORM\Column(type="game_status", nullable=false)
-     * @var GameStatus
-     */
-    protected $gameStatus;
+    #[ORM\Column(type: "game_status", nullable: false)]
+    protected GameStatus $gameStatus;
 
-    /**
-     * @ORM\Column(type="payment_status", nullable=false)
-     * @var PaymentStatus
-     */
-    protected $paymentStatus;
+    #[ORM\Column(type: "payment_status", nullable: false)]
+    protected PaymentStatus $paymentStatus;
 
-    /**
-     * @ORM\Column(type="datetime_immutable", nullable=true)
-     * @var DateTimeImmutable|null
-     */
-    protected $paymentPairedAt;
+    #[ORM\Column(type: "datetime_immutable", nullable: true)]
+    protected ?DateTimeImmutable $paymentPairedAt;
 
-    /**
-     * @ORM\Column(type="datetime_immutable", nullable=false)
-     * @var DateTimeImmutable
-     */
-    protected $registeredAt;
+    #[ORM\Column(type: "datetime_immutable", nullable: false)]
+    protected DateTimeImmutable $registeredAt;
 
-    /**
-     * @ORM\Column(type="datetime_immutable", nullable=false)
-     * @var DateTimeImmutable
-     */
-    protected $lastUpdatedAt;
+    #[ORM\Column(type: "datetime_immutable", nullable: false)]
+    protected DateTimeImmutable $lastUpdatedAt;
 
-    /**
-     * @ORM\Column(type="datetime_immutable", nullable=true)
-     * @var DateTimeImmutable|null
-     */
-    protected $lastLoggedAt;
+    #[ORM\Column(type: "datetime_immutable", nullable: true)]
+    protected ?DateTimeImmutable $lastLoggedAt;
 
-    /**
-     * @ORM\OneToMany(targetEntity="TeamMember", mappedBy="team", cascade={"persist", "remove"}, orphanRemoval=true)
-     * @var TeamMember[]|Collection<int, TeamMember>
-     */
-    protected $members;
+    /** @var Collection<int, TeamMember> */
+    #[ORM\OneToMany(targetEntity: TeamMember::class, mappedBy: "team", cascade: ["persist", "remove"], orphanRemoval: true)]
+    protected Collection $members;
 
-    /**
-     * @ORM\ManyToOne(targetEntity="TeamReview", cascade={"persist", "remove"})
-     * @ORM\JoinColumn(name="team_review_id", referencedColumnName="id", nullable=true)
-     * @var TeamReview|null
-     */
-    protected $review;
+    #[ORM\ManyToOne(targetEntity: TeamReview::class, cascade: ["persist", "remove"])]
+    #[ORM\JoinColumn(name: "team_review_id", referencedColumnName: "id", nullable: true)]
+    protected ?TeamReview $review;
 
-    /**
-     * @ORM\Column(type="string", nullable=true)
-     * @var string|null
-     */
-    protected $selfreportedFeeOrganization;
+    #[ORM\Column(type: "string", nullable: true)]
+    protected ?string $selfreportedFeeOrganization;
 
-    /**
-     * @ORM\Column(type="integer", nullable=true)
-     * @var int|null
-     */
-    protected $selfreportedFeeAmount;
+    #[ORM\Column(type: "integer", nullable: true)]
+    protected ?int $selfreportedFeeAmount;
 
-    /**
-     * @ORM\Column(type="boolean", nullable=true)
-     * @var bool|null
-     */
-    protected $selfreportedFeePublic;
+    #[ORM\Column(type: "boolean", nullable: true)]
+    protected ?bool $selfreportedFeePublic;
 
-    /**
-     * @ORM\ManyToOne(targetEntity="Level")
-     * @ORM\JoinColumn(name="current_level_id", referencedColumnName="id", nullable=false)
-     * @var Level|null
-     */
+    #[ORM\ManyToOne(targetEntity: Level::class)]
+    #[ORM\JoinColumn(name: "current_level_id", referencedColumnName: "id", nullable: false)]
     protected ?Level $currentLevel;
 
-    /**
-     * @ORM\Column(type="datetime_immutable", nullable=true)
-     * @var DateTimeImmutable|null
-     */
+    #[ORM\Column(type: "datetime_immutable", nullable: true)]
     protected ?DateTimeImmutable $lastWrongAnswerAt;
 
-    /**
-     * @ORM\Column(type="boolean", nullable=false)
-     * @var bool
-     */
+    #[ORM\Column(type: "boolean", nullable: false)]
     protected bool $canChangeGameTime = false;
 
     /**
@@ -217,7 +144,7 @@ class Team
         $this->number = $number;
         $this->name = $name;
         $this->email = Strings::lower($email);
-        $this->passwordHash = Passwords::hash($password);
+        $this->passwordHash = PasswordsSingleton::getPasswordsStatic()->hash($password);
         $this->phrase = $phrase;
         $this->phone = $phone;
         $this->registeredAt = $this->lastUpdatedAt = $registeredAt;
@@ -271,7 +198,7 @@ class Team
         $this->name = $name;
         $this->email = Strings::lower($email);
         if ($newPassword !== null) {
-            $this->passwordHash = Passwords::hash($newPassword);
+            $this->passwordHash = PasswordsSingleton::getPasswordsStatic()->hash($newPassword);
         }
         $this->phrase = $phrase;
         $this->phone = $phone;
@@ -322,7 +249,7 @@ class Team
 
     public function hasPaid(): bool
     {
-        return $this->paymentStatus !== null && $this->paymentStatus->equals(PaymentStatus::PAID());
+        return $this->paymentStatus !== null && $this->paymentStatus->equals(PaymentStatus::PAID()); // @phpstan-ignore-line
     }
 
     public function markAsPaid(DateTimeImmutable $paymentPairedAt): void
@@ -344,7 +271,7 @@ class Team
 
     public function getId(): int
     {
-        if ($this->id === null) {
+        if (!isset($this->id)) {
             throw new \InstruktoriBrno\TMOU\Model\Exceptions\IDNotYetAssignedException;
         }
         return $this->id;
@@ -412,7 +339,7 @@ class Team
 
     public function checkPassword(string $passwordRaw): bool
     {
-        return Passwords::verify($passwordRaw, $this->passwordHash);
+        return PasswordsSingleton::getPasswordsStatic()->verify($passwordRaw, $this->passwordHash);
     }
 
     public function createPasswordResetToken(): PasswordResetTokenVO
@@ -443,7 +370,7 @@ class Team
         }
         $this->passwordResetTokenExpiresAt = null;
         $this->passwordResetToken = null;
-        $this->passwordHash = Passwords::hash($password);
+        $this->passwordHash = PasswordsSingleton::getPasswordsStatic()->hash($password);
     }
 
     /**
@@ -474,7 +401,7 @@ class Team
         if ($newPassword !== null && Strings::length($newPassword) < 8) {
             throw new \InstruktoriBrno\TMOU\Model\Exceptions\PasswordTooShortException;
         }
-        if ($this->passwordHash !== null && $password !== null && !$this->checkPassword($password)) {
+        if ($this->passwordHash !== null && $password !== null && !$this->checkPassword($password)) { // @phpstan-ignore-line
             throw new \InstruktoriBrno\TMOU\Model\Exceptions\InvalidPasswordException;
         }
         $numbers = [];
@@ -598,7 +525,7 @@ class Team
         foreach ($words as $w) {
             $letter = Strings::substring($w, 0, 1);
             $match = Strings::match($letter, '~[\w\d]~u');
-            if (!is_array($match) || count($match) !== 1) {
+            if (!is_array($match) || count($match) !== 1) { // @phpstan-ignore-line
                 continue;
             }
             $acronym .= $letter;

@@ -26,6 +26,7 @@ use InstruktoriBrno\TMOU\Services\Teams\TransformBackFromImpersonatedIdentity;
 use InstruktoriBrno\TMOU\Services\Teams\TransformToImpersonatedIdentity;
 use InstruktoriBrno\TMOU\Utils\TexyFilter;
 use Nette\Application\UI\Form;
+use Nette\DI\Attributes\Inject;
 use Nette\Forms\Controls\SubmitButton;
 use Nette\Security\Identity;
 use Tracy\Debugger;
@@ -37,55 +38,55 @@ use function sprintf;
 
 final class TeamsPresenter extends BasePresenter
 {
-    /** @var TeamsGridFactory @inject */
-    public $teamsGridFactory;
+    #[Inject]
+    public TeamsGridFactory $teamsGridFactory;
 
-    /** @var FindTeamsOfEventForDataGridService @inject */
-    public $findTeamsOfEventForDataGridService;
+    #[Inject]
+    public FindTeamsOfEventForDataGridService $findTeamsOfEventForDataGridService;
 
-    /** @var FindEventByNumberService @inject */
-    public $findEventServiceByNumber;
+    #[Inject]
+    public FindEventByNumberService $findEventServiceByNumber;
 
-    /** @var FindTeamService @inject */
-    public $findTeamService;
+    #[Inject]
+    public FindTeamService $findTeamService;
 
-    /** @var ConfirmFormFactory @inject */
-    public $confirmFormFactory;
+    #[Inject]
+    public ConfirmFormFactory $confirmFormFactory;
 
-    /** @var DeleteTeamFacade @inject */
-    public $deleteTeamFacade;
+    #[Inject]
+    public DeleteTeamFacade $deleteTeamFacade;
 
-    /** @var TransformToImpersonatedIdentity @inject */
-    public $transformToImpersonatedIdentity;
+    #[Inject]
+    public TransformToImpersonatedIdentity $transformToImpersonatedIdentity;
 
-    /** @var TransformBackFromImpersonatedIdentity @inject */
-    public $transformBackFromImpersonatedIdentity;
+    #[Inject]
+    public TransformBackFromImpersonatedIdentity $transformBackFromImpersonatedIdentity;
 
-    /** @var ExportTeamMembersForNewsletterService @inject */
-    public $exportTeamMembersForNewsletter;
+    #[Inject]
+    public ExportTeamMembersForNewsletterService $exportTeamMembersForNewsletter;
 
-    /** @var ExportAllTeamsService @inject */
-    public $exportAllTeamsService;
+    #[Inject]
+    public ExportAllTeamsService $exportAllTeamsService;
 
-    /** @var TeamBatchMailingFormFactory @inject */
-    public $teamBatchMailingFormFactory;
+    #[Inject]
+    public TeamBatchMailingFormFactory $teamBatchMailingFormFactory;
 
-    /** @var BatchMailTeamsFacade @inject */
-    public $batchMailTeamsFacade;
+    #[Inject]
+    public BatchMailTeamsFacade $batchMailTeamsFacade;
 
-    /** @var TeamBatchGameStatusChangeFormFactory @inject */
-    public $teamBatchGameStatusChangeFormFactory;
+    #[Inject]
+    public TeamBatchGameStatusChangeFormFactory $teamBatchGameStatusChangeFormFactory;
 
-    /** @var BatchGameStatusChangeFacade @inject */
-    public $batchGameStatusChangeFacade;
+    #[Inject]
+    public BatchGameStatusChangeFacade $batchGameStatusChangeFacade;
 
-    /** @var ChangeTeamsGameStatusService @inject */
-    public $changeTeamsGameStatusService;
+    #[Inject]
+    public ChangeTeamsGameStatusService $changeTeamsGameStatusService;
 
-    /** @var ChangeTeamsPaymentStatusService @inject */
-    public $changeTeamsPaymentStatusService;
+    #[Inject]
+    public ChangeTeamsPaymentStatusService $changeTeamsPaymentStatusService;
 
-    /** @var ChangeTeamsCanChangeGameTimeService @inject */
+    #[Inject]
     public ChangeTeamsCanChangeGameTimeService $changeTeamsCanChangeGameTimeService;
 
     /** @privilege(InstruktoriBrno\TMOU\Enums\Resource::ADMIN_TEAMS,InstruktoriBrno\TMOU\Enums\Action::VIEW,InstruktoriBrno\TMOU\Enums\PrivilegeEnforceMethod::TRIGGER_ADMIN_LOGIN) */
@@ -93,7 +94,7 @@ final class TeamsPresenter extends BasePresenter
     {
         $event = ($this->findEventServiceByNumber)($eventNumber);
         if ($event === null) {
-            throw new \Nette\Application\BadRequestException("No such event with number [${eventNumber}].");
+            throw new \Nette\Application\BadRequestException("No such event with number [{$eventNumber}].");
         }
         $this->template->event = $event;
     }
@@ -103,7 +104,7 @@ final class TeamsPresenter extends BasePresenter
     {
         $event = ($this->findEventServiceByNumber)($eventNumber);
         if ($event === null) {
-            throw new \Nette\Application\BadRequestException("No such event with number [${eventNumber}].");
+            throw new \Nette\Application\BadRequestException("No such event with number [{$eventNumber}].");
         }
         $this->template->event = $event;
         $this->template->help = TexyFilter::getSyntaxHelp();
@@ -114,7 +115,7 @@ final class TeamsPresenter extends BasePresenter
     {
         $event = ($this->findEventServiceByNumber)($eventNumber);
         if ($event === null) {
-            throw new \Nette\Application\BadRequestException("No such event with number [${eventNumber}].");
+            throw new \Nette\Application\BadRequestException("No such event with number [{$eventNumber}].");
         }
         $this->template->event = $event;
     }
@@ -124,7 +125,7 @@ final class TeamsPresenter extends BasePresenter
     {
         $event = ($this->findEventServiceByNumber)($eventNumber);
         if ($event === null) {
-            throw new \Nette\Application\BadRequestException("No such event with number [${eventNumber}].");
+            throw new \Nette\Application\BadRequestException("No such event with number {$eventNumber}].");
         }
         $this->sendResponse(($this->exportAllTeamsService)($event));
     }
@@ -134,7 +135,7 @@ final class TeamsPresenter extends BasePresenter
     {
         $event = ($this->findEventServiceByNumber)($eventNumber);
         if ($event === null) {
-            throw new \Nette\Application\BadRequestException("No such event with number [${eventNumber}].");
+            throw new \Nette\Application\BadRequestException("No such event with number [{$eventNumber}].");
         }
         $this->sendResponse(($this->exportTeamMembersForNewsletter)($event));
     }
@@ -211,7 +212,7 @@ final class TeamsPresenter extends BasePresenter
         $eventNumber = (int) $this->getParameter('eventNumber');
         $event = ($this->findEventServiceByNumber)($eventNumber);
         if ($event === null) {
-            throw new \Nette\Application\BadRequestException("No such event with number [${eventNumber}].");
+            throw new \Nette\Application\BadRequestException("No such event with number [{$eventNumber}].");
         }
         $presenter = $this;
         $changeToPlaying = function (array $ids) use ($presenter) {
@@ -372,7 +373,7 @@ final class TeamsPresenter extends BasePresenter
             }
         };
         $allowGameClockChange = function (array $ids) use ($presenter) {
-            if (!$presenter->user->isAllowed(Resource::ADMIN_TEAMS, Action::DELEGATE_CHANGE_GAME_CLOCK)
+            if (!$presenter->user->isAllowed(Resource::ADMIN_TEAMS, Action::CHANGE_GAME_CLOCK)
                 || !$presenter->user->isAllowed(Resource::ADMIN_TEAMS, Action::DELEGATE_CHANGE_GAME_CLOCK)
             ) {
                 $presenter->flashMessage('Nejste oprávněni provádět tuto operaci. Pokud věříte, že jde o chybu, kontaktujte správce.', Flash::DANGER);
@@ -397,7 +398,7 @@ final class TeamsPresenter extends BasePresenter
         };
 
         $disableGameClockChange = function (array $ids) use ($presenter) {
-            if (!$presenter->user->isAllowed(Resource::ADMIN_TEAMS, Action::DELEGATE_CHANGE_GAME_CLOCK)
+            if (!$presenter->user->isAllowed(Resource::ADMIN_TEAMS, Action::CHANGE_GAME_CLOCK)
                 || !$presenter->user->isAllowed(Resource::ADMIN_TEAMS, Action::DELEGATE_CHANGE_GAME_CLOCK)
             ) {
                 $presenter->flashMessage('Nejste oprávněni provádět tuto operaci. Pokud věříte, že jde o chybu, kontaktujte správce.', Flash::DANGER);
@@ -469,7 +470,7 @@ final class TeamsPresenter extends BasePresenter
         $eventNumber = (int) $this->getParameter('eventNumber');
         $event = ($this->findEventServiceByNumber)($eventNumber);
         if ($event === null) {
-            throw new \Nette\Application\BadRequestException("No such event with number [${eventNumber}].");
+            throw new \Nette\Application\BadRequestException("No such event with number [{$eventNumber}].");
         }
         assert($this->getRequest() !== null);
         $filterStates = $this->getRequest()->getPost('filterStates');
@@ -521,7 +522,7 @@ final class TeamsPresenter extends BasePresenter
         $eventNumber = (int) $this->getParameter('eventNumber');
         $event = ($this->findEventServiceByNumber)($eventNumber);
         if ($event === null) {
-            throw new \Nette\Application\BadRequestException("No such event with number [${eventNumber}].");
+            throw new \Nette\Application\BadRequestException("No such event with number [{$eventNumber}].");
         }
         return $this->teamBatchGameStatusChangeFormFactory->create(function (Form $form, $values) use ($event): void {
             if (!$this->user->isAllowed(Resource::ADMIN_TEAMS, Action::BATCH_GAME_STATUS_CHANGE)) {

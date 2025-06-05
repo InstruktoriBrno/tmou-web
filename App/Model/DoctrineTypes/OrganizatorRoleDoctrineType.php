@@ -62,12 +62,12 @@ class OrganizatorRoleDoctrineType extends Type
             return null;
         }
         if ($value instanceof OrganizatorRole) {
-            $valueString = $value->toScalar();
+            $valueString = (string) $value->toScalar();
             if (Strings::length($valueString) > self::LENGTH) {
                 $errorMessage = sprintf('Value "%s" has a length greater than %d.', $valueString, self::LENGTH);
                 throw new \InstruktoriBrno\TMOU\Model\Exceptions\ConvertToDatabaseValueException($errorMessage);
             }
-            return (string) $valueString;
+            return $valueString;
         }
         throw new \InstruktoriBrno\TMOU\Model\Exceptions\ConvertToDatabaseValueException('Unexpected value when converting to database value.');
     }

@@ -4,7 +4,6 @@ namespace InstruktoriBrno\TMOU\Forms;
 use InstruktoriBrno\TMOU\Application\UI\BaseForm;
 use InstruktoriBrno\TMOU\Enums\GameStatus;
 use InstruktoriBrno\TMOU\Model\Event;
-use InstruktoriBrno\TMOU\Services\Teams\FindTeamsPairsInEventService;
 use Nette\Application\UI\Form;
 use Nette\SmartObject;
 
@@ -12,16 +11,11 @@ class TeamBatchGameStatusChangeFormFactory
 {
     use SmartObject;
 
-    /** @var FormFactory */
-    private $factory;
+    private FormFactory $factory;
 
-    /** @var FindTeamsPairsInEventService */
-    private $findTeamsPairsInEventService;
-
-    public function __construct(FormFactory $factory, FindTeamsPairsInEventService $findTeamsPairsInEventService)
+    public function __construct(FormFactory $factory)
     {
         $this->factory = $factory;
-        $this->findTeamsPairsInEventService = $findTeamsPairsInEventService;
     }
     public function create(callable $onSuccess, Event $event): Form
     {

@@ -7,7 +7,7 @@ class TooManyWrongAnswersRecentlyException extends \InstruktoriBrno\TMOU\Excepti
 {
     private DateTimeImmutable $waitUntil;
 
-    public function __construct(DateTimeImmutable $waitUntil, string $message = "", int $code = 0, \Throwable $previous = null)
+    public function __construct(DateTimeImmutable $waitUntil, string $message = "", int $code = 0, ?\Throwable $previous = null)
     {
         parent::__construct($message, $code, $previous);
         $this->waitUntil = $waitUntil;

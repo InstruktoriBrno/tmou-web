@@ -1,7 +1,7 @@
 <?php declare(strict_types=1);
 namespace InstruktoriBrno\TMOU\Services\Discussions;
 
-use Doctrine\Common\Persistence\ObjectRepository; // phpcs:ignore
+use Doctrine\Persistence\ObjectRepository; // phpcs:ignore
 use InstruktoriBrno\TMOU\Model\Organizator;
 use InstruktoriBrno\TMOU\Model\Thread;
 use InstruktoriBrno\TMOU\Model\ThreadAcknowledgement;
@@ -10,7 +10,7 @@ use Doctrine\ORM\EntityManagerInterface;
 class FindThreadAcknowledgementByOrganizatorService
 {
     /** @var ObjectRepository<ThreadAcknowledgement> */
-    private $threadAcknowledgementRepository;
+    private ObjectRepository $threadAcknowledgementRepository;
 
     public function __construct(EntityManagerInterface $entityManager)
     {

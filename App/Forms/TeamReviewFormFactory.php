@@ -2,7 +2,6 @@
 namespace InstruktoriBrno\TMOU\Forms;
 
 use InstruktoriBrno\TMOU\Application\UI\BaseForm;
-use InstruktoriBrno\TMOU\Services\Events\FindEventsPairsService;
 use Nette\Application\UI\Form;
 use Nette\SmartObject;
 
@@ -10,16 +9,11 @@ class TeamReviewFormFactory
 {
     use SmartObject;
 
-    /** @var FormFactory */
-    private $factory;
+    private FormFactory $factory;
 
-    /** @var FindEventsPairsService */
-    private $findEventsPairsService;
-
-    public function __construct(FindEventsPairsService $findEventsPairsService, FormFactory $factory)
+    public function __construct(FormFactory $factory)
     {
         $this->factory = $factory;
-        $this->findEventsPairsService = $findEventsPairsService;
     }
     public function create(callable $onSuccess): Form
     {

@@ -5,56 +5,33 @@ use DateTimeImmutable;
 use Doctrine\ORM\Mapping as ORM;
 use Nette\Utils\Random;
 
-/**
- * @ORM\Entity
- * @ORM\Table(name="team_sso_session")
- */
+#[ORM\Entity]
+#[ORM\Table(name: "team_sso_session")]
 class TeamSSOSession
 {
-    /**
-     * @ORM\Id
-     * @ORM\Column(type="integer")
-     * @ORM\GeneratedValue
-     * @var integer
-     */
-    protected $id;
+    #[ORM\Id]
+    #[ORM\Column(type: "integer")]
+    #[ORM\GeneratedValue]
+    protected int $id;
 
-    /**
-     * @ORM\ManyToOne(targetEntity="Team", inversedBy="members")
-     * @ORM\JoinColumn(name="team_id", referencedColumnName="id", nullable=false)
-     * @var Team
-     */
-    protected $team;
+    #[ORM\ManyToOne(targetEntity: Team::class, inversedBy: "members")]
+    #[ORM\JoinColumn(name: "team_id", referencedColumnName: "id", nullable: false)]
+    protected Team $team;
 
-    /**
-     * @ORM\Column(type="string", length=255, unique=true)
-     * @var string
-     */
-    protected $token;
+    #[ORM\Column(type: "string", length: 255, unique: true)]
+    protected string $token;
 
-    /**
-     * @ORM\Column(type="text", nullable=true)
-     * @var string
-     */
-    protected $jwt;
+    #[ORM\Column(type: "text", nullable: true)]
+    protected ?string $jwt;
 
-    /**
-     * @ORM\Column(type="boolean", nullable=false)
-     * @var boolean
-     */
-    protected $valid;
+    #[ORM\Column(type: "boolean", nullable: false)]
+    protected bool $valid;
 
-    /**
-     * @ORM\Column(type="datetime_immutable", nullable=false)
-     * @var DateTimeImmutable
-     */
-    protected $createdAt;
+    #[ORM\Column(type: "datetime_immutable", nullable: false)]
+    protected DateTimeImmutable $createdAt;
 
-    /**
-     * @ORM\Column(type="datetime_immutable", nullable=false)
-     * @var DateTimeImmutable
-     */
-    protected $expiresAt;
+    #[ORM\Column(type: "datetime_immutable", nullable: false)]
+    protected DateTimeImmutable $expiresAt;
 
     public function __construct(
         Team $team,

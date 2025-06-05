@@ -8,130 +8,71 @@ use InstruktoriBrno\TMOU\Enums\UserRole;
 use Nette\Security\User;
 use Nette\Utils\Validators;
 
-/**
- * @ORM\Entity
- * @ORM\Table(name="menu_item")
- */
+#[ORM\Entity]
+#[ORM\Table(name: "menu_item")]
 class MenuItem
 {
-    /**
-     * @ORM\Id
-     * @ORM\Column(type="integer")
-     * @ORM\GeneratedValue
-     * @var integer|null
-     */
-    protected $id;
+    #[ORM\Id]
+    #[ORM\Column(type: "integer")]
+    #[ORM\GeneratedValue]
+    protected ?int $id;
 
-    /**
-     * @ORM\ManyToOne(targetEntity="Event")
-     * @ORM\JoinColumn(name="event_id", referencedColumnName="id", nullable=true)
-     * @var Event|null
-     */
-    protected $event;
+    #[ORM\ManyToOne(targetEntity: Event::class)]
+    #[ORM\JoinColumn(name: "event_id", referencedColumnName: "id", nullable: true)]
+    protected ?Event $event;
 
-    /**
-     * @ORM\Column(type="text", nullable=false)
-     * @var string
-     */
-    protected $content;
+    #[ORM\Column(type: "text", nullable: false)]
+    protected string $content;
 
-    /**
-     * @ORM\Column(type="text", nullable=true)
-     * @var string|null
-     */
-    protected $title;
+    #[ORM\Column(type: "text", nullable: true)]
+    protected ?string $title;
 
-    /**
-     * @ORM\Column(type="text", nullable=true)
-     * @var string|null
-     */
-    protected $class;
+    #[ORM\Column(type: "text", nullable: true)]
+    protected ?string $class;
 
-    /**
-     * @ORM\Column(type="text", nullable=true)
-     * @var string|null
-     */
-    protected $tag;
+    #[ORM\Column(type: "text", nullable: true)]
+    protected ?string $tag;
 
-    /**
-     * @ORM\Column(type="text", nullable=true)
-     * @var string|null
-     */
-    protected $label;
+    #[ORM\Column(type: "text", nullable: true)]
+    protected ?string $label;
 
-    /**
-     * @ORM\Column(type="integer", nullable=false)
-     * @var integer
-     */
-    protected $weight;
+    #[ORM\Column(type: "integer", nullable: false)]
+    protected int $weight;
 
-    /**
-     * @ORM\ManyToOne(targetEntity="Page")
-     * @ORM\JoinColumn(name="target_page_id", referencedColumnName="id", nullable=true)
-     * @var Page|null
-     */
-    protected $targetPage;
+    #[ORM\ManyToOne(targetEntity: Page::class)]
+    #[ORM\JoinColumn(name: "target_page_id", referencedColumnName: "id", nullable: true)]
+    protected ?Page $targetPage;
 
-    /**
-     * @ORM\ManyToOne(targetEntity="Event")
-     * @ORM\JoinColumn(name="target_event_id", referencedColumnName="id", nullable=true)
-     * @var Event|null
-     */
-    protected $targetEvent;
+    #[ORM\ManyToOne(targetEntity: Event::class)]
+    #[ORM\JoinColumn(name: "target_event_id", referencedColumnName: "id", nullable: true)]
+    protected ?Event $targetEvent;
 
-    /**
-     * @ORM\Column(type="text", nullable=true)
-     * @var string|null
-     */
-    protected $targetSlug;
+    #[ORM\Column(type: "text", nullable: true)]
+    protected ?string $targetSlug;
 
-    /**
-     * @ORM\Column(type="text", nullable=true)
-     * @var string|null
-     */
-    protected $targetUrl;
+    #[ORM\Column(type: "text", nullable: true)]
+    protected ?string $targetUrl;
 
-    /**
-     * @ORM\Column(type="boolean", nullable=false)
-     * @var boolean
-     */
-    protected $forAnonymous;
+    #[ORM\Column(type: "boolean", nullable: false)]
+    protected bool $forAnonymous;
 
-    /**
-     * @ORM\Column(type="boolean", nullable=false)
-     * @var boolean
-     */
-    protected $forOrganizators;
+    #[ORM\Column(type: "boolean", nullable: false)]
+    protected bool $forOrganizators;
 
-    /**
-     * @ORM\Column(type="boolean", nullable=false)
-     * @var boolean
-     */
-    protected $forTeams;
+    #[ORM\Column(type: "boolean", nullable: false)]
+    protected bool $forTeams;
 
-    /**
-     * @ORM\Column(type="datetime_immutable", nullable=true)
-     * @var DateTimeImmutable|null
-     */
-    protected $revealAt;
+    #[ORM\Column(type: "datetime_immutable", nullable: true)]
+    protected ?DateTimeImmutable $revealAt;
 
-    /**
-     * @ORM\Column(type="datetime_immutable", nullable=true)
-     * @var DateTimeImmutable|null
-     */
-    protected $hideAt;
+    #[ORM\Column(type: "datetime_immutable", nullable: true)]
+    protected ?DateTimeImmutable $hideAt;
 
-    /**
-     * @ORM\Column(type="datetime_immutable", nullable=false)
-     * @var DateTimeImmutable
-     */
-    protected $createdAt;
+    #[ORM\Column(type: "datetime_immutable", nullable: false)]
+    protected DateTimeImmutable $createdAt;
 
-    /**
-     * @ORM\Column(type="datetime_immutable", nullable=false)
-     * @var DateTimeImmutable
-     */
-    protected $updatedAt;
+    #[ORM\Column(type: "datetime_immutable", nullable: false)]
+    protected DateTimeImmutable $updatedAt;
 
     public function __construct(
         ?Event $event,
@@ -248,7 +189,7 @@ class MenuItem
 
     public function getId(): int
     {
-        if ($this->id === null) {
+        if (!isset($this->id)) {
             throw new \InstruktoriBrno\TMOU\Model\Exceptions\IDNotYetAssignedException;
         }
         return $this->id;

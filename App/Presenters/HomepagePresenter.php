@@ -2,12 +2,12 @@
 namespace InstruktoriBrno\TMOU\Presenters;
 
 use InstruktoriBrno\TMOU\Services\Events\FindLatestEventService;
+use Nette\DI\Attributes\Inject;
 
 final class HomepagePresenter extends BasePresenter
 {
-
-    /** @var FindLatestEventService @inject */
-    public $findLatestEventService;
+    #[Inject]
+    public FindLatestEventService $findLatestEventService;
 
     /** @privilege(InstruktoriBrno\TMOU\Enums\Resource::PUBLIC,InstruktoriBrno\TMOU\Enums\Action::VIEW) */
     public function actionDefault(): void

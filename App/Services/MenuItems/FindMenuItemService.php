@@ -6,8 +6,7 @@ use InstruktoriBrno\TMOU\Model\MenuItem;
 
 class FindMenuItemService
 {
-    /** @var EntityManagerInterface */
-    private $entityManager;
+    private EntityManagerInterface $entityManager;
 
     public function __construct(EntityManagerInterface $entityManager)
     {
