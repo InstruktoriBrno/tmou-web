@@ -8,9 +8,10 @@ use InstruktoriBrno\TMOU\Enums\PaymentStatus;
 use InstruktoriBrno\TMOU\Enums\Resource;
 use InstruktoriBrno\TMOU\Grids\DataGridFactory;
 use InstruktoriBrno\TMOU\Model\Team;
+use Nette\Security\User;
 use Nette\Utils\Html;
-use Ublaboo\DataGrid\DataGrid;
-use Ublaboo\DataGrid\DataSource\IDataSource;
+use Contributte\Datagrid\DataGrid;
+use Contributte\Datagrid\DataSource\IDataSource;
 use \Closure;
 
 class TeamsGrid extends Control
@@ -52,6 +53,7 @@ class TeamsGrid extends Control
         int $eventNumber,
         IDataSource $dataSource,
         DataGridFactory $dataGridFactory,
+        User $user,
         callable $changeToPlaying,
         callable $changeToQualified,
         callable $changeToNotQualified,
@@ -74,6 +76,7 @@ class TeamsGrid extends Control
         $this->changeAsPaidAndPlaying = $changeAsPaidAndPlaying;
         $this->allowGameClockChange = $allowGameClockChange;
         $this->disableGameClockChange = $disableGameClockChange;
+        $this->user = $user;
     }
 
     public function createComponentGrid(string $name): DataGrid

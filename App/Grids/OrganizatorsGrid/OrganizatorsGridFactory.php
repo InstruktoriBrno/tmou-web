@@ -2,7 +2,7 @@
 namespace InstruktoriBrno\TMOU\Grids\OrganizatorsGrid;
 
 use InstruktoriBrno\TMOU\Grids\DataGridFactory;
-use Ublaboo\DataGrid\DataSource\IDataSource;
+use Contributte\Datagrid\DataSource\IDataSource;
 
 class OrganizatorsGridFactory
 {

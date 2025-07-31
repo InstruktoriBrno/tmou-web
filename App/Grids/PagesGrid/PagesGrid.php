@@ -7,9 +7,10 @@ use InstruktoriBrno\TMOU\Enums\Action;
 use InstruktoriBrno\TMOU\Enums\Resource;
 use InstruktoriBrno\TMOU\Grids\DataGridFactory;
 use InstruktoriBrno\TMOU\Model\Page;
+use Nette\Security\User;
 use Nette\Utils\Html;
-use Ublaboo\DataGrid\DataGrid;
-use Ublaboo\DataGrid\DataSource\IDataSource;
+use Contributte\Datagrid\DataGrid;
+use Contributte\Datagrid\DataSource\IDataSource;
 
 class PagesGrid extends Control
 {
@@ -19,11 +20,12 @@ class PagesGrid extends Control
 
     private ?int $eventNumber;
 
-    public function __construct(IDataSource $dataSource, ?int $eventNumber, DataGridFactory $dataGridFactory)
+    public function __construct(IDataSource $dataSource, ?int $eventNumber, DataGridFactory $dataGridFactory, User $user)
     {
         $this->dataSource = $dataSource;
         $this->dataGridFactory = $dataGridFactory;
         $this->eventNumber = $eventNumber;
+        $this->user = $user;
     }
 
     public function createComponentGrid(string $name): DataGrid

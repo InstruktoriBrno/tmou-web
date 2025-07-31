@@ -1,10 +1,10 @@
 <?php declare(strict_types=1);
 namespace InstruktoriBrno\TMOU\Services\Teams;
 
+use Contributte\Datagrid\Response\CsvResponse;
 use Doctrine\ORM\EntityManagerInterface;
 use InstruktoriBrno\TMOU\Model\Event;
 use InstruktoriBrno\TMOU\Model\Team;
-use Contributte\Application\Response\CSVResponse;
 
 class ExportAllTeamsService
 {
@@ -20,7 +20,7 @@ class ExportAllTeamsService
      *
      * @param Event $event
      *
-     * @return CSVResponse
+     * @return CsvResponse
      */
     public function __invoke(Event $event): CSVResponse
     {

@@ -4,8 +4,8 @@ namespace InstruktoriBrno\TMOU\Grids\OrganizatorsGrid;
 use InstruktoriBrno\TMOU\Application\UI\Control;
 use InstruktoriBrno\TMOU\Grids\DataGridFactory;
 use InstruktoriBrno\TMOU\Model\Organizator;
-use Ublaboo\DataGrid\DataGrid;
-use Ublaboo\DataGrid\DataSource\IDataSource;
+use Contributte\Datagrid\DataGrid;
+use Contributte\Datagrid\DataSource\IDataSource;
 
 class OrganizatorsGrid extends Control
 {

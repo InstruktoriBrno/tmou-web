@@ -31,7 +31,7 @@ use Nette\Forms\Controls\SubmitButton;
 use Nette\Security\Identity;
 use Tracy\Debugger;
 use Tracy\ILogger;
-use Ublaboo\DataGrid\DataGrid;
+use Contributte\Datagrid\DataGrid;
 use function array_key_exists;
 use function assert;
 use function sprintf;

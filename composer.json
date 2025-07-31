@@ -29,7 +29,7 @@
 		"nettrine/migrations": "^0.9.0",
 		"contributte/recaptcha": "^3.1",
 		"league/csv": "^9.2",
-		"ublaboo/datagrid": "^6.10",
+		"ublaboo/datagrid": "^7.0",
 		"league/oauth2-client": "^2.4",
 		"stevenmaguire/oauth2-keycloak": "4.0",
 		"ramsey/uuid-doctrine": "^2.0",

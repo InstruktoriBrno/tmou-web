@@ -2,16 +2,18 @@
 namespace InstruktoriBrno\TMOU\Grids\TeamsGrid;
 
 use InstruktoriBrno\TMOU\Grids\DataGridFactory;
-use Ublaboo\DataGrid\DataSource\IDataSource;
+use Nette\Security\User;
+use Contributte\Datagrid\DataSource\IDataSource;
 
 class TeamsGridFactory
 {
-    /** @var DataGridFactory */
-    private $dataGridFactory;
+    private DataGridFactory $dataGridFactory;
+    private User $user;
 
-    public function __construct(DataGridFactory $dataGridFactory)
+    public function __construct(DataGridFactory $dataGridFactory, User $user)
     {
         $this->dataGridFactory = $dataGridFactory;
+        $this->user = $user;
     }
 
     public function create(
@@ -31,6 +33,7 @@ class TeamsGridFactory
             $eventNumber,
             $dataSource,
             $this->dataGridFactory,
+            $this->user,
             $changeToPlaying,
             $changeToQualified,
             $changeToNotQualified,

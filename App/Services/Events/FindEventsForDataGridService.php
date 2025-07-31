@@ -3,7 +3,7 @@ namespace InstruktoriBrno\TMOU\Services\Events;
 
 use Doctrine\ORM\EntityManagerInterface;
 use InstruktoriBrno\TMOU\Model\Event;
-use Ublaboo\DataGrid\DataSource\DoctrineDataSource;
+use Contributte\DataGrid\DataSource\DoctrineDataSource;
 
 class FindEventsForDataGridService
 {

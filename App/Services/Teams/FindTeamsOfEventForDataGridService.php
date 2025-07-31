@@ -4,7 +4,7 @@ namespace InstruktoriBrno\TMOU\Services\Teams;
 use Doctrine\ORM\EntityManagerInterface;
 use InstruktoriBrno\TMOU\Model\Event;
 use InstruktoriBrno\TMOU\Model\Team;
-use Ublaboo\DataGrid\DataSource\DoctrineDataSource;
+use Contributte\DataGrid\DataSource\DoctrineDataSource;
 
 class FindTeamsOfEventForDataGridService
 {
