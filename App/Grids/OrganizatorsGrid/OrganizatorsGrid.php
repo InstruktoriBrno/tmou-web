@@ -4,7 +4,7 @@ namespace InstruktoriBrno\TMOU\Grids\OrganizatorsGrid;
 use InstruktoriBrno\TMOU\Application\UI\Control;
 use InstruktoriBrno\TMOU\Grids\DataGridFactory;
 use InstruktoriBrno\TMOU\Model\Organizator;
-use Contributte\Datagrid\DataGrid;
+use Contributte\Datagrid\Datagrid;
 use Contributte\Datagrid\DataSource\IDataSource;
 
 class OrganizatorsGrid extends Control
@@ -19,7 +19,7 @@ class OrganizatorsGrid extends Control
         $this->dataGridFactory = $dataGridFactory;
     }
 
-    public function createComponentGrid(string $name): DataGrid
+    public function createComponentGrid(string $name): Datagrid
     {
         $grid = $this->dataGridFactory->create($this, $name);
 

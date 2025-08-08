@@ -118,7 +118,7 @@ class TeamRegistrationFormFactory
         }
 
         if ($registration) {
-            $form->addInvisibleReCaptcha('recaptcha')
+            $form->addCaptcha('recaptcha', 'Ochrana před boty')
                 ->setRequired('Ověřte, prosím, že jste člověk.');
         }
 

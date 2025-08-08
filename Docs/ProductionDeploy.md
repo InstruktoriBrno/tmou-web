@@ -9,7 +9,7 @@ Nezbytné předpoklady jsou:
 
 - Základní programátorské IT vzdělání, bez toho se nemá smysl do tohoto pouštět.
 - GIT
-- PHP alespoň ve verzi 7.4
+- PHP alespoň ve verzi 8.4
 - MySQL databázi ve verzi alespoň 5.6 (např. MariaDB 10)
 - Nainstalovaný balíčkovací nástroj [Composer](https://getcomposer.org/) na PATH.
 

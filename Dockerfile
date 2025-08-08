@@ -1,4 +1,4 @@
-FROM php:8.3-apache
+FROM php:8.4-apache
 MAINTAINER Jan Drábek <jan@drabek.cz>
 
 # Enable various PHP extensions
@@ -9,8 +9,9 @@ RUN apt-get update && apt-get install -y \
         unzip \
         git \
         mariadb-client \
+        ibicu-dev \
     && docker-php-ext-configure gd --with-freetype=/usr/include/ --with-jpeg=/usr/include/ \
-    && docker-php-ext-install -j$(nproc) pdo pdo_mysql mysqli opcache gd \
+    && docker-php-ext-install -j$(nproc) pdo pdo_mysql mysqli opcache gd intl \
     && apt-get clean \
     && rm -rf /var/lib/apt/lists/*
 

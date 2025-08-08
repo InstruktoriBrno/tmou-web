@@ -22,7 +22,7 @@ class ExportAllTeamsService
      *
      * @return CsvResponse
      */
-    public function __invoke(Event $event): CSVResponse
+    public function __invoke(Event $event): CsvResponse
     {
         /** @var Team[] $teams */
         $teams = $this->entityManager->getRepository(Team::class)->findBy(['event' => $event]);
@@ -103,6 +103,6 @@ class ExportAllTeamsService
                 $member5 !== null ? $member5->canBeAddedToNewsletter() : null,
             ];
         }
-        return new CSVResponse($records, 'export-all.csv');
+        return new CsvResponse($records, 'export-all.csv');
     }
 }

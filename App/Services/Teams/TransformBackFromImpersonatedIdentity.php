@@ -3,7 +3,7 @@ namespace InstruktoriBrno\TMOU\Services\Teams;
 
 use InstruktoriBrno\TMOU\Enums\UserRole;
 use InstruktoriBrno\TMOU\Services\Organizators\FindOrganizatorByIdService;
-use Nette\Security\Identity;
+use Nette\Security\SimpleIdentity as Identity;
 use Nette\Security\User;
 
 class TransformBackFromImpersonatedIdentity
@@ -23,6 +23,7 @@ class TransformBackFromImpersonatedIdentity
      * @return Identity
      *
      * @throws \InstruktoriBrno\TMOU\Services\Teams\Exceptions\DeimpersonationException
+     * @throws \InstruktoriBrno\TMOU\Services\Teams\Exceptions\DeimpersonationNotPossibleException
      */
     public function __invoke(Identity $identity)
     {
@@ -31,7 +32,7 @@ class TransformBackFromImpersonatedIdentity
             || !isset($identity->getData()['impersonated'], $identity->getData()['impersonatedFrom'])
             || $identity->getData()['impersonated'] !== true
         ) {
-            throw new \InstruktoriBrno\TMOU\Services\Teams\Exceptions\DeimpersonationException;
+            throw new \InstruktoriBrno\TMOU\Services\Teams\Exceptions\DeimpersonationNotPossibleException;
         }
         $organizator = ($this->findOrganizatorByIdService)($identity->getData()['impersonatedFrom']);
         if ($organizator === null) {

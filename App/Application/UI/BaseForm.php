@@ -1,7 +1,7 @@
 <?php declare(strict_types=1);
 namespace InstruktoriBrno\TMOU\Application\UI;
 
-use Contributte\ReCaptcha\Forms\InvisibleReCaptchaField;
+use DrabekDigital\Captcha\CaptchaControl;
 use Nette\Application\UI\Form;
 use Nette\Forms\Controls\BaseControl;
 use Nette\Forms\Controls\SubmitButton;
@@ -10,7 +10,7 @@ use Nextras\FormComponents\Controls\DateTimeControl;
 use Nette\Utils\Html;
 
 /**
- * @method InvisibleReCaptchaField addInvisibleReCaptcha(string $name)
+ * @method CaptchaControl addCaptcha(string $name, string $caption)
  */
 class BaseForm extends Form
 {

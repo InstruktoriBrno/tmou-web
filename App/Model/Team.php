@@ -10,7 +10,7 @@ use InstruktoriBrno\TMOU\Enums\PaymentStatus;
 use InstruktoriBrno\TMOU\Enums\UserRole;
 use InstruktoriBrno\TMOU\Utils\PasswordsSingleton;
 use InstruktoriBrno\TMOU\VO\PasswordResetTokenVO;
-use Nette\Security\Identity;
+use Nette\Security\SimpleIdentity as Identity;
 use Nette\Utils\Random;
 use Nette\Utils\Strings;
 use function hexdec;
@@ -401,7 +401,7 @@ class Team
         if ($newPassword !== null && Strings::length($newPassword) < 8) {
             throw new \InstruktoriBrno\TMOU\Model\Exceptions\PasswordTooShortException;
         }
-        if ($this->passwordHash !== null && $password !== null && !$this->checkPassword($password)) { // @phpstan-ignore-line
+        if (isset($this->passwordHash) && $password !== null && !$this->checkPassword($password)) {
             throw new \InstruktoriBrno\TMOU\Model\Exceptions\InvalidPasswordException;
         }
         $numbers = [];

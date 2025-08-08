@@ -3,7 +3,7 @@ namespace InstruktoriBrno\TMOU\Services\Organizators;
 
 use Doctrine\ORM\EntityManagerInterface;
 use InstruktoriBrno\TMOU\Model\Organizator;
-use Contributte\DataGrid\DataSource\DoctrineDataSource;
+use Contributte\Datagrid\DataSource\DoctrineDataSource;
 
 class FindOrganizatorForDataGrid
 {

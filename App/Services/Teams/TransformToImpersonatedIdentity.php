@@ -2,7 +2,7 @@
 namespace InstruktoriBrno\TMOU\Services\Teams;
 
 use InstruktoriBrno\TMOU\Enums\UserRole;
-use Nette\Security\Identity;
+use Nette\Security\SimpleIdentity as Identity;
 use Nette\Security\User;
 
 class TransformToImpersonatedIdentity

@@ -4,7 +4,7 @@ namespace InstruktoriBrno\TMOU\Services\MenuItems;
 use Doctrine\ORM\EntityManagerInterface;
 use InstruktoriBrno\TMOU\Model\Event;
 use InstruktoriBrno\TMOU\Model\MenuItem;
-use Contributte\DataGrid\DataSource\DoctrineDataSource;
+use Contributte\Datagrid\DataSource\DoctrineDataSource;
 
 class FindMenuItemsForDataGridService
 {

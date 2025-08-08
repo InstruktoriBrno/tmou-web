@@ -22,7 +22,7 @@ class ExportTeamMembersForNewsletterService
      *
      * @return CsvResponse
      */
-    public function __invoke(Event $event): CSVResponse
+    public function __invoke(Event $event): CsvResponse
     {
         $qb = $this->entityManager->createQueryBuilder();
         $qb->from(TeamMember::class, 'tm')
@@ -46,6 +46,6 @@ class ExportTeamMembersForNewsletterService
                 $member->getEmail(),
             ];
         }
-        return new CSVResponse($records, 'export-newsletter.csv');
+        return new CsvResponse($records, 'export-newsletter.csv');
     }
 }

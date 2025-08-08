@@ -9,7 +9,7 @@ use InstruktoriBrno\TMOU\Services\Events\FindEventsService;
 use InstruktoriBrno\TMOU\Services\MenuItems\FindMenuItemsForDisplayService;
 use InstruktoriBrno\TMOU\Services\Teams\FindTeamService;
 use Nette\DI\Attributes\Inject;
-use Nette\Security\Identity;
+use Nette\Security\SimpleIdentity as Identity;
 use function count;
 use InstruktoriBrno\TMOU\Enums\Action;
 use InstruktoriBrno\TMOU\Enums\Flash;

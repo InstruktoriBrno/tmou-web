@@ -8,7 +8,7 @@ use InstruktoriBrno\TMOU\Grids\DataGridFactory;
 use InstruktoriBrno\TMOU\Model\MenuItem;
 use Nette\Security\User;
 use Nette\Utils\Html;
-use Contributte\Datagrid\DataGrid;
+use Contributte\Datagrid\Datagrid;
 use Contributte\Datagrid\DataSource\IDataSource;
 use function assert;
 
@@ -28,7 +28,7 @@ class MenuItemsGrid extends Control
         $this->user = $user;
     }
 
-    public function createComponentGrid(string $name): DataGrid
+    public function createComponentGrid(string $name): Datagrid
     {
         $grid = $this->dataGridFactory->create($this, $name);
 

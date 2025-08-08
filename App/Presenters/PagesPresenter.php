@@ -62,7 +62,7 @@ use InstruktoriBrno\TMOU\Utils\SmallTexyFilter;
 use Nette\Application\Routers\Route;
 use Nette\Application\UI\Form;
 use Nette\Forms\Controls\TextInput;
-use Nette\Security\Identity;
+use Nette\Security\SimpleIdentity as Identity;
 use Nette\Utils\ArrayHash;
 use Nette\Utils\Strings;
 use Nette\Utils\Validators;

@@ -5,7 +5,7 @@ use DateTimeImmutable;
 use Doctrine\ORM\Mapping as ORM;
 use InstruktoriBrno\TMOU\Enums\OrganizatorRole;
 use InstruktoriBrno\TMOU\Enums\UserRole;
-use Nette\Security\Identity;
+use Nette\Security\SimpleIdentity as Identity;
 use Nette\Utils\Validators;
 use Ramsey\Uuid\UuidInterface;
 

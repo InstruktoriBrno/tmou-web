@@ -12,8 +12,8 @@
 
         <link rel="stylesheet" href="{$basePath}/assets/css/app.css?{$buildTime}">
         {if isset($hasDatagrid) && $hasDatagrid}
-            <link rel="stylesheet" type="text/css" href="{$basePath}/assets/css/datagrid.css?{$buildTime}">
-            <link rel="stylesheet" type="text/css" href="{$basePath}/assets/css/datagrid-spinners.css?{$buildTime}">
+            {* Copied from https://cdn.jsdelivr.net/npm/@contributte/datagrid@master/dist/datagrid-full.css as NPM package @contributte/datagrid did not have the corrected version *}
+            <link rel="stylesheet" type="text/css" href="{$basePath}/assets/css/datagrid-full.css?{$buildTime}">
         {/if}
         <link rel="stylesheet" href="{$basePath}/assets/fontawesome/css/all.css?{$buildTime}">
         {if isset($hasDatetimepicker) && $hasDatetimepicker}
@@ -236,13 +236,12 @@
                 $('span#make-keyboard-scrolling-great-again').focus();
             </script>
             {if isset($hasRecaptcha) && $hasRecaptcha}
-                <script src="https://www.google.com/recaptcha/api.js?render=explicit"></script>
-                <script src="{$basePath}/assets/js/invisibleRecaptcha.js?{$buildTime}"></script>
+                {DrabekDigital\Captcha\Assets\CaptchaFrontend::getJavascriptStatic(\DrabekDigital\Captcha\Enums\CaptchaType::TURNSTILE)|noescape}
+                {DrabekDigital\Captcha\Assets\CaptchaFrontend::getLocalJavascriptStatic()|noescape}
             {/if}
             {if isset($hasDatagrid) && $hasDatagrid}
-                <script src="{$basePath}/assets/js/datagrid.js?{$buildTime}"></script>
-                <script src="{$basePath}/assets/js/datagrid-instant-url-refresh.js?{$buildTime}"></script>
-                <script src="{$basePath}/assets/js/datagrid-spinners.js?{$buildTime}"></script>
+                {* Copied from https://cdn.jsdelivr.net/npm/@contributte/datagrid@master/dist/datagrid-full.js as NPM package @contributte/datagrid did not have the corrected version *}
+                <script src="{$basePath}/assets/js/datagrid-full.js?{$buildTime}"></script>
             {/if}
             {if isset($hasSelectize) && $hasSelectize}
                 <script src="{$basePath}/assets/js/selectize.min.js?{$buildTime}"></script>

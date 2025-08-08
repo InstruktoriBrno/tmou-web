@@ -26,13 +26,16 @@ parameters:
     cron:
         key:
     fio:
-        apiURL: https://www.fio.cz/ib_api/rest/periods/__TOKEN__/__FROM__/__TO__/transactions.json
+        apiURL: https://fioapi.fio.cz/v1/rest/periods/__TOKEN__/__FROM__/__TO__/transactions.json
         token:
         notificationEmail:
 
-recaptcha:
-    siteKey: 6LdVSJwUAAAAAOBUowvrUg3I6JzKbbX22WDGwVso
-    secretKey: 6LdVSJwUAAAAAFwQMlcmoLF8fwaUQFEgwl0aCshl
+captcha:
+    type: turnstile
+    secretKey: 0x4AAAAAABkcNFq1VO4SavjcV2oSGFgWWLQ
+    siteKey: 0x4AAAAAABkcNPHNOkIK18Z3
+    theme: light
+    size: normal
 
 application:
     errorPresenter: Error
@@ -241,7 +244,7 @@ latte:
 
 extensions:
     console: Contributte\Console\DI\ConsoleExtension(%consoleMode%)
-    recaptcha: Contributte\ReCaptcha\DI\ReCaptchaExtension
+    captcha: DrabekDigital\Captcha\DI\CaptchaExtension
 
     # Common
     nettrine.migrations: Nettrine\Migrations\DI\MigrationsExtension
