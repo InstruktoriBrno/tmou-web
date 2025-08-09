@@ -6,8 +6,7 @@ use InstruktoriBrno\TMOU\Model\Event;
 
 class EventMacroDataProvider
 {
-    /** @var Event|null */
-    private $event;
+    private ?Event $event;
 
     public function setEvent(?Event $event): void
     {
@@ -20,17 +19,17 @@ class EventMacroDataProvider
     }
     public function getEventId(): string
     {
-        return $this->event !== null ? (string) $this->event->getId() : '';
+        return isset($this->event) ? (string) $this->event->getId() : '';
     }
 
     public function getEventName(): string
     {
-        return $this->event !== null ? $this->event->getName() : '';
+        return isset($this->event) ? $this->event->getName() : '';
     }
 
     public function getEventNumber(): string
     {
-        return $this->event !== null ? (string) $this->event->getNumber() : '';
+        return isset($this->event) ? (string) $this->event->getNumber() : '';
     }
 
     public function getEventMotto(): string
@@ -40,40 +39,40 @@ class EventMacroDataProvider
 
     public function getEventTotalTeamCount(): ?string
     {
-        return $this->event !== null && $this->event->getTotalTeamCount() !== null ? (string) $this->event->getTotalTeamCount() : null;
+        return isset($this->event) && $this->event->getTotalTeamCount() !== null ? (string) $this->event->getTotalTeamCount() : null;
     }
     public function getEventQualifiedTeamCount(): ?string
     {
-        return $this->event !== null && $this->event->getQualifiedTeamCount() !== null ? (string) $this->event->getQualifiedTeamCount() : null;
+        return isset($this->event) && $this->event->getQualifiedTeamCount() !== null ? (string) $this->event->getQualifiedTeamCount() : null;
     }
 
     public function getEventGameStart(): ?DateTimeImmutable
     {
-        return $this->event !== null ? $this->event->getEventStart() : null;
+        return isset($this->event) ? $this->event->getEventStart() : null;
     }
 
     public function getEventGameEnd(): ?DateTimeImmutable
     {
-        return $this->event !== null ? $this->event->getEventEnd() : null;
+        return isset($this->event) ? $this->event->getEventEnd() : null;
     }
 
     public function getEventQualificationStart(): ?DateTimeImmutable
     {
-        return $this->event !== null ? $this->event->getQualificationStart() : null;
+        return isset($this->event) ? $this->event->getQualificationStart() : null;
     }
 
     public function getEventQualificationEnd(): ?DateTimeImmutable
     {
-        return $this->event !== null ? $this->event->getQualificationEnd() : null;
+        return isset($this->event) ? $this->event->getQualificationEnd() : null;
     }
 
     public function getRegistrationDeadline(): ?DateTimeImmutable
     {
-        return $this->event !== null ? $this->event->getRegistrationDeadline() : null;
+        return isset($this->event) ? $this->event->getRegistrationDeadline() : null;
     }
 
     public function getChangeDeadline(): ?DateTimeImmutable
     {
-        return $this->event !== null ? $this->event->getChangeDeadlineComputed() : null;
+        return isset($this->event) ? $this->event->getChangeDeadlineComputed() : null;
     }
 }

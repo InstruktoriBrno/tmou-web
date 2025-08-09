@@ -9,8 +9,7 @@ class TeamRegistrationFormFactory
 {
     use SmartObject;
 
-    /** @var FormFactory */
-    private $factory;
+    private FormFactory $factory;
 
     public function __construct(FormFactory $factory)
     {
@@ -119,7 +118,7 @@ class TeamRegistrationFormFactory
         }
 
         if ($registration) {
-            $form->addInvisibleReCaptcha('recaptcha')
+            $form->addCaptcha('recaptcha', 'Ochrana před boty')
                 ->setRequired('Ověřte, prosím, že jste člověk.');
         }
 

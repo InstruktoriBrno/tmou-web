@@ -1,9 +1,11 @@
 <?php declare(strict_types=1);
 namespace App;
 
+use InstruktoriBrno\TMOU\Utils\PasswordsSingleton;
 use Nette\DI\Compiler;
+use Nette\PhpGenerator\ClassType;
 use function getenv;
-use Nette\Configurator;
+use Nette\Bootstrap\Configurator;
 
 class Booting
 {
@@ -14,7 +16,7 @@ class Booting
         // This enables debug mode when accessed (in docker) from "localhost"
         // When using non-standard deployment you may want to add value of $_SERVER['REMOTE_ADDR']
         $allowedDebugAddresses = ['127.0.0.1', '::1', '192.168.99.1'];
-        if (((bool) getenv('TRACY_DEBUG_ENABLE')) === true) {
+        if (((bool) getenv('TRACY_DEBUG_ENABLE')) === true && isset($_SERVER['REMOTE_ADDR'])) {
             $allowedDebugAddresses[] = $_SERVER['REMOTE_ADDR'];
         }
         $configurator->setDebugMode($allowedDebugAddresses);
@@ -26,10 +28,22 @@ class Booting
         $configurator->addConfig(__DIR__ . '/Config/common.neon');
         $configurator->addConfig(__DIR__ . '/Config/local.neon');
 
+        // Add build time to the container
         $configurator->onCompile[] = function (Configurator $sender, Compiler $compiler): void {
             $compiler->addConfig(['parameters' => [
                 'buildTime' => time(),
             ]]);
+        };
+
+        // Ensure PasswordsSingleton is always instantiated
+        $configurator->onCompile[] = function (Configurator $sender, Compiler $compiler): void {
+            $compiler->addExtension('passwordsInit', new class extends \Nette\DI\CompilerExtension {
+                public function afterCompile(ClassType $class): void
+                {
+                    $initialize = $class->getMethod('initialize');
+                    $initialize->addBody('$this->getByType(?);', [PasswordsSingleton::class]);
+                }
+            });
         };
 
         return $configurator;

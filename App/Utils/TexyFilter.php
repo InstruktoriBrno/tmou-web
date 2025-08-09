@@ -21,17 +21,13 @@ use function trim;
 
 class TexyFilter
 {
-    /** @var Texy */
-    private $texy;
+    private ?Texy $texy = null;
 
-    /** @var GameClockService */
-    private $gameClockService;
+    private GameClockService $gameClockService;
 
-    /** @var TeamMacroDataProvider */
-    private $teamMacroDataProvider;
+    private TeamMacroDataProvider $teamMacroDataProvider;
 
-    /** @var EventMacroDataProvider */
-    private $eventMacroDataProvider;
+    private EventMacroDataProvider $eventMacroDataProvider;
 
     private EventQualificationResultsControlFactory $eventQualificationResultsControlFactory;
 

@@ -12,11 +12,9 @@ use Nette\Utils\ArrayHash;
 
 class BatchGameStatusChangeFacade
 {
-    /** @var FindTeamsForMailingInEventService */
-    private $findTeamsForMailingInEventService;
+    private FindTeamsForMailingInEventService $findTeamsForMailingInEventService;
 
-    /** @var EntityManagerInterface */
-    private $entityManager;
+    private EntityManagerInterface $entityManager;
 
     public function __construct(
         FindTeamsForMailingInEventService $findTeamsForMailingInEventService,

@@ -10,9 +10,7 @@ use Nette\Security\Permission;
 
 class Authorizator implements IAuthorizator
 {
-
-    /** @var Permission */
-    private $acl;
+    private Permission $acl;
 
     public function __construct()
     {

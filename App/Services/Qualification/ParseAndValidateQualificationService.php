@@ -3,6 +3,7 @@ namespace InstruktoriBrno\TMOU\Services\Qualification;
 
 use DOMDocument;
 use DOMNode;
+use DOMElement;
 use DOMNodeList;
 use Nette\Http\FileUpload;
 use function array_map;
@@ -19,7 +20,7 @@ class ParseAndValidateQualificationService
      * Parse, validate and return qualification XML specification
      *
      * @param FileUpload $specificationFile
-     * @return array{maxNumberOfAnswers: DOMNode, secondsPenalizationAfterIncorrectAnswer: DOMNode, levels: DOMNodeList<DOMNode>}
+     * @return array{maxNumberOfAnswers: DOMNode, secondsPenalizationAfterIncorrectAnswer: DOMNode, levels: DOMNodeList<DOMElement>}
      * @throws \InstruktoriBrno\TMOU\Services\Qualification\Exceptions\InvalidXmlSchemaException
      */
     public function __invoke(FileUpload $specificationFile): array

@@ -7,8 +7,7 @@ use InstruktoriBrno\TMOU\Model\TeamSSOSession;
 
 class DeleteTeamService
 {
-    /** @var EntityManagerInterface */
-    private $entityManager;
+    private EntityManagerInterface $entityManager;
 
     public function __construct(
         EntityManagerInterface $entityManager
@@ -30,7 +29,7 @@ class DeleteTeamService
         try {
             $this->entityManager->getConnection()->delete($tableNameSSO, ['team_id' => $teamId]);
             $this->entityManager->getConnection()->delete($tableName, ['id' => $teamId]);
-        } catch (\Doctrine\DBAL\Exception\InvalidArgumentException | \Doctrine\DBAL\DBALException $e) {
+        } catch (\Doctrine\DBAL\Exception\InvalidArgumentException | \Doctrine\DBAL\Exception $e) {
             throw new \InstruktoriBrno\TMOU\Services\Teams\Exceptions\TeamDeleteFailedException($e->getMessage(), $e->getCode(), $e);
         }
     }

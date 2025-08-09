@@ -24,7 +24,6 @@ class EventQualificationResultsControl extends Control
         FindPuzzlesOfEventService $findPuzzlesOfEventService,
         FindTeamResultsByLevelsService $findTeamResultsByLevelsService
     ) {
-        parent::__construct();
         $this->findResultsService = $findResultsService;
         $this->findLevelsService = $findLevelsService;
         $this->findPuzzlesOfEventService = $findPuzzlesOfEventService;

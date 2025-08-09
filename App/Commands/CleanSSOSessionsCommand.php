@@ -2,6 +2,7 @@
 namespace InstruktoriBrno\TMOU\Commands;
 
 use InstruktoriBrno\TMOU\Facades\Teams\CleanSSOSessions;
+use Nette\DI\Attributes\Inject;
 use Symfony\Component\Console\Command\Command;
 use Symfony\Component\Console\Input\InputInterface;
 use Symfony\Component\Console\Output\OutputInterface;
@@ -10,8 +11,8 @@ class CleanSSOSessionsCommand extends Command
 {
     public static $defaultName = 'clean-sso-sessions';
 
-    /** @var CleanSSOSessions @inject */
-    public $cleanSSOSessions;
+    #[Inject]
+    public CleanSSOSessions $cleanSSOSessions;
 
     public function __construct(CleanSSOSessions $cleanSSOSessions)
     {

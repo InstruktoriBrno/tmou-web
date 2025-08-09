@@ -1,7 +1,7 @@
 <?php declare(strict_types=1);
 namespace InstruktoriBrno\TMOU\Services\Teams;
 
-use Doctrine\Common\Persistence\ObjectRepository; // phpcs:ignore
+use Doctrine\Persistence\ObjectRepository; // phpcs:ignore
 use Doctrine\ORM\EntityManagerInterface;
 use Doctrine\ORM\EntityRepository;
 use InstruktoriBrno\TMOU\Enums\GameStatus;
@@ -10,8 +10,7 @@ use InstruktoriBrno\TMOU\Model\Team;
 
 class FindTeamsForMailingInEventService
 {
-    /** @var EntityManagerInterface */
-    private $entityManager;
+    private EntityManagerInterface $entityManager;
 
     /** @var ObjectRepository<Team>|EntityRepository<Team> */
     private $teamRepository;

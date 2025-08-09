@@ -10,14 +10,11 @@ use Nette\Utils\ArrayHash;
 
 class SaveThreadFacade
 {
-    /** @var EntityManagerInterface */
-    private $entityManager;
+    private EntityManagerInterface $entityManager;
 
-    /** @var FindEventService */
-    private $findEventService;
+    private FindEventService $findEventService;
 
-    /** @var FindThreadService */
-    private $findThreadService;
+    private FindThreadService $findThreadService;
 
     public function __construct(
         EntityManagerInterface $entityManager,

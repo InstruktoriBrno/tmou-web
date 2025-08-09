@@ -20,36 +20,36 @@ use Nette\Utils\Strings;
 use Tracy\Debugger;
 use Tracy\ILogger;
 use function realpath;
+use Nette\DI\Attributes\Inject;
 
 final class FilesPresenter extends BasePresenter
 {
+    #[Inject]
+    public FindStorageDirectoriesService $findStorageDirectoriesService;
 
-    /** @var FindStorageDirectoriesService @inject */
-    public $findStorageDirectoriesService;
+    #[Inject]
+    public FindStorageSubdirFilesService $findStorageSubdirFilesService;
 
-    /** @var FindStorageSubdirFilesService @inject */
-    public $findStorageSubdirFilesService;
+    #[Inject]
+    public CreateNewDirectoryFormFactory $createNewDirectoryFormFactory;
 
-    /** @var CreateNewDirectoryFormFactory @inject */
-    public $createNewDirectoryFormFactory;
+    #[Inject]
+    public UploadFileFormFactory $uploadFileFormFactory;
 
-    /** @var UploadFileFormFactory @inject */
-    public $uploadFileFormFactory;
+    #[Inject]
+    public UploadToStorageDirectoryService $uploadToStorageDirectoryService;
 
-    /** @var UploadToStorageDirectoryService @inject */
-    public $uploadToStorageDirectoryService;
+    #[Inject]
+    public CreateNewDirectoryInStorageDirectoryService $createNewDirectoryInStorageDirectoryService;
 
-    /** @var CreateNewDirectoryInStorageDirectoryService @inject */
-    public $createNewDirectoryInStorageDirectoryService;
+    #[Inject]
+    public DeleteStorageFileFacade $deleteStorageFileFacade;
 
-    /** @var DeleteStorageFileFacade @inject */
-    public $deleteStorageFileFacade;
+    #[Inject]
+    public ChangeFileFormFactory $changeFileFormFactory;
 
-    /** @var ChangeFileFormFactory @inject */
-    public $changeFileFormFactory;
-
-    /** @var ChangeStorageFileFacade @inject */
-    public $changeStorageFileFacade;
+    #[Inject]
+    public ChangeStorageFileFacade $changeStorageFileFacade;
 
     /** @privilege(InstruktoriBrno\TMOU\Enums\Resource::ADMIN_FILES,InstruktoriBrno\TMOU\Enums\Action::MANAGE,InstruktoriBrno\TMOU\Enums\PrivilegeEnforceMethod::TRIGGER_ADMIN_LOGIN) */
     public function actionDefault(?string $subdir = null): void
@@ -91,7 +91,7 @@ final class FilesPresenter extends BasePresenter
             $this->template->files = ($this->findStorageSubdirFilesService)($subdir);
         } catch (\InstruktoriBrno\TMOU\Facades\Files\Exceptions\FileDeleteFailedException $exception) {
             Debugger::log($exception, ILogger::EXCEPTION);
-            $this->flashMessage("Smazání souboru ${name} selhalo");
+            $this->flashMessage("Smazání souboru {$name} selhalo");
         }
 
         if ($this->isAjax()) {
@@ -113,7 +113,7 @@ final class FilesPresenter extends BasePresenter
             /** @var FileUpload[] $fileUploads */
             $fileUploads = $values->files;
             [$stored, $skipped] = ($this->uploadToStorageDirectoryService)($fileUploads, $values->overwrite, $subdir);
-            $this->flashMessage("Nahráno bylo ${stored} souborů, přeskočeno bylo ${skipped} souborů.", Flash::SUCCESS);
+            $this->flashMessage("Nahráno bylo {$stored} souborů, přeskočeno bylo {$skipped} souborů.", Flash::SUCCESS);
             $this->template->files = ($this->findStorageSubdirFilesService)($subdir);
             if ($this->isAjax()) {
                 $this->redrawControl('files');

@@ -1,4 +1,4 @@
-FROM php:7.4-apache
+FROM php:8.4-apache
 MAINTAINER Jan Drábek <jan@drabek.cz>
 
 # Enable various PHP extensions
@@ -9,19 +9,20 @@ RUN apt-get update && apt-get install -y \
         unzip \
         git \
         mariadb-client \
+        libicu-dev \
     && docker-php-ext-configure gd --with-freetype=/usr/include/ --with-jpeg=/usr/include/ \
-    && docker-php-ext-install -j$(nproc) pdo pdo_mysql mysqli opcache gd \
+    && docker-php-ext-install -j$(nproc) pdo pdo_mysql mysqli opcache gd intl \
     && apt-get clean \
     && rm -rf /var/lib/apt/lists/*
 
 # Enable XDebug
-RUN pecl install xdebug-2.9.6 \
+RUN pecl install xdebug-3.4.3 \
     && docker-php-ext-enable xdebug \
-    && echo "xdebug.remote_enable=on" >> /usr/local/etc/php/conf.d/docker-php-ext-xdebug.ini \
-    && echo "xdebug.remote_autostart=off" >> /usr/local/etc/php/conf.d/docker-php-ext-xdebug.ini \
-    && echo "xdebug.remote_connect_back=off" >> /usr/local/etc/php/conf.d/docker-php-ext-xdebug.ini \
-    && echo "xdebug.idekey=PHPSTORM" >> /usr/local/etc/php/conf.d/docker-php-ext-xdebug.ini \
-    && echo "xdebug.remote_host=docker.for.mac.localhost" >> /usr/local/etc/php/conf.d/docker-php-ext-xdebug.ini
+    && echo "xdebug.mode=debug" >> /usr/local/etc/php/conf.d/docker-php-ext-xdebug.ini \
+    && echo "xdebug.start_with_request=no" >> /usr/local/etc/php/conf.d/docker-php-ext-xdebug.ini \
+    && echo "xdebug.discover_client_host=0" >> /usr/local/etc/php/conf.d/docker-php-ext-xdebug.ini \
+    && echo "xdebug.client_host=docker.for.mac.localhost" >> /usr/local/etc/php/conf.d/docker-php-ext-xdebug.ini \
+    && echo "xdebug.idekey=PHPSTORM" >> /usr/local/etc/php/conf.d/docker-php-ext-xdebug.ini
 
 # Install self-signed SSL certificate and enable SSL in Apache, also move document root and setup proxy to Keycloack
 RUN mkdir -p /etc/ssl/localcerts \
@@ -35,7 +36,7 @@ RUN mkdir -p /etc/ssl/localcerts \
 # Install Composer
 # If this line fails when building Docker container, please check the checksum on https://getcomposer.org/download/
 RUN php -r "copy('https://getcomposer.org/installer', 'composer-setup.php');" \
-    && php -r "if (hash_file('sha384', 'composer-setup.php') === '55ce33d7678c5a611085589f1f3ddf8b3c52d662cd01d4ba75c0ee0459970c2200a51f492d557530c71c15d8dba01eae') { echo 'Installer verified'; } else { echo 'Installer corrupt'; unlink('composer-setup.php'); } echo PHP_EOL;" \
+    && php -r "if (hash_file('sha384', 'composer-setup.php') === 'dac665fdc30fdd8ec78b38b9800061b4150413ff2e3b6f88543c636f7cd84f6db9189d43a81e5503cda447da73c7e5b6') { echo 'Installer verified'; } else { echo 'Installer corrupt'; unlink('composer-setup.php'); } echo PHP_EOL;" \
     && php composer-setup.php --install-dir /usr/local/bin \
     && php -r "unlink('composer-setup.php');" \
     && ln -s /usr/local/bin/composer.phar /usr/local/bin/composer

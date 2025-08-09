@@ -12,14 +12,11 @@ class MenuItemFormFactory
 {
     use SmartObject;
 
-    /** @var FormFactory */
-    private $factory;
+    private FormFactory $factory;
 
-    /** @var FindEventsPairsService */
-    private $findEventsPairsService;
+    private FindEventsPairsService $findEventsPairsService;
 
-    /** @var FindPagesPairsService */
-    private $findPagesPairsService;
+    private FindPagesPairsService $findPagesPairsService;
 
     public function __construct(FindEventsPairsService $findEventsPairsService, FindPagesPairsService $findPagesPairsService, FormFactory $factory)
     {
@@ -44,7 +41,7 @@ class MenuItemFormFactory
         $form->addText('label', 'Nadpis skupiny')
             ->setRequired(false)
             ->setOption('description', 'Bude použit nadpis prvního odkazu ve skupině.');
-        $form->addText('weight', 'Váha ve skupině')
+        $form->addInteger('weight', 'Váha ve skupině')
             ->setRequired('Zadejte, prosím, váhu odkazu v rámci skupiny.')
             ->setOption('description', ' Těžší položky budou níže.')
             ->addRule(Form::NUMERIC, 'Váha musí být celé číslo.')

@@ -9,14 +9,11 @@ use Nette\Utils\Strings;
 
 class RequestPasswordResetFacade
 {
-    /** @var EntityManagerInterface */
-    private $entityManager;
+    private EntityManagerInterface $entityManager;
 
-    /** @var SendResetPasswordEmailService */
-    private $sendResetPasswordEmailService;
+    private SendResetPasswordEmailService $sendResetPasswordEmailService;
 
-    /** @var FindTeamByEmailService */
-    private $findTeamByEmailService;
+    private FindTeamByEmailService $findTeamByEmailService;
 
     public function __construct(
         EntityManagerInterface $entityManager,

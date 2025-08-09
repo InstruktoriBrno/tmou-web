@@ -4,28 +4,20 @@ namespace InstruktoriBrno\TMOU\Facades\Teams;
 use Doctrine\ORM\EntityManagerInterface;
 use InstruktoriBrno\TMOU\Model\Event;
 use InstruktoriBrno\TMOU\Services\Teams\FindTeamByEmailService;
-use InstruktoriBrno\TMOU\Services\Teams\SendResetPasswordEmailService;
 use Nette\Utils\Strings;
 
 class ConsumePasswordResetFacade
 {
-    /** @var EntityManagerInterface */
-    private $entityManager;
+    private EntityManagerInterface $entityManager;
 
-    /** @var SendResetPasswordEmailService */
-    private $sendResetPasswordEmailService;
-
-    /** @var FindTeamByEmailService */
-    private $findTeamByEmailService;
+    private FindTeamByEmailService $findTeamByEmailService;
 
     public function __construct(
         EntityManagerInterface $entityManager,
         FindTeamByEmailService $findTeamByEmailService,
-        SendResetPasswordEmailService $sendResetPasswordEmailService
     ) {
         $this->entityManager = $entityManager;
         $this->findTeamByEmailService = $findTeamByEmailService;
-        $this->sendResetPasswordEmailService = $sendResetPasswordEmailService;
     }
 
     /**

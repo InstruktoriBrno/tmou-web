@@ -13,14 +13,11 @@ use Nette\Utils\ArrayHash;
 class SaveEventFacade
 {
 
-    /** @var EntityManagerInterface */
-    private $entityManager;
+    private EntityManagerInterface $entityManager;
 
-    /** @var IsEventNumberUniqueService */
-    private $isEventNumberUniqueService;
+    private IsEventNumberUniqueService $isEventNumberUniqueService;
 
-    /** @var UploadToStorageDirectoryService */
-    private $uploadToStorageDirectoryService;
+    private UploadToStorageDirectoryService $uploadToStorageDirectoryService;
 
     private CreateNewDirectoryInStorageDirectoryService $createNewDirectoryInStorageDirectoryService;
 
@@ -103,7 +100,7 @@ class SaveEventFacade
                 $values->paymentDeadline,
                 GameStatus::fromScalar($values->afterRegistrationTeamGameStatus),
                 $values->selfreportedEntryFee,
-                $values->sorting ? (float) $values->sorting : null,
+                $values->sorting ? (float) $values->sorting : (float) $values->number,
             );
         }
         if (!($this->isEventNumberUniqueService)($event)) {

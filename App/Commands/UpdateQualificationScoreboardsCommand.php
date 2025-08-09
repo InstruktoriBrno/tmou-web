@@ -2,6 +2,7 @@
 namespace InstruktoriBrno\TMOU\Commands;
 
 use InstruktoriBrno\TMOU\Facades\Qualification\UpdateScoreboardsFacade;
+use Nette\DI\Attributes\Inject;
 use Symfony\Component\Console\Command\Command;
 use Symfony\Component\Console\Input\InputInterface;
 use Symfony\Component\Console\Output\OutputInterface;
@@ -10,8 +11,8 @@ class UpdateQualificationScoreboardsCommand extends Command
 {
     public static $defaultName = 'update-qualification-scoreboards';
 
-    /** @var UpdateScoreboardsFacade @inject */
-    public $updateScoreboardsFacade;
+    #[Inject]
+    public UpdateScoreboardsFacade $updateScoreboardsFacade;
 
     public function __construct(UpdateScoreboardsFacade $updateScoreboardsFacade)
     {

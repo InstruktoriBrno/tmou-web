@@ -1,15 +1,14 @@
 <?php declare(strict_types=1);
 namespace InstruktoriBrno\TMOU\Services\Teams;
 
+use Contributte\Datagrid\Response\CsvResponse;
 use Doctrine\ORM\EntityManagerInterface;
 use InstruktoriBrno\TMOU\Model\Event;
 use InstruktoriBrno\TMOU\Model\Team;
-use Ublaboo\Responses\CSVResponse;
 
 class ExportAllTeamsService
 {
-    /** @var EntityManagerInterface */
-    private $entityManager;
+    private EntityManagerInterface $entityManager;
 
     public function __construct(EntityManagerInterface $entityManager)
     {
@@ -21,9 +20,9 @@ class ExportAllTeamsService
      *
      * @param Event $event
      *
-     * @return CSVResponse
+     * @return CsvResponse
      */
-    public function __invoke(Event $event): CSVResponse
+    public function __invoke(Event $event): CsvResponse
     {
         /** @var Team[] $teams */
         $teams = $this->entityManager->getRepository(Team::class)->findBy(['event' => $event]);
@@ -104,6 +103,6 @@ class ExportAllTeamsService
                 $member5 !== null ? $member5->canBeAddedToNewsletter() : null,
             ];
         }
-        return new CSVResponse($records, 'export-all.csv');
+        return new CsvResponse($records, 'export-all.csv');
     }
 }

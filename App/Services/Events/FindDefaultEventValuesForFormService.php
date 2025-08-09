@@ -6,8 +6,7 @@ use InstruktoriBrno\TMOU\Enums\GameStatus;
 
 class FindDefaultEventValuesForFormService
 {
-    /** @var FindLatestEventService */
-    private $findLatestEventService;
+    private FindLatestEventService $findLatestEventService;
 
     public function __construct(FindLatestEventService $findLatestEventService)
     {

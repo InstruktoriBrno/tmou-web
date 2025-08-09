@@ -2,7 +2,6 @@
 namespace InstruktoriBrno\TMOU\Services\Files;
 
 use Nette\Utils\FileSystem;
-use Nette\Utils\Strings;
 use function file_exists;
 use function realpath;
 
@@ -18,8 +17,8 @@ class CreateNewDirectoryInStorageDirectoryService
     {
         $storageDir = __DIR__ . '/../../../www/storage';
         $subpath = $storageDir . '/' . $subdir;
-        if (!Strings::startsWith(realpath($subpath), realpath($storageDir))) {
-            throw new \InstruktoriBrno\TMOU\Services\Files\Exceptions\InvalidStorageSubdirException("Subdir ${subdir} (${subpath} is outside storage dir.");
+        if (realpath($subpath) === false || realpath($storageDir) === false || !str_starts_with(realpath($subpath), realpath($storageDir))) {
+            throw new \InstruktoriBrno\TMOU\Services\Files\Exceptions\InvalidStorageSubdirException("Subdir {$subdir} ({$subpath} is outside storage dir.");
         }
         $newDirectoryPath = $subpath . '/' . $newDirectoryName;
         if (file_exists($newDirectoryPath)) {

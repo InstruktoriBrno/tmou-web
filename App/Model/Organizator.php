@@ -5,65 +5,39 @@ use DateTimeImmutable;
 use Doctrine\ORM\Mapping as ORM;
 use InstruktoriBrno\TMOU\Enums\OrganizatorRole;
 use InstruktoriBrno\TMOU\Enums\UserRole;
-use Nette\Security\Identity;
+use Nette\Security\SimpleIdentity as Identity;
 use Nette\Utils\Validators;
 use Ramsey\Uuid\UuidInterface;
 
-/**
- * @ORM\Entity
- * @ORM\Table(name="organizator")
- */
+#[ORM\Entity]
+#[ORM\Table(name: "organizator")]
 class Organizator
 {
-    /**
-     * @ORM\Id
-     * @ORM\Column(type="integer")
-     * @ORM\GeneratedValue
-     * @var integer
-     */
-    protected $id;
+    #[ORM\Id]
+    #[ORM\Column(type: "integer")]
+    #[ORM\GeneratedValue]
+    protected int $id;
 
-    /**
-     * @ORM\Column(type="string")
-     * @var string
-     */
-    protected $givenName;
+    #[ORM\Column(type: "string")]
+    protected string $givenName;
 
-    /**
-     * @ORM\Column(type="string")
-     * @var string
-     */
-    protected $familyName;
+    #[ORM\Column(type: "string")]
+    protected string $familyName;
 
-    /**
-     * @ORM\Column(type="string")
-     * @var string
-     */
-    protected $username;
+    #[ORM\Column(type: "string")]
+    protected string $username;
 
-    /**
-     * @ORM\Column(type="string")
-     * @var string
-     */
-    protected $email;
+    #[ORM\Column(type: "string")]
+    protected string $email;
 
-    /**
-     * @ORM\Column(type="uuid_binary", unique=true)
-     * @var UuidInterface
-     */
-    protected $keycloakKey;
+    #[ORM\Column(type: "uuid_binary", unique: true)]
+    protected UuidInterface $keycloakKey;
 
-    /**
-     * @ORM\Column(type="datetime_immutable", nullable=true)
-     * @var DateTimeImmutable|null
-     */
-    protected $lastLogin;
+    #[ORM\Column(type: "datetime_immutable", nullable: true)]
+    protected ?DateTimeImmutable $lastLogin;
 
-    /**
-     * @ORM\Column(type="organizator_role", nullable=true)
-     * @var OrganizatorRole|null
-     */
-    protected $role;
+    #[ORM\Column(type: "organizator_role", nullable: true)]
+    protected ?OrganizatorRole $role;
 
     public function __construct(
         string $givenName,
@@ -74,7 +48,7 @@ class Organizator
         ?OrganizatorRole $role
     ) {
         if (!Validators::isEmail($email)) {
-            throw new \InstruktoriBrno\TMOU\Model\Exceptions\InvalidEmailException("The e-mail `${email}` is invalid.");
+            throw new \InstruktoriBrno\TMOU\Model\Exceptions\InvalidEmailException("The e-mail `{$email}` is invalid.");
         }
 
         $this->givenName = $givenName;
@@ -87,7 +61,7 @@ class Organizator
 
     public function getId(): int
     {
-        if ($this->id === null) {
+        if (!isset($this->id)) {
             throw new \InstruktoriBrno\TMOU\Model\Exceptions\IDNotYetAssignedException;
         }
         return $this->id;
@@ -141,7 +115,7 @@ class Organizator
         ?OrganizatorRole $role
     ): void {
         if (!Validators::isEmail($email)) {
-            throw new \InstruktoriBrno\TMOU\Model\Exceptions\InvalidEmailException("The e-mail `${email}` is invalid.");
+            throw new \InstruktoriBrno\TMOU\Model\Exceptions\InvalidEmailException("The e-mail `{$email}` is invalid.");
         }
 
         $this->givenName = $givenName;

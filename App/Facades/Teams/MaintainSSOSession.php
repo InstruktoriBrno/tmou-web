@@ -13,32 +13,23 @@ use Tracy\ILogger;
 
 class MaintainSSOSession
 {
-    /** @var Response */
-    private $response;
+    private Response $response;
 
-    /** @var EntityManagerInterface */
-    private $entityManager;
+    private EntityManagerInterface $entityManager;
 
-    /** @var string */
-    private $cookieName;
+    private string $cookieName;
 
-    /** @var string */
-    private $jwtCookieName;
+    private string $jwtCookieName;
 
-    /** @var string */
-    private $cookieDomain;
+    private string $cookieDomain;
 
-    /** @var string */
-    private $expiration;
+    private string $expiration;
 
-    /** @var Request */
-    private $request;
+    private Request $request;
 
-    /** @var FindTeamService */
-    private $findTeamService;
+    private FindTeamService $findTeamService;
 
-    /** @var JWT */
-    private $jwt;
+    private JWT $jwt;
 
     public function __construct(
         string $cookieName,

@@ -4,49 +4,32 @@ namespace InstruktoriBrno\TMOU\Model;
 use DateTimeImmutable;
 use Doctrine\ORM\Mapping as ORM;
 
-/**
- * @ORM\Entity
- * @ORM\Table(
- *     name="thread_acknowledgement",
- *     uniqueConstraints={@ORM\UniqueConstraint(columns={"thread_id", "organizator_id", "team_id"})}
- * )
- */
+#[ORM\Entity]
+#[ORM\Table(
+    name: "thread_acknowledgement",
+    uniqueConstraints: [new ORM\UniqueConstraint(columns: ["thread_id", "organizator_id", "team_id"])]
+)]
 class ThreadAcknowledgement
 {
-    /**
-     * @ORM\Id
-     * @ORM\Column(type="integer")
-     * @ORM\GeneratedValue
-     * @var integer
-     */
-    protected $id;
+    #[ORM\Id]
+    #[ORM\Column(type: "integer")]
+    #[ORM\GeneratedValue]
+    protected int $id;
 
-    /**
-     * @ORM\ManyToOne(targetEntity="Thread")
-     * @ORM\JoinColumn(name="thread_id", referencedColumnName="id", nullable=false)
-     * @var Thread
-     */
-    protected $thread;
+    #[ORM\ManyToOne(targetEntity: Thread::class)]
+    #[ORM\JoinColumn(name: "thread_id", referencedColumnName: "id", nullable: false)]
+    protected Thread $thread;
 
-    /**
-     * @ORM\ManyToOne(targetEntity="Organizator")
-     * @ORM\JoinColumn(name="organizator_id", referencedColumnName="id", nullable=true)
-     * @var Organizator|null
-     */
-    protected $organizator;
+    #[ORM\ManyToOne(targetEntity: Organizator::class)]
+    #[ORM\JoinColumn(name: "organizator_id", referencedColumnName: "id", nullable: true)]
+    protected ?Organizator $organizator;
 
-    /**
-     * @ORM\ManyToOne(targetEntity="Team")
-     * @ORM\JoinColumn(name="team_id", referencedColumnName="id", nullable=true)
-     * @var Team|null
-     */
-    protected $team;
+    #[ORM\ManyToOne(targetEntity: Team::class)]
+    #[ORM\JoinColumn(name: "team_id", referencedColumnName: "id", nullable: true)]
+    protected ?Team $team;
 
-    /**
-     * @ORM\Column(type="datetime_immutable", nullable=false)
-     * @var DateTimeImmutable
-     */
-    protected $at;
+    #[ORM\Column(type: "datetime_immutable", nullable: false)]
+    protected DateTimeImmutable $at;
 
     public function __construct(
         Thread $thread,
@@ -68,7 +51,7 @@ class ThreadAcknowledgement
 
     public function getId(): int
     {
-        if ($this->id === null) {
+        if (!isset($this->id)) {
             throw new \InstruktoriBrno\TMOU\Model\Exceptions\IDNotYetAssignedException;
         }
         return $this->id;

@@ -19,8 +19,8 @@
                     <iframe class="mail-preview" id="preview-{$iterator->counter}"></iframe>
                 </div>
                 <script>
-                    document.querySelector('#preview-{$iterator->counter}').contentWindow.document.write({$preview['body']});
-                    document.querySelector('#preview-{$iterator->counter}').contentWindow.document.close();
+                    document.querySelector('#preview-' + {$iterator->counter}).contentWindow.document.write({$preview['body']});
+                    document.querySelector('#preview-' + {$iterator->counter}).contentWindow.document.close();
                 </script>
             {/foreach}
         {/ifset}

@@ -12,7 +12,7 @@ class InvalidXmlSchemaException extends \InstruktoriBrno\TMOU\Exceptions\Runtime
      * @param int $code
      * @param \Throwable|null $previous
      */
-    public function __construct(array $errors, string $message = "", int $code = 0, \Throwable $previous = null)
+    public function __construct(array $errors, string $message = "", int $code = 0, ?\Throwable $previous = null)
     {
         $this->errors = $errors;
         parent::__construct($message, $code, $previous);

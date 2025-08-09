@@ -5,8 +5,7 @@ use InstruktoriBrno\TMOU\Services\Events\DeleteEventService;
 
 class DeleteEventFacade
 {
-    /** @var DeleteEventService */
-    private $deleteEventService;
+    private DeleteEventService $deleteEventService;
 
     public function __construct(
         DeleteEventService $deleteEventService

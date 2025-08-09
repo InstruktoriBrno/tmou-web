@@ -14,20 +14,15 @@ use Nette\Security\User;
 
 class MarkThreadAsReadFacade
 {
-    /** @var EntityManagerInterface */
-    private $entityManager;
+    private EntityManagerInterface $entityManager;
 
-    /** @var FindOrganizatorByIdService */
-    private $findOrganizatorByIdService;
+    private FindOrganizatorByIdService $findOrganizatorByIdService;
 
-    /** @var FindTeamService */
-    private $findTeamService;
+    private FindTeamService $findTeamService;
 
-    /** @var FindThreadAcknowledgementByOrganizatorService */
-    private $findThreadAcknowledgementByOrganizatorService;
+    private FindThreadAcknowledgementByOrganizatorService $findThreadAcknowledgementByOrganizatorService;
 
-    /** @var FindThreadAcknowledgementByTeamService */
-    private $findThreadAcknowledgementByTeamService;
+    private FindThreadAcknowledgementByTeamService $findThreadAcknowledgementByTeamService;
 
     public function __construct(
         EntityManagerInterface $entityManager,
@@ -53,6 +48,10 @@ class MarkThreadAsReadFacade
     {
         if (!$user->isLoggedIn()) {
             return;
+        }
+
+        if (!is_int($user->getId())) {
+            throw new \InstruktoriBrno\TMOU\Exceptions\LogicException('User ID is not an integer');
         }
 
         if ($user->isInRole(UserRole::ORG)) {

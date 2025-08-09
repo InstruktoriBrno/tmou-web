@@ -3,12 +3,11 @@ namespace InstruktoriBrno\TMOU\Services\Organizators;
 
 use Doctrine\ORM\EntityManagerInterface;
 use InstruktoriBrno\TMOU\Model\Organizator;
-use Ublaboo\DataGrid\DataSource\DoctrineDataSource;
+use Contributte\Datagrid\DataSource\DoctrineDataSource;
 
 class FindOrganizatorForDataGrid
 {
-    /** @var EntityManagerInterface */
-    private $entityManager;
+    private EntityManagerInterface $entityManager;
 
     public function __construct(EntityManagerInterface $entityManager)
     {

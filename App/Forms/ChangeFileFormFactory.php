@@ -9,11 +9,9 @@ class ChangeFileFormFactory
 {
     use SmartObject;
 
-    /** @var FormFactory */
-    private $factory;
+    private FormFactory $factory;
 
-    /** @var FindStorageDirectoriesPairsService */
-    private $findStorageDirectoriesPairsService;
+    private FindStorageDirectoriesPairsService $findStorageDirectoriesPairsService;
 
     public function __construct(FormFactory $factory, FindStorageDirectoriesPairsService $findStorageDirectoriesPairsService)
     {

@@ -8,17 +8,15 @@ use Nette\Application\UI\Form;
 use Nette\Forms\Controls\Checkbox;
 use Nette\SmartObject;
 use Nette\Utils\Html;
-use Nextras\Forms\Controls\DateTimePicker;
+use Nextras\FormComponents\Controls\DateTimeControl;
 
 class PageFormFactory
 {
     use SmartObject;
 
-    /** @var FormFactory */
-    private $factory;
+    private FormFactory $factory;
 
-    /** @var FindEventsPairsService */
-    private $findEventsPairsService;
+    private FindEventsPairsService $findEventsPairsService;
 
     public function __construct(FindEventsPairsService $findEventsPairsService, FormFactory $factory)
     {
@@ -56,7 +54,7 @@ class PageFormFactory
 
         /** @var Checkbox $hiddenCheckbox */
         $hiddenCheckbox = $form['hidden'];
-        /** @var DateTimePicker $revealAtInput */
+        /** @var DateTimeControl $revealAtInput */
         $revealAtInput = $form['revealAt'];
         $hiddenCheckbox->addConditionOn($revealAtInput, Form::FILLED)
             ->setRequired('Pro použití volby odhalení stránky musí být zaškrnuta volba skrývání stránky.');

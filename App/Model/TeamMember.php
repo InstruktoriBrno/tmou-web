@@ -4,56 +4,33 @@ namespace InstruktoriBrno\TMOU\Model;
 use Doctrine\ORM\Mapping as ORM;
 use Nette\Utils\Validators;
 
-/**
- * @ORM\Entity
- * @ORM\Table(name="team_member", uniqueConstraints={@ORM\UniqueConstraint(name="unique_number_in_team_idx", columns={"team_id", "number"})})
- */
+#[ORM\Entity]
+#[ORM\Table(name: "team_member", uniqueConstraints: [new ORM\UniqueConstraint(name: "unique_number_in_team_idx", columns: ["team_id", "number"])])]
 class TeamMember
 {
-    /**
-     * @ORM\Id
-     * @ORM\Column(type="integer")
-     * @ORM\GeneratedValue
-     * @var integer
-     */
-    protected $id;
+    #[ORM\Id]
+    #[ORM\Column(type: "integer")]
+    #[ORM\GeneratedValue]
+    protected int $id;
 
-    /**
-     * @ORM\ManyToOne(targetEntity="Team", inversedBy="members")
-     * @ORM\JoinColumn(name="team_id", referencedColumnName="id")
-     * @var Team
-     */
-    protected $team;
+    #[ORM\ManyToOne(targetEntity: Team::class, inversedBy: "members")]
+    #[ORM\JoinColumn(name: "team_id", referencedColumnName: "id")]
+    protected Team $team;
 
-    /**
-     * @ORM\Column(type="integer", nullable=false)
-     * @var integer
-     */
-    protected $number;
+    #[ORM\Column(type: "integer", nullable: false)]
+    protected int $number;
 
-    /**
-     * @ORM\Column(type="string")
-     * @var string
-     */
-    protected $fullName;
+    #[ORM\Column(type: "string")]
+    protected string $fullName;
 
-    /**
-     * @ORM\Column(type="string", nullable=true)
-     * @var string|null
-     */
-    protected $email;
+    #[ORM\Column(type: "string", nullable: true)]
+    protected ?string $email;
 
-    /**
-     * @ORM\Column(type="integer", nullable=true)
-     * @var integer|null
-     */
-    protected $age;
+    #[ORM\Column(type: "integer", nullable: true)]
+    protected ?int $age;
 
-    /**
-     * @ORM\Column(type="boolean")
-     * @var bool
-     */
-    protected $addToNewsletter;
+    #[ORM\Column(type: "boolean")]
+    protected bool $addToNewsletter;
 
 
     public function __construct(
@@ -64,7 +41,7 @@ class TeamMember
         bool $addToNewsletter
     ) {
         if ($email !== null && !Validators::isEmail($email)) {
-            throw new \InstruktoriBrno\TMOU\Model\Exceptions\InvalidEmailException("The e-mail `${email}` is invalid.");
+            throw new \InstruktoriBrno\TMOU\Model\Exceptions\InvalidEmailException("The e-mail `{$email}` is invalid.");
         }
 
         $this->number = $number;
@@ -76,7 +53,7 @@ class TeamMember
 
     public function bindToTeam(Team $team): void
     {
-        if ($this->team !== null && $this->team !== $team) {
+        if (isset($this->team) && $this->team !== $team) {
             throw new \InstruktoriBrno\TMOU\Model\Exceptions\TeamMemberAlreadyBindedToTeamException;
         }
         $this->team = $team;
@@ -84,7 +61,7 @@ class TeamMember
 
     public function getId(): int
     {
-        if ($this->id === null) {
+        if (!isset($this->id)) {
             throw new \InstruktoriBrno\TMOU\Model\Exceptions\IDNotYetAssignedException;
         }
         return $this->id;
@@ -122,7 +99,7 @@ class TeamMember
         bool $addToNewsletter
     ): void {
         if ($email !== null && !Validators::isEmail($email)) {
-            throw new \InstruktoriBrno\TMOU\Model\Exceptions\InvalidEmailException("The e-mail `${email}` is invalid.");
+            throw new \InstruktoriBrno\TMOU\Model\Exceptions\InvalidEmailException("The e-mail `{$email}` is invalid.");
         }
 
         $this->fullName = $fullName;

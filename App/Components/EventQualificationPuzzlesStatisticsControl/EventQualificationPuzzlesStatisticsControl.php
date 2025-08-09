@@ -12,7 +12,6 @@ class EventQualificationPuzzlesStatisticsControl extends Control
     public function __construct(
         FindPuzzleStatisticsService $findPuzzlesOfEventService
     ) {
-        parent::__construct();
         $this->findPuzzlesOfEventService = $findPuzzlesOfEventService;
     }
 

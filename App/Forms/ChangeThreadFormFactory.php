@@ -10,11 +10,9 @@ class ChangeThreadFormFactory
 {
     use SmartObject;
 
-    /** @var FormFactory */
-    private $factory;
+    private FormFactory $factory;
 
-    /** @var FindEventsPairsOpenedForDiscussionService */
-    private $findEventsPairsOpenedForDiscussionService;
+    private FindEventsPairsOpenedForDiscussionService $findEventsPairsOpenedForDiscussionService;
 
     public function __construct(FormFactory $factory, FindEventsPairsOpenedForDiscussionService $findEventsPairsOpenedForDiscussionService)
     {

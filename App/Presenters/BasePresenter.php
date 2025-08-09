@@ -8,7 +8,8 @@ use InstruktoriBrno\TMOU\Model\Page;
 use InstruktoriBrno\TMOU\Services\Events\FindEventsService;
 use InstruktoriBrno\TMOU\Services\MenuItems\FindMenuItemsForDisplayService;
 use InstruktoriBrno\TMOU\Services\Teams\FindTeamService;
-use Nette\Security\Identity;
+use Nette\DI\Attributes\Inject;
+use Nette\Security\SimpleIdentity as Identity;
 use function count;
 use InstruktoriBrno\TMOU\Enums\Action;
 use InstruktoriBrno\TMOU\Enums\Flash;
@@ -27,26 +28,25 @@ use Nette\Utils\ArrayHash;
 abstract class BasePresenter extends Presenter
 {
 
-    /** @var GameClockFormFactory @inject */
-    public $gameClockFormFactory;
+    #[Inject]
+    public GameClockFormFactory $gameClockFormFactory;
 
-    /** @var GameClockService @inject */
-    public $gameClockService;
+    #[Inject]
+    public GameClockService $gameClockService;
 
-    /** @var FindEventsService @inject */
-    public $findEventsService;
+    #[Inject]
+    public FindEventsService $findEventsService;
 
-    /** @var MaintainSSOSession @inject */
-    public $maintainSSOSession;
+    #[Inject]
+    public MaintainSSOSession $maintainSSOSession;
 
-    /** @var FindMenuItemsForDisplayService @inject */
-    public $findMenuItemsForDisplay;
+    #[Inject]
+    public FindMenuItemsForDisplayService $findMenuItemsForDisplay;
 
-    /** @var FindTeamService @inject */
+    #[Inject]
     public FindTeamService $findTeamServiceBase;
 
-    /** @var int */
-    public $buildTime;
+    public ?int $buildTime;
 
     protected function beforeRender()
     {
@@ -60,6 +60,9 @@ abstract class BasePresenter extends Presenter
 
         $teamThatCanChangeGameTime = false;
         if ($this->user->isInRole(UserRole::TEAM)) {
+            if (!is_int($this->user->getId())) {
+                throw new \Nette\Application\BadRequestException('Invalid user ID.');
+            }
             $team = ($this->findTeamServiceBase)($this->user->getId());
             $teamThatCanChangeGameTime = $team !== null && $team->canChangeGameTime();
         }
@@ -71,7 +74,7 @@ abstract class BasePresenter extends Presenter
             $this->template->hasDatetimepicker = true;
         }
 
-        if ($this->user->isLoggedIn() && $this->user->isInRole(UserRole::TEAM()->toScalar())) {
+        if ($this->user->isLoggedIn() && $this->user->isInRole((string) UserRole::TEAM()->toScalar()) && is_int($this->user->getId())) {
             ($this->maintainSSOSession)($this->user->getId());
         }
 
@@ -117,7 +120,7 @@ abstract class BasePresenter extends Presenter
 
         if ($element instanceof MethodReflection) {
             $privilege = ComponentReflection::parseAnnotation($element, 'privilege');
-            if ($privilege !== false && count($privilege) >= 2) {
+            if ($privilege !== null && count($privilege) >= 2) {
                 $this->requirePrivilege(
                     Helpers::stringToConstant($privilege[0]),
                     Helpers::stringToConstant($privilege[1]),
@@ -171,6 +174,9 @@ abstract class BasePresenter extends Presenter
         return $this->gameClockFormFactory->create(function (Form $form, ArrayHash $values): void {
             $teamThatCanChangeGameTime = false;
             if ($this->user->isInRole(UserRole::TEAM)) {
+                if (!is_int($this->user->getId())) {
+                    throw new \InstruktoriBrno\TMOU\Exceptions\LogicException('Invalid user ID.');
+                }
                 $team = ($this->findTeamServiceBase)($this->user->getId());
                 $teamThatCanChangeGameTime = $team !== null && $team->canChangeGameTime();
             }

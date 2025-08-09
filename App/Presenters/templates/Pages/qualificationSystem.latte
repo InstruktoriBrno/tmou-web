@@ -35,7 +35,7 @@
                     {/foreach}
                 {/if}
                 <p>Zadání:</p>
-                <ul>
+                <ul n:if="$currentLevel !== null">
                     <li><a href="{$currentLevel->getLink()|absoluteLink}">{$currentLevel->getLink()}</a></li>
                     <li n:if="$currentLevel->getBackupLink() !== null"><a href="{$currentLevel->getBackupLink()|absoluteLink}">{$currentLevel->getBackupLink()}</a></li>
                 </ul>

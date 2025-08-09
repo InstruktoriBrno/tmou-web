@@ -1,6 +1,6 @@
 parameters:
     canonical:
-         url: https://wwwltmou.test # Address where the instance will be accessed
+         url: https://www.tmou.test # Address where the instance will be accessed
     keycloak:
         authServerUrl: https://tmou.test:9990/auth
         realm: InstruktoriBrno

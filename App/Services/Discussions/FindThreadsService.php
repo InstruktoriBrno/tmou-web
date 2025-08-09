@@ -7,9 +7,7 @@ use InstruktoriBrno\TMOU\Services\System\GameClockService;
 
 class FindThreadsService
 {
-    /** @var EntityManagerInterface */
-    private $entityManager;
-
+    private EntityManagerInterface $entityManager;
     private GameClockService $gameClockService;
 
     public function __construct(EntityManagerInterface $entityManager, GameClockService $gameClockService)

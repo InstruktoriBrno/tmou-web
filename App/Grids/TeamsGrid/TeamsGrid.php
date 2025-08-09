@@ -8,53 +8,52 @@ use InstruktoriBrno\TMOU\Enums\PaymentStatus;
 use InstruktoriBrno\TMOU\Enums\Resource;
 use InstruktoriBrno\TMOU\Grids\DataGridFactory;
 use InstruktoriBrno\TMOU\Model\Team;
+use Nette\Security\User;
 use Nette\Utils\Html;
-use Ublaboo\DataGrid\DataGrid;
-use Ublaboo\DataGrid\DataSource\IDataSource;
+use Contributte\Datagrid\Datagrid;
+use Contributte\Datagrid\DataSource\IDataSource;
 use \Closure;
 
 class TeamsGrid extends Control
 {
-    /** @var IDataSource */
-    private $dataSource;
+    private IDataSource $dataSource;
 
-    /** @var DataGridFactory */
-    private $dataGridFactory;
+    private DataGridFactory $dataGridFactory;
 
-    /** @var int */
-    private $eventNumber;
+    private int $eventNumber;
 
-    /** @var callable */
+    /** @var callable(array<int>): void */
     private $changeToPlaying;
 
-    /** @var callable */
+    /** @var callable(array<int>): void */
     private $changeToQualified;
 
-    /** @var callable */
+    /** @var callable(array<int>): void */
     private $changeToNotQualified;
 
-    /** @var callable */
+    /** @var callable(array<int>): void */
     private $changeToRegistered;
 
-    /** @var callable */
+    /** @var callable(array<int>): void */
     private $changeAsPaid;
 
-    /** @var callable */
+    /** @var callable(array<int>): void */
     private $changeAsNotPaid;
 
-    /** @var callable */
+    /** @var callable(array<int>): void */
     private $changeAsPaidAndPlaying;
 
-    /** @var callable */
+    /** @var callable(array<int>): void */
     private $allowGameClockChange;
 
-    /** @var callable */
+    /** @var callable(array<int>): void */
     private $disableGameClockChange;
 
     public function __construct(
         int $eventNumber,
         IDataSource $dataSource,
         DataGridFactory $dataGridFactory,
+        User $user,
         callable $changeToPlaying,
         callable $changeToQualified,
         callable $changeToNotQualified,
@@ -65,7 +64,6 @@ class TeamsGrid extends Control
         callable $allowGameClockChange,
         callable $disableGameClockChange
     ) {
-        parent::__construct();
         $this->dataSource = $dataSource;
         $this->dataGridFactory = $dataGridFactory;
         $this->eventNumber = $eventNumber;
@@ -78,9 +76,10 @@ class TeamsGrid extends Control
         $this->changeAsPaidAndPlaying = $changeAsPaidAndPlaying;
         $this->allowGameClockChange = $allowGameClockChange;
         $this->disableGameClockChange = $disableGameClockChange;
+        $this->user = $user;
     }
 
-    public function createComponentGrid(string $name): DataGrid
+    public function createComponentGrid(string $name): Datagrid
     {
         $grid = $this->dataGridFactory->create($this, $name);
 

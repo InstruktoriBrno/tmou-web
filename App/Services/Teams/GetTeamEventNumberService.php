@@ -1,7 +1,7 @@
 <?php declare(strict_types=1);
 namespace InstruktoriBrno\TMOU\Services\Teams;
 
-use Doctrine\Common\Persistence\ObjectRepository; // phpcs:ignore
+use Doctrine\Persistence\ObjectRepository; // phpcs:ignore
 use Doctrine\ORM\EntityManagerInterface;
 use Doctrine\ORM\EntityRepository;
 use InstruktoriBrno\TMOU\Model\Event;
@@ -9,11 +9,10 @@ use InstruktoriBrno\TMOU\Model\Team;
 
 class GetTeamEventNumberService
 {
-    /** @var EntityManagerInterface */
-    private $entityManager;
+    private EntityManagerInterface $entityManager;
 
     /** @var ObjectRepository<Team>|EntityRepository<Team> */
-    private $teamRepository;
+    private ObjectRepository $teamRepository;
 
     public function __construct(EntityManagerInterface $entityManager)
     {

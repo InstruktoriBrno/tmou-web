@@ -5,6 +5,7 @@ use InstruktoriBrno\TMOU\Bridges\Latte\TemplateFactory;
 use InstruktoriBrno\TMOU\Model\Team;
 use InstruktoriBrno\TMOU\VO\PasswordResetTokenVO;
 use Nette\Application\LinkGenerator;
+use Nette\Bridges\ApplicationLatte\DefaultTemplate;
 use Nette\Mail\IMailer;
 use Nette\Mail\Message;
 use Tracy\Debugger;
@@ -13,20 +14,15 @@ use function htmlspecialchars;
 
 class SendResetPasswordEmailService
 {
-    /** @var IMailer */
-    private $mailer;
+    private IMailer $mailer;
 
-    /** @var string */
-    private $mailFromNoReply;
+    private string $mailFromNoReply;
 
-    /** @var string */
-    private $mailReplyTo;
+    private string $mailReplyTo;
 
-    /** @var LinkGenerator */
-    private $linkGenerator;
+    private LinkGenerator $linkGenerator;
 
-    /** @var TemplateFactory */
-    private $templateFactory;
+    private TemplateFactory $templateFactory;
 
     public function __construct(string $mailFromNoReply, string $mailReplyTo, IMailer $mailer, LinkGenerator $linkGenerator, TemplateFactory $templateFactory)
     {
@@ -68,6 +64,9 @@ class SendResetPasswordEmailService
         );
 
         $template = $this->templateFactory->createTemplate();
+        if (!$template instanceof DefaultTemplate) {
+            throw new \InstruktoriBrno\TMOU\Exceptions\LogicException('Template is not a DefaultTemplate from Latte.');
+        }
         $template->setFile(__DIR__ . '/Templates/resetPasswordEmail.latte');
         $template->setParameters(['content' => $content, 'subject' => $subject]);
         $message->setBody($contentPlain);

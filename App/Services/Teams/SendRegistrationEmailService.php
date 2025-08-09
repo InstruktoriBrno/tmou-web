@@ -3,6 +3,7 @@ namespace InstruktoriBrno\TMOU\Services\Teams;
 
 use InstruktoriBrno\TMOU\Bridges\Latte\TemplateFactory;
 use InstruktoriBrno\TMOU\Model\Team;
+use Nette\Bridges\ApplicationLatte\DefaultTemplate;
 use Nette\Mail\IMailer;
 use Nette\Mail\Message;
 use Tracy\Debugger;
@@ -11,17 +12,13 @@ use function htmlspecialchars;
 
 class SendRegistrationEmailService
 {
-    /** @var IMailer */
-    private $mailer;
+    private IMailer $mailer;
 
-    /** @var string */
-    private $mailFromNoReply;
+    private string $mailFromNoReply;
 
-    /** @var string */
-    private $mailReplyTo;
+    private string $mailReplyTo;
 
-    /** @var TemplateFactory */
-    private $templateFactory;
+    private TemplateFactory $templateFactory;
 
     public function __construct(string $mailFromNoReply, string $mailReplyTo, IMailer $mailer, TemplateFactory $templateFactory)
     {
@@ -40,6 +37,9 @@ class SendRegistrationEmailService
         $message->setSubject($subject = sprintf('[TMOU %s] Registrace týmu %s', $team->getEvent()->getNumber(), $team->getName()));
 
         $template = $this->templateFactory->createTemplate();
+        if (!$template instanceof DefaultTemplate) {
+            throw new \InstruktoriBrno\TMOU\Exceptions\LogicException('Template is not a DefaultTemplate from Latte.');
+        }
         $template->setFile(__DIR__ . '/Templates/registrationEmail.latte');
         $content = sprintf("Váš tým %s\nbyl úspěšně zaregistrován do %s. ročníku TMOU.\n\n-- Vaši organizátoři", htmlspecialchars($team->getName()), $team->getEvent()->getNumber());
         $template->setParameters(['content' => $content, 'subject' => $subject]);

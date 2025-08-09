@@ -7,26 +7,25 @@ use InstruktoriBrno\TMOU\Enums\Action;
 use InstruktoriBrno\TMOU\Enums\Resource;
 use InstruktoriBrno\TMOU\Grids\DataGridFactory;
 use InstruktoriBrno\TMOU\Model\Event;
+use Nette\Security\User;
 use Nette\Utils\Html;
-use Ublaboo\DataGrid\DataGrid;
-use Ublaboo\DataGrid\DataSource\IDataSource;
+use Contributte\Datagrid\Datagrid;
+use Contributte\Datagrid\DataSource\IDataSource;
 
 class EventsGrid extends Control
 {
-    /** @var IDataSource */
-    private $dataSource;
+    private IDataSource $dataSource;
 
-    /** @var DataGridFactory */
-    private $dataGridFactory;
+    private DataGridFactory $dataGridFactory;
 
-    public function __construct(IDataSource $dataSource, DataGridFactory $dataGridFactory)
+    public function __construct(IDataSource $dataSource, DataGridFactory $dataGridFactory, User $user)
     {
-        parent::__construct();
         $this->dataSource = $dataSource;
         $this->dataGridFactory = $dataGridFactory;
+        $this->user = $user;
     }
 
-    public function createComponentGrid(string $name): DataGrid
+    public function createComponentGrid(string $name): Datagrid
     {
         $grid = $this->dataGridFactory->create($this, $name);
 

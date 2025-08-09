@@ -7,8 +7,7 @@ use InstruktoriBrno\TMOU\Model\Page;
 
 class FindPagesInEventService
 {
-    /** @var EntityManagerInterface */
-    private $entityManager;
+    private EntityManagerInterface $entityManager;
 
     public function __construct(EntityManagerInterface $entityManager)
     {

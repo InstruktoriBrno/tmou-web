@@ -1,15 +1,14 @@
 <?php declare(strict_types=1);
 namespace InstruktoriBrno\TMOU\Services\Teams;
 
+use Contributte\Datagrid\Response\CsvResponse;
 use Doctrine\ORM\EntityManagerInterface;
 use InstruktoriBrno\TMOU\Model\Event;
 use InstruktoriBrno\TMOU\Model\TeamMember;
-use Ublaboo\Responses\CSVResponse;
 
 class ExportTeamMembersForNewsletterService
 {
-    /** @var EntityManagerInterface */
-    private $entityManager;
+    private EntityManagerInterface $entityManager;
 
     public function __construct(EntityManagerInterface $entityManager)
     {
@@ -21,9 +20,9 @@ class ExportTeamMembersForNewsletterService
      *
      * @param Event $event
      *
-     * @return CSVResponse
+     * @return CsvResponse
      */
-    public function __invoke(Event $event): CSVResponse
+    public function __invoke(Event $event): CsvResponse
     {
         $qb = $this->entityManager->createQueryBuilder();
         $qb->from(TeamMember::class, 'tm')
@@ -47,6 +46,6 @@ class ExportTeamMembersForNewsletterService
                 $member->getEmail(),
             ];
         }
-        return new CSVResponse($records, 'export-newsletter.csv');
+        return new CsvResponse($records, 'export-newsletter.csv');
     }
 }

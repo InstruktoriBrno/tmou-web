@@ -5,8 +5,7 @@ use InstruktoriBrno\TMOU\Services\MenuItems\DeleteMenuItemService;
 
 class DeleteMenuItemFacade
 {
-    /** @var DeleteMenuItemService */
-    private $deleteMenuItemService;
+    private DeleteMenuItemService $deleteMenuItemService;
 
     public function __construct(
         DeleteMenuItemService $deleteMenuItemService

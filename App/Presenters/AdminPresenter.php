@@ -6,17 +6,18 @@ use InstruktoriBrno\TMOU\Facades\Organizators\LoginOrganizatorViaKeycloakFacade;
 use InstruktoriBrno\TMOU\Grids\OrganizatorsGrid\OrganizatorsGrid;
 use InstruktoriBrno\TMOU\Grids\OrganizatorsGrid\OrganizatorsGridFactory;
 use InstruktoriBrno\TMOU\Services\Organizators\FindOrganizatorForDataGrid;
+use Nette\DI\Attributes\Inject;
 
 final class AdminPresenter extends BasePresenter
 {
-    /** @var LoginOrganizatorViaKeycloakFacade @inject */
-    public $loginOrganizatorViaKeycloakFacade;
+    #[Inject]
+    public LoginOrganizatorViaKeycloakFacade $loginOrganizatorViaKeycloakFacade;
 
-    /** @var OrganizatorsGridFactory @inject */
-    public $organizatorsGridFactory;
+    #[Inject]
+    public OrganizatorsGridFactory $organizatorsGridFactory;
 
-    /** @var FindOrganizatorForDataGrid @inject */
-    public $findOrganizatorForDataGrid;
+    #[Inject]
+    public FindOrganizatorForDataGrid $findOrganizatorForDataGrid;
 
     /** @privilege(InstruktoriBrno\TMOU\Enums\Resource::ADMIN_COMMON,InstruktoriBrno\TMOU\Enums\Action::VIEW,InstruktoriBrno\TMOU\Enums\PrivilegeEnforceMethod::TRIGGER_ADMIN_LOGIN) */
     public function actionDefault(): void

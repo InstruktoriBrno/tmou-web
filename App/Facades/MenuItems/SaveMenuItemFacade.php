@@ -6,33 +6,24 @@ use InstruktoriBrno\TMOU\Enums\ReservedSLUG;
 use InstruktoriBrno\TMOU\Model\Event;
 use InstruktoriBrno\TMOU\Model\MenuItem;
 use InstruktoriBrno\TMOU\Services\Events\FindEventService;
-use InstruktoriBrno\TMOU\Services\MenuItems\FindMenuItemService;
 use InstruktoriBrno\TMOU\Services\Pages\FindPageService;
 use Nette\Utils\ArrayHash;
 
 class SaveMenuItemFacade
 {
-    /** @var EntityManagerInterface */
-    private $entityManager;
+    private EntityManagerInterface $entityManager;
 
-    /** @var FindMenuItemService */
-    private $findMenuItemService;
+    private FindPageService $findPageService;
 
-    /** @var FindPageService */
-    private $findPageService;
-
-    /** @var FindEventService */
-    private $findEventService;
+    private FindEventService $findEventService;
 
 
     public function __construct(
         EntityManagerInterface $entityManager,
-        FindMenuItemService $findMenuItemService,
         FindPageService $findPageService,
         FindEventService $findEventService
     ) {
         $this->entityManager = $entityManager;
-        $this->findMenuItemService = $findMenuItemService;
         $this->findPageService = $findPageService;
         $this->findEventService = $findEventService;
     }

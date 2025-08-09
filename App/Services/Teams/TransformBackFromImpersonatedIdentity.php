@@ -3,16 +3,14 @@ namespace InstruktoriBrno\TMOU\Services\Teams;
 
 use InstruktoriBrno\TMOU\Enums\UserRole;
 use InstruktoriBrno\TMOU\Services\Organizators\FindOrganizatorByIdService;
-use Nette\Security\Identity;
+use Nette\Security\SimpleIdentity as Identity;
 use Nette\Security\User;
 
 class TransformBackFromImpersonatedIdentity
 {
-    /** @var User */
-    private $user;
+    private User $user;
 
-    /** @var FindOrganizatorByIdService */
-    private $findOrganizatorByIdService;
+    private FindOrganizatorByIdService $findOrganizatorByIdService;
 
     public function __construct(User $user, FindOrganizatorByIdService $findOrganizatorByIdService)
     {
@@ -25,15 +23,16 @@ class TransformBackFromImpersonatedIdentity
      * @return Identity
      *
      * @throws \InstruktoriBrno\TMOU\Services\Teams\Exceptions\DeimpersonationException
+     * @throws \InstruktoriBrno\TMOU\Services\Teams\Exceptions\DeimpersonationNotPossibleException
      */
     public function __invoke(Identity $identity)
     {
         if (!$this->user->isLoggedIn()
-            || !$this->user->isInRole(UserRole::TEAM()->toScalar())
+            || !$this->user->isInRole((string) UserRole::TEAM()->toScalar())
             || !isset($identity->getData()['impersonated'], $identity->getData()['impersonatedFrom'])
             || $identity->getData()['impersonated'] !== true
         ) {
-            throw new \InstruktoriBrno\TMOU\Services\Teams\Exceptions\DeimpersonationException;
+            throw new \InstruktoriBrno\TMOU\Services\Teams\Exceptions\DeimpersonationNotPossibleException;
         }
         $organizator = ($this->findOrganizatorByIdService)($identity->getData()['impersonatedFrom']);
         if ($organizator === null) {

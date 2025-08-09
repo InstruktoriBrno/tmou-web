@@ -5,37 +5,24 @@ use Doctrine\Common\Collections\ArrayCollection;
 use Doctrine\Common\Collections\Collection;
 use Doctrine\ORM\Mapping as ORM;
 
-/**
- * @ORM\Entity
- * @ORM\Table(name="puzzle")
- */
+#[ORM\Entity]
+#[ORM\Table(name: "puzzle")]
 class Puzzle
 {
-    /**
-     * @ORM\Id
-     * @ORM\Column(type="integer")
-     * @ORM\GeneratedValue
-     * @var integer
-     */
+    #[ORM\Id]
+    #[ORM\Column(type: "integer")]
+    #[ORM\GeneratedValue]
     protected int $id;
 
-    /**
-     * @ORM\ManyToOne(targetEntity="Level", cascade={}, fetch="EAGER")
-     * @ORM\JoinColumn(name="level_id", referencedColumnName="id", nullable=false)
-     * @var Level
-     */
+    #[ORM\ManyToOne(targetEntity: Level::class, cascade: [], fetch: "EAGER")]
+    #[ORM\JoinColumn(name: "level_id", referencedColumnName: "id", nullable: false)]
     protected Level $level;
 
-    /**
-     * @ORM\Column(type="text")
-     * @var string
-     */
+    #[ORM\Column(type: "text")]
     protected string $name;
 
-    /**
-     * @ORM\OneToMany(targetEntity="Password", mappedBy="puzzle", cascade={"persist", "remove"}, orphanRemoval=true)
-     * @var Collection<int, Password>
-     */
+    /** @var Collection<int, Password> */
+    #[ORM\OneToMany(targetEntity: Password::class, mappedBy: "puzzle", cascade: ["persist", "remove"], orphanRemoval: true)]
     protected Collection $passwords;
 
     public function __construct(

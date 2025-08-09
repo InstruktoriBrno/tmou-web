@@ -1,7 +1,7 @@
 <?php declare(strict_types=1);
 namespace InstruktoriBrno\TMOU\Application\UI;
 
-use Nette\Application\UI\ITemplate;
+use Nette\Application\UI\Template as NetteTemplate;
 use ReflectionClass;
 
 /**
@@ -14,17 +14,18 @@ trait Template
 
     /**
      * Creates component template
-     * @return ITemplate
+     * @param string|null $class
+     * @return NetteTemplate
      */
-    protected function createTemplate() : ITemplate
+    protected function createTemplate(?string $class = null) : NetteTemplate
     {
-        /** @var ITemplate $template */
+        /** @var NetteTemplate $template */
         $template = parent::createTemplate();
         $this->prepareTemplateFile($template);
         return $template;
     }
 
-    protected function createTemplateForView(string $view): ITemplate
+    protected function createTemplateForView(string $view): NetteTemplate
     {
         $template = $this->createTemplate();
         $template->setFile(preg_replace('/\.[^.]+$/', '.' . $view . '.latte', $this->getFileName()));
@@ -52,10 +53,10 @@ trait Template
         $this->getTemplate()->render();
     }
 
-    protected function prepareTemplateFile(?ITemplate $template = null) : void
+    protected function prepareTemplateFile(?NetteTemplate $template = null) : void
     {
         if ($template === null) {
-            /** @var ITemplate $template */
+            /** @var NetteTemplate $template */
             $template = $this->getTemplate();
         }
 
@@ -66,6 +67,6 @@ trait Template
         }
     }
 
-    /** @var ITemplate */
+    /** @var NetteTemplate */
     abstract protected function getTemplate();
 }

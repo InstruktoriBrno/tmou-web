@@ -10,27 +10,28 @@ use InstruktoriBrno\TMOU\Services\System\GameClockService;
 use Nette\Application\Request;
 use Nette\Application\UI\Presenter;
 use Nette\Bridges\ApplicationLatte\Template;
+use Nette\DI\Attributes\Inject;
 
 /** @property Template $template */
 final class Error4xxPresenter extends Presenter
 {
-    /** @var FindEventsService @inject */
-    public $findEventsService;
+    #[Inject]
+    public FindEventsService $findEventsService;
 
-    /** @var FindEventByNumberService @inject */
-    public $findEventByNumberService;
+    #[Inject]
+    public FindEventByNumberService $findEventByNumberService;
 
-    /** @var GameClockService @inject */
-    public $gameClockService;
+    #[Inject]
+    public GameClockService $gameClockService;
 
-    /** @var FindMenuItemsForDisplayService @inject */
-    public $findMenuItemsForDisplay;
+    #[Inject]
+    public FindMenuItemsForDisplayService $findMenuItemsForDisplay;
 
     /** @var int|null|string */
     public static $eventNumber;
 
     /** @var int */
-    public $buildTime;
+    public int $buildTime;
 
     public function startup(): void
     {

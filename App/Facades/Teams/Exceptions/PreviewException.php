@@ -12,7 +12,7 @@ class PreviewException extends \InstruktoriBrno\TMOU\Exceptions\CheckedException
      * @param int $code
      * @param \Throwable|null $previous
      */
-    public function __construct(array $data, int $code = 0, \Throwable $previous = null)
+    public function __construct(array $data, int $code = 0, ?\Throwable $previous = null)
     {
         parent::__construct("", $code, $previous);
         $this->data = $data;

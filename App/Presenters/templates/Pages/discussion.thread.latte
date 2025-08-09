@@ -39,7 +39,7 @@
                         {var $teamName = $teamName . ' (' . $post->getNickname() . ')'}
                     {/if}
                     {var $organizatorName = $post->getOrganizator() !== null ? 'Organizátoři (' . $post->getOrganizator()->getGivenName() . ' ' . $post->getOrganizator()->getFamilyName() . ')' : null}
-                    <div class="float-left mr-4 inline-block avatar rounded-full text-center align-middle text-2xl text-white" style="background: {$author->getShortcutColor()|noEscape}" title="{$teamName ?? $organizatorName}">{$author->getShortcut()}</div>
+                    <div class="float-left mr-4 inline-block avatar rounded-full text-center align-middle text-2xl text-white" style="background: {$author->getShortcutColor()|noescape}" title="{$teamName ?? $organizatorName}">{$author->getShortcut()}</div>
                     <div class="post-header">
                         <b class="block sm:inline-block">{$teamName ?? $organizatorName}</b>
                         #{$iterator->getCounter()}

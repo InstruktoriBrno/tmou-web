@@ -10,17 +10,13 @@ use Nette\Security\User;
 
 class TeamLoginFacade
 {
-    /** @var FindTeamByNameService */
-    private $findTeamByNameService;
+    private FindTeamByNameService $findTeamByNameService;
 
-    /** @var User */
-    private $user;
+    private User $user;
 
-    /** @var EntityManagerInterface */
-    private $entityManager;
+    private EntityManagerInterface $entityManager;
 
-    /** @var GameClockService */
-    private $gameClockService;
+    private GameClockService $gameClockService;
 
     public function __construct(
         FindTeamByNameService $deleteEventService,

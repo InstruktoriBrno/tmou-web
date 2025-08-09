@@ -1,7 +1,7 @@
 <?php declare(strict_types=1);
 namespace InstruktoriBrno\TMOU\Services\Organizators;
 
-use Doctrine\Common\Persistence\ObjectRepository; // phpcs:ignore
+use Doctrine\Persistence\ObjectRepository; // phpcs:ignore
 use Doctrine\ORM\EntityManagerInterface;
 use InstruktoriBrno\TMOU\Model\Organizator;
 use Ramsey\Uuid\UuidInterface;
@@ -9,7 +9,7 @@ use Ramsey\Uuid\UuidInterface;
 class FindOrganizatorByKeycloakKeyService
 {
     /** @var ObjectRepository<Organizator> */
-    private $organizatorsRepository;
+    private ObjectRepository $organizatorsRepository;
 
     public function __construct(EntityManagerInterface $entityManager)
     {

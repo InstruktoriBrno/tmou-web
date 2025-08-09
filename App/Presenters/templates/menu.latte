@@ -21,7 +21,7 @@
             {var $visibleItemsCount = 0}
             {foreach $tagGroup as $menuItem}
                 {continueIf $menuItem->isHiddenForInTime($user, $currentTime)}
-                {var $visibleItemsCount += 1}
+                {var $visibleItemsCount = $visibleItemsCount + 1}
             {/foreach}
             {continueIf $visibleItemsCount === 0}
             <ul class="list-reset bg-yellow-tmou lg:rounded-sm p-2 my-4">
@@ -58,65 +58,65 @@
         <ul class="list-reset bg-yellow-tmou lg:rounded-sm p-2 my-4 mt-16">
             {if isset($page) && $page}
                 <li class="py-1 lg:hover:bg-transparent rounded-sm mb-4">
-                    <a href="{plink AdminPages:edit, $page->getId()}" class="block pl-4 align-middle text-gray-800 no-underline hover:text-black border-l-4 border-transparent lg:hover:border-black {ifCurrent AdminPages:edit, $page->getId()}lg:border-black{/ifCurrent}">
+                    <a href="{plink AdminPages:edit, $page->getId()}" class="block pl-4 align-middle text-gray-800 no-underline hover:text-black border-l-4 border-transparent lg:hover:border-black {if isLinkCurrent('AdminPages:edit',  $page->getId())}lg:border-black{/if}">
                         <span class="pb-1 md:pb-0 text-base font-semibold">Upravit tuto stránku</span>
                     </a>
                 </li>
             {/if}
             {if isset($event) && $event}
                 <li class="py-1 md:my-0 lg:hover:bg-transparent rounded-sm">
-                    <a href="{plink Events:edit, $event->getId()}" class="block pl-4 align-middle text-gray-800 no-underline hover:text-black border-l-4 border-transparent lg:hover:border-black {ifCurrent Events:edit, $event->getId()}lg:border-black{/ifCurrent}">
+                    <a href="{plink Events:edit, $event->getId()}" class="block pl-4 align-middle text-gray-800 no-underline hover:text-black border-l-4 border-transparent lg:hover:border-black {if isLinkCurrent('Events:edit',  $event->getId())}lg:border-black{/if}">
                         <span class="pb-1 md:pb-0 text-base font-semibold">Upravit {$event->getNumber()}. ročník</span>
                     </a>
                 </li>
                 <li class="py-1 md:my-0 lg:hover:bg-transparent rounded-sm">
-                    <a href="{plink Teams:, $event->getNumber()}" class="block pl-4 align-middle text-gray-800 no-underline hover:text-black border-l-4 border-transparent lg:hover:border-black {ifCurrent Teams:, $event->getNumber()}lg:border-black{/ifCurrent}">
+                    <a href="{plink Teams:, $event->getNumber()}" class="block pl-4 align-middle text-gray-800 no-underline hover:text-black border-l-4 border-transparent lg:hover:border-black {if isLinkCurrent('Teams:',  $event->getNumber())}lg:border-black{/if}">
                         <span class="pb-1 md:pb-0 text-base font-semibold">Týmy {$event->getNumber()}. ročníku</span>
                     </a>
                 </li>
                 <li class="py-1 md:my-0 lg:hover:bg-transparent rounded-sm">
-                    <a href="{plink Teams:batchMail, $event->getNumber()}" class="block pl-4 align-middle text-gray-800 no-underline hover:text-black border-l-4 border-transparent lg:hover:border-black {ifCurrent Teams:batchMail, $event->getNumber()}lg:border-black{/ifCurrent}">
+                    <a href="{plink Teams:batchMail, $event->getNumber()}" class="block pl-4 align-middle text-gray-800 no-underline hover:text-black border-l-4 border-transparent lg:hover:border-black {if isLinkCurrent('Teams:batchMail',  $event->getNumber())}lg:border-black{/if}">
                         <span class="pb-1 md:pb-0 text-base font-semibold">Mailování {$event->getNumber()}. ročníku</span>
                     </a>
                 </li>
                 <li class="py-1 md:my-0 lg:hover:bg-transparent rounded-sm">
-                    <a href="{plink AdminPages:, $event->getNumber()}" class="block pl-4 align-middle text-gray-800 no-underline hover:text-black border-l-4 border-transparent lg:hover:border-black {ifCurrent AdminPages:, $event->getNumber()}lg:border-black{/ifCurrent}">
+                    <a href="{plink AdminPages:, $event->getNumber()}" class="block pl-4 align-middle text-gray-800 no-underline hover:text-black border-l-4 border-transparent lg:hover:border-black {if isLinkCurrent('AdminPages:',  $event->getNumber())}lg:border-black{/if}">
                         <span class="pb-1 md:pb-0 text-base font-semibold">Stránky {$event->getNumber()}. ročníku</span>
                     </a>
                 </li>
                 <li class="py-1 md:my-0 lg:hover:bg-transparent rounded-sm" n:if="$event->hasQualification()">
-                    <a href="{plink Events:qualification, $event->getId()}" class="block pl-4 align-middle text-gray-800 no-underline hover:text-black border-l-4 border-transparent lg:hover:border-black {ifCurrent Events:qualification, $event->getId()}lg:border-black{/ifCurrent}">
+                    <a href="{plink Events:qualification, $event->getId()}" class="block pl-4 align-middle text-gray-800 no-underline hover:text-black border-l-4 border-transparent lg:hover:border-black {if isLinkCurrent('Events:qualification',  $event->getId())}lg:border-black{/if}">
                         <span class="pb-1 md:pb-0 text-base font-semibold">Kvalifikace {$event->getNumber()}. ročníku</span>
                     </a>
                 </li>
                 <li class="py-1 lg:hover:bg-transparent rounded-sm mb-4">
-                    <a href="{plink Menu:, $event->getNumber()}" class="block pl-4 align-middle text-gray-800 no-underline hover:text-black border-l-4 border-transparent lg:hover:border-black {ifCurrent Menu:, $event->getNumber()}lg:border-black{/ifCurrent}">
+                    <a href="{plink Menu:, $event->getNumber()}" class="block pl-4 align-middle text-gray-800 no-underline hover:text-black border-l-4 border-transparent lg:hover:border-black {if isLinkCurrent('Menu:',  $event->getNumber())}lg:border-black{/if}">
                         <span class="pb-1 md:pb-0 text-base font-semibold">Menu {$event->getNumber()}. ročníku</span>
                     </a>
                 </li>
             {/if}
             <li class="py-1 md:my-0 lg:hover:bg-transparent rounded-sm">
-                <a href="{plink Admin:organizators}" class="block pl-4 align-middle text-gray-800 no-underline hover:text-black border-l-4 border-transparent lg:hover:border-black {ifCurrent Admin:organizators}lg:border-black{/ifCurrent}">
+                <a href="{plink Admin:organizators}" class="block pl-4 align-middle text-gray-800 no-underline hover:text-black border-l-4 border-transparent lg:hover:border-black {if isLinkCurrent('Admin:organizators')}}lg:border-black{/if}">
                     <span class="pb-1 md:pb-0 text-base font-semibold">Organizátoři</span>
                 </a>
             </li>
             <li class="py-1 md:my-0 lg:hover:bg-transparent rounded-sm">
-                <a href="{plink Events:}" class="block pl-4 align-middle text-gray-800 no-underline hover:text-black border-l-4 border-transparent lg:hover:border-black {ifCurrent Events:}lg:border-black{/ifCurrent}">
+                <a href="{plink Events:}" class="block pl-4 align-middle text-gray-800 no-underline hover:text-black border-l-4 border-transparent lg:hover:border-black {if isLinkCurrent('Events:')}lg:border-black{/if}">
                     <span class="pb-1 md:pb-0 text-base font-semibold">Ročníky</span>
                 </a>
             </li>
             <li class="py-1 md:my-0 lg:hover:bg-transparent rounded-sm">
-                <a href="{plink AdminPages:}" class="block pl-4 align-middle text-gray-800 no-underline hover:text-black border-l-4 border-transparent lg:hover:border-black {ifCurrent AdminPages:}lg:border-black{/ifCurrent}">
+                <a href="{plink AdminPages:}" class="block pl-4 align-middle text-gray-800 no-underline hover:text-black border-l-4 border-transparent lg:hover:border-black {if isLinkCurrent('AdminPages:')}lg:border-black{/if}">
                     <span class="pb-1 md:pb-0 text-base font-semibold">Stránky (obecné)</span>
                 </a>
             </li>
             <li class="py-1 md:my-0 lg:hover:bg-transparent rounded-sm">
-                <a href="{plink Menu:}" class="block pl-4 align-middle text-gray-800 no-underline hover:text-black border-l-4 border-transparent lg:hover:border-black {ifCurrent Menu:}lg:border-black{/ifCurrent}">
+                <a href="{plink Menu:}" class="block pl-4 align-middle text-gray-800 no-underline hover:text-black border-l-4 border-transparent lg:hover:border-black {if isLinkCurrent('Menu:')}lg:border-black{/if}">
                     <span class="pb-1 md:pb-0 text-base font-semibold">Menu (obecné)</span>
                 </a>
             </li>
             <li class="py-1 lg:hover:bg-transparent rounded-sm mb-4">
-                <a href="{plink Teams:payments}" class="block pl-4 align-middle text-gray-800 no-underline hover:text-black border-l-4 border-transparent lg:hover:border-black {ifCurrent Teams:payments}lg:border-black{/ifCurrent}">
+                <a href="{plink Teams:payments}" class="block pl-4 align-middle text-gray-800 no-underline hover:text-black border-l-4 border-transparent lg:hover:border-black {if isLinkCurrent('Teams:payments')}lg:border-black{/if}">
                     <span class="pb-1 md:pb-0 text-base font-semibold">Log párování plateb</span>
                 </a>
             </li>

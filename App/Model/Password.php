@@ -4,31 +4,20 @@ namespace InstruktoriBrno\TMOU\Model;
 use Doctrine\ORM\Mapping as ORM;
 use Nette\Utils\Strings;
 
-/**
- * @ORM\Entity
- * @ORM\Table(name="password")
- */
+#[ORM\Entity]
+#[ORM\Table(name: "password")]
 class Password
 {
-    /**
-     * @ORM\Id
-     * @ORM\Column(type="integer")
-     * @ORM\GeneratedValue
-     * @var integer
-     */
+    #[ORM\Id]
+    #[ORM\Column(type: "integer")]
+    #[ORM\GeneratedValue]
     protected int $id;
 
-    /**
-     * @ORM\ManyToOne(targetEntity="puzzle")
-     * @ORM\JoinColumn(name="puzzle_id", referencedColumnName="id", nullable=false)
-     * @var Puzzle
-     */
+    #[ORM\ManyToOne(targetEntity: Puzzle::class)]
+    #[ORM\JoinColumn(name: "puzzle_id", referencedColumnName: "id", nullable: false)]
     protected Puzzle $puzzle;
 
-    /**
-     * @ORM\Column(type="text")
-     * @var string
-     */
+    #[ORM\Column(type: "text")]
     protected string $code;
 
     public function __construct(

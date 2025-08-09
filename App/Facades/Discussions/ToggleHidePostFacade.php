@@ -6,8 +6,7 @@ use InstruktoriBrno\TMOU\Model\Post;
 
 class ToggleHidePostFacade
 {
-    /** @var EntityManagerInterface */
-    private $entityManager;
+    private EntityManagerInterface $entityManager;
 
     public function __construct(
         EntityManagerInterface $entityManager

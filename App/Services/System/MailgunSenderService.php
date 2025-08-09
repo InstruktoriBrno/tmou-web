@@ -13,11 +13,9 @@ use Tracy\ILogger;
 
 class MailgunSenderService
 {
-    /** @var Mailgun */
-    private $mailgunClient;
+    private Mailgun $mailgunClient;
 
-    /** @var string */
-    private $domain;
+    private string $domain;
 
     public function __construct(string $apiKey, string $apiBaseUrl, string $domain)
     {

@@ -4,64 +4,38 @@ namespace InstruktoriBrno\TMOU\Model;
 use DateTimeImmutable;
 use Doctrine\ORM\Mapping as ORM;
 
-/**
- * @ORM\Entity
- * @ORM\Table(name="post")
- */
+#[ORM\Entity]
+#[ORM\Table(name: "post")]
 class Post
 {
-    /**
-     * @ORM\Id
-     * @ORM\Column(type="integer")
-     * @ORM\GeneratedValue
-     * @var integer
-     */
-    protected $id;
+    #[ORM\Id]
+    #[ORM\Column(type: "integer")]
+    #[ORM\GeneratedValue]
+    protected int $id;
 
-    /**
-     * @ORM\ManyToOne(targetEntity="Thread")
-     * @ORM\JoinColumn(name="thread_id", referencedColumnName="id", nullable=false)
-     * @var Thread
-     */
-    protected $thread;
+    #[ORM\ManyToOne(targetEntity: Thread::class)]
+    #[ORM\JoinColumn(name: "thread_id", referencedColumnName: "id", nullable: false)]
+    protected Thread $thread;
 
-    /**
-     * @ORM\Column(type="text")
-     * @var string
-     */
-    protected $content;
+    #[ORM\Column(type: "text")]
+    protected string $content;
 
-    /**
-     * @ORM\Column(type="text", nullable=true)
-     * @var string|null
-     */
-    protected $nickname;
+    #[ORM\Column(type: "text", nullable: true)]
+    protected ?string $nickname;
 
-    /**
-     * @ORM\ManyToOne(targetEntity="Organizator")
-     * @ORM\JoinColumn(name="organizator_id", referencedColumnName="id", nullable=true)
-     * @var Organizator|null
-     */
-    protected $organizator;
+    #[ORM\ManyToOne(targetEntity: Organizator::class)]
+    #[ORM\JoinColumn(name: "organizator_id", referencedColumnName: "id", nullable: true)]
+    protected ?Organizator $organizator;
 
-    /**
-     * @ORM\ManyToOne(targetEntity="Team")
-     * @ORM\JoinColumn(name="team_id", referencedColumnName="id", nullable=true)
-     * @var Team|null
-     */
-    protected $team;
+    #[ORM\ManyToOne(targetEntity: Team::class)]
+    #[ORM\JoinColumn(name: "team_id", referencedColumnName: "id", nullable: true)]
+    protected ?Team $team;
 
-    /**
-     * @ORM\Column(type="boolean")
-     * @var bool
-     */
-    protected $hidden;
+    #[ORM\Column(type: "boolean")]
+    protected bool $hidden;
 
-    /**
-     * @ORM\Column(type="datetime_immutable", nullable=false)
-     * @var DateTimeImmutable
-     */
-    protected $createdAt;
+    #[ORM\Column(type: "datetime_immutable", nullable: false)]
+    protected DateTimeImmutable $createdAt;
 
     public function __construct(
         Thread $thread,
@@ -88,7 +62,7 @@ class Post
 
     public function getId(): int
     {
-        if ($this->id === null) {
+        if (!isset($this->id)) {
             throw new \InstruktoriBrno\TMOU\Model\Exceptions\IDNotYetAssignedException;
         }
         return $this->id;

@@ -5,8 +5,7 @@ use InstruktoriBrno\TMOU\Services\Files\DeleteFileFromStorageDirectoryService;
 
 class DeleteStorageFileFacade
 {
-    /** @var DeleteFileFromStorageDirectoryService */
-    private $deleteFileFromStorageDirectoryService;
+    private DeleteFileFromStorageDirectoryService $deleteFileFromStorageDirectoryService;
 
     public function __construct(
         DeleteFileFromStorageDirectoryService $deleteFileFromStorageDirectoryService

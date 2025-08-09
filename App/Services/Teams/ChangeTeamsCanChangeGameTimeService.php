@@ -32,7 +32,6 @@ class ChangeTeamsCanChangeGameTimeService
                 continue;
             }
             $team->setCanChangeGameTime($newStatus);
-            bdump($team);
             $this->entityManager->persist($team);
             $changed += 1;
         }

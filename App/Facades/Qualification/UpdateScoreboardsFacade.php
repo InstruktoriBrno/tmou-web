@@ -55,12 +55,12 @@ class UpdateScoreboardsFacade
         }
         $latestAnswersFromEvents = [];
         foreach ($eventsToBeUpdated as $event) {
-            $latestAnswersFromEvents[] = $this->entityManager->transactional(function () use ($event): int {
+            $latestAnswersFromEvents[] = $this->entityManager->wrapInTransaction(function () use ($event): int {
                 return ($this->updateEventQualificationScoreboardService)($event);
             });
         }
         if (count($latestAnswersFromEvents) > 0 && $forcedEvent === null) { // do not update cache when forced as there could be some answers not processed from other events
-            $this->cache->save($key, max($latestAnswersFromEvents), [Cache::EXPIRE => '14 days']);
+            $this->cache->save($key, max($latestAnswersFromEvents), [Cache::Expire => '14 days']);
         }
     }
 }

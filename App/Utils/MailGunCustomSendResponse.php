@@ -5,14 +5,11 @@ use Psr\Http\Message\ResponseInterface;
 
 final class MailGunCustomSendResponse
 {
-    /** @var string */
-    private $id;
+    private string $id;
 
-    /** @var string */
-    private $message;
+    private string $message;
 
-    /** @var ResponseInterface */
-    private $response;
+    private ResponseInterface $response;
 
     private function __construct()
     {

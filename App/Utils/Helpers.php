@@ -36,13 +36,13 @@ class Helpers
      * @return DateTimeImmutable
      * @throws \InstruktoriBrno\TMOU\Exceptions\InvalidDateTimeFormatException
      */
-    public static function createDateTimeImmutableFromFormat(string $format, string $time, \DateTimeZone $timeZone = null): DateTimeImmutable
+    public static function createDateTimeImmutableFromFormat(string $format, string $time, ?\DateTimeZone $timeZone = null): DateTimeImmutable
     {
         $output = DateTimeImmutable::createFromFormat($format, $time, $timeZone);
         $errors = DateTimeImmutable::getLastErrors();
 
-        if ($output === false || ($errors !== false && ($errors['warning_count'] ?? 0) > 0) || ($errors !== false && ($errors['error_count'] ?? 0) > 0)) {
-            throw new \InstruktoriBrno\TMOU\Exceptions\InvalidDateTimeFormatException("Date ${time} doesn't match ${format}.");
+        if ($output === false || ($errors !== false && $errors['warning_count'] > 0) || ($errors !== false && $errors['error_count'] > 0)) {
+            throw new \InstruktoriBrno\TMOU\Exceptions\InvalidDateTimeFormatException("Date {$time} doesn't match {$format}.");
         }
         return $output;
     }

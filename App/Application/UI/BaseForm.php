@@ -1,23 +1,21 @@
 <?php declare(strict_types=1);
 namespace InstruktoriBrno\TMOU\Application\UI;
 
-use Contributte\ReCaptcha\Forms\InvisibleReCaptchaField;
+use DrabekDigital\Captcha\CaptchaControl;
 use Nette\Application\UI\Form;
 use Nette\Forms\Controls\BaseControl;
 use Nette\Forms\Controls\SubmitButton;
-use Nextras\Forms\Controls\DatePicker;
-use Nextras\Forms\Controls\DateTimePicker;
+use Nextras\FormComponents\Controls\DateControl;
+use Nextras\FormComponents\Controls\DateTimeControl;
+use Nette\Utils\Html;
 
 /**
- * @method DateTimePicker addDateTimePicker(string $name, string $label)
- * @method DatePicker addDatePicker(string $name, string $label)
- * @method InvisibleReCaptchaField addInvisibleReCaptcha(string $name)
+ * @method CaptchaControl addCaptcha(string $name, string $caption)
  */
 class BaseForm extends Form
 {
 
-    /** @var SubmitButton */
-    protected $primarySubmit;
+    protected SubmitButton $primarySubmit;
 
     public function getPrimarySubmit(): SubmitButton
     {
@@ -26,14 +24,14 @@ class BaseForm extends Form
 
     /**
      * @param string $name
-     * @param string|object $caption
+     * @param string|Html $caption
      * @param bool $centered
      *
      * @return SubmitButton
      */
     public function addPrimarySubmit($name, $caption, $centered = false): SubmitButton
     {
-        if ($this->primarySubmit !== null) {
+        if (isset($this->primarySubmit)) {
             throw new \Nette\InvalidStateException("This form already has primary button [{$this->primarySubmit->getName()}].");
         }
         $temp = $this->addSubmit($name, $caption);
@@ -49,14 +47,14 @@ class BaseForm extends Form
 
     /**
      * @param string $name
-     * @param string|object $caption
+     * @param string|Html $caption
      *
      * @return SubmitButton
      */
     public function addCancel($name, $caption): SubmitButton
     {
         return $this->addSubmit($name, $caption)
-            ->setValidationScope(false);
+            ->setValidationScope(null);
     }
 
     public function disable(): void
@@ -72,5 +70,19 @@ class BaseForm extends Form
     {
         assert($this->form !== null);
         $this->form->getElementPrototype()->addAttributes(['class' => 'ajax']);
+    }
+
+    public function addDateTimePicker(string $name, string $label): DateTimeControl
+    {
+        $control = new DateTimeControl($label);
+        $this->addComponent($control, $name);
+        return $control;
+    }
+
+    public function addDatePicker(string $name, string $label): DateControl
+    {
+        $control = new DateControl($label);
+        $this->addComponent($control, $name);
+        return $control;
     }
 }

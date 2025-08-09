@@ -2,12 +2,11 @@
 namespace InstruktoriBrno\TMOU\Grids\OrganizatorsGrid;
 
 use InstruktoriBrno\TMOU\Grids\DataGridFactory;
-use Ublaboo\DataGrid\DataSource\IDataSource;
+use Contributte\Datagrid\DataSource\IDataSource;
 
 class OrganizatorsGridFactory
 {
-    /** @var DataGridFactory */
-    private $dataGridFactory;
+    private DataGridFactory $dataGridFactory;
 
     public function __construct(DataGridFactory $dataGridFactory)
     {

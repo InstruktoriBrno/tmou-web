@@ -5,8 +5,7 @@ use InstruktoriBrno\TMOU\Services\Teams\DeleteTeamService;
 
 class DeleteTeamFacade
 {
-    /** @var DeleteTeamService */
-    private $deleteTeamService;
+    private DeleteTeamService $deleteTeamService;
 
     public function __construct(
         DeleteTeamService $deleteEventService

@@ -17,26 +17,19 @@ class MatchPaymentsFacade
 {
     public const RUNS = 'RUNS';
 
-    /** @var EntityManagerInterface */
-    private $entityManager;
+    private EntityManagerInterface $entityManager;
 
-    /** @var FindTeamByEventNumberService */
-    private $findTeamByEventNumberService;
+    private FindTeamByEventNumberService $findTeamByEventNumberService;
 
-    /** @var FindEventsWithMatchablePaymentsService */
-    private $findEventsWithMatchablePaymentsService;
+    private FindEventsWithMatchablePaymentsService $findEventsWithMatchablePaymentsService;
 
-    /** @var string */
-    private $fioURL;
+    private string $fioURL;
 
-    /** @var string */
-    private $fioToken;
+    private string $fioToken;
 
-    /** @var string */
-    private $notificationEmail;
+    private string $notificationEmail; // @phpstan-ignore-line
 
-    /** @var SendPaymentsMatchingNotificationEmailService */
-    private $sendPaymentsMatchingNotificationEmailService;
+    private SendPaymentsMatchingNotificationEmailService $sendPaymentsMatchingNotificationEmailService;
 
     public function __construct(
         string $fioURL,

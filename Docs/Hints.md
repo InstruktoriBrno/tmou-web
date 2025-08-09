@@ -95,7 +95,7 @@ $form->addProtection('Platnost formuláře vypršela, odešlete jej, prosím je�
 A ideálně u veřejných i kontrolu proti botům
 
 ```php
-$form->addInvisibleReCaptcha('recaptcha')
+$form->addCaptcha('recaptcha', 'Ochrana před boty')
     ->setMessage('Jste opravdu člověk?');
 ```
 

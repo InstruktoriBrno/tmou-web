@@ -4,7 +4,7 @@ namespace InstruktoriBrno\TMOU\Utils;
 class MimeTypes
 {
     /** @var array<string, string> */
-    private static $descriptions = [
+    private static array $descriptions = [
         'image/png' => 'Obrázek PNG',
         'image/bmp' => 'Obrázek BMP',
         'image/gif' => 'Obrázek GIF',

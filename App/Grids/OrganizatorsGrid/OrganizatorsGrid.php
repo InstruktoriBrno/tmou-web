@@ -4,25 +4,22 @@ namespace InstruktoriBrno\TMOU\Grids\OrganizatorsGrid;
 use InstruktoriBrno\TMOU\Application\UI\Control;
 use InstruktoriBrno\TMOU\Grids\DataGridFactory;
 use InstruktoriBrno\TMOU\Model\Organizator;
-use Ublaboo\DataGrid\DataGrid;
-use Ublaboo\DataGrid\DataSource\IDataSource;
+use Contributte\Datagrid\Datagrid;
+use Contributte\Datagrid\DataSource\IDataSource;
 
 class OrganizatorsGrid extends Control
 {
-    /** @var IDataSource */
-    private $dataSource;
+    private IDataSource $dataSource;
 
-    /** @var DataGridFactory */
-    private $dataGridFactory;
+    private DataGridFactory $dataGridFactory;
 
     public function __construct(IDataSource $dataSource, DataGridFactory $dataGridFactory)
     {
-        parent::__construct();
         $this->dataSource = $dataSource;
         $this->dataGridFactory = $dataGridFactory;
     }
 
-    public function createComponentGrid(string $name): DataGrid
+    public function createComponentGrid(string $name): Datagrid
     {
         $grid = $this->dataGridFactory->create($this, $name);
 

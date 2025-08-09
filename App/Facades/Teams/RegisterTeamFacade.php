@@ -15,23 +15,17 @@ use Nette\Utils\ArrayHash;
 
 class RegisterTeamFacade
 {
-    /** @var EntityManagerInterface */
-    private $entityManager;
+    private EntityManagerInterface $entityManager;
 
-    /** @var GameClockService */
-    private $gameClockService;
+    private GameClockService $gameClockService;
 
-    /** @var GetTeamEventNumberService */
-    private $getTeamEventNumberService;
+    private GetTeamEventNumberService $getTeamEventNumberService;
 
-    /** @var IsTeamEmailInEventUniqueService */
-    private $isTeamEmailInEventUniqueService;
+    private IsTeamEmailInEventUniqueService $isTeamEmailInEventUniqueService;
 
-    /** @var IsTeamNameInEventUniqueService */
-    private $isTeamNameInEventUniqueService;
+    private IsTeamNameInEventUniqueService $isTeamNameInEventUniqueService;
 
-    /** @var SendRegistrationEmailService */
-    private $sendRegistrationEmailService;
+    private SendRegistrationEmailService $sendRegistrationEmailService;
 
     public function __construct(
         EntityManagerInterface $entityManager,

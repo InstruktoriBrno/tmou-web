@@ -8,11 +8,9 @@ class PasswordResetTokenVO
 {
     use StaticClass;
 
-    /** @var string */
-    private $token;
+    private string $token;
 
-    /** @var DateTimeImmutable */
-    private $expiration;
+    private DateTimeImmutable $expiration;
 
     public function __construct(string $token, DateTimeImmutable $expiration)
     {

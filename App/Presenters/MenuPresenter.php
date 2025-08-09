@@ -18,36 +18,36 @@ use Nette\Application\UI\Form;
 use Nette\Forms\Controls\SubmitButton;
 use Nette\Forms\Controls\TextInput;
 use Nette\Utils\ArrayHash;
+use Nette\DI\Attributes\Inject;
 
 final class MenuPresenter extends BasePresenter
 {
+    #[Inject]
+    public FindEventByNumberService $findEventServiceByNumber;
 
-    /** @var FindEventByNumberService @inject */
-    public $findEventServiceByNumber;
+    #[Inject]
+    public MenuItemsGridFactory $menuItemsGridFactory;
 
-    /** @var MenuItemsGridFactory @inject */
-    public $menuItemsGridFactory;
+    #[Inject]
+    public FindMenuItemsForDataGridService $findMenuItemsForDataGridService;
 
-    /** @var FindMenuItemsForDataGridService @inject */
-    public $findMenuItemsForDataGridService;
+    #[Inject]
+    public MenuItemFormFactory $menuItemFormFactory;
 
-    /** @var MenuItemFormFactory @inject */
-    public $menuItemFormFactory;
+    #[Inject]
+    public FindMenuItemService $findMenuItemService;
 
-    /** @var FindMenuItemService @inject */
-    public $findMenuItemService;
+    #[Inject]
+    public ConfirmFormFactory $confirmFormFactory;
 
-    /** @var ConfirmFormFactory @inject */
-    public $confirmFormFactory;
+    #[Inject]
+    public SaveMenuItemFacade $saveMenuItemFacade;
 
-    /** @var SaveMenuItemFacade @inject */
-    public $saveMenuItemFacade;
+    #[Inject]
+    public FindMenuItemForFormService $findMenuItemForFormService;
 
-    /** @var FindMenuItemForFormService @inject */
-    public $findMenuItemForFormService;
-
-    /** @var DeleteMenuItemFacade @inject */
-    public $deleteMenuitemFacade;
+    #[Inject]
+    public DeleteMenuItemFacade $deleteMenuitemFacade;
 
     /** @privilege(InstruktoriBrno\TMOU\Enums\Resource::ADMIN_MENU_ITEMS,InstruktoriBrno\TMOU\Enums\Action::VIEW,InstruktoriBrno\TMOU\Enums\PrivilegeEnforceMethod::TRIGGER_ADMIN_LOGIN) */
     public function actionDefault(?int $eventNumber): void

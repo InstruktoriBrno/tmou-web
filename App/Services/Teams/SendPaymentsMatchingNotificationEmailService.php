@@ -4,6 +4,7 @@ namespace InstruktoriBrno\TMOU\Services\Teams;
 use InstruktoriBrno\TMOU\Bridges\Latte\TemplateFactory;
 use InstruktoriBrno\TMOU\Model\Event;
 use Nette\Application\LinkGenerator;
+use Nette\Bridges\ApplicationLatte\DefaultTemplate;
 use Nette\Mail\IMailer;
 use Nette\Mail\Message;
 use Tracy\Debugger;
@@ -11,20 +12,15 @@ use Tracy\ILogger;
 
 class SendPaymentsMatchingNotificationEmailService
 {
-    /** @var IMailer */
-    private $mailer;
+    private IMailer $mailer;
 
-    /** @var string */
-    private $mailFromNoReply;
+    private string $mailFromNoReply;
 
-    /** @var string */
-    private $notificationEmail;
+    private string $notificationEmail;
 
-    /** @var TemplateFactory */
-    private $templateFactory;
+    private TemplateFactory $templateFactory;
 
-    /** @var LinkGenerator */
-    private $linkGenerator;
+    private LinkGenerator $linkGenerator;
 
     public function __construct(string $mailFromNoReply, string $notificationEmail, IMailer $mailer, TemplateFactory $templateFactory, LinkGenerator $linkGenerator)
     {
@@ -43,9 +39,12 @@ class SendPaymentsMatchingNotificationEmailService
         $message->setSubject($subject = sprintf('[TMOU %s] Párování plateb vyžaduje pozornost', $event->getNumber()));
 
         $template = $this->templateFactory->createTemplate();
+        if (!$template instanceof DefaultTemplate) {
+            throw new \InstruktoriBrno\TMOU\Exceptions\LogicException('Template is not a DefaultTemplate from Latte.');
+        }
         $template->setFile(__DIR__ . '/Templates/paymentsMatchingEmail.latte');
         $link = $this->linkGenerator->link('Teams:payments');
-        $content = sprintf("Zdravím,\npárování plateb v %s. ročníku TMOU vyžaduje vaši pozornost.\nPřejít na <a href='${link}'>Log párování plateb</a>\n\n-- TMOU web", $event->getNumber());
+        $content = sprintf("Zdravím,\npárování plateb v %s. ročníku TMOU vyžaduje vaši pozornost.\nPřejít na <a href='{$link}'>Log párování plateb</a>\n\n-- TMOU web", $event->getNumber());
         $template->setParameters(['content' => $content, 'subject' => $subject]);
 
         $message->setHtmlBody($template->renderToString());

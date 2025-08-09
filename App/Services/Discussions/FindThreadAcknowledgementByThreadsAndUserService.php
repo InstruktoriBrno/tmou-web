@@ -1,7 +1,7 @@
 <?php declare(strict_types=1);
 namespace InstruktoriBrno\TMOU\Services\Discussions;
 
-use Doctrine\Common\Persistence\ObjectRepository; // phpcs:ignore
+use Doctrine\Persistence\ObjectRepository; // phpcs:ignore
 use InstruktoriBrno\TMOU\Enums\UserRole;
 use InstruktoriBrno\TMOU\Model\Thread;
 use InstruktoriBrno\TMOU\Model\ThreadAcknowledgement;
@@ -11,10 +11,8 @@ use Nette\Security\User;
 class FindThreadAcknowledgementByThreadsAndUserService
 {
     /** @var ObjectRepository<ThreadAcknowledgement> */
-    private $threadAcknowledgementRepository;
-
-    /** @var EntityManagerInterface */
-    private $entityManager;
+    private ObjectRepository $threadAcknowledgementRepository;
+    private EntityManagerInterface $entityManager;
 
     public function __construct(EntityManagerInterface $entityManager)
     {
