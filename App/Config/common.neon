@@ -32,8 +32,8 @@ parameters:
 
 captcha:
     type: turnstile
-    secretKey: 0x4AAAAAABkcNFq1VO4SavjcV2oSGFgWWLQ
-    siteKey: 0x4AAAAAABkcNPHNOkIK18Z3
+    secretKey: secretKey
+    siteKey: siteKey
     theme: light
     size: normal
 
