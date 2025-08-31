@@ -4,7 +4,7 @@
         "Read more about it at https://getcomposer.org/doc/01-basic-usage.md#installing-dependencies",
         "This file is @generated automatically"
     ],
-    "content-hash": "14eab0ed48bd83dfd735253a5dc704be",
+    "content-hash": "ca33843ee5ad82a6bc6e2833bbc9457d",
     "packages": [
         {
             "name": "brick/math",
@@ -1136,16 +1136,16 @@
         },
         {
             "name": "drabek-digital/captcha",
-            "version": "v2.0.0",
+            "version": "v2.0.1",
             "source": {
                 "type": "git",
                 "url": "https://github.com/DrabekDigital/captcha.git",
-                "reference": "79461e6cb862908f6b23cd7cfc373838c5a938a3"
+                "reference": "e055e2cb54d54af56f5c06265ef61b58a13d8429"
             },
             "dist": {
                 "type": "zip",
-                "url": "https://api.github.com/repos/DrabekDigital/captcha/zipball/79461e6cb862908f6b23cd7cfc373838c5a938a3",
-                "reference": "79461e6cb862908f6b23cd7cfc373838c5a938a3",
+                "url": "https://api.github.com/repos/DrabekDigital/captcha/zipball/e055e2cb54d54af56f5c06265ef61b58a13d8429",
+                "reference": "e055e2cb54d54af56f5c06265ef61b58a13d8429",
                 "shasum": ""
             },
             "require": {
@@ -1184,9 +1184,9 @@
             "description": "🤖 Nette Forms extension for Cloudflare Turnstile and hCaptcha integration",
             "support": {
                 "issues": "https://github.com/DrabekDigital/captcha/issues",
-                "source": "https://github.com/DrabekDigital/captcha/tree/v2.0.0"
+                "source": "https://github.com/DrabekDigital/captcha/tree/v2.0.1"
             },
-            "time": "2025-07-05T18:05:23+00:00"
+            "time": "2025-08-29T13:01:40+00:00"
         },
         {
             "name": "firebase/php-jwt",
@@ -7842,6 +7842,7 @@
         "ext-curl": "*",
         "ext-json": "*",
         "ext-dom": "*",
+        "ext-intl": "*",
         "ext-libxml": "*"
     },
     "platform-dev": {},
