@@ -3,12 +3,12 @@
   "version": "1.0.0",
   "description": "",
   "devDependencies": {
-    "@fullhuman/postcss-purgecss": "^1.2.0",
+    "@fullhuman/postcss-purgecss": "^8.0.0",
     "cssnano": "^5.1.14",
-    "postcss": "^8.4.31",
+    "postcss": "^8.5.10",
     "postcss-cli": "^10.1.0",
-    "purgecss": "^1.4.0",
-    "tailwindcss": "^1.1.2"
+    "purgecss": "^8.0.0",
+    "tailwindcss": "^4.2.4"
   },
   "scripts": {
     "compile-css": "postcss resources/css/app.css -o www/assets/css/app.css"
