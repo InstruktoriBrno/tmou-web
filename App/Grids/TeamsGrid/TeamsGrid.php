@@ -139,6 +139,19 @@ class TeamsGrid extends Control
         $grid->addColumnDateTime('paymentPairedAt', 'Datum spárování platby')
             ->setDefaultHide(true);
 
+        $grid->addColumnText('wantsQualificationOnly', 'Pouze kvalifikace')
+            ->setRenderer(function (Team $team): ?Html {
+                if ($team->wantsQualificationOnly()) {
+                    return Html::el('span class="badge badge-xs badge-warning"')->setText('Ano');
+                }
+                return null;
+            })
+            ->setFilterSelect([
+                null => 'N/A',
+                '1' => 'Ano',
+                '0' => 'Ne',
+            ]);
+
         $grid->addColumnText('name', 'Jméno')
             ->setRenderer(function (Team $team): Html {
                 $output = Html::el();
