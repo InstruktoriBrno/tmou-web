@@ -49,16 +49,15 @@
                 {if $iterator->counter0 % 50 === 0 && $iterator->counter0 !== 0}
                     {$header}
                 {/if}
-                {var $class = ''}
-                {ifchanged $team['qualified']}
-                    {first}
-                    {else}
-                        {var $class = 'qualification-border'}
-                    {/first}
-                {/ifchanged}
+                {var $class = $lastQualifiedPosition > 0 && (int) $team['position'] === $lastQualifiedPosition + 1 ? 'qualification-border' : ''}
                 <tr>
                     <td class="{$class}">{$team['position']}</td>
-                    <td class="{$class}">{$team['team_name']}</td>
+                    <td class="{$class}">
+                        {$team['team_name']}
+                        {if $team['wants_qualification_only']}
+                            <i class="fa fa-info-circle ml-1" aria-hidden="true" title="Tento tým chce hrát pouze kvalifikaci a nepočítá se mezi týmy postupující do hlavní hry."></i>
+                        {/if}
+                    </td>
                     <td class="{$class}">{if $team['qualified']}Ano{else}Ne{/if}</td>
                     {foreach $levels as $level}
                         {foreach $puzzles[$level->getId()] ?? [] as $puzzle}

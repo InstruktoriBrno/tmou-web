@@ -27,6 +27,7 @@ class FindResultsService
         return $this->entityManager->getConnection()->executeQuery(<<<SQL
 SELECT
   team.name as team_name,
+  team.wants_qualification_only,
   cached_qualification_results.*
 FROM cached_qualification_results
 JOIN team ON cached_qualification_results.team_id = team.id

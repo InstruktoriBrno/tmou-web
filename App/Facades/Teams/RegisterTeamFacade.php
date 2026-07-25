@@ -93,7 +93,8 @@ class RegisterTeamFacade
             $values->phrase,
             $values->phone,
             $this->gameClockService->get(), // Ignored, should not happen, otherwise fail completely as it is runtime exception
-            $members
+            $members,
+            (bool) $values->wantsQualificationOnly
         );
         if (!$event->getAfterRegistrationTeamGameStatus()->equals(GameStatus::REGISTERED())) {
             $team->changeTeamGameStatus($event->getAfterRegistrationTeamGameStatus());

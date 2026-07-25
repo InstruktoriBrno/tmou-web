@@ -43,9 +43,12 @@ SELECT
   result.event_id,
   result.team_id,
   ROW_NUMBER() OVER (ORDER BY max_reached_level DESC, total_answer_count DESC, latest_answer_at ASC, latest_answer_id ASC, result.team_registered_at ASC) AS position,
-  IF(total_answer_count = 0,
+  IF(total_answer_count = 0 OR result.wants_qualification_only,
     FALSE,
-    ROW_NUMBER() OVER (PARTITION BY total_answer_count > 0 ORDER BY max_reached_level DESC, total_answer_count DESC, latest_answer_at ASC, latest_answer_id ASC, result.team_registered_at ASC) <= ?
+    ROW_NUMBER() OVER (
+      PARTITION BY total_answer_count > 0 AND NOT result.wants_qualification_only
+      ORDER BY max_reached_level DESC, total_answer_count DESC, latest_answer_at ASC, latest_answer_id ASC, result.team_registered_at ASC
+    ) <= ?
   ) AS qualified,
   result.max_reached_level,
   result.total_answer_count,
@@ -58,6 +61,7 @@ FROM
       team.event_id,
       team.id AS team_id,
       team.registered_at AS team_registered_at,
+      team.wants_qualification_only AS wants_qualification_only,
       MAX(CASE WHEN answer.correct THEN level.level_number ELSE NULL END) AS max_reached_level,
       SUM(CASE WHEN answer.correct THEN 1 ELSE 0 END) AS total_answer_count -- possible as answer -> puzzle -> level is 1:1:1 !!!
     FROM team

@@ -28,6 +28,12 @@ class TeamRegistrationFormFactory
             ->setRequired('Vyplňte, prosím, tajnou frázi vašeho týmu.')
             ->addRule(Form::MAX_LENGTH, 'Tajná fráze může být maximálně 255 znaků dlouhá.', 255)
             ->setOption('description', 'Někdy používáno ke k ověření identity týmu na stanovišti.');
+        $wantsQualificationOnly = $form->addCheckbox('wantsQualificationOnly', 'Chceme hrát pouze kvalifikaci TMOU, nechceme se účastnit hlavní hry.')
+            ->setOption(
+                'description',
+                'Pokud toto zaškrtnete, tak se váš tým nebude počítat mezi týmy postupující do hlavní hry '
+                . 'a po vyhodnocení kvalifikace bude automaticky nastaven jako nekvalifikovaný, i kdyby si jinak postup vybojoval.'
+            );
 
         $form->addGroup('Kontaktní údaje a přihlašovací heslo');
         $teamEmail = $form->addText('email', 'Kontaktní e-mail')
@@ -127,6 +133,7 @@ class TeamRegistrationFormFactory
             $phrase->setDisabled(true);
             $phone->setDisabled(true);
             $teamEmail->setDisabled(true);
+            $wantsQualificationOnly->setDisabled(true);
             if (isset($feeOrganization, $feeAmount, $feePublic)) {
                 $feeOrganization->setDisabled(true);
                 $feeAmount->setDisabled(true);

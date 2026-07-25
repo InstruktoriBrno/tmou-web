@@ -37,11 +37,30 @@ class EventQualificationResultsControl extends Control
 
     public function renderForEvent(Event $event): void
     {
+        $teams = ($this->findResultsService)($event);
         $this->template->event = $event;
-        $this->template->teams = ($this->findResultsService)($event);
+        $this->template->teams = $teams;
+        // Teams are ordered by position ASC, so the last qualified row encountered has the highest position among qualified teams.
+        // Computed explicitly (instead of relying on the qualified flag changing between adjacent rows) because teams that
+        // opted for qualification only can be interleaved among truly qualified teams while never being qualified themselves.
+        $this->template->lastQualifiedPosition = $this->findLastQualifiedPosition($teams);
         $this->template->levels = ($this->findLevelsService)($event);
         $this->template->puzzles = ($this->findPuzzlesOfEventService)($event);
         $this->template->answersByLevelAndTeam = ($this->findTeamResultsByLevelsService)($event);
         $this->render();
+    }
+
+    /**
+     * @param array<mixed> $teams
+     */
+    private function findLastQualifiedPosition(array $teams): int
+    {
+        $lastQualifiedPosition = 0;
+        foreach ($teams as $team) {
+            if ((bool) $team['qualified']) {
+                $lastQualifiedPosition = (int) $team['position'];
+            }
+        }
+        return $lastQualifiedPosition;
     }
 }

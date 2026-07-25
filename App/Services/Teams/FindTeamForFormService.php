@@ -46,6 +46,7 @@ class FindTeamForFormService
             'selfreportedFeeOrganization' => $team->getSelfreportedFeeOrganization(),
             'selfreportedFeeAmount' => $team->getSelfreportedFeeAmount(),
             'selfreportedFeePublic' => $team->isSelfreportedFeePublic(),
+            'wantsQualificationOnly' => $team->wantsQualificationOnly(),
         ];
     }
 }

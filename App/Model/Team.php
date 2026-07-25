@@ -106,6 +106,9 @@ class Team
     #[ORM\Column(type: "boolean", nullable: false)]
     protected bool $canChangeGameTime = false;
 
+    #[ORM\Column(type: "boolean", nullable: false)]
+    protected bool $wantsQualificationOnly = false;
+
     /**
      * Team constructor.
      * @param Event $event
@@ -117,6 +120,7 @@ class Team
      * @param string $phone
      * @param DateTimeImmutable $registeredAt
      * @param TeamMember[] $members
+     * @param bool $wantsQualificationOnly
      *
      * @throws \InstruktoriBrno\TMOU\Model\Exceptions\NameTooLongException
      * @throws \InstruktoriBrno\TMOU\Model\Exceptions\PhraseTooLongException
@@ -136,7 +140,8 @@ class Team
         string $phrase,
         string $phone,
         DateTimeImmutable $registeredAt,
-        array $members
+        array $members,
+        bool $wantsQualificationOnly = false
     ) {
         self::validateDetails($name, $phrase, $email, null, $members, $password);
 
@@ -148,6 +153,7 @@ class Team
         $this->phrase = $phrase;
         $this->phone = $phone;
         $this->registeredAt = $this->lastUpdatedAt = $registeredAt;
+        $this->wantsQualificationOnly = $wantsQualificationOnly;
 
         $this->gameStatus = GameStatus::REGISTERED();
         $this->paymentStatus = PaymentStatus::NOT_PAID();
@@ -170,6 +176,7 @@ class Team
      * @param string|null $selfreportedFeeOrganization
      * @param int|null $selfreportedFeeAmount
      * @param bool|null $selfreportedFeePublic
+     * @param bool $wantsQualificationOnly
      *
      * @throws \InstruktoriBrno\TMOU\Model\Exceptions\NameTooLongException
      * @throws \InstruktoriBrno\TMOU\Model\Exceptions\PhraseTooLongException
@@ -191,7 +198,8 @@ class Team
         array $members,
         ?string $selfreportedFeeOrganization,
         ?int $selfreportedFeeAmount,
-        ?bool $selfreportedFeePublic
+        ?bool $selfreportedFeePublic,
+        bool $wantsQualificationOnly = false
     ): void {
         $this->validateDetails($name, $phrase, $email, $password, $members, $newPassword);
 
@@ -206,6 +214,7 @@ class Team
         $this->selfreportedFeeOrganization = $selfreportedFeeOrganization;
         $this->selfreportedFeeAmount = $selfreportedFeeAmount;
         $this->selfreportedFeePublic = $selfreportedFeePublic;
+        $this->wantsQualificationOnly = $wantsQualificationOnly;
 
         // Add new
         $memberNumbers = [];
@@ -619,5 +628,10 @@ class Team
     public function canChangeGameTime(): bool
     {
         return $this->canChangeGameTime;
+    }
+
+    public function wantsQualificationOnly(): bool
+    {
+        return $this->wantsQualificationOnly;
     }
 }

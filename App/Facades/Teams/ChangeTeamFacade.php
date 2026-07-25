@@ -78,6 +78,7 @@ class ChangeTeamFacade
             $values->email = $team->getEmail();
             $values->phrase = $team->getPhrase();
             $values->phone = $team->getPhone();
+            $values->wantsQualificationOnly = $team->wantsQualificationOnly();
             if ($team->getEvent()->isSelfreportedEntryFeeEnabled()) {
                 $values->selfreportedFeeOrganization = $team->getSelfreportedFeeOrganization();
                 $values->selfreportedFeeAmount = $team->getSelfreportedFeeAmount();
@@ -123,7 +124,8 @@ class ChangeTeamFacade
             $membersToSave,
             isset($values->selfreportedFeeOrganization) && $values->selfreportedFeeOrganization !== '' ? $values->selfreportedFeeOrganization : null,
             isset($values->selfreportedFeeAmount) && $values->selfreportedFeeAmount ? $values->selfreportedFeeAmount : null,
-            isset($values->selfreportedFeePublic) && $values->selfreportedFeePublic ? $values->selfreportedFeePublic : null
+            isset($values->selfreportedFeePublic) && $values->selfreportedFeePublic ? $values->selfreportedFeePublic : null,
+            (bool) $values->wantsQualificationOnly
         );
 
         if (!($this->isTeamNameInEventUniqueService)($team)) {
