@@ -7,6 +7,7 @@ use Grifart\Enum\Enum;
 /**
  * @method static LoginContinueToIntents QUALIFICATION()
  * @method static LoginContinueToIntents WEBINFO()
+ * @method static LoginContinueToIntents START()
  */
 final class LoginContinueToIntents extends Enum
 {
@@ -14,4 +15,5 @@ final class LoginContinueToIntents extends Enum
 
     private const QUALIFICATION = 'qualification';
     private const WEBINFO = 'webinfo';
+    private const START = 'start';
 }
