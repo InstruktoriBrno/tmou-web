@@ -26,6 +26,10 @@
                 <div class="alert alert-info">
                     Po přihlášení budete automaticky přesměrování zpátky kvalifikačního systému.
                 </div>
+            {elseif $continueToStart}
+                <div class="alert alert-info">
+                    Po přihlášení budete automaticky přesměrování zpátky startovacího systému.
+                </div>
             {/if}
             {control loginForm}
             Pokud jste heslo zapomněli, požádejte <a href="{plink Pages:forgottenPassword, $event->getNumber()}">o nové heslo</a>.

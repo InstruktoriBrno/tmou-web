@@ -311,6 +311,7 @@ final class PagesPresenter extends BasePresenter
         } catch (\Grifart\Enum\MissingValueDeclarationException $exception) {
             $this->template->continueToQualification = false;
             $this->template->continueToWebinfo = false;
+            $this->template->continueToStart = false;
         }
     }
 
